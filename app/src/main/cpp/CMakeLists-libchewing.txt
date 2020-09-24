@@ -112,4 +112,23 @@ else()
     )
 endif()
 
+# build target
 target_link_libraries(chewing userphrase)
+
+# copying data files
+set( app_project_res_DIR        "${CMAKE_SOURCE_DIR}/../res" )
+set( app_project_res_raw_DIR    "${app_project_res_DIR}/raw/${ANDROID_ABI}" )
+file(MAKE_DIRECTORY "${app_project_res_raw_DIR}")
+
+set(DATA_FILES
+    ${libchewing_src_DIR}/data/phone.cin
+    ${libchewing_src_DIR}/data/pinyin.tab
+    ${libchewing_src_DIR}/data/swkb.dat
+    ${libchewing_src_DIR}/data/symbols.dat
+    ${libchewing_src_DIR}/data/tsi.src
+)
+
+file(
+    COPY ${DATA_FILES}
+    DESTINATION ${app_project_res_raw_DIR}
+)
