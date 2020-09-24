@@ -1,3 +1,4 @@
+# locate libchewing
 set( libchewing_src_DIR     ../../../libs/libchewing )
 set( libchewing_build_DIR   ../../../libs/libchewing/outputs )
 file(MAKE_DIRECTORY ${libchewing_build_DIR})
@@ -12,6 +13,7 @@ include_directories(
     ${SQLITE3_SRC_DIR}
 )
 
+# Essential configurations
 add_definitions(-DUNDER_POSIX -DPIC)
 add_definitions(-DHAVE_CONFIG_H=1)
 add_definitions(-DCHEWING_DATADIR="libchewing/")
@@ -34,6 +36,7 @@ include_directories(
     ${libchewing_src_DIR}/thirdparty/sqlite-amalgamation/
 )
 
+# build chewing shared library
 add_library(chewing SHARED
     ${libchewing_src_DIR}/include/internal/chewing-utf8-util.h
     ${libchewing_src_DIR}/include/internal/key2pho-private.h
@@ -80,6 +83,7 @@ add_library(chewing SHARED
     ${libchewing_src_DIR}/src/bopomofo.c
 )
 
+# build userphrase (& sqlite) static library
 if (WITH_SQLITE3)
     add_library(userphrase STATIC
         ${libchewing_src_DIR}/include/internal/chewing-sql.h
@@ -95,18 +99,6 @@ if (WITH_SQLITE3)
             ${SQLITE3_SRC_DIR}/sqlite3.h
         )
         target_link_libraries(sqlite3_library ${CMAKE_DL_LIBS} ${CMAKE_THREAD_LIBS_INIT})
-
-        add_executable(sqlite3
-            ${SQLITE3_SRC_DIR}/shell.c
-        )
-        target_link_libraries(sqlite3 sqlite3_library)
-        set_target_properties(sqlite3 PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY ${SQLITE3_SRC_DIR}
-            RUNTIME_OUTPUT_DIRECTORY_DEBUG ${SQLITE3_SRC_DIR}
-            RUNTIME_OUTPUT_DIRECTORY_RELEASE ${SQLITE3_SRC_DIR}
-            RUNTIME_OUTPUT_DIRECTORY_RELEASE ${SQLITE3_SRC_DIR}
-            RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${SQLITE3_SRC_DIR}
-        )
         target_link_libraries(userphrase sqlite3_library)
     else()
         target_link_libraries(testhelper ${SQLITE3_LIBRARY})
