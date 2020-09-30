@@ -16,7 +16,7 @@ include_directories(
 # Essential configurations
 add_definitions(-DUNDER_POSIX -DPIC)
 add_definitions(-DHAVE_CONFIG_H=1)
-add_definitions(-DCHEWING_DATADIR="libchewing/")
+add_definitions(-DCHEWING_DATADIR="assets/chewing")
 
 include(CheckCCompilerFlag)
 
