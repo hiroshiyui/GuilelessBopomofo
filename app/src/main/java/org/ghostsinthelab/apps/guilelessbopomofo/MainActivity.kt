@@ -48,14 +48,14 @@ class MainActivity : AppCompatActivity() {
 
         while (nextEntry != null) {
             try {
-                Log.d("extract-zip", nextEntry.name)
+                Log.d("extract-datazip", nextEntry.name)
                 val target = File(String.format("%s/%s", chewingDataDir.absolutePath, nextEntry.name))
                 val outputStream = FileOutputStream(target)
                 dataZipInputStream.copyTo(outputStream)
                 outputStream.close()
                 nextEntry = dataZipInputStream.nextEntry
             } catch (e: java.lang.Exception) {
-                Log.e("extract-zip", e.message)
+                Log.e("extract-datazip", e.message)
             }
         }
         dataZipInputStream.close()
