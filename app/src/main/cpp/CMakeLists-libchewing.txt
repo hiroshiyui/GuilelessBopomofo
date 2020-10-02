@@ -141,3 +141,15 @@ add_executable(
     ${libchewing_src_DIR}/src/common/key2pho.c
     ${libchewing_src_DIR}/src/common/chewing-utf8-util.c
 )
+
+# build contrib/simple-select.c
+add_definitions(-DTEST_HASH_DIR="/data/data/org.ghostsinthelab.apps.guilelessbopomofo")
+add_definitions(-DTEST_DATA_DIR="/data/data/org.ghostsinthelab.apps.guilelessbopomofo")
+add_executable(
+        simple-select
+        ${libchewing_src_DIR}/contrib/simple-select.c
+)
+target_link_libraries(
+        simple-select
+        chewing
+)
