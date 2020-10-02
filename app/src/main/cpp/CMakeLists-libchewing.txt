@@ -118,8 +118,7 @@ set( app_project_assets_DIR             "${CMAKE_SOURCE_DIR}/../assets" )
 set( app_project_assets_chewing_DIR     "${app_project_assets_DIR}/chewing/${ANDROID_ABI}" )
 file(MAKE_DIRECTORY "${app_project_assets_chewing_DIR}")
 
-set( DATA_ZIP                            "${libchewing_src_DIR}/data.zip" )
 file(
-    COPY ${DATA_ZIP}
+    COPY "${libchewing_src_DIR}/data.zip"
     DESTINATION ${app_project_assets_chewing_DIR}
 )
