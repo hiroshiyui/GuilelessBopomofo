@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
-import java.util.zip.ZipFile
 import java.util.zip.ZipInputStream
 
 class MainActivity : AppCompatActivity() {
@@ -43,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         // Get app assets (bundled in APK file)
         val assetManager = this.assets
         val chewingAssetsPath = String.format("%s/%s", "chewing", getAbi())
-        val assetFiles = assetManager.list(chewingAssetsPath)
 
         // Extract data.zip to data directory
         val dataZipInputStream = ZipInputStream(assetManager.open(String.format("%s/%s", chewingAssetsPath, "data.zip")))
@@ -62,30 +59,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         dataZipInputStream.close()
-
-        // Copy assets to data directory
-//        assetFiles?.let {
-//            for (asset in it) {
-//                try {
-//                    val inputStream = assetManager.open(String.format("%s/%s", chewingAssetsPath, asset))
-//                    val target = File(String.format("%s/%s", chewingDataDir.absolutePath, asset))
-//                    val outputStream = FileOutputStream(target)
-//                    Log.d("initChewingData-debug", String.format("Copying '%s' to '%s'...", asset, target.absolutePath))
-//
-//                    inputStream.copyTo(outputStream)
-//
-//                    inputStream.close()
-//                    outputStream.close()
-//
-//                    // make 'init_database' executable
-//                    if (asset == "init_database") {
-//                        target.setExecutable(true)
-//                    }
-//                } catch (e: Exception) {
-//                    Log.e("initChewingData-error", e.message);
-//                }
-//            }
-//        }
     }
 
     private fun getAbi(): String? {
