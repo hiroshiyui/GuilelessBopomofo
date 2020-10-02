@@ -35,8 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initChewingData() {
         // Get app data directory
-        val applicationInfo = this.getApplicationInfo()
-        val chewingDataDir = File(applicationInfo.dataDir)
+        val chewingDataDir = File(this.applicationInfo.dataDir)
 
         // Get app assets (bundled in APK file)
         val assetManager = this.assets
@@ -55,7 +54,9 @@ class MainActivity : AppCompatActivity() {
                 outputStream.close()
                 nextEntry = dataZipInputStream.nextEntry
             } catch (e: java.lang.Exception) {
-                Log.e("extract-datazip", e.message)
+                e.message?.let {
+                    Log.e("extract-datazip", it)
+                }
             }
         }
         dataZipInputStream.close()
