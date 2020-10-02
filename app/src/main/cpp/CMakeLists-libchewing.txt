@@ -123,33 +123,3 @@ file(
     COPY ${DATA_ZIP}
     DESTINATION ${app_project_assets_chewing_DIR}
 )
-
-# build init_database binary executable
-set(EXECUTABLE_OUTPUT_PATH  "${app_project_assets_chewing_DIR}")
-
-include_directories(
-    ${libchewing_src_DIR}/include/
-    ${libchewing_src_DIR}/include/internal/
-    ${libchewing_src_DIR}/src/
-    ${libchewing_src_DIR}/src/porting_layer/include/
-    ${libchewing_src_DIR}/src/porting_layer/include/sys/
-)
-
-add_executable(
-    init_database
-    ${libchewing_src_DIR}/src/tools/init_database.c
-    ${libchewing_src_DIR}/src/common/key2pho.c
-    ${libchewing_src_DIR}/src/common/chewing-utf8-util.c
-)
-
-# build contrib/simple-select.c
-add_definitions(-DTEST_HASH_DIR="/data/data/org.ghostsinthelab.apps.guilelessbopomofo")
-add_definitions(-DTEST_DATA_DIR="/data/data/org.ghostsinthelab.apps.guilelessbopomofo")
-add_executable(
-        simple-select
-        ${libchewing_src_DIR}/contrib/simple-select.c
-)
-target_link_libraries(
-        simple-select
-        chewing
-)
