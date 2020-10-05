@@ -10,6 +10,7 @@ import java.io.FileOutputStream
 import java.util.zip.ZipInputStream
 
 class MainActivity : AppCompatActivity() {
+    val LOGTAG = "GBMainActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +19,11 @@ class MainActivity : AppCompatActivity() {
         // Example of a call to a native method
         sample_text.text = stringFromJNI()
         initChewingData()
+        val chewing_ctx = chewingNew(this.applicationInfo.dataDir)
+        chewing_ctx?.let {
+            Log.d(LOGTAG, it.toString())
+        }
+        chewingDelete(chewing_ctx)
     }
 
     /**
@@ -25,6 +31,9 @@ class MainActivity : AppCompatActivity() {
      * which is packaged with this application.
      */
     external fun stringFromJNI(): String
+
+    external fun chewingNew(dataPath: String): Long
+    external fun chewingDelete(chewingCtx: Long)
 
     companion object {
         // Used to load the 'native-lib' library on application startup.
@@ -47,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         while (nextEntry != null) {
             try {
-                Log.d("extract-datazip", nextEntry.name)
+                Log.d(LOGTAG, nextEntry.name)
                 val target = File(String.format("%s/%s", chewingDataDir.absolutePath, nextEntry.name))
                 val outputStream = FileOutputStream(target)
                 dataZipInputStream.copyTo(outputStream)
@@ -55,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                 nextEntry = dataZipInputStream.nextEntry
             } catch (e: java.lang.Exception) {
                 e.message?.let {
-                    Log.e("extract-datazip", it)
+                    Log.e(LOGTAG, it)
                 }
             }
         }
