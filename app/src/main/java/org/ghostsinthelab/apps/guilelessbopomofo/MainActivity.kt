@@ -55,6 +55,16 @@ class MainActivity : AppCompatActivity() {
 
         sample_text.text = commitString
 
+        // ㄓ
+        chewingHandleDefault(chewing_ctx, '5')
+        chewingHandleSpace(chewing_ctx)
+        chewingCandOpen(chewing_ctx)
+        chewingCandTotalChoice(chewing_ctx)
+        chewingCandChooseByIndex(chewing_ctx, 12)
+        chewingCommitPreeditBuf(chewing_ctx)
+        val selectedCandidate = chewingCommitString(chewing_ctx);
+        Log.d(LOGTAG, "Commit string: ${selectedCandidate}")
+
         chewingDelete(chewing_ctx)
     }
 
@@ -74,8 +84,12 @@ class MainActivity : AppCompatActivity() {
     external fun chewingSetCandPerPage(chewingCtx: Long, candidates: Int)
     external fun chewingHandleDefault(chewingCtx: Long, key: Char)
     external fun chewingHandleEnter(chewingCtx: Long)
+    external fun chewingHandleSpace(chewingCtx: Long)
     external fun chewingCommitString(chewingCtx: Long): String
     external fun chewingCommitPreeditBuf(chewingCtx: Long): Int
+    external fun chewingCandOpen(chewingCtx: Long): Int
+    external fun chewingCandTotalChoice(chewingCtx: Long): Int
+    external fun chewingCandChooseByIndex(chewingCtx: Long, index: Int): Int
 
     companion object {
         // Used to load the 'native-lib' library on application startup.

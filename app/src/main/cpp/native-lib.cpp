@@ -164,6 +164,18 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleEnter(
     chewing_handle_Enter(ctx);
 }
 
+/* chewing_handle_Space() */
+extern "C" JNIEXPORT void JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleSpace(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle space input from context ptr: %lld",
+                        (jlong) ctx);
+    chewing_handle_Space(ctx);
+}
+
 /* chewing_commit_String() */
 extern "C" JNIEXPORT jstring JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCommitString(
@@ -190,5 +202,49 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCommitPreedit
                         "Commit pre-edit buffer from context ptr: %lld", (jlong) ctx);
     jint ret_jint;
     ret_jint = chewing_commit_preedit_buf(ctx);
+    return ret_jint;
+}
+
+/* chewing_cand_open() */
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCandOpen(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "Open candidates from context ptr: %lld", (jlong) ctx);
+    jint ret_jint;
+    ret_jint = chewing_cand_open(ctx);
+    return ret_jint;
+}
+
+/* chewing_cand_TotalChoice() */
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCandTotalChoice(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jint total_choice;
+    total_choice = chewing_cand_TotalChoice(ctx);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "Count of total candidates (%d) from context ptr: %lld",
+                        (jint) total_choice, (jlong) ctx);
+    return total_choice;
+}
+
+/* chewing_cand_choose_by_index() */
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCandChooseByIndex(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr,
+        jint index) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "Choose candidates by index (%d) from context ptr: %lld", (jint) index, (jlong) ctx);
+    jint ret_jint;
+    ret_jint = chewing_cand_choose_by_index(ctx, index);
     return ret_jint;
 }
