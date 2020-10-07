@@ -93,13 +93,15 @@ class MainActivity : AppCompatActivity() {
         val chewingAssetsPath = String.format("%s/%s", "chewing", getAbi())
 
         // Extract data.zip to data directory
-        val dataZipInputStream = ZipInputStream(assetManager.open(String.format("%s/%s", chewingAssetsPath, "data.zip")))
+        val dataZipInputStream =
+            ZipInputStream(assetManager.open(String.format("%s/%s", chewingAssetsPath, "data.zip")))
         var nextEntry = dataZipInputStream.nextEntry
 
         while (nextEntry != null) {
             try {
                 Log.d(LOGTAG, nextEntry.name)
-                val target = File(String.format("%s/%s", chewingDataDir.absolutePath, nextEntry.name))
+                val target =
+                    File(String.format("%s/%s", chewingDataDir.absolutePath, nextEntry.name))
                 val outputStream = FileOutputStream(target)
                 dataZipInputStream.copyTo(outputStream)
                 outputStream.close()
