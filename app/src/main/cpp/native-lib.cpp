@@ -179,3 +179,17 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCommitString(
     chewing_free(commit_string);
     return ret_jstring;
 }
+
+/* chewing_commit_preedit_buf() */
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCommitPreeditBuf(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "Commit pre-edit buffer from context ptr: %lld", (jlong) ctx);
+    jint ret_jint;
+    ret_jint = chewing_commit_preedit_buf(ctx);
+    return ret_jint;
+}

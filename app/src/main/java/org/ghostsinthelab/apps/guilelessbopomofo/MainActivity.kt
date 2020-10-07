@@ -42,12 +42,13 @@ class MainActivity : AppCompatActivity() {
         chewingSetMaxChiSymbolLen(chewing_ctx, 10)
         chewingSetCandPerPage(chewing_ctx, 9)
 
+        // TODO: Use keyboard-less API instead
         // 綠茶
         val keys = arrayOf('x', 'm', '4', 't', '8', '6').map { it.toInt() }
         for (key in keys) {
             chewingHandleDefault(chewing_ctx, key)
         }
-        chewingHandleEnter(chewing_ctx)
+        chewingCommitPreeditBuf(chewing_ctx)
 
         val commitString = chewingCommitString(chewing_ctx);
         Log.d(LOGTAG, "Commit string: ${commitString}")
@@ -74,6 +75,7 @@ class MainActivity : AppCompatActivity() {
     external fun chewingHandleDefault(chewingCtx: Long, key: Int)
     external fun chewingHandleEnter(chewingCtx: Long)
     external fun chewingCommitString(chewingCtx: Long): String
+    external fun chewingCommitPreeditBuf(chewingCtx: Long): Int
 
     companion object {
         // Used to load the 'native-lib' library on application startup.
