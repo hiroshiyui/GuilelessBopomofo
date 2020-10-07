@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         // TODO: Use keyboard-less API instead
         // 綠茶
-        val keys = arrayOf('x', 'm', '4', 't', '8', '6').map { it.toInt() }
+        val keys = arrayOf('x', 'm', '4', 't', '8', '6')
         for (key in keys) {
             chewingHandleDefault(chewing_ctx, key)
         }
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
     external fun chewingGetSelKey(chewingCtx: Long): Long
     external fun chewingSetMaxChiSymbolLen(chewingCtx: Long, length: Int)
     external fun chewingSetCandPerPage(chewingCtx: Long, candidates: Int)
-    external fun chewingHandleDefault(chewingCtx: Long, key: Int)
+    external fun chewingHandleDefault(chewingCtx: Long, key: Char)
     external fun chewingHandleEnter(chewingCtx: Long)
     external fun chewingCommitString(chewingCtx: Long): String
     external fun chewingCommitPreeditBuf(chewingCtx: Long): Int

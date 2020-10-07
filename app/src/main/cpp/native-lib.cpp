@@ -145,12 +145,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleDefault
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr,
-        jint key) {
+        jchar key) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    char k = key;
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Handle default input '%c' from context ptr: %lld", k, (jlong) ctx);
-    chewing_handle_Default(ctx, key);
+                        "Handle default input '%c' from context ptr: %lld", key, (jlong) ctx);
+    chewing_handle_Default(ctx, (int) key);
 }
 
 /* chewing_handle_Enter() */
