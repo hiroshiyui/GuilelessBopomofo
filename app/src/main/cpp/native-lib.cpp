@@ -287,3 +287,32 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candChooseByIndex(
     ret_jint = chewing_cand_choose_by_index(ctx, index);
     return ret_jint;
 }
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candListHasNext(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jboolean has_next_bool;
+    has_next_bool = chewing_cand_hasNext(ctx);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "Checks whether or not (%d) there is a next (shorter) candidate list from context ptr: %lld",
+                        (jint) has_next_bool,
+                        (jlong) ctx);
+    return has_next_bool;
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candListNext(
+        JNIEnv *env, jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jboolean success_next_bool;
+    success_next_bool = chewing_cand_list_next(ctx);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "changes current candidate list to next candidate list (result: %d) from context ptr: %lld",
+                        (jint) success_next_bool,
+                        (jlong) ctx);
+    return success_next_bool;
+}

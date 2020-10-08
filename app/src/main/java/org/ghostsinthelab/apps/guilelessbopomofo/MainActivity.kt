@@ -93,6 +93,17 @@ class MainActivity : AppCompatActivity() {
         chewing_engine.handleDefault('9')
         chewing_engine.handleDefault('4')
 
+        // 蜂膠
+        chewing_engine.handleLeft()
+        chewing_engine.handleLeft()
+        chewing_engine.handleLeft()
+        chewing_engine.candOpen()
+        chewing_engine.candChooseByIndex(0)
+
+        // 從候選詞切換候選字
+//        chewing_engine.candListHasNext()
+//        chewing_engine.candListNext()
+
         chewing_engine.commitPreeditBuf()
         val multiplePhrasesString = chewing_engine.commitString()
         Log.d(LOGTAG, "Commit string: ${multiplePhrasesString}")
