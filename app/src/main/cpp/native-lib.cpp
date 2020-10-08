@@ -19,7 +19,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_stringFromJNI(
 
 /* chewing_new2() */
 extern "C" JNIEXPORT jlong JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingNew(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_chewingNew(
         JNIEnv *env,
         jobject,
         jstring data_path) {
@@ -51,18 +51,18 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingNew(
 
 /* chewing_delete() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingDelete(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_delete(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "delete chewing context: %lld", (jlong) ctx);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Delete chewing context: %lld", (jlong) ctx);
     chewing_delete(ctx);
 }
 
 /* chewing_get_ChiEngMode() */
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingGetChiEngMode(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_getChiEngMode(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -74,12 +74,12 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingGetChiEngMode
 
 /* chewing_set_selKey() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingSetSelKey(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setSelKey(
         JNIEnv *env,
         jobject,
-        jlong chewing_ctx_ptr,
         jobject selkeys,
-        jint len) {
+        jint len,
+        jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     const int *keys = reinterpret_cast<const int *>(selkeys);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
@@ -89,7 +89,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingSetSelKey(
 
 /* chewing_get_selKey() */
 extern "C" JNIEXPORT jlong JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingGetSelKey(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_getSelKey(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -101,7 +101,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingGetSelKey(
 
 /* chewing_free() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingFree(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_free(
         JNIEnv *env,
         jobject,
         jlong res_ptr) {
@@ -113,11 +113,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingFree(
 
 /* chewing_set_maxChiSymbolLen() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingSetMaxChiSymbolLen(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setMaxChiSymbolLen(
         JNIEnv *env,
         jobject,
-        jlong chewing_ctx_ptr,
-        jint len) {
+        jint len,
+        jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Set chewing max Chinese symbol length to %d from context ptr: %lld",
@@ -127,11 +127,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingSetMaxChiSymb
 
 /* chewing_set_candPerPage() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingSetCandPerPage(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setCandPerPage(
         JNIEnv *env,
         jobject,
-        jlong chewing_ctx_ptr,
-        jint candidates) {
+        jint candidates,
+        jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Set chewing candidates per page to %d from context ptr: %lld",
@@ -141,11 +141,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingSetCandPerPag
 
 /* chewing_set_phraseChoiceRearward() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingSetPhraseChoiceRearward(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setPhraseChoiceRearward(
         JNIEnv *env,
         jobject,
-        jlong chewing_ctx_ptr,
-        jboolean boolean) {
+        jboolean boolean,
+        jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Set phrase choice rearward to (%d) from context ptr: %lld", (jint) boolean,
@@ -155,11 +155,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingSetPhraseChoi
 
 /* chewing_handle_Default() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleDefault(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleDefault(
         JNIEnv *env,
         jobject,
-        jlong chewing_ctx_ptr,
-        jchar key) {
+        jchar key,
+        jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Handle default input '%c' from context ptr: %lld", key, (jlong) ctx);
@@ -168,7 +168,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleDefault
 
 /* chewing_handle_Enter() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleEnter(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleEnter(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -180,7 +180,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleEnter(
 
 /* chewing_handle_Space() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleSpace(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleSpace(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -192,7 +192,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleSpace(
 
 /* chewing_handle_Left() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleLeft(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleLeft(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -204,7 +204,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleLeft(
 
 /* chewing_handle_Right() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleRight(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleRight(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -216,7 +216,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingHandleRight(
 
 /* chewing_commit_String() */
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCommitString(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_commitString(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -231,7 +231,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCommitString(
 
 /* chewing_commit_preedit_buf() */
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCommitPreeditBuf(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_commitPreeditBuf(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -245,7 +245,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCommitPreedit
 
 /* chewing_cand_open() */
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCandOpen(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candOpen(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -259,7 +259,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCandOpen(
 
 /* chewing_cand_TotalChoice() */
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCandTotalChoice(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candTotalChoice(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -274,11 +274,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCandTotalChoi
 
 /* chewing_cand_choose_by_index() */
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_MainActivity_chewingCandChooseByIndex(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candChooseByIndex(
         JNIEnv *env,
         jobject,
-        jlong chewing_ctx_ptr,
-        jint index) {
+        jint index,
+        jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Choose candidates by index (%d) from context ptr: %lld", (jint) index,

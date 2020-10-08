@@ -20,83 +20,84 @@ class MainActivity : AppCompatActivity() {
         sample_text.text = stringFromJNI()
 
         initChewingData()
-        val chewing_ctx = chewingNew(this.applicationInfo.dataDir)
-        chewing_ctx.let {
-            Log.d(LOGTAG, it.toString())
+        val chewing_engine = ChewingEngine(this.applicationInfo.dataDir)
+
+        chewing_engine.context.let {
+            Log.d(LOGTAG, "Chewing context ptr: ${it.toString()}")
         }
 
-        val chewing_chi_mode = chewingGetChiEngMode(chewing_ctx)
+        val chewing_chi_mode = chewing_engine.getChiEngMode()
         chewing_chi_mode.let {
             Log.d(LOGTAG, "Chinese/English mode: ${it.toString()}")
         }
 
         val selKeys = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9').map { it.toInt() }
-        chewingSetSelKey(chewing_ctx, selKeys, 9)
+        chewing_engine.setSelKey(selKeys, 9)
 
-        val listKeys = chewingGetSelKey(chewing_ctx)
+        val listKeys = chewing_engine.getSelKey()
         listKeys.let {
             Log.d(LOGTAG, "Get select key (ptr): ${it.toString()}")
         }
-        chewingFree(listKeys)
+        chewing_engine.free(listKeys)
 
-        chewingSetMaxChiSymbolLen(chewing_ctx, 10)
-        chewingSetCandPerPage(chewing_ctx, 9)
+        chewing_engine.setMaxChiSymbolLen(10)
+        chewing_engine.setCandPerPage(9)
         // set frontward phrase choice
-        chewingSetPhraseChoiceRearward(chewing_ctx, false)
+        chewing_engine.setPhraseChoiceRearward(false)
 
         // 綠茶
         val keys = arrayOf('x', 'm', '4', 't', '8', '6')
         for (key in keys) {
-            chewingHandleDefault(chewing_ctx, key)
+            chewing_engine.handleDefault(key)
         }
         // move cursor to front
-        chewingHandleLeft(chewing_ctx)
-        chewingHandleLeft(chewing_ctx)
-        chewingCandOpen(chewing_ctx)
-        chewingCandTotalChoice(chewing_ctx)
-        chewingCandChooseByIndex(chewing_ctx, 0)
-        chewingCommitPreeditBuf(chewing_ctx)
+        chewing_engine.handleLeft()
+        chewing_engine.handleLeft()
+        chewing_engine.candOpen()
+        chewing_engine.candTotalChoice()
+        chewing_engine.candChooseByIndex(0)
+        chewing_engine.commitPreeditBuf()
 
-        val commitString = chewingCommitString(chewing_ctx);
+        val commitString = chewing_engine.commitString();
         Log.d(LOGTAG, "Commit string: ${commitString}")
 
         sample_text.text = commitString
 
         // ㄓ
-        chewingHandleDefault(chewing_ctx, '5')
-        chewingHandleSpace(chewing_ctx)
+        chewing_engine.handleDefault('5')
+        chewing_engine.handleSpace()
 
-        chewingCandOpen(chewing_ctx)
-        chewingCandTotalChoice(chewing_ctx)
-        chewingCandChooseByIndex(chewing_ctx, 12)
-        chewingCommitPreeditBuf(chewing_ctx)
-        val selectedCandidate = chewingCommitString(chewing_ctx);
+        chewing_engine.candOpen()
+        chewing_engine.candTotalChoice()
+        chewing_engine.candChooseByIndex(12)
+        chewing_engine.commitPreeditBuf()
+        val selectedCandidate = chewing_engine.commitString();
         Log.d(LOGTAG, "Commit string: ${selectedCandidate}")
 
         // 密封膠帶 蜜蜂 交代 交待 蜂膠
         // ㄇ一ˋ
-        chewingHandleDefault(chewing_ctx, 'a')
-        chewingHandleDefault(chewing_ctx, 'u')
-        chewingHandleDefault(chewing_ctx, '4')
+        chewing_engine.handleDefault('a')
+        chewing_engine.handleDefault('u')
+        chewing_engine.handleDefault('4')
         // ㄈㄥ
-        chewingHandleDefault(chewing_ctx, 'z')
-        chewingHandleDefault(chewing_ctx, '/')
-        chewingHandleSpace(chewing_ctx)
+        chewing_engine.handleDefault('z')
+        chewing_engine.handleDefault('/')
+        chewing_engine.handleSpace()
         // ㄐㄧㄠ
-        chewingHandleDefault(chewing_ctx, 'r')
-        chewingHandleDefault(chewing_ctx, 'u')
-        chewingHandleDefault(chewing_ctx, 'l')
-        chewingHandleSpace(chewing_ctx)
+        chewing_engine.handleDefault('r')
+        chewing_engine.handleDefault('u')
+        chewing_engine.handleDefault('l')
+        chewing_engine.handleSpace()
         // ㄉㄞˋ
-        chewingHandleDefault(chewing_ctx, '2')
-        chewingHandleDefault(chewing_ctx, '9')
-        chewingHandleDefault(chewing_ctx, '4')
+        chewing_engine.handleDefault('2')
+        chewing_engine.handleDefault('9')
+        chewing_engine.handleDefault('4')
 
-        chewingCommitPreeditBuf(chewing_ctx)
-        val multiplePhrasesString = chewingCommitString(chewing_ctx)
+        chewing_engine.commitPreeditBuf()
+        val multiplePhrasesString = chewing_engine.commitString()
         Log.d(LOGTAG, "Commit string: ${multiplePhrasesString}")
 
-        chewingDelete(chewing_ctx)
+        chewing_engine.delete()
     }
 
     /**
@@ -104,27 +105,6 @@ class MainActivity : AppCompatActivity() {
      * which is packaged with this application.
      */
     external fun stringFromJNI(): String
-
-    external fun chewingNew(dataPath: String): Long
-    external fun chewingDelete(chewingCtx: Long)
-    external fun chewingFree(resourcePtr: Long)
-    external fun chewingGetChiEngMode(chewingCtx: Long): Int
-    external fun chewingSetSelKey(chewingCtx: Long, selKeys: List<Int>, length: Int)
-    external fun chewingGetSelKey(chewingCtx: Long): Long
-    external fun chewingSetMaxChiSymbolLen(chewingCtx: Long, length: Int)
-    external fun chewingSetCandPerPage(chewingCtx: Long, candidates: Int)
-    external fun chewingSetPhraseChoiceRearward(chewingCtx: Long, boolean: Boolean)
-    external fun chewingHandleDefault(chewingCtx: Long, key: Char)
-    external fun chewingHandleEnter(chewingCtx: Long)
-    external fun chewingHandleSpace(chewingCtx: Long)
-    external fun chewingHandleLeft(chewingCtx: Long)
-    external fun chewingHandleRight(chewingCtx: Long)
-    external fun chewingCommitString(chewingCtx: Long): String
-    external fun chewingCommitPreeditBuf(chewingCtx: Long): Int
-    external fun chewingCandOpen(chewingCtx: Long): Int
-    external fun chewingCandTotalChoice(chewingCtx: Long): Int
-    external fun chewingCandChooseByIndex(chewingCtx: Long, index: Int): Int
-
 
     companion object {
         // Used to load the 'native-lib' library on application startup.
