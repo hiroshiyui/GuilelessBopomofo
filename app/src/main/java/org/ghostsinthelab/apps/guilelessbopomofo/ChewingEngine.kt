@@ -1,6 +1,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 class ChewingEngine constructor(dataPath: String) {
+    // Chewing context pointer, represent its address as a Long
     val context: Long
 
     init {
@@ -8,6 +9,7 @@ class ChewingEngine constructor(dataPath: String) {
         context = chewingNew(dataPath)
     }
 
+    // Chewing API JNIs
     private external fun chewingNew(dataPath: String): Long
     external fun delete(chewingCtx: Long = context)
     external fun free(resourcePtr: Long)
