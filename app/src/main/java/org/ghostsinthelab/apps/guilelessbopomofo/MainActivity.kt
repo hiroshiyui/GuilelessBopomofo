@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         chewing_engine.candOpen()
         chewing_engine.candChooseByIndex(0)
 
-        // 從候選詞切換候選字
+        // 切換候選列表
 //        chewing_engine.candListHasNext()
 //        chewing_engine.candListNext()
 
