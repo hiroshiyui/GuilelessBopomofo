@@ -41,13 +41,20 @@ class MainActivity : AppCompatActivity() {
 
         chewingSetMaxChiSymbolLen(chewing_ctx, 10)
         chewingSetCandPerPage(chewing_ctx, 9)
+        // set frontward phrase choice
+        chewingSetPhraseChoiceRearward(chewing_ctx, false)
 
-        // TODO: Use keyboard-less API instead
         // 綠茶
         val keys = arrayOf('x', 'm', '4', 't', '8', '6')
         for (key in keys) {
             chewingHandleDefault(chewing_ctx, key)
         }
+        // move cursor to front
+        chewingHandleLeft(chewing_ctx)
+        chewingHandleLeft(chewing_ctx)
+        chewingCandOpen(chewing_ctx)
+        chewingCandTotalChoice(chewing_ctx)
+        chewingCandChooseByIndex(chewing_ctx, 0)
         chewingCommitPreeditBuf(chewing_ctx)
 
         val commitString = chewingCommitString(chewing_ctx);
@@ -58,12 +65,36 @@ class MainActivity : AppCompatActivity() {
         // ㄓ
         chewingHandleDefault(chewing_ctx, '5')
         chewingHandleSpace(chewing_ctx)
+
         chewingCandOpen(chewing_ctx)
         chewingCandTotalChoice(chewing_ctx)
         chewingCandChooseByIndex(chewing_ctx, 12)
         chewingCommitPreeditBuf(chewing_ctx)
         val selectedCandidate = chewingCommitString(chewing_ctx);
         Log.d(LOGTAG, "Commit string: ${selectedCandidate}")
+
+        // 密封膠帶 蜜蜂 交代 交待 蜂膠
+        // ㄇ一ˋ
+        chewingHandleDefault(chewing_ctx, 'a')
+        chewingHandleDefault(chewing_ctx, 'u')
+        chewingHandleDefault(chewing_ctx, '4')
+        // ㄈㄥ
+        chewingHandleDefault(chewing_ctx, 'z')
+        chewingHandleDefault(chewing_ctx, '/')
+        chewingHandleSpace(chewing_ctx)
+        // ㄐㄧㄠ
+        chewingHandleDefault(chewing_ctx, 'r')
+        chewingHandleDefault(chewing_ctx, 'u')
+        chewingHandleDefault(chewing_ctx, 'l')
+        chewingHandleSpace(chewing_ctx)
+        // ㄉㄞˋ
+        chewingHandleDefault(chewing_ctx, '2')
+        chewingHandleDefault(chewing_ctx, '9')
+        chewingHandleDefault(chewing_ctx, '4')
+
+        chewingCommitPreeditBuf(chewing_ctx)
+        val multiplePhrasesString = chewingCommitString(chewing_ctx)
+        Log.d(LOGTAG, "Commit string: ${multiplePhrasesString}")
 
         chewingDelete(chewing_ctx)
     }
@@ -82,14 +113,18 @@ class MainActivity : AppCompatActivity() {
     external fun chewingGetSelKey(chewingCtx: Long): Long
     external fun chewingSetMaxChiSymbolLen(chewingCtx: Long, length: Int)
     external fun chewingSetCandPerPage(chewingCtx: Long, candidates: Int)
+    external fun chewingSetPhraseChoiceRearward(chewingCtx: Long, boolean: Boolean)
     external fun chewingHandleDefault(chewingCtx: Long, key: Char)
     external fun chewingHandleEnter(chewingCtx: Long)
     external fun chewingHandleSpace(chewingCtx: Long)
+    external fun chewingHandleLeft(chewingCtx: Long)
+    external fun chewingHandleRight(chewingCtx: Long)
     external fun chewingCommitString(chewingCtx: Long): String
     external fun chewingCommitPreeditBuf(chewingCtx: Long): Int
     external fun chewingCandOpen(chewingCtx: Long): Int
     external fun chewingCandTotalChoice(chewingCtx: Long): Int
     external fun chewingCandChooseByIndex(chewingCtx: Long, index: Int): Int
+
 
     companion object {
         // Used to load the 'native-lib' library on application startup.
