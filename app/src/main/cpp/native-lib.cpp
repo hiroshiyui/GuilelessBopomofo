@@ -46,7 +46,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_chewingNew(
 
     /* create chewing context */
     ctx = chewing_new2(native_data_path, native_user_data_path, nullptr, 0);
-    return (jlong) ctx;
+    return (jlong) (intptr_t) ctx;
 }
 
 /* chewing_delete() */
