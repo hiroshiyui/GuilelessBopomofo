@@ -56,7 +56,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_delete(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Delete chewing context: %lld", (jlong) ctx);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Delete chewing context: %lld", (long long) ctx);
     chewing_delete(ctx);
 }
 
@@ -68,7 +68,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_getChiEngMode(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Get chewing Chinese/English mode from context ptr: %lld", (jlong) ctx);
+                        "Get chewing Chinese/English mode from context ptr: %lld", (long long) ctx);
     return chewing_get_ChiEngMode(ctx);
 }
 
@@ -83,7 +83,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setSelKey(
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     const int *keys = reinterpret_cast<const int *>(selkeys);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Set chewing selection keys from context ptr: %lld", (jlong) ctx);
+                        "Set chewing selection keys from context ptr: %lld", (long long) ctx);
     chewing_set_selKey(ctx, keys, len);
 }
 
@@ -95,7 +95,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_getSelKey(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Get chewing selection keys from context ptr: %lld", (jlong) ctx);
+                        "Get chewing selection keys from context ptr: %lld", (long long) ctx);
     return (jlong) chewing_get_selKey(ctx);
 }
 
@@ -107,7 +107,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_free(
         jlong res_ptr) {
     auto *res = reinterpret_cast<void *>(res_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Free chewing resource (ptr): %lld",
-                        (jlong) res);
+                        (long long) res);
     chewing_free(res);
 }
 
@@ -121,7 +121,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setMaxChiSymbolLen(
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Set chewing max Chinese symbol length to %d from context ptr: %lld",
-                        (jint) len, (jlong) ctx);
+                        (jint) len, (long long) ctx);
     chewing_set_maxChiSymbolLen(ctx, len);
 }
 
@@ -135,7 +135,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setCandPerPage(
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Set chewing candidates per page to %d from context ptr: %lld",
-                        (jint) candidates, (jlong) ctx);
+                        (jint) candidates, (long long) ctx);
     chewing_set_candPerPage(ctx, candidates);
 }
 
@@ -149,7 +149,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setPhraseChoiceRear
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Set phrase choice rearward to (%d) from context ptr: %lld", (jint) boolean,
-                        (jlong) ctx);
+                        (long long) ctx);
     chewing_set_phraseChoiceRearward(ctx, boolean);
 }
 
@@ -162,7 +162,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleDefault(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Handle default input '%c' from context ptr: %lld", key, (jlong) ctx);
+                        "Handle default input '%c' from context ptr: %lld", key, (long long) ctx);
     chewing_handle_Default(ctx, (int) key);
 }
 
@@ -174,7 +174,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleEnter(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle enter input from context ptr: %lld",
-                        (jlong) ctx);
+                        (long long) ctx);
     chewing_handle_Enter(ctx);
 }
 
@@ -186,7 +186,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleSpace(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle space input from context ptr: %lld",
-                        (jlong) ctx);
+                        (long long) ctx);
     chewing_handle_Space(ctx);
 }
 
@@ -198,7 +198,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleLeft(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle left input from context ptr: %lld",
-                        (jlong) ctx);
+                        (long long) ctx);
     chewing_handle_Left(ctx);
 }
 
@@ -210,7 +210,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleRight(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle right input from context ptr: %lld",
-                        (jlong) ctx);
+                        (long long) ctx);
     chewing_handle_Right(ctx);
 }
 
@@ -222,7 +222,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_commitString(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Commit string from context ptr: %lld",
-                        (jlong) ctx);
+                        (long long) ctx);
     char *commit_string = chewing_commit_String(ctx);
     jstring ret_jstring = env->NewStringUTF(commit_string);
     chewing_free(commit_string);
@@ -237,7 +237,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_commitPreeditBuf(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Commit pre-edit buffer from context ptr: %lld", (jlong) ctx);
+                        "Commit pre-edit buffer from context ptr: %lld", (long long) ctx);
     jint ret_jint;
     ret_jint = chewing_commit_preedit_buf(ctx);
     return ret_jint;
@@ -251,7 +251,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candOpen(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Open candidates from context ptr: %lld", (jlong) ctx);
+                        "Open candidates from context ptr: %lld", (long long) ctx);
     jint ret_jint;
     ret_jint = chewing_cand_open(ctx);
     return ret_jint;
@@ -268,7 +268,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candTotalChoice(
     total_choice = chewing_cand_TotalChoice(ctx);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Count of total candidates (%d) from context ptr: %lld",
-                        (jint) total_choice, (jlong) ctx);
+                        (jint) total_choice, (long long) ctx);
     return total_choice;
 }
 
@@ -282,7 +282,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candChooseByIndex(
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Choose candidates by index (%d) from context ptr: %lld", (jint) index,
-                        (jlong) ctx);
+                        (long long) ctx);
     jint ret_jint;
     ret_jint = chewing_cand_choose_by_index(ctx, index);
     return ret_jint;
@@ -299,7 +299,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candListHasNext(
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Checks whether or not (%d) there is a next (shorter) candidate list from context ptr: %lld",
                         (jint) has_next_bool,
-                        (jlong) ctx);
+                        (long long) ctx);
     return has_next_bool;
 }
 
@@ -313,6 +313,6 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candListNext(
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "changes current candidate list to next candidate list (result: %d) from context ptr: %lld",
                         (jint) success_next_bool,
-                        (jlong) ctx);
+                        (long long) ctx);
     return success_next_bool;
 }
