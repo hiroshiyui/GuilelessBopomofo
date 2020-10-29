@@ -26,6 +26,10 @@ endif()
 include(CheckTypeSize)
 check_type_size(uint16_t UINT16_T)
 
+find_library(log-lib
+        log
+)
+
 include_directories(
     ${libchewing_src_DIR}/include/
     ${libchewing_src_DIR}/include/internal/
@@ -79,6 +83,7 @@ add_library(chewing SHARED
     ${libchewing_src_DIR}/src/tree.c
     ${libchewing_src_DIR}/src/userphrase.c
     ${libchewing_src_DIR}/src/bopomofo.c
+    chewing-jni.cpp
 )
 
 # build userphrase (& sqlite) static library
@@ -111,7 +116,7 @@ else()
 endif()
 
 # build target
-target_link_libraries(chewing userphrase)
+target_link_libraries(chewing userphrase ${log-lib})
 
 # copy data.zip to assets directory
 set( app_project_assets_DIR             "${CMAKE_SOURCE_DIR}/../assets" )

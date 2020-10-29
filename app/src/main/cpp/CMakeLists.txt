@@ -5,9 +5,6 @@
 
 cmake_minimum_required(VERSION 3.4.1)
 
-# build libchewing in the early stage for dependency requirement
-include( CMakeLists-libchewing.txt )
-
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -44,7 +41,7 @@ target_link_libraries( # Specifies the target library.
 
                        # Links the target library to the log library
                        # included in the NDK.
-                       ${log-lib}
-                       # libchewing
-                       chewing)
+                       ${log-lib})
 
+# build libchewing
+include( CMakeLists-libchewing.txt )
