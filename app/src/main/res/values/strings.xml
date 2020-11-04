@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Guileless Bopomofo</string>
+    <string name="display_name_taiwanese_modern_mandarin_keyboard_ime">Taiwanese Modern Mandarin</string>
 </resources>
