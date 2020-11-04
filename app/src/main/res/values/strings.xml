@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Guileless Bopomofo</string>
     <string name="display_name_bopomofo_keyboard_ime">Bopomofo</string>
+    <string name="label_subtype_generic">%s</string>
 </resources>

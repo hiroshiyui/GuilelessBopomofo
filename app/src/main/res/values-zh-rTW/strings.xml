@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">樸實注音鍵盤</string>
     <string name="display_name_bopomofo_keyboard_ime">注音符號</string>
+    <string name="label_subtype_generic">%s</string>
 </resources>
