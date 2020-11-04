@@ -10,7 +10,7 @@ import java.io.FileOutputStream
 import java.util.zip.ZipInputStream
 
 class MainActivity : AppCompatActivity() {
-    val LOGTAG = "GBMainActivity"
+    val LOGTAG = "MainActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
