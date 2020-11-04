@@ -7,7 +7,8 @@
         android:name="@string/display_name_bopomofo_keyboard_ime"
         android:imeSubtypeLocale="zh-rTW"
         android:imeSubtypeMode="keyboard"
-        android:label="@string/display_name_bopomofo_keyboard_ime"
-        android:languageTag="zh-Hant" />
+        android:label="@string/label_subtype_generic"
+        android:languageTag="zh-Hant"
+        android:icon="@drawable/ic_guileless_bopomofo_icon_v2" />
 
 </input-method>
