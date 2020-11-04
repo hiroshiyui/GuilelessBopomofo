@@ -3,9 +3,10 @@
     android:settingsActivity="org.ghostsinthelab.apps.guilelessbopomofo.MainActivity">
 
     <subtype
-        android:name="@string/display_name_taiwanese_modern_mandarin_keyboard_ime"
+        android:name="@string/display_name_bopomofo_keyboard_ime"
         android:imeSubtypeLocale="zh-rTW"
         android:imeSubtypeMode="keyboard"
+        android:label="@string/display_name_bopomofo_keyboard_ime"
         android:languageTag="zh-Hant" />
 
 </input-method>
