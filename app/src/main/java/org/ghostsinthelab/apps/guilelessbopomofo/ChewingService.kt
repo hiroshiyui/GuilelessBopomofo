@@ -4,7 +4,6 @@ import android.inputmethodservice.InputMethodService
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
 
 class ChewingService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "Service"
