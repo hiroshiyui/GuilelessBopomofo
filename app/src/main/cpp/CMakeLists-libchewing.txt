@@ -119,11 +119,10 @@ endif()
 target_link_libraries(chewing userphrase ${log-lib})
 
 # copy data.zip to assets directory
-set( app_project_assets_DIR             "${CMAKE_SOURCE_DIR}/../assets" )
-set( app_project_assets_chewing_DIR     "${app_project_assets_DIR}/chewing/${ANDROID_ABI}" )
-file(MAKE_DIRECTORY "${app_project_assets_chewing_DIR}")
+set( app_project_assets_DIR             "${CMAKE_SOURCE_DIR}/../assets/${ANDROID_ABI}" )
+file(MAKE_DIRECTORY "${app_project_assets_DIR}")
 
 file(
     COPY "${libchewing_src_DIR}/data.zip"
-    DESTINATION ${app_project_assets_chewing_DIR}
+    DESTINATION ${app_project_assets_DIR}
 )

@@ -131,11 +131,10 @@ class MainActivity : AppCompatActivity() {
 
         // Get app assets (bundled in APK file)
         val assetManager = this.assets
-        val chewingAssetsPath = String.format("%s/%s", "chewing", getAbi())
 
         // Extract data.zip to data directory
         val dataZipInputStream =
-            ZipInputStream(assetManager.open(String.format("%s/%s", chewingAssetsPath, "data.zip")))
+            ZipInputStream(assetManager.open(String.format("%s/%s", getAbi(), "data.zip")))
         var nextEntry = dataZipInputStream.nextEntry
 
         while (nextEntry != null) {
