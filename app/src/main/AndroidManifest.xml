@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".ChewingService"
+            android:name=".GuilelessBopomofoService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_INPUT_METHOD">

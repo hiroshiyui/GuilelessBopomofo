@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 
-class ChewingService : InputMethodService(), View.OnClickListener {
+class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "Service"
     override fun onCreate() {
         super.onCreate()
