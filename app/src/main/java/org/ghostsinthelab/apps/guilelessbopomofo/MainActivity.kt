@@ -26,7 +26,6 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.FileOutputStream
-import java.util.zip.ZipInputStream
 
 class MainActivity : AppCompatActivity() {
     val LOGTAG = "MainActivity"
@@ -151,27 +150,25 @@ class MainActivity : AppCompatActivity() {
         // Get app assets (bundled in APK file)
         val assetManager = this.assets
 
-        // Extract data.zip to data directory
-        val dataZipInputStream =
-            ZipInputStream(assetManager.open(String.format("%s/%s", getAbi(), "data.zip")))
-        var nextEntry = dataZipInputStream.nextEntry
+        // Copying data files
+        val chewingDataFiles = listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
 
-        while (nextEntry != null) {
+        for (file in chewingDataFiles) {
+            Log.d(LOGTAG, "Copying ${file}...")
+            val dataInputStream = assetManager.open(file)
+            val dataOutputStream = FileOutputStream(File(String.format("%s/%s", chewingDataDir.absolutePath, file)))
             try {
-                Log.d(LOGTAG, nextEntry.name)
-                val target =
-                    File(String.format("%s/%s", chewingDataDir.absolutePath, nextEntry.name))
-                val outputStream = FileOutputStream(target)
-                dataZipInputStream.copyTo(outputStream)
-                outputStream.close()
-                nextEntry = dataZipInputStream.nextEntry
+                dataInputStream.copyTo(dataOutputStream)
             } catch (e: java.lang.Exception) {
                 e.message?.let {
                     Log.e(LOGTAG, it)
                 }
+            } finally {
+                Log.d(LOGTAG, "Closing data I/O streams")
+                dataInputStream.close()
+                dataOutputStream.close()
             }
         }
-        dataZipInputStream.close()
     }
 
     private fun getAbi(): String? {

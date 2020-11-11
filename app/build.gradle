@@ -38,6 +38,15 @@ android {
         }
     }
     ndkVersion '21.3.6528147'
+
+    task copyChewingDataFiles(type: Copy) {
+        from("$rootDir/app/libs/libchewing/data") {
+            include("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
+        }
+        into("$rootDir/app/src/main/assets")
+    }
+
+    preBuild.dependsOn('copyChewingDataFiles')
 }
 
 dependencies {
