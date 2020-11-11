@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         chewing_engine.candChooseByIndex(0)
         chewing_engine.commitPreeditBuf()
 
-        val commitString = chewing_engine.commitString();
+        val commitString = chewing_engine.commitString()
         Log.d(LOGTAG, "Commit string: ${commitString}")
 
         sample_text.text = commitString
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         chewing_engine.candTotalChoice()
         chewing_engine.candChooseByIndex(12)
         chewing_engine.commitPreeditBuf()
-        val selectedCandidate = chewing_engine.commitString();
+        val selectedCandidate = chewing_engine.commitString()
         Log.d(LOGTAG, "Commit string: ${selectedCandidate}")
 
         // 密封膠帶 蜜蜂 交代 交待 蜂膠
