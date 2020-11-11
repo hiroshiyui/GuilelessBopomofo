@@ -19,13 +19,19 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.content.Context
 import android.inputmethodservice.InputMethodService
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.ImageButton
+import androidx.annotation.RequiresApi
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "Service"
+
     override fun onCreate() {
         super.onCreate()
     }
@@ -38,6 +44,9 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     override fun onCreateInputView(): View {
         Log.d(LOGTAG, "onCreateInputView()")
         val myKeyboardView: View = layoutInflater.inflate(R.layout.keyboard_layout, null)
+        val imeSwitchButton: ImageButton = myKeyboardView.findViewById(R.id.imageImeSwitchButton)
+        imeSwitchButton.setOnClickListener(this)
+        imeSwitchButton.setOnLongClickListener(showImePicker())
         return myKeyboardView
     }
 
@@ -53,7 +62,18 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         super.onDestroy()
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onClick(v: View?) {
-        TODO("Not yet implemented")
+        val ic = currentInputConnection
+        when(v?.id) {
+            R.id.imageImeSwitchButton ->
+                switchToNextInputMethod(false)
+        }
+    }
+
+    private fun showImePicker() = View.OnLongClickListener {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showInputMethodPicker()
+        return@OnLongClickListener true
     }
 }
