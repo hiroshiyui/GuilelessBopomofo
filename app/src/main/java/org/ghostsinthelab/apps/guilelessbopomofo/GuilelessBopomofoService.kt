@@ -20,6 +20,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.util.Log
@@ -31,9 +32,19 @@ import androidx.annotation.RequiresApi
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "Service"
+    lateinit var chewingEngine: ChewingEngine
+
+    init {
+        System.loadLibrary("chewing")
+    }
 
     override fun onCreate() {
         super.onCreate()
+        val dataPath = packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
+        chewingEngine = ChewingEngine(dataPath)
+        chewingEngine.context.let {
+            Log.d(LOGTAG, "Chewing context ptr: ${it.toString()}")
+        }
     }
 
     override fun onCreateCandidatesView(): View {
@@ -60,6 +71,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        chewingEngine.delete()
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
