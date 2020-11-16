@@ -308,3 +308,76 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candListNext(
                         (long long) ctx);
     return success_next_bool;
 }
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setKBType(
+        JNIEnv *env, jobject,
+        jint type,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jint set_keyboard_type_result;
+    set_keyboard_type_result = chewing_set_KBType(ctx, type);
+    return set_keyboard_type_result;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_getKBType(
+        JNIEnv *env, jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jint current_keyboard_type;
+    current_keyboard_type = chewing_get_KBType(ctx);
+    return current_keyboard_type;
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_getKBString(
+        JNIEnv *env, jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    char *current_keyboard_type = chewing_get_KBString(ctx);
+    jstring ret_jstring = env->NewStringUTF(current_keyboard_type);
+    chewing_free(current_keyboard_type);
+    return ret_jstring;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_convKBStr2Num(
+        JNIEnv *env,
+        jobject,
+        jstring keyboard_string) {
+    const char *native_keyboard_string;
+    native_keyboard_string = env->GetStringUTFChars(keyboard_string, JNI_FALSE);
+    unsigned int native_keyboard_string_len = strlen(native_keyboard_string) + 1;
+    char native_keyboard_string_char_array[native_keyboard_string_len];
+    memset(native_keyboard_string_char_array, '\0', native_keyboard_string_len);
+    strcat(native_keyboard_string_char_array, native_keyboard_string);
+
+    return chewing_KBStr2Num(native_keyboard_string_char_array);
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_bufferString(
+        JNIEnv *env, jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    char *native_buffer_string = chewing_buffer_String(ctx);
+    jstring ret_jstring = env->NewStringUTF(native_buffer_string);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "current pre-edit buffer (result: %s) from context ptr: %lld",
+                        native_buffer_string,
+                        (long long) ctx);
+    chewing_free(native_buffer_string);
+    return ret_jstring;
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_bopomofoStringStatic(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    const char *bopomofo_string_static = chewing_bopomofo_String_static(ctx);
+    jstring ret_jstring = env->NewStringUTF(bopomofo_string_static);
+    return ret_jstring;
+}

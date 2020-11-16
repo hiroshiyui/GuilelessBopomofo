@@ -67,23 +67,25 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
+        Log.d(LOGTAG, "onStartInputView()")
     }
 
     override fun onFinishInput() {
         super.onFinishInput()
+        Log.d(LOGTAG, "onFinishInput()")
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d(LOGTAG, "onDestroy()")
         chewingEngine.delete()
     }
 
     override fun onClick(v: View?) {
-        val ic = currentInputConnection
+        Log.d(LOGTAG, "onClick")
         when(v?.id) {
             R.id.imageKeyboardButton -> {
-                Log.d(LOGTAG, "onClick")
-                ic.commitText("Hello!", 1)
+                currentInputConnection.commitText("Hello!", 1)
             }
         }
     }

@@ -126,6 +126,27 @@ class MainActivity : AppCompatActivity() {
         val multiplePhrasesString = chewing_engine.commitString()
         Log.d(LOGTAG, "Commit string: ${multiplePhrasesString}")
 
+        // 切換為許氏鍵盤
+        val newKeyboardType = chewing_engine.convKBStr2Num("KB_HSU")
+        Log.d(LOGTAG, "${newKeyboardType.toString()}")
+        chewing_engine.setKBType(newKeyboardType)
+        val currentKeyboardType = chewing_engine.getKBType()
+        val currentKeyboardTypeString = chewing_engine.getKBString()
+        Log.d(LOGTAG, "Current keyboard type: ${currentKeyboardType}")
+        Log.d(LOGTAG, "Current keyboard type string: ${currentKeyboardTypeString}")
+
+        chewing_engine.handleDefault('l')
+        chewing_engine.handleDefault('l')
+        Log.d(LOGTAG, "Current bopomofo in pre-edit buffer: ${chewing_engine.bopomofoStringStatic()}")
+        chewing_engine.handleDefault('f')
+        Log.d(LOGTAG, "Current pre-edit buffer: ${chewing_engine.bufferString()}")
+        chewing_engine.handleDefault('d')
+        chewing_engine.handleDefault('x')
+        chewing_engine.handleDefault('l')
+        chewing_engine.handleDefault('j')
+
+        chewing_engine.commitPreeditBuf()
+        Log.d(LOGTAG, "Test HSU layout: ${chewing_engine.commitString()}")
         chewing_engine.delete()
     }
 

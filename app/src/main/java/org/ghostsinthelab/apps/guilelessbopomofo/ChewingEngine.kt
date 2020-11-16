@@ -38,6 +38,10 @@ class ChewingEngine constructor(dataPath: String) {
     external fun setMaxChiSymbolLen(length: Int, chewingCtx: Long = context)
     external fun setCandPerPage(candidates: Int, chewingCtx: Long = context)
     external fun setPhraseChoiceRearward(boolean: Boolean, chewingCtx: Long = context)
+    external fun setKBType(type: Int, chewingCtx: Long = context): Int
+    external fun getKBType(chewingCtx: Long = context): Int
+    external fun getKBString(chewingCtx: Long = context): String
+    external fun convKBStr2Num(keyboardString: String): Int
     external fun handleDefault(key: Char, chewingCtx: Long = context)
     external fun handleEnter(chewingCtx: Long = context)
     external fun handleSpace(chewingCtx: Long = context)
@@ -50,4 +54,6 @@ class ChewingEngine constructor(dataPath: String) {
     external fun candChooseByIndex(index: Int, chewingCtx: Long = context): Int
     external fun candListHasNext(chewingCtx: Long = context): Boolean
     external fun candListNext(chewingCtx: Long = context): Boolean
+    external fun bufferString(chewingCtx: Long = context): String
+    external fun bopomofoStringStatic(chewingCtx: Long = context): String
 }
