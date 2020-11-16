@@ -20,7 +20,6 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
-import android.content.pm.PackageManager
 import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.util.Log
@@ -55,9 +54,14 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     override fun onCreateInputView(): View {
         Log.d(LOGTAG, "onCreateInputView()")
         val myKeyboardView: View = layoutInflater.inflate(R.layout.keyboard_layout, null)
+
+        // set IME switch/picker
         val imeSwitchButton: ImageButton = myKeyboardView.findViewById(R.id.imageImeSwitchButton)
-        imeSwitchButton.setOnClickListener(this)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            imeSwitchButton.setOnClickListener(switchToNextIME())
+        }
         imeSwitchButton.setOnLongClickListener(showImePicker())
+
         return myKeyboardView
     }
 
@@ -74,13 +78,19 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         chewingEngine.delete()
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onClick(v: View?) {
         val ic = currentInputConnection
         when(v?.id) {
-            R.id.imageImeSwitchButton ->
-                switchToNextInputMethod(false)
+            R.id.imageKeyboardButton -> {
+                Log.d(LOGTAG, "onClick")
+                ic.commitText("Hello!", 1)
+            }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    private fun switchToNextIME() = View.OnClickListener {
+        switchToNextInputMethod(false)
     }
 
     private fun showImePicker() = View.OnLongClickListener {
