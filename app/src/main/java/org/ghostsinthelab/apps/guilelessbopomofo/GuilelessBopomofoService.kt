@@ -27,6 +27,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
@@ -44,6 +45,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         chewingEngine.context.let {
             Log.d(LOGTAG, "Chewing context ptr: ${it.toString()}")
         }
+        val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
+        chewingEngine.setKBType(newKeyboardType)
     }
 
     override fun onCreateCandidatesView(): View {
@@ -82,12 +85,21 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+        val ic = currentInputConnection
         Log.d(LOGTAG, "onClick")
         when(v?.id) {
             R.id.imageKeyboardButton -> {
-                currentInputConnection.commitText("Hello!", 1)
+                chewingEngine.commitPreeditBuf()
+                ic.commitText(chewingEngine.commitString(), 1)
+            }
+            R.id.button1 -> {
+                chewingEngine.handleDefault('l')
+            }
+            R.id.button2 -> {
+                chewingEngine.handleDefault('f')
             }
         }
+        syncPreEditString()
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
@@ -99,5 +111,12 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showInputMethodPicker()
         return@OnLongClickListener true
+    }
+
+    private fun syncPreEditString() {
+        val preEditTextView: TextView = this.window.findViewById(R.id.preEditTextView)
+        val preEditBuffer: String = chewingEngine.bufferString()
+        val bopomofoBuffer: String = chewingEngine.bopomofoStringStatic()
+        preEditTextView.text = "${preEditBuffer}${bopomofoBuffer}"
     }
 }

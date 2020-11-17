@@ -15,6 +15,13 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp">
 
+        <TextView
+            android:id="@+id/preEditTextView"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,21 +35,22 @@
                 android:src="@drawable/ic_launcher_foreground" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/button3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Button3" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/button4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Button4" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onClick"
                 android:text="Button2" />
         </LinearLayout>
 
@@ -59,9 +67,10 @@
                 android:src="@drawable/ic_baseline_language_24" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/button1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onClick"
                 android:text="Button1" />
 
         </LinearLayout>
