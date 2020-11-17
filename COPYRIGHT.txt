@@ -1,0 +1,27 @@
+Guileless Bopomofo
+Copyright (C) 2020  YOU, HUI-HONG
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+
+== Third party component copyright notices ==
+
+* 本產品於繪製軟體鍵盤場合，採用「教育部標準宋體」，係「中華民國教育部」以「姓名標示-禁止改作 3.0 台灣 (CC BY-ND 3.0 TW)」方式授權。
+    - https://language.moe.gov.tw/result.aspx?classify_sn=23&subclassify_sn=436&content_sn=48
+    - https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/edusun.pdf
+    - https://creativecommons.org/licenses/by-nd/3.0/tw/deed.zh_TW
+
+* 承上，本產品之軟體鍵盤繪製原始檔、成品，基於「教育部標準宋體」者，係 YOU, HUI-HONG 以「姓名標示-禁止改作 3.0 台灣 (CC BY-ND 3.0 TW)」相同方式授權。
+    - https://creativecommons.org/licenses/by-nd/3.0/tw/deed.zh_TW
