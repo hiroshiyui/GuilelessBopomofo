@@ -3,7 +3,7 @@
 #include <chewing.h>
 #include <android/log.h>
 
-#define LOGTAG "GBNativeLib"
+#define LOGTAG "ChewingNativeLib"
 /*
     Chewing JNI functions
 */
