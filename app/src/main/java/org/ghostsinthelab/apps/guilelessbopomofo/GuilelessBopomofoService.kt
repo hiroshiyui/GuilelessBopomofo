@@ -23,6 +23,7 @@ import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.util.Log
+import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -89,6 +90,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         val ic = currentInputConnection
+        v?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         Log.v(LOGTAG, "onClick")
         when (v?.id) {
             R.id.imageKeyboardButton -> {
@@ -107,10 +109,12 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     @RequiresApi(Build.VERSION_CODES.P)
     private fun switchToNextIME() = View.OnClickListener {
+        it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         switchToNextInputMethod(false)
     }
 
     private fun showImePicker() = View.OnLongClickListener {
+        it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showInputMethodPicker()
         return@OnLongClickListener true
