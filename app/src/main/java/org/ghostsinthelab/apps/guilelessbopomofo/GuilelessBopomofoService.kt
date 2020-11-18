@@ -136,15 +136,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             if (!targetFile.exists()) {
                 Log.v(LOGTAG, "Copying ${file}...")
                 val dataInputStream = assets.open(file)
-                val dataOutputStream = FileOutputStream(
-                    File(
-                        String.format(
-                            "%s/%s",
-                            chewingDataDir.absolutePath,
-                            file
-                        )
-                    )
-                )
+                val dataOutputStream = FileOutputStream(targetFile)
 
                 try {
                     dataInputStream.copyTo(dataOutputStream)
