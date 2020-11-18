@@ -19,13 +19,10 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
-import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
     val LOGTAG = "MainActivity"
@@ -37,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         // Example of a call to a native method
         sample_text.text = stringFromJNI()
 
-        initChewingData()
         val chewing_engine = ChewingEngine(this.applicationInfo.dataDir)
 
         chewing_engine.context.let {
@@ -137,7 +133,10 @@ class MainActivity : AppCompatActivity() {
 
         chewing_engine.handleDefault('l')
         chewing_engine.handleDefault('l')
-        Log.d(LOGTAG, "Current bopomofo in pre-edit buffer: ${chewing_engine.bopomofoStringStatic()}")
+        Log.d(
+            LOGTAG,
+            "Current bopomofo in pre-edit buffer: ${chewing_engine.bopomofoStringStatic()}"
+        )
         chewing_engine.handleDefault('f')
         Log.d(LOGTAG, "Current pre-edit buffer: ${chewing_engine.bufferString()}")
         chewing_engine.handleDefault('d')
@@ -159,46 +158,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         // Used to load the 'native-lib' library on application startup.
         init {
-            System.loadLibrary("chewing")
             System.loadLibrary("native-lib")
-        }
-    }
-
-    private fun initChewingData() {
-        // Get app data directory
-        val chewingDataDir = File(this.applicationInfo.dataDir)
-
-        // Get app assets (bundled in APK file)
-        val assetManager = this.assets
-
-        // Copying data files
-        val chewingDataFiles = listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
-
-        for (file in chewingDataFiles) {
-            Log.d(LOGTAG, "Copying ${file}...")
-            val dataInputStream = assetManager.open(file)
-            val dataOutputStream = FileOutputStream(File(String.format("%s/%s", chewingDataDir.absolutePath, file)))
-            try {
-                dataInputStream.copyTo(dataOutputStream)
-            } catch (e: java.lang.Exception) {
-                e.message?.let {
-                    Log.e(LOGTAG, it)
-                }
-            } finally {
-                Log.d(LOGTAG, "Closing data I/O streams")
-                dataInputStream.close()
-                dataOutputStream.close()
-            }
-        }
-    }
-
-    private fun getAbi(): String? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // on newer Android versions, we'll return only the most important Abi version
-            Build.SUPPORTED_ABIS[0]
-        } else {
-            // on pre-Lollip versions, we got only one Abi
-            Build.CPU_ABI
         }
     }
 }

@@ -29,6 +29,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import java.io.File
+import java.io.FileOutputStream
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "Service"
@@ -41,9 +43,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     override fun onCreate() {
         super.onCreate()
         val dataPath = packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
+        setupChewingData(dataPath)
         chewingEngine = ChewingEngine(dataPath)
         chewingEngine.context.let {
-            Log.d(LOGTAG, "Chewing context ptr: ${it.toString()}")
+            Log.v(LOGTAG, "Chewing context ptr: ${it.toString()}")
         }
         val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
         chewingEngine.setKBType(newKeyboardType)
@@ -55,7 +58,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     }
 
     override fun onCreateInputView(): View {
-        Log.d(LOGTAG, "onCreateInputView()")
+        Log.v(LOGTAG, "onCreateInputView()")
         val myKeyboardView: View = layoutInflater.inflate(R.layout.keyboard_layout, null)
 
         // set IME switch/picker
@@ -70,24 +73,24 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
-        Log.d(LOGTAG, "onStartInputView()")
+        Log.v(LOGTAG, "onStartInputView()")
     }
 
     override fun onFinishInput() {
         super.onFinishInput()
-        Log.d(LOGTAG, "onFinishInput()")
+        Log.v(LOGTAG, "onFinishInput()")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(LOGTAG, "onDestroy()")
+        Log.v(LOGTAG, "onDestroy()")
         chewingEngine.delete()
     }
 
     override fun onClick(v: View?) {
         val ic = currentInputConnection
-        Log.d(LOGTAG, "onClick")
-        when(v?.id) {
+        Log.v(LOGTAG, "onClick")
+        when (v?.id) {
             R.id.imageKeyboardButton -> {
                 chewingEngine.commitPreeditBuf()
                 ic.commitText(chewingEngine.commitString(), 1)
@@ -118,5 +121,43 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         val preEditBuffer: String = chewingEngine.bufferString()
         val bopomofoBuffer: String = chewingEngine.bopomofoStringStatic()
         preEditTextView.text = "${preEditBuffer}${bopomofoBuffer}"
+    }
+
+    private fun setupChewingData(dataPath: String) {
+        // Get app data directory
+        val chewingDataDir = File(dataPath)
+
+        // Copying data files
+        val chewingDataFiles =
+            listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
+
+        for (file in chewingDataFiles) {
+            val targetFile = File(String.format("%s/%s", chewingDataDir.absolutePath, file))
+            if (!targetFile.exists()) {
+                Log.v(LOGTAG, "Copying ${file}...")
+                val dataInputStream = assets.open(file)
+                val dataOutputStream = FileOutputStream(
+                    File(
+                        String.format(
+                            "%s/%s",
+                            chewingDataDir.absolutePath,
+                            file
+                        )
+                    )
+                )
+
+                try {
+                    dataInputStream.copyTo(dataOutputStream)
+                } catch (e: java.lang.Exception) {
+                    e.message?.let {
+                        Log.e(LOGTAG, it)
+                    }
+                } finally {
+                    Log.v(LOGTAG, "Closing data I/O streams")
+                    dataInputStream.close()
+                    dataOutputStream.close()
+                }
+            }
+        }
     }
 }
