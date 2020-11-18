@@ -32,12 +32,16 @@ class ChewingEngine constructor(dataPath: String) {
     private external fun chewingNew(dataPath: String): Long
     external fun delete(chewingCtx: Long = context)
     external fun free(resourcePtr: Long)
+    external fun setChiEngMode(mode: Int, chewingCtx: Long = context)
     external fun getChiEngMode(chewingCtx: Long = context): Int
     external fun setSelKey(selKeys: List<Int>, length: Int, chewingCtx: Long = context)
     external fun getSelKey(chewingCtx: Long = context): Long
     external fun setMaxChiSymbolLen(length: Int, chewingCtx: Long = context)
+    external fun getMaxChiSymbolLen(chewingCtx: Long = context): Int
     external fun setCandPerPage(candidates: Int, chewingCtx: Long = context)
+    external fun getCandPerPage(chewingCtx: Long = context): Int
     external fun setPhraseChoiceRearward(boolean: Boolean, chewingCtx: Long = context)
+    external fun getPhraseChoiceRearward(chewingCtx: Long = context): Boolean
     external fun setKBType(type: Int, chewingCtx: Long = context): Int
     external fun getKBType(chewingCtx: Long = context): Int
     external fun getKBString(chewingCtx: Long = context): String

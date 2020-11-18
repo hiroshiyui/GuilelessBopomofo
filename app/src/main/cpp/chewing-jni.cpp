@@ -37,6 +37,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_chewingNew(
 
     /* create chewing context */
     ctx = chewing_new2(native_data_path, native_user_data_path, nullptr, 0);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "New Chewing context: %lld",
+                        ctx);
     return (jlong) (intptr_t) ctx;
 }
 
@@ -50,6 +52,16 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_delete(
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Delete chewing context: %lld",
                         (long long) ctx);
     chewing_delete(ctx);
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setChiEngMode(
+        JNIEnv *env,
+        jobject,
+        jint mode,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    chewing_set_ChiEngMode(ctx, mode);
 }
 
 /* chewing_get_ChiEngMode() */
@@ -117,6 +129,17 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setMaxChiSymbolLen(
     chewing_set_maxChiSymbolLen(ctx, len);
 }
 
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_getMaxChiSymbolLen(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jint max_chi_symbol_len;
+    max_chi_symbol_len = chewing_get_maxChiSymbolLen(ctx);
+    return max_chi_symbol_len;
+}
+
 /* chewing_set_candPerPage() */
 extern "C" JNIEXPORT void JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setCandPerPage(
@@ -131,6 +154,17 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setCandPerPage(
     chewing_set_candPerPage(ctx, candidates);
 }
 
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_getCandPerPage(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jint cand_per_page;
+    cand_per_page = chewing_get_candPerPage(ctx);
+    return cand_per_page;
+}
+
 /* chewing_set_phraseChoiceRearward() */
 extern "C" JNIEXPORT void JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setPhraseChoiceRearward(
@@ -143,6 +177,17 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setPhraseChoiceRear
                         "Set phrase choice rearward to (%d) from context ptr: %lld", (jint) boolean,
                         (long long) ctx);
     chewing_set_phraseChoiceRearward(ctx, boolean);
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_getPhraseChoiceRearward(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jboolean phrase_choice_rearward;
+    phrase_choice_rearward = chewing_get_phraseChoiceRearward(ctx);
+    return phrase_choice_rearward;
 }
 
 /* chewing_handle_Default() */
@@ -381,3 +426,4 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_bopomofoStringStati
     jstring ret_jstring = env->NewStringUTF(bopomofo_string_static);
     return ret_jstring;
 }
+
