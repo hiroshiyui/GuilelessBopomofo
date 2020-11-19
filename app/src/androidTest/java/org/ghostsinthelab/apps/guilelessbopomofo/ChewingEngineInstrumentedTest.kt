@@ -182,6 +182,28 @@ class ChewingEngineInstrumentedTest {
         assertEquals(chewingEngine.commitString(), "冷凍")
     }
 
+    @Test
+    fun switchToEten26Layout() {
+        val newKeyboardType = chewingEngine.convKBStr2Num("KB_ET26")
+        chewingEngine.setKBType(newKeyboardType)
+        val currentKeyboardType = chewingEngine.getKBType()
+        val currentKeyboardTypeString = chewingEngine.getKBString()
+        assertEquals(currentKeyboardType, 5)
+        assertEquals(currentKeyboardTypeString, "KB_ET26")
+
+        chewingEngine.handleDefault('l')
+        chewingEngine.handleDefault('l')
+        assertEquals(chewingEngine.bopomofoStringStatic(), "ㄌㄥ")
+        chewingEngine.handleDefault('j')
+        assertEquals(chewingEngine.bufferString(), "冷")
+        chewingEngine.handleDefault('d')
+        chewingEngine.handleDefault('x')
+        chewingEngine.handleDefault('l')
+        chewingEngine.handleDefault('k')
+        chewingEngine.commitPreeditBuf()
+        assertEquals(chewingEngine.commitString(), "冷凍")
+    }
+
     @After
     fun deleteChewingEngine() {
         chewingEngine.delete()
