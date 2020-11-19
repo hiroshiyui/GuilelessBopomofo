@@ -44,6 +44,12 @@ android {
     }
     ndkVersion '21.3.6528147'
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     task copyChewingDataFiles(type: Copy) {
         from("$rootDir/app/libs/libchewing/data") {
             include("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
@@ -64,5 +70,5 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
+    androidTestImplementation 'androidx.test:core:1.3.0'
 }
