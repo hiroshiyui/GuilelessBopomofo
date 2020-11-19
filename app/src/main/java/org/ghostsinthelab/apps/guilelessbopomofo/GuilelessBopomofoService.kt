@@ -29,9 +29,11 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.Exception
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "Service"
@@ -43,14 +45,21 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     override fun onCreate() {
         super.onCreate()
-        val dataPath = packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
-        setupChewingData(dataPath)
-        chewingEngine = ChewingEngine(dataPath)
-        chewingEngine.context.let {
-            Log.v(LOGTAG, "Chewing context ptr: ${it.toString()}")
+        try {
+            val dataPath = packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
+            setupChewingData(dataPath)
+            chewingEngine = ChewingEngine(dataPath)
+            chewingEngine.context.let {
+                Log.v(LOGTAG, "Chewing context ptr: ${it.toString()}")
+            }
+            val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
+            chewingEngine.setKBType(newKeyboardType)
+        } catch (e: Exception) {
+            Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG).show()
+            e.message?.let {
+                Log.e(LOGTAG, it)
+            }
         }
-        val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
-        chewingEngine.setKBType(newKeyboardType)
     }
 
     override fun onCreateCandidatesView(): View {

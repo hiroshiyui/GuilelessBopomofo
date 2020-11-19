@@ -37,6 +37,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_chewingNew(
 
     /* create chewing context */
     ctx = chewing_new2(native_data_path, native_user_data_path, nullptr, 0);
+    /* check if we do chewing_new2() successfully */
+    if (chewing_Reset(ctx) == -1) {
+        jclass Exception = env->FindClass("java/lang/Exception");
+        env->ThrowNew(Exception, "Unable to initialize Chewing engine.");
+    }
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "New Chewing context: %lld",
                         ctx);
     return (jlong) (intptr_t) ctx;
