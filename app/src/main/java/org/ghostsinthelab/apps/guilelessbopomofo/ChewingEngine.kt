@@ -55,6 +55,7 @@ class ChewingEngine constructor(dataPath: String) {
     external fun commitPreeditBuf(chewingCtx: Long = context): Int
     external fun candOpen(chewingCtx: Long = context): Int
     external fun candTotalChoice(chewingCtx: Long = context): Int
+    external fun candStringByIndexStatic(index: Int, chewingCtx: Long = context): String
     external fun candChooseByIndex(index: Int, chewingCtx: Long = context): Int
     external fun candListHasNext(chewingCtx: Long = context): Boolean
     external fun candListNext(chewingCtx: Long = context): Boolean

@@ -427,3 +427,14 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_bopomofoStringStati
     return ret_jstring;
 }
 
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candStringByIndexStatic(
+        JNIEnv *env,
+        jobject,
+        jint index,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    const char *cand_string_by_index_static = chewing_cand_string_by_index_static(ctx, index);
+    jstring ret_jstring = env->NewStringUTF(cand_string_by_index_static);
+    return ret_jstring;
+}
