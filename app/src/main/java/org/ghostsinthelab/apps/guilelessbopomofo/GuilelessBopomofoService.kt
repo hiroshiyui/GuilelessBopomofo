@@ -102,8 +102,11 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         Log.v(LOGTAG, "onClick")
         when (v?.id) {
             R.id.imageKeyboardButton -> {
-                chewingEngine.commitPreeditBuf()
-                ic.commitText(chewingEngine.commitString(), 1)
+                val committed: Int = chewingEngine.commitPreeditBuf()
+                val commitText: String = chewingEngine.commitStringStatic()
+                if (committed == 0) { // not committed yet
+                    ic.commitText(commitText, 1)
+                }
             }
             R.id.button1 -> {
                 chewingEngine.handleDefault('l')

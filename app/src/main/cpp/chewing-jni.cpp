@@ -271,6 +271,17 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_commitString(
     return ret_jstring;
 }
 
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_commitStringStatic(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    const char *commit_string_static = chewing_commit_String_static(ctx);
+    jstring ret_jstring = env->NewStringUTF(commit_string_static);
+    return ret_jstring;
+}
+
 /* chewing_commit_preedit_buf() */
 extern "C" JNIEXPORT jint JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_commitPreeditBuf(
@@ -443,3 +454,24 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candStringByIndexSt
     jstring ret_jstring = env->NewStringUTF(cand_string_by_index_static);
     return ret_jstring;
 }
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_cleanPreeditBuf(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jint result = chewing_clean_preedit_buf(ctx);
+    return result;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_cleanBopomofoBuf(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jint result = chewing_clean_bopomofo_buf(ctx);
+    return result;
+}
+
