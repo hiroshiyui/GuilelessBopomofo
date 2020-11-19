@@ -33,7 +33,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.Exception
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "Service"
@@ -130,10 +129,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     }
 
     private fun syncPreEditString() {
-        val preEditTextView: TextView = this.window.findViewById(R.id.preEditTextView)
-        val preEditBuffer: String = chewingEngine.bufferString()
-        val bopomofoBuffer: String = chewingEngine.bopomofoStringStatic()
-        preEditTextView.text = "${preEditBuffer}${bopomofoBuffer}"
+        val preEditBufferTextView: TextView = this.window.findViewById(R.id.preEditBufferTextView)
+        val bopomofoBufferTextView: TextView = this.window.findViewById(R.id.bopomofoBufferTextView)
+        preEditBufferTextView.text = chewingEngine.bufferString()
+        bopomofoBufferTextView.text = chewingEngine.bopomofoStringStatic()
     }
 
     private fun setupChewingData(dataPath: String) {
