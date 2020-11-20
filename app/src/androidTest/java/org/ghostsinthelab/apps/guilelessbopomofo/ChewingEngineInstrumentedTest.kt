@@ -124,6 +124,41 @@ class ChewingEngineInstrumentedTest {
     }
 
     @Test
+    fun testSetPhraseChoiceRearward() { // 後方選詞
+        chewingEngine.setChiEngMode(CHINESE_MODE)
+        chewingEngine.setMaxChiSymbolLen(10)
+        chewingEngine.setCandPerPage(9)
+        chewingEngine.setPhraseChoiceRearward(true)
+        val keys = arrayOf('x', 'm', '4', 't', '8', '6')
+        for (key in keys) {
+            chewingEngine.handleDefault(key)
+        }
+        chewingEngine.candOpen()
+        chewingEngine.candTotalChoice()
+        chewingEngine.candChooseByIndex(0)
+        chewingEngine.commitPreeditBuf()
+        var commitString: String = chewingEngine.commitString()
+        assertEquals(commitString, "綠茶")
+    }
+
+    @Test
+    fun validCommitPreeditBuf() { // 測試 commitPreeditBuf() 回傳值
+        chewingEngine.setChiEngMode(CHINESE_MODE)
+        chewingEngine.setMaxChiSymbolLen(10)
+        chewingEngine.setCandPerPage(9)
+        chewingEngine.setPhraseChoiceRearward(true)
+        val keys = arrayOf('x', 'm', '4', 't', '8', '6')
+        for (key in keys) {
+            chewingEngine.handleDefault(key)
+        }
+        chewingEngine.candOpen()
+        chewingEngine.candTotalChoice()
+        chewingEngine.candChooseByIndex(0)
+        assertEquals(chewingEngine.commitPreeditBuf(), 0)
+        assertEquals(chewingEngine.commitPreeditBuf(), -1)
+    }
+
+    @Test
     fun validMiddlePhraseCandidate() {
         chewingEngine.setChiEngMode(CHINESE_MODE)
         chewingEngine.setMaxChiSymbolLen(10)
