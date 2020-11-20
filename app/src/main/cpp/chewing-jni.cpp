@@ -208,6 +208,17 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleDefault(
     chewing_handle_Default(ctx, (int) key);
 }
 
+extern "C" JNIEXPORT void JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleBackspace(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle backspace input from context ptr: %lld",
+                        (long long) ctx);
+    chewing_handle_Backspace(ctx);
+}
+
 /* chewing_handle_Enter() */
 extern "C" JNIEXPORT void JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleEnter(

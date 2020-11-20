@@ -24,6 +24,7 @@ import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.util.Log
 import android.view.HapticFeedbackConstants
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -101,11 +102,18 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         v?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         Log.v(LOGTAG, "onClick")
         when (v?.id) {
-            R.id.imageKeyboardButton -> {
+            R.id.imageEnterButton -> {
                 val committed: Int = chewingEngine.commitPreeditBuf()
                 val commitText: String = chewingEngine.commitStringStatic()
                 if (committed == 0) { // not committed yet
                     ic.commitText(commitText, 1)
+                }
+            }
+            R.id.imageBackspaceButton -> {
+                if (chewingEngine.bufferString().isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()) {
+                    chewingEngine.handleBackspace()
+                } else {
+                    sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
                 }
             }
             R.id.button1 -> {
