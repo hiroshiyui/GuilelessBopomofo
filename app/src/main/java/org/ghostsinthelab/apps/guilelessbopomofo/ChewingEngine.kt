@@ -64,5 +64,6 @@ class ChewingEngine constructor(dataPath: String) {
     external fun candListHasNext(chewingCtx: Long = context): Boolean
     external fun candListNext(chewingCtx: Long = context): Boolean
     external fun bufferString(chewingCtx: Long = context): String
+    external fun bufferStringStatic(chewingCtx: Long = context): String
     external fun bopomofoStringStatic(chewingCtx: Long = context): String
 }

@@ -104,13 +104,12 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         when (v?.id) {
             R.id.imageEnterButton -> {
                 val committed: Int = chewingEngine.commitPreeditBuf()
-                val commitText: String = chewingEngine.commitStringStatic()
                 if (committed == 0) { // not committed yet
-                    ic.commitText(commitText, 1)
+                    ic.commitText(chewingEngine.commitStringStatic(), 1)
                 }
             }
             R.id.imageBackspaceButton -> {
-                if (chewingEngine.bufferString().isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()) {
+                if (chewingEngine.bufferStringStatic().isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()) {
                     chewingEngine.handleBackspace()
                 } else {
                     sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
@@ -142,7 +141,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     private fun syncPreEditString() {
         val preEditBufferTextView: TextView = this.window.findViewById(R.id.preEditBufferTextView)
         val bopomofoBufferTextView: TextView = this.window.findViewById(R.id.bopomofoBufferTextView)
-        preEditBufferTextView.text = chewingEngine.bufferString()
+        preEditBufferTextView.text = chewingEngine.bufferStringStatic()
         bopomofoBufferTextView.text = chewingEngine.bopomofoStringStatic()
     }
 
@@ -155,11 +154,11 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
 
         for (file in chewingDataFiles) {
-            val targetFile = File(String.format("%s/%s", chewingDataDir.absolutePath, file))
-            if (!targetFile.exists()) {
+            val destinationFile = File(String.format("%s/%s", chewingDataDir.absolutePath, file))
+            if (!destinationFile.exists()) {
                 Log.v(LOGTAG, "Copying ${file}...")
                 val dataInputStream = assets.open(file)
-                val dataOutputStream = FileOutputStream(targetFile)
+                val dataOutputStream = FileOutputStream(destinationFile)
 
                 try {
                     dataInputStream.copyTo(dataOutputStream)

@@ -214,7 +214,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleBackspace(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle backspace input from context ptr: %lld",
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "Handle backspace input from context ptr: %lld",
                         (long long) ctx);
     chewing_handle_Backspace(ctx);
 }
@@ -440,6 +441,17 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_bufferString(
                         native_buffer_string,
                         (long long) ctx);
     chewing_free(native_buffer_string);
+    return ret_jstring;
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_bufferStringStatic(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    const char *native_buffer_string_static = chewing_buffer_String_static(ctx);
+    jstring ret_jstring = env->NewStringUTF(native_buffer_string_static);
     return ret_jstring;
 }
 
