@@ -223,13 +223,12 @@ class ChewingEngineInstrumentedTest {
         assertEquals(chewingEngine.candStringByIndexStatic(0), "零用金")
         assertEquals(chewingEngine.candListHasNext(), true)
         assertEquals(chewingEngine.candListNext(), 0)
-
         assertEquals(chewingEngine.candStringByIndexStatic(0), "零用")
         assertEquals(chewingEngine.candListHasNext(), true)
         assertEquals(chewingEngine.candListNext(), 0)
-
         assertEquals(chewingEngine.candStringByIndexStatic(0), "零")
         assertEquals(chewingEngine.candListNext(), -1)
+        assertEquals(chewingEngine.candListHasNext(), false)
 
         chewingEngine.candListLast()
         assertEquals(chewingEngine.candStringByIndexStatic(0), "零")

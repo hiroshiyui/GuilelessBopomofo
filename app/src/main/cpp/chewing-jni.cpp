@@ -365,18 +365,44 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candChooseByIndex(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candListHasPrev(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jboolean has_prev_bool = chewing_cand_list_has_prev(ctx);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "Checks whether or not (%d) there is a previous (longer) candidate list from context ptr: %lld",
+                        (jint) has_prev_bool,
+                        (long long) ctx);
+    return has_prev_bool;
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candListHasNext(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jboolean has_next_bool;
-    has_next_bool = chewing_cand_hasNext(ctx);
+    jboolean has_next_bool = chewing_cand_list_has_next(ctx);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Checks whether or not (%d) there is a next (shorter) candidate list from context ptr: %lld",
                         (jint) has_next_bool,
                         (long long) ctx);
     return has_next_bool;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candListPrev(
+        JNIEnv *env, jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jint result = chewing_cand_list_prev(ctx);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "changes current candidate list to previous candidate list (result: %d) from context ptr: %lld",
+                        (jint) result,
+                        (long long) ctx);
+    return result;
 }
 
 extern "C" JNIEXPORT jint JNICALL

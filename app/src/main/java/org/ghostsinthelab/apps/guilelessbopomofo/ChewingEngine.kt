@@ -62,7 +62,9 @@ class ChewingEngine constructor(dataPath: String) {
     external fun candTotalChoice(chewingCtx: Long = context): Int
     external fun candStringByIndexStatic(index: Int, chewingCtx: Long = context): String
     external fun candChooseByIndex(index: Int, chewingCtx: Long = context): Int
+    external fun candListHasPrev(chewingCtx: Long = context): Boolean
     external fun candListHasNext(chewingCtx: Long = context): Boolean
+    external fun candListPrev(chewingCtx: Long = context): Int
     external fun candListNext(chewingCtx: Long = context): Int
     external fun candListFirst(chewingCtx: Long = context): Int
     external fun candListLast(chewingCtx: Long = context): Int
