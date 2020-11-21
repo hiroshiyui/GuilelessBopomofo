@@ -59,6 +59,7 @@ class ChewingEngine constructor(dataPath: String) {
     external fun cleanPreeditBuf(chewingCtx: Long = context): Int
     external fun cleanBopomofoBuf(chewingCtx: Long = context): Int
     external fun candOpen(chewingCtx: Long = context): Int
+    external fun candClose(chewingCtx: Long = context): Int
     external fun candTotalChoice(chewingCtx: Long = context): Int
     external fun candStringByIndexStatic(index: Int, chewingCtx: Long = context): String
     external fun candChooseByIndex(index: Int, chewingCtx: Long = context): Int

@@ -327,9 +327,19 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candOpen(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Open candidates from context ptr: %lld", (long long) ctx);
-    jint ret_jint;
-    ret_jint = chewing_cand_open(ctx);
+                        "Open candidates 'window' from context ptr: %lld", (long long) ctx);
+    jint ret_jint = chewing_cand_open(ctx);
+    return ret_jint;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candClose(
+        JNIEnv *env, jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "Close candidates 'window' from context ptr: %lld", (long long) ctx);
+    jint ret_jint = chewing_cand_close(ctx);
     return ret_jint;
 }
 

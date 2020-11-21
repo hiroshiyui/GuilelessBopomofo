@@ -194,6 +194,7 @@ class ChewingEngineInstrumentedTest {
         chewingEngine.commitPreeditBuf()
         val commitString: String = chewingEngine.commitString()
         assertEquals(commitString, "密蜂膠代")
+        assertEquals(chewingEngine.candClose(), 0)
     }
 
     @Test
@@ -235,6 +236,7 @@ class ChewingEngineInstrumentedTest {
 
         chewingEngine.candListFirst()
         assertEquals(chewingEngine.candStringByIndexStatic(0), "零用金")
+        assertEquals(chewingEngine.candClose(), 0)
     }
 
     @Test
