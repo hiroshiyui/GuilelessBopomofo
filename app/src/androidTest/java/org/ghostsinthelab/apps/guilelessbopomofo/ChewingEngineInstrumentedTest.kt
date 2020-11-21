@@ -197,6 +197,48 @@ class ChewingEngineInstrumentedTest {
     }
 
     @Test
+    fun validCandListNext() {
+        chewingEngine.setChiEngMode(CHINESE_MODE)
+        chewingEngine.setMaxChiSymbolLen(10)
+        chewingEngine.setCandPerPage(10)
+        chewingEngine.setPhraseChoiceRearward(false)
+        // 零用金 零用 零
+        chewingEngine.handleDefault('x')
+        chewingEngine.handleDefault('u')
+        chewingEngine.handleDefault('/')
+        chewingEngine.handleDefault('6')
+
+        chewingEngine.handleDefault('m')
+        chewingEngine.handleDefault('/')
+        chewingEngine.handleDefault('4')
+
+        chewingEngine.handleDefault('r')
+        chewingEngine.handleDefault('u')
+        chewingEngine.handleDefault('p')
+        chewingEngine.handleSpace()
+
+        chewingEngine.handleHome()
+        chewingEngine.candOpen()
+
+        assertEquals(chewingEngine.candStringByIndexStatic(0), "零用金")
+        assertEquals(chewingEngine.candListHasNext(), true)
+        assertEquals(chewingEngine.candListNext(), 0)
+
+        assertEquals(chewingEngine.candStringByIndexStatic(0), "零用")
+        assertEquals(chewingEngine.candListHasNext(), true)
+        assertEquals(chewingEngine.candListNext(), 0)
+
+        assertEquals(chewingEngine.candStringByIndexStatic(0), "零")
+        assertEquals(chewingEngine.candListNext(), -1)
+
+        chewingEngine.candListLast()
+        assertEquals(chewingEngine.candStringByIndexStatic(0), "零")
+
+        chewingEngine.candListFirst()
+        assertEquals(chewingEngine.candStringByIndexStatic(0), "零用金")
+    }
+
+    @Test
     fun switchToHsuLayout() {
         val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
         chewingEngine.setKBType(newKeyboardType)

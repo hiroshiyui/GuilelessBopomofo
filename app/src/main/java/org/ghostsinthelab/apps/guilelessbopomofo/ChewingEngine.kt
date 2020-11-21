@@ -52,6 +52,7 @@ class ChewingEngine constructor(dataPath: String) {
     external fun handleLeft(chewingCtx: Long = context)
     external fun handleRight(chewingCtx: Long = context)
     external fun handleBackspace(chewingCtx: Long = context)
+    external fun handleHome(chewingCtx: Long = context)
     external fun commitString(chewingCtx: Long = context): String
     external fun commitStringStatic(chewingCtx: Long = context): String
     external fun commitPreeditBuf(chewingCtx: Long = context): Int
@@ -62,7 +63,9 @@ class ChewingEngine constructor(dataPath: String) {
     external fun candStringByIndexStatic(index: Int, chewingCtx: Long = context): String
     external fun candChooseByIndex(index: Int, chewingCtx: Long = context): Int
     external fun candListHasNext(chewingCtx: Long = context): Boolean
-    external fun candListNext(chewingCtx: Long = context): Boolean
+    external fun candListNext(chewingCtx: Long = context): Int
+    external fun candListFirst(chewingCtx: Long = context): Int
+    external fun candListLast(chewingCtx: Long = context): Int
     external fun bufferString(chewingCtx: Long = context): String
     external fun bufferStringStatic(chewingCtx: Long = context): String
     external fun bopomofoStringStatic(chewingCtx: Long = context): String

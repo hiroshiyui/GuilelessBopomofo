@@ -239,9 +239,20 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleSpace(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle space input from context ptr: %lld",
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "Handle space key input from context ptr: %lld",
                         (long long) ctx);
     chewing_handle_Space(ctx);
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleHome(
+        JNIEnv *env, jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle home key input from context ptr: %lld",
+                        (long long) ctx);
+    chewing_handle_Home(ctx);
 }
 
 /* chewing_handle_Left() */
@@ -368,18 +379,44 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candListHasNext(
     return has_next_bool;
 }
 
-extern "C" JNIEXPORT jboolean JNICALL
+extern "C" JNIEXPORT jint JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candListNext(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jboolean success_next_bool;
-    success_next_bool = chewing_cand_list_next(ctx);
+    jint result = chewing_cand_list_next(ctx);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "changes current candidate list to next candidate list (result: %d) from context ptr: %lld",
-                        (jint) success_next_bool,
+                        (jint) result,
                         (long long) ctx);
-    return success_next_bool;
+    return result;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candListFirst(
+        JNIEnv *env,
+        jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jint result = chewing_cand_list_first(ctx);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "changes current candidate list to first candidate list (result: %d) from context ptr: %lld",
+                        (jint) result,
+                        (long long) ctx);
+    return result;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candListLast(
+        JNIEnv *env, jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jint result = chewing_cand_list_last(ctx);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
+                        "changes current candidate list to last candidate list (result: %d) from context ptr: %lld",
+                        (jint) result,
+                        (long long) ctx);
+    return result;
 }
 
 extern "C" JNIEXPORT jint JNICALL
