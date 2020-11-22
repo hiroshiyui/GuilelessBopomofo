@@ -71,12 +71,12 @@
                 android:layout_height="wrap_content"
                 android:text="Button4" />
 
-            <ImageButton
+            <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
                 android:id="@+id/imageBackspaceButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClick"
-                android:src="@drawable/ic_baseline_keyboard_backspace_24" />
+                app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24" />
 
         </LinearLayout>
 
@@ -86,14 +86,14 @@
             android:orientation="horizontal"
             android:theme="@style/KeyboardTheme">
 
-            <ImageButton
+            <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
                 android:id="@+id/imageImeSwitchButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="center"
                 android:src="@drawable/ic_baseline_language_24" />
 
-            <ImageButton
+            <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
                 android:id="@+id/imageEnterButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

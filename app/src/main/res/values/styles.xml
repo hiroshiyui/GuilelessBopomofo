@@ -9,5 +9,7 @@
     <style name="KeyboardTheme">
         <item name="android:background">@color/colorKeyboardBackground</item>
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+        <item name="android:imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
+        <item name="imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
     </style>
 </resources>
