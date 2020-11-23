@@ -101,6 +101,20 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         val ic = currentInputConnection
         v?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         Log.v(LOGTAG, "onClick")
+        if (v is KeyImageButton) {
+            Log.v(LOGTAG, "OK!")
+            v.keyCodeString?.let {
+                Log.v(LOGTAG, it)
+                Log.v(LOGTAG, "KEYCODE: ${v.keyCode(it)}")
+            }
+        }
+        if (v is KeyButton) {
+            Log.v(LOGTAG, "OK!")
+            v.keyCodeString?.let {
+                Log.v(LOGTAG, it)
+                Log.v(LOGTAG, "KEYCODE: ${v.keyCode(it)}")
+            }
+        }
         when (v?.id) {
             R.id.imageEnterButton -> {
                 val committed: Int = chewingEngine.commitPreeditBuf()

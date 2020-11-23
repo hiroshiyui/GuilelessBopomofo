@@ -19,22 +19,16 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import android.content.Context
-import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatImageButton
+import android.view.KeyEvent
 
-class KeyImageButton(context: Context, attrs: AttributeSet): AppCompatImageButton(context, attrs), KeyEventBehaviour {
-    override var keyCodeString: String? = null
-    override var keyType: Int? = null
+interface KeyEventBehaviour {
+    var keyCodeString: String?
+    var keyType: Int?
 
-    init {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0 ,0).apply {
-            try {
-                keyCodeString = this.getString(R.styleable.KeyImageButton_keyCodeString)
-                keyType = this.getInt(R.styleable.KeyImageButton_keyTypeEnum, 0)
-            } finally {
-                recycle()
-            }
+    fun keyCode(keyCodeString: String?): Int? {
+        keyCodeString?.let {
+            return KeyEvent.keyCodeFromString(it)
         }
+        return null
     }
 }

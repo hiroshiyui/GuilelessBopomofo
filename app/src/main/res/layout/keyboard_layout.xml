@@ -45,12 +45,14 @@
             android:orientation="horizontal"
             android:theme="@style/KeyboardTheme">
 
-            <Button
+            <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
                 android:id="@+id/button1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClick"
-                android:text="Button1" />
+                android:text="Button1"
+                app:keyCodeString="KEYCODE_L"
+                app:keyTypeEnum="KEYTYPE_SYMBOL" />
 
             <Button
                 android:id="@+id/button2"
@@ -76,6 +78,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClick"
+                app:keyCodeString="KEYCODE_DEL"
+                app:keyTypeEnum="KEYTYPE_CONTROL"
                 app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24" />
 
         </LinearLayout>
