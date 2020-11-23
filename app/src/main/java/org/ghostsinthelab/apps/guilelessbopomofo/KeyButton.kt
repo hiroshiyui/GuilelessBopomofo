@@ -23,7 +23,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
 
-class KeyButton(context: Context, attrs: AttributeSet): AppCompatButton(context, attrs), KeyEventBehaviour {
+class KeyButton(context: Context, attrs: AttributeSet): AppCompatButton(context, attrs), BehaveLikeKey<KeyButton> {
     override var keyCodeString: String? = null
     override var keyType: Int? = null
 

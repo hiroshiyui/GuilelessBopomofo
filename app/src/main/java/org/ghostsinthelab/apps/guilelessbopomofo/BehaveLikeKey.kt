@@ -20,8 +20,9 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.view.KeyEvent
+import android.view.View
 
-interface KeyEventBehaviour {
+interface BehaveLikeKey<T: View> {
     var keyCodeString: String?
     var keyType: Int?
 

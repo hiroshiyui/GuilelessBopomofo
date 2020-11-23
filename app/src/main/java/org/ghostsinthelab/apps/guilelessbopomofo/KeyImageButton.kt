@@ -23,7 +23,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageButton
 
-class KeyImageButton(context: Context, attrs: AttributeSet): AppCompatImageButton(context, attrs), KeyEventBehaviour {
+class KeyImageButton(context: Context, attrs: AttributeSet): AppCompatImageButton(context, attrs), BehaveLikeKey<KeyImageButton> {
     override var keyCodeString: String? = null
     override var keyType: Int? = null
 
