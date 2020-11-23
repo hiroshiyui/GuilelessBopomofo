@@ -32,4 +32,32 @@ interface BehaveLikeKey<T: View> {
         }
         return null
     }
+
+    fun isCharacterKey(): Boolean {
+        if (keyType == 0) {
+            return true
+        }
+        return false
+    }
+
+    fun isControlKey(): Boolean {
+        if (keyType == 1) {
+            return true
+        }
+        return false
+    }
+
+    fun isModifierKey(): Boolean {
+        if (keyType == 2) {
+            return true
+        }
+        return false
+    }
+
+    fun isFuntionKey(): Boolean {
+        if (keyType == 3) {
+            return true
+        }
+        return false
+    }
 }

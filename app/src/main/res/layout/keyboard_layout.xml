@@ -52,22 +52,24 @@
                 android:onClick="onClick"
                 android:text="Button1"
                 app:keyCodeString="KEYCODE_L"
-                app:keyTypeEnum="KEYTYPE_SYMBOL" />
+                app:keyTypeEnum="KEYTYPE_CHARACTER" />
 
-            <Button
+            <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClick"
-                android:text="Button2" />
+                android:text="Button2"
+                app:keyCodeString="KEYCODE_F"
+                app:keyTypeEnum="KEYTYPE_CHARACTER" />
 
-            <Button
+            <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
                 android:id="@+id/button3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Button3" />
 
-            <Button
+            <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
                 android:id="@+id/button4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

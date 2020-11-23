@@ -31,7 +31,7 @@ class KeyImageButton(context: Context, attrs: AttributeSet): AppCompatImageButto
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0 ,0).apply {
             try {
                 keyCodeString = this.getString(R.styleable.KeyImageButton_keyCodeString)
-                keyType = this.getInt(R.styleable.KeyImageButton_keyTypeEnum, 0)
+                keyType = this.getInt(R.styleable.KeyImageButton_keyTypeEnum, -1)
             } finally {
                 recycle()
             }

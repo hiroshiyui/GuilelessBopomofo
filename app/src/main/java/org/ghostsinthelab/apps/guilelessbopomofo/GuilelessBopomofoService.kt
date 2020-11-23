@@ -107,6 +107,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                 Log.v(LOGTAG, "KEYCODE: ${v.keyCode(it)}")
             }
         }
+
+        if (v is BehaveLikeKey<*> && v.isCharacterKey()) {
+            Log.d(LOGTAG, "Yes, I am a character key!")
+        }
         when (v?.id) {
             R.id.imageEnterButton -> {
                 val committed: Int = chewingEngine.commitPreeditBuf()
