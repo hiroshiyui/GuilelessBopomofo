@@ -22,9 +22,17 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.view.KeyEvent
 import android.view.View
 
-interface BehaveLikeKey<T: View> {
+interface BehaveLikeKey<T : View> {
     var keyCodeString: String?
     var keyType: Int?
+
+    // NOTICE: Should be in sync with attrs.xml
+    enum class KeyType(val value: Int) {
+        KEYTYPE_CHARACTER(0),
+        KEYTYPE_CONTROL(1),
+        KEYTYPE_MODIFIER(2),
+        KEYTYPE_FUNCTION(3)
+    }
 
     fun keyCode(keyCodeString: String?): Int? {
         keyCodeString?.let {
@@ -34,30 +42,18 @@ interface BehaveLikeKey<T: View> {
     }
 
     fun isCharacterKey(): Boolean {
-        if (keyType == 0) {
-            return true
-        }
-        return false
+        return (keyType == KeyType.KEYTYPE_CHARACTER.value)
     }
 
     fun isControlKey(): Boolean {
-        if (keyType == 1) {
-            return true
-        }
-        return false
+        return (keyType == KeyType.KEYTYPE_CONTROL.value)
     }
 
     fun isModifierKey(): Boolean {
-        if (keyType == 2) {
-            return true
-        }
-        return false
+        return (keyType == KeyType.KEYTYPE_MODIFIER.value)
     }
 
     fun isFuntionKey(): Boolean {
-        if (keyType == 3) {
-            return true
-        }
-        return false
+        return (keyType == KeyType.KEYTYPE_FUNCTION.value)
     }
 }
