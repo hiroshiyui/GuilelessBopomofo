@@ -62,9 +62,9 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         }
     }
 
-    override fun onCreateCandidatesView(): View {
-        val myCandidatesView: View = layoutInflater.inflate(R.layout.candidates_layout, null)
-        return myCandidatesView
+    override fun onCreateCandidatesView(): View? {
+        // I want to implement my own candidate selection UI
+        return null
     }
 
     override fun onCreateInputView(): View {
