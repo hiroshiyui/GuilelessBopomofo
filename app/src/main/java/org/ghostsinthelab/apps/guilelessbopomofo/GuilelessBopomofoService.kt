@@ -32,12 +32,14 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import java.io.File
 import java.io.FileOutputStream
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "Service"
     lateinit var chewingEngine: ChewingEngine
+    lateinit var viewBinding: KeyboardLayoutBinding
 
     init {
         System.loadLibrary("chewing")
@@ -69,7 +71,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     override fun onCreateInputView(): View {
         Log.v(LOGTAG, "onCreateInputView()")
-        val myKeyboardView: View = layoutInflater.inflate(R.layout.keyboard_layout, null)
+        viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
+        val myKeyboardView = viewBinding.root
 
         // set IME switch/picker
         val imeSwitchButton: ImageButton = myKeyboardView.findViewById(R.id.imageImeSwitchButton)
