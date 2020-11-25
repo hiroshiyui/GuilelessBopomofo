@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
+    android:theme="@style/Theme.AppCompat.Light"
     android:visibility="visible">
 
 
@@ -43,6 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:paddingTop="4dp"
             android:theme="@style/KeyboardTheme">
 
             <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
@@ -137,6 +139,14 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_language_24" />
 
+            <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
+                android:id="@+id/spaceKeyImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_baseline_space_bar_24" />
+
             <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
                 android:id="@+id/button1"
                 android:layout_width="wrap_content"
@@ -156,20 +166,6 @@
                 android:text="Button2"
                 app:keyCodeString="KEYCODE_F"
                 app:keyTypeEnum="KEYTYPE_CHARACTER" />
-
-            <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Button3" />
-
-            <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
-                android:id="@+id/button4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="Button4" />
 
             <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
                 android:id="@+id/imageEnterButton"

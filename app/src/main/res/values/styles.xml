@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="KeyboardTheme">
         <item name="android:background">@color/colorKeyboardBackground</item>
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
