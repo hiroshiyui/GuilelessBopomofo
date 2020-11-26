@@ -28,7 +28,6 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -48,7 +47,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     override fun onCreate() {
         super.onCreate()
         try {
-            val dataPath = packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
+            val dataPath =
+                packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
             setupChewingData(dataPath)
             chewingEngine = ChewingEngine(dataPath)
             chewingEngine.context.let {
@@ -57,7 +57,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
             chewingEngine.setKBType(newKeyboardType)
         } catch (e: Exception) {
-            Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
+                .show()
             e.message?.let {
                 Log.e(LOGTAG, it)
             }
@@ -75,7 +76,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         val myKeyboardView = viewBinding.root
 
         // set IME switch/picker
-        val imeSwitchButton: ImageButton = myKeyboardView.findViewById(R.id.imageImeSwitchButton)
+        val imeSwitchButton = viewBinding.keyImageButtonImeSwitch
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             imeSwitchButton.setOnClickListener(switchToNextIME())
         }
@@ -104,41 +105,55 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         val ic = currentInputConnection
         v?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         Log.v(LOGTAG, "onClick")
+
         if (v is BehaveLikeKey<*>) {
-            v.keyCodeString?.let {
-                Log.v(LOGTAG, it)
-                Log.v(LOGTAG, "KEYCODE: ${v.keyCode(it)}")
-            }
             if (v.isCharacterKey()) {
-                Log.d(LOGTAG, "Yes, I am a character key!")
+                handleCharacterKey(v)
             }
             if (v.isControlKey()) {
-                Log.d(LOGTAG, "Yes, I am a control key!")
+                handleControlKey(v)
             }
         }
 
-        when (v?.id) {
-            R.id.imageEnterButton -> {
-                val committed: Int = chewingEngine.commitPreeditBuf()
-                if (committed == 0) { // not committed yet
-                    ic.commitText(chewingEngine.commitStringStatic(), 1)
+        syncPreEditString()
+    }
+
+
+    private fun handleCharacterKey(v: BehaveLikeKey<*>) {
+        v.keySymbol?.let {
+            chewingEngine.handleDefault(it[0])
+        }
+    }
+
+    private fun handleControlKey(v: BehaveLikeKey<*>) {
+        val ic = currentInputConnection
+        v.isControlKey().let {
+            when (v.keyCodeString) {
+                "KEYCODE_SPACE" -> {
+                    chewingEngine.handleSpace()
                 }
-            }
-            R.id.imageBackspaceButton -> {
-                if (chewingEngine.bufferStringStatic().isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()) {
-                    chewingEngine.handleBackspace()
-                } else {
-                    sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
+                "KEYCODE_DEL" -> {
+                    if (chewingEngine.bufferStringStatic()
+                            .isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()
+                    ) {
+                        chewingEngine.handleBackspace()
+                    } else {
+                        sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
+                    }
                 }
-            }
-            R.id.button1 -> {
-                chewingEngine.handleDefault('l')
-            }
-            R.id.button2 -> {
-                chewingEngine.handleDefault('f')
+                "KEYCODE_ENTER" -> {
+                    val committed: Int = chewingEngine.commitPreeditBuf()
+                    if (committed == 0) { // not committed yet
+                        ic.commitText(chewingEngine.commitStringStatic(), 1)
+                    } else {
+                        sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+                    }
+                }
+                else -> {
+                    Log.v(LOGTAG, "This key has not been implemented its handler")
+                }
             }
         }
-        syncPreEditString()
     }
 
     @RequiresApi(Build.VERSION_CODES.P)

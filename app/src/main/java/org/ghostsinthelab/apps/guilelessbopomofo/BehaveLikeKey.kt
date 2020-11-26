@@ -25,6 +25,7 @@ import android.view.View
 interface BehaveLikeKey<T : View> {
     var keyCodeString: String?
     var keyType: Int?
+    var keySymbol: String?
 
     // NOTICE: Should be in sync with attrs.xml
     enum class KeyType(val value: Int) {

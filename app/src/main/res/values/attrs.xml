@@ -25,12 +25,15 @@
         <enum name="KEYTYPE_FUNCTION" value="3" />
     </attr>
     <attr name="keyCodeString" format="string" />
+    <attr name="keySymbolString" format="string" />
     <declare-styleable name="KeyImageButton">
         <attr name="keyTypeEnum" />
         <attr name="keyCodeString" />
+        <attr name="keySymbolString" />
     </declare-styleable>
     <declare-styleable name="KeyButton">
         <attr name="keyTypeEnum" />
         <attr name="keyCodeString" />
+        <attr name="keySymbolString" />
     </declare-styleable>
 </resources>

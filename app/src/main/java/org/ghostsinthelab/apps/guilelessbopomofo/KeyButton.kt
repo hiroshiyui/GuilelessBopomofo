@@ -26,6 +26,7 @@ import androidx.appcompat.widget.AppCompatButton
 class KeyButton(context: Context, attrs: AttributeSet): AppCompatButton(context, attrs), BehaveLikeKey<KeyButton> {
     override var keyCodeString: String? = null
     override var keyType: Int? = null
+    override var keySymbol: String? = null
 
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyButton, 0 ,0).apply {
