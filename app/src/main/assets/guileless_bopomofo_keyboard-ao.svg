@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24mm"
+   height="24mm"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg2686"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="guileless_bopomofo_keyboard-ao.svg">
+  <defs
+     id="defs2680" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-147.6205"
+     inkscape:cy="492.37952"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1049"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata2683">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-144.89126,-17.891251)">
+    <g
+       id="g4696"
+       transform="matrix(0.82109134,0,0,0.82109134,70.455172,-232.35157)">
+      <rect
+         style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
+         id="rect233-3-6-7-8"
+         width="29.229391"
+         height="29.229391"
+         x="90.65506"
+         y="304.76855" />
+      <path
+         d="m 112.28741,328.61052 -11.79039,3.46464 q -1.679296,0.49495 -2.616167,1.07829 -0.371211,0.2298 -0.636361,0.2298 -0.353538,0 -1.166669,-0.7601 -1.484847,-1.41414 -1.484847,-2.10354 0,-0.47727 1.148989,-1.46717 1.608588,-1.36111 6.770205,-7.51263 l -5.939395,-2.52777 q -1.308082,-0.54798 -1.308082,-1.50253 0,-0.65404 0.512624,-1.27273 0.176763,-0.2298 1.237377,-1.34343 2.227273,-2.38636 4.047976,-4.98485 2.08586,-2.98737 2.40404,-4.0303 0.14142,-0.49495 0.44192,-0.49495 0.58334,0 1.27273,0.9899 0.44192,0.61869 0.44192,1.32575 0,0.44192 -0.5303,0.84849 -0.65405,0.47727 -2.9697,3.39394 -3.535354,4.38384 -3.535354,4.96717 0,0.4596 0.81313,0.79546 l 4.808084,1.99747 q 0.95454,-1.18434 2.96969,-3.64141 2.70454,-3.28788 3.60606,-5.23233 0.21213,-0.45959 0.49495,-0.45959 0.56565,0 1.36111,0.9899 1.06061,1.32575 1.06061,2.40404 0,0.65404 -0.86617,1.0606 -1.09596,0.51263 -2.36868,1.66162 -1.09596,0.9899 -3.78283,3.90656 -7.159086,7.79546 -7.159086,9.08586 0,0.38889 0.38889,0.38889 0.318186,0 0.883836,-0.14142 l 10.76515,-2.52778 -1.69697,-2.91667 q -0.10605,-0.17676 -0.10605,-0.33585 0,-0.12373 0.14142,-0.12373 0.12372,0 0.30052,0.10606 l 0.54798,0.30051 q 1.46717,0.83081 3.30555,2.75757 1.89141,1.9798 1.89141,3.51768 0,0.81313 -0.44192,1.4495 -0.37121,0.5303 -0.90151,0.5303 -0.51262,0 -0.81313,-0.51263 -0.21214,-0.35353 -0.83081,-1.83838 -0.37121,-0.86616 -0.67172,-1.5202 z"
+         style="font-weight:bold;font-size:11.2889px;line-height:1.25;font-family:MOESongUN;-inkscape-font-specification:'MOESongUN Bold';letter-spacing:0px;word-spacing:0px;fill:#6a5753;fill-opacity:1;stroke-width:0.848483"
+         id="path614-7" />
+    </g>
+  </g>
+</svg>

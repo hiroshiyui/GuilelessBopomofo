@@ -1,0 +1,29 @@
+<!--
+  ~ Guileless Bopomofo
+  ~ Copyright (C) 2020 YOU, HUI-HONG
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="m19.8719,18.0442 l0.0962,-12.6336q0.016,-2.0682 -0.9619,-3.3348 -0.2405,-0.3206 -0.2405,-0.5611 0,-0.4489 0.6253,-0.4489 1.2666,0 2.7896,1.01 1.3147,0.8658 1.3147,1.475 0,0.2405 -0.2084,0.5611 -0.3527,0.5451 -0.4649,0.9139 -0.2084,0.7375 -0.2565,3.0141l-0.2565,11.3189q-0.032,2.1163 -0.2245,2.4369 -0.2405,0.4008 -0.7696,0.4008 -0.513,0 -1.1223,-0.6253l-1.2345,-1.2666q-4.4089,0.3527 -9.5714,1.0261 -3.431,0.4489 -4.5853,1.2505 -0.513,0.3527 -0.7535,0.3527 -0.6092,0 -1.6032,-0.8337 -1.0581,-0.8818 -1.0581,-1.4109 0,-0.1122 0.0641,-0.4168 0.0962,-0.513 0.0962,-0.8658 0,-0.2886 -0.016,-0.8016l-0.2726,-10.8059q-0.0641,-2.3247 -0.7054,-3.3508 -0.0481,-0.0962 -0.0481,-0.2245 0,-0.3046 0.481,-0.3046 0.8658,0 1.8437,0.5291 1.3948,0.7535 1.3948,1.6513 0,0.1443 -0.1603,0.3527 -0.3367,0.4329 -0.3046,1.9239l0.1924,10.4532q0.016,0.8016 0.1924,0.978 0.1603,0.1763 0.5932,0.1763 0.7215,0 1.4109,-0.0962z"
+      android:strokeWidth="0.937236"
+      android:fillColor="#6a5753"/>
+</vector>

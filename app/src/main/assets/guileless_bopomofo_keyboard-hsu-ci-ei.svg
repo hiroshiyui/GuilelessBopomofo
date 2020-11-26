@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24mm"
+   height="24mm"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg3180"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="guileless_bopomofo_keyboard-ci-ei.svg">
+  <defs
+     id="defs3174" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-94.645671"
+     inkscape:cy="179.64004"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1049"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3177">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-130.875,-100.63691)">
+    <g
+       id="g1960"
+       transform="matrix(0.82109133,0,0,0.82109122,-44.614929,98.242181)">
+      <rect
+         style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
+         id="rect233-7-8-4-5-5-4-7-5"
+         width="29.229391"
+         height="29.229391"
+         x="213.72766"
+         y="2.9165144" />
+      <g
+         id="g4171-3"
+         transform="matrix(0.47896995,0,0,0.47896995,197.32745,-87.686634)">
+        <rect
+           style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
+           id="rect233-6-9-9-6"
+           width="29.229391"
+           height="29.229391"
+           x="50.13866"
+           y="189.16249" />
+        <path
+           d="m 64.696226,197.6466 q 1.28979,-0.17958 3.06937,-0.34286 3.98368,-0.40816 5.73061,-1.06123 0.34284,-0.13062 0.48978,-0.13062 0.83266,0 2.23675,1.15919 0.84897,0.70204 0.84897,1.1102 0,0.40816 -0.58776,0.40816 -0.34284,0 -1.04487,-0.049 -0.86532,-0.0653 -1.66531,-0.0653 -4.08163,0 -9.33878,0.8 l -0.48979,3.31428 q -0.14691,0.94694 -0.14691,1.30612 0,0.71837 0.57142,0.71837 0.47349,0 3.31428,-0.29388 2.05714,-0.19593 2.79184,-0.29389 0.91429,-0.11427 1.38775,-0.11427 1.12653,0 2.07348,0.89796 0.79999,0.76735 0.79999,1.33878 0,0.50612 -1.51837,3.18367 -1.64898,2.88979 -3.44488,4.6204 -2.18776,2.10613 -5.09389,3.33061 l -0.58774,0.2449 q -0.11433,0.049 -0.24495,0.049 -0.21236,0 -0.21236,-0.17958 0,-0.21226 0.21236,-0.42449 l 0.4735,-0.47347 q 0.0652,-0.0653 0.91428,-0.84898 2.5306,-2.33469 4.63672,-5.38775 2.00818,-2.92245 2.00818,-4.09796 0,-0.52245 -0.80001,-0.52245 -1.97551,0 -4.57142,0.40816 -2.7592,0.42449 -3.55921,0.68572 -0.3102,0.0979 -0.45714,0.0979 -0.47346,0 -0.97956,-0.50612 -0.45717,-0.45715 -0.45717,-0.83266 0,-0.14694 0.24495,-0.73469 0.6204,-1.50204 1.12653,-5.24082 -3.90205,0.47347 -6.98777,1.69796 -0.32652,0.13062 -0.5061,0.13062 -0.5388,0 -1.53472,-0.81632 -0.96327,-0.78368 -0.96327,-1.15919 0,-0.22857 1.22451,-0.32653 0.11433,0 2.12245,-0.27756 l 1.40406,-0.21225 1.97551,-0.29388 1.71429,-0.27756 1.32247,-0.17958 0.42447,-0.0653 q 0.0655,-0.60408 0.24495,-3.96735 l 0.0178,-1.17551 0.0652,-2.17143 q 0.0178,-0.84897 0.50613,-0.84897 0.7837,0 1.94287,0.81632 0.60408,0.42449 0.60408,0.91429 0,0.26121 -0.29382,0.8 -0.45714,0.8653 -0.83265,3.93469 z"
+           style="font-weight:bold;font-size:11.2889px;line-height:1.25;font-family:MOESongUN;-inkscape-font-specification:'MOESongUN Bold';letter-spacing:0px;word-spacing:0px;fill:#6a5753;fill-opacity:1;stroke-width:0.783671"
+           id="path592-0-7" />
+      </g>
+      <g
+         id="g4691-5"
+         transform="matrix(0.47896995,0,0,0.47896995,197.32745,-127.82907)">
+        <rect
+           style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
+           id="rect233-6-1-8-2-3"
+           width="29.229391"
+           height="29.229391"
+           x="50.13866"
+           y="304.76855" />
+        <path
+           d="m 77.036634,328.0442 1.28755,0.58369 q 0.42917,0.18883 0.42917,0.37768 0,0.29186 -0.89269,0.70387 -1.88842,0.85837 -3.14162,0.85837 -1.4249,0 -5.2189,-3.09014 -7.74249,-6.31759 -12.25751,-14.93563 -0.7382,-1.40772 -1.287558,-1.40772 -0.721029,0 -2.077254,1.56223 -0.635194,0.72103 -1.321888,0.72103 -0.721031,0 -1.390559,-0.49785 -0.412018,-0.30902 -0.412018,-0.61803 0,-0.22318 0.806869,-0.7382 2.111587,-1.28755 3.519313,-2.60944 0.806869,-0.75537 1.304725,-0.75537 0.61802,0 0.90987,0.46353 0.13735,0.22318 0.66953,1.56223 1.16738,3.00429 4.32618,6.91846 5.42489,6.72961 14.74679,10.90129 z"
+           style="font-weight:bold;font-size:11.2889px;line-height:1.25;font-family:MOESongUN;-inkscape-font-specification:'MOESongUN Bold';letter-spacing:0px;word-spacing:0px;fill:#6a5753;fill-opacity:1;stroke-width:0.824033"
+           id="path612-4-5" />
+      </g>
+    </g>
+  </g>
+</svg>
