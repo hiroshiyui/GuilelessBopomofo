@@ -11,11 +11,11 @@
    height="24mm"
    viewBox="0 0 24 24"
    version="1.1"
-   id="svg4368"
+   id="svg6433"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
    sodipodi:docname="guileless_bopomofo_keyboard-punctuation.svg">
   <defs
-     id="defs4362" />
+     id="defs6427" />
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -24,8 +24,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="536.7829"
-     inkscape:cy="-374.64568"
+     inkscape:cx="-203.21711"
+     inkscape:cy="105.35432"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -36,7 +36,7 @@
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
-     id="metadata4365">
+     id="metadata6430">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -51,10 +51,10 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(36.190476,-247.29167)">
+     transform="translate(-159.60119,-120.29167)">
     <g
-       id="g4348"
-       transform="translate(-89.07568,-143.17711)">
+       id="g6413"
+       transform="translate(106.71599,-270.17711)">
       <rect
          style="fill:none;fill-opacity:0.6;stroke-width:0.0684293"
          id="rect233-6-1-8-20-3"
@@ -63,7 +63,7 @@
          x="52.885204"
          y="390.46878" />
       <path
-         d="m 53.234067,408.50325 q 3.969346,-2.86972 3.969346,-5.57854 0,-0.67048 -0.348862,-1.04596 -0.268094,-0.26809 -1.877387,-0.69733 -2.09196,-0.56319 -2.09196,-2.65515 0,-1.66287 1.260577,-2.52111 0.750954,-0.53638 1.823719,-0.53638 1.662864,0 2.735629,1.09962 1.287386,1.28734 1.287386,3.70116 0,3.78158 -2.360151,6.40992 -1.206909,1.36782 -3.674346,2.7893 z"
+         d="m 53.234067,410.50325 q 3.969346,-2.86972 3.969346,-5.57854 0,-0.67048 -0.348862,-1.04596 -0.268094,-0.26809 -1.877387,-0.69733 -2.09196,-0.56319 -2.09196,-2.65515 0,-1.66287 1.260577,-2.52111 0.750954,-0.53638 1.823719,-0.53638 1.662864,0 2.735629,1.09962 1.287386,1.28734 1.287386,3.70116 0,3.78158 -2.360151,6.40992 -1.206909,1.36782 -3.674346,2.7893 z"
          style="font-weight:bold;font-size:11.2889px;line-height:1.25;font-family:MOESongUN;-inkscape-font-specification:'MOESongUN Bold';letter-spacing:0px;word-spacing:0px;fill:#6a5753;fill-opacity:1;stroke-width:1.28735"
          id="path4302-6" />
       <path

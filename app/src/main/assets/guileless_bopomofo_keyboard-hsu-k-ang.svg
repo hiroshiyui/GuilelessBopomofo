@@ -7,15 +7,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="24mm"
+   width="24.000002mm"
    height="24mm"
-   viewBox="0 0 24 24"
+   viewBox="0 0 24.000002 24"
    version="1.1"
-   id="svg3709"
+   id="svg6117"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
    sodipodi:docname="guileless_bopomofo_keyboard-hsu-k-ang.svg">
   <defs
-     id="defs3703" />
+     id="defs6111" />
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -24,8 +24,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="-268.93138"
-     inkscape:cy="-183.2171"
+     inkscape:cx="-780.35995"
+     inkscape:cy="-311.78853"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -36,7 +36,7 @@
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
-     id="metadata3706">
+     id="metadata6114">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -51,20 +51,20 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-176.9881,-196.64286)">
+     transform="translate(-312.30357,-230.66071)">
     <g
-       id="g2348"
-       transform="matrix(0.82109133,0,0,0.82109133,1.4981659,67.820561)">
+       id="g6093"
+       transform="translate(95.961211,71.154458)">
       <rect
-         style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
+         style="fill:none;fill-opacity:0.6;stroke-width:0.0684293"
          id="rect233-7-8-4-1-1-0-9-1"
-         width="29.229391"
-         height="29.229391"
-         x="213.72766"
-         y="156.89156" />
+         width="24"
+         height="24"
+         x="216.34236"
+         y="159.50626" />
       <g
          id="g3771-6"
-         transform="matrix(0.47896995,0,0,0.47896995,197.58586,119.24064)">
+         transform="matrix(0.47896995,0,0,0.47896995,202.58586,121.85534)">
         <rect
            style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
            id="rect233-6-3-1"
@@ -79,7 +79,7 @@
       </g>
       <g
          id="g4716-6"
-         transform="matrix(0.47896995,0,0,0.47896995,177.92131,7.6886687)">
+         transform="matrix(0.47896995,0,0,0.47896995,172.92131,5.0739779)">
         <rect
            style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
            id="rect233-3-6-7-0-3"

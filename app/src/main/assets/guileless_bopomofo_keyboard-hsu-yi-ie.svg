@@ -11,11 +11,11 @@
    height="24mm"
    viewBox="0 0 24 24"
    version="1.1"
-   id="svg2746"
+   id="svg4435"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="guileless_bopomofo_keyboard-yi-ie.svg">
+   sodipodi:docname="guileless_bopomofo_keyboard-hsu-yi-ie.svg">
   <defs
-     id="defs2740" />
+     id="defs4429" />
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -24,30 +24,26 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="-39.049045"
-     inkscape:cy="318.09379"
+     inkscape:cx="-28.931369"
+     inkscape:cy="-414.64567"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0"
      inkscape:window-width="1920"
      inkscape:window-height="1049"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
-     id="metadata2743">
+     id="metadata4432">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -55,20 +51,20 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-116.16506,-64.004351)">
+     transform="translate(-113.48809,-257.875)">
     <g
-       id="g2064"
-       transform="matrix(0.82109134,0,0,0.82109134,-59.324867,-1.6041626)">
+       id="g4450"
+       transform="translate(-102.85427,175.35627)">
       <rect
-         style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
+         style="fill:none;fill-opacity:0.6;stroke-width:0.0684293"
          id="rect233-7-8-4-5-5-4-7"
-         width="29.229391"
-         height="29.229391"
-         x="213.72766"
-         y="79.904037" />
+         width="24"
+         height="24"
+         x="216.34236"
+         y="82.51873" />
       <g
          id="g5418-2"
-         transform="matrix(0.47896995,0,0,0.47896995,216.73359,-29.156395)">
+         transform="matrix(0.47896995,0,0,0.47896995,211.73359,-26.541703)">
         <rect
            style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
            id="rect233-0-1-6"
@@ -83,7 +79,7 @@
       </g>
       <g
          id="g4666-8"
-         transform="matrix(0.47896995,0,0,0.47896995,158.51517,-32.384281)">
+         transform="matrix(0.47896995,0,0,0.47896995,163.51517,-34.99898)">
         <rect
            style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
            id="rect233-7-8-4-7"
