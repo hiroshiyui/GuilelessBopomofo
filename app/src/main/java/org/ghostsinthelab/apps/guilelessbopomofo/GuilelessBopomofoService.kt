@@ -28,7 +28,6 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
@@ -171,10 +170,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     }
 
     private fun syncPreEditString() {
-        val preEditBufferTextView: TextView = this.window.findViewById(R.id.preEditBufferTextView)
-        val bopomofoBufferTextView: TextView = this.window.findViewById(R.id.bopomofoBufferTextView)
-        preEditBufferTextView.text = chewingEngine.bufferStringStatic()
-        bopomofoBufferTextView.text = chewingEngine.bopomofoStringStatic()
+        viewBinding.TextViewPreEditBuffer.text = chewingEngine.bufferStringStatic()
+        viewBinding.TextViewBopomofoBuffer.text = chewingEngine.bopomofoStringStatic()
     }
 
     private fun setupChewingData(dataPath: String) {
