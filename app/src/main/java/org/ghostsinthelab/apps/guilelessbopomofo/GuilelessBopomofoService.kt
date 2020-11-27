@@ -46,6 +46,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     override fun onCreate() {
         super.onCreate()
+        // Initializing Chewing
         try {
             val dataPath =
                 packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
@@ -76,11 +77,11 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         val myKeyboardView = viewBinding.root
 
         // set IME switch/picker
-        val imeSwitchButton = viewBinding.keyImageButtonImeSwitch
+        val keyImageButtonImeSwitch = viewBinding.keyImageButtonImeSwitch
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            imeSwitchButton.setOnClickListener(switchToNextIME())
+            keyImageButtonImeSwitch.setOnClickListener(switchToNextIME())
         }
-        imeSwitchButton.setOnLongClickListener(showImePicker())
+        keyImageButtonImeSwitch.setOnLongClickListener(showImePicker())
 
         return myKeyboardView
     }
@@ -121,18 +122,18 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     private fun handleCharacterKey(v: BehaveLikeKey<*>) {
         v.keySymbol?.let {
-            chewingEngine.handleDefault(it[0])
+            chewingEngine.handleDefault(it)
         }
     }
 
     private fun handleControlKey(v: BehaveLikeKey<*>) {
         val ic = currentInputConnection
         v.isControlKey().let {
-            when (v.keyCodeString) {
-                "KEYCODE_SPACE" -> {
+            when (v.keyCode()) {
+                KeyEvent.KEYCODE_SPACE -> {
                     chewingEngine.handleSpace()
                 }
-                "KEYCODE_DEL" -> {
+                KeyEvent.KEYCODE_DEL -> {
                     if (chewingEngine.bufferStringStatic()
                             .isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()
                     ) {
@@ -141,7 +142,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                         sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
                     }
                 }
-                "KEYCODE_ENTER" -> {
+                KeyEvent.KEYCODE_ENTER -> {
                     val committed: Int = chewingEngine.commitPreeditBuf()
                     if (committed == 0) { // not committed yet
                         ic.commitText(chewingEngine.commitStringStatic(), 1)

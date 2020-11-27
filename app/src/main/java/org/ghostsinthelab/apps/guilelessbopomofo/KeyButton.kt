@@ -26,13 +26,14 @@ import androidx.appcompat.widget.AppCompatButton
 class KeyButton(context: Context, attrs: AttributeSet): AppCompatButton(context, attrs), BehaveLikeKey<KeyButton> {
     override var keyCodeString: String? = null
     override var keyType: Int? = null
-    override var keySymbol: String? = null
+    override var keySymbol: Char? = null
 
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyButton, 0 ,0).apply {
             try {
                 keyCodeString = this.getString(R.styleable.KeyButton_keyCodeString)
                 keyType = this.getInt(R.styleable.KeyButton_keyTypeEnum, 0)
+                keySymbol = this.getString(R.styleable.KeyImageButton_keySymbolString)?.get(0)
             } finally {
                 recycle()
             }

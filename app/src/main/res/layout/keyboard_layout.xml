@@ -53,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
+                app:keyCodeString="KEYCODE_PICTSYMBOLS"
                 app:keyTypeEnum="KEYTYPE_CONTROL"
                 app:srcCompat="@drawable/ic_baseline_sentiment_satisfied_alt_24" />
 
@@ -359,6 +360,7 @@
                 android:layout_weight="0"
                 android:onClick="onClick"
                 android:scaleType="fitCenter"
+                app:keyCodeString="KEYCODE_COMMA"
                 app:keySymbolString=","
                 app:keyTypeEnum="KEYTYPE_CHARACTER"
                 app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_punctuation" />
@@ -378,7 +380,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_baseline_language_24" />
+                android:src="@drawable/ic_baseline_language_24"
+                app:keyTypeEnum="KEYTYPE_FUNCTION" />
 
             <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
                 android:id="@+id/keyImageButtonSpace"
