@@ -415,6 +415,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:backgroundTint="#8BC34A"
                 android:onClick="onClick"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_baseline_keyboard_return_24"
