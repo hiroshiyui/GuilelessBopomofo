@@ -179,9 +179,15 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         if (punctuationPopup.isShowing) {
             punctuationPopup.dismiss()
         } else {
+            punctuationPopup.elevation = 30.0F
             punctuationPopup.height = ViewGroup.LayoutParams.WRAP_CONTENT
             punctuationPopup.width = ViewGroup.LayoutParams.WRAP_CONTENT
-            punctuationPopup.showAtLocation(viewBinding.root, Gravity.TOP, 0, 0)
+            punctuationPopup.showAtLocation(
+                viewBinding.LinearLayoutKeyboard,
+                Gravity.TOP,
+                0,
+                0
+            )
         }
 
         Log.v(LOGTAG, "showPunctuationPopup()")
