@@ -23,14 +23,14 @@ import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.util.Log
-import android.view.HapticFeedbackConstants
-import android.view.KeyEvent
-import android.view.View
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.PunctuationPopupLayoutBinding
 import java.io.File
 import java.io.FileOutputStream
 
@@ -38,6 +38,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "Service"
     lateinit var chewingEngine: ChewingEngine
     lateinit var viewBinding: KeyboardLayoutBinding
+    lateinit var punctuationPopupLayoutBinding: PunctuationPopupLayoutBinding
 
     init {
         System.loadLibrary("chewing")
@@ -82,6 +83,12 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         }
         keyImageButtonImeSwitch.setOnLongClickListener(showImePicker())
 
+        // set punctuation picker popup
+        punctuationPopupLayoutBinding = PunctuationPopupLayoutBinding.inflate(layoutInflater)
+        val punctuationPopupView = punctuationPopupLayoutBinding.root
+        val punctuationPopup = PopupWindow(punctuationPopupView)
+        viewBinding.keyImageButtonPunc.setOnLongClickListener(showPunctuationPopup(punctuationPopup))
+
         return myKeyboardView
     }
 
@@ -102,7 +109,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        val ic = currentInputConnection
         v?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         Log.v(LOGTAG, "onClick")
 
@@ -166,6 +172,19 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showInputMethodPicker()
+        return@OnLongClickListener true
+    }
+
+    private fun showPunctuationPopup(punctuationPopup: PopupWindow) = View.OnLongClickListener {
+        if (punctuationPopup.isShowing) {
+            punctuationPopup.dismiss()
+        } else {
+            punctuationPopup.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            punctuationPopup.width = ViewGroup.LayoutParams.WRAP_CONTENT
+            punctuationPopup.showAtLocation(viewBinding.root, Gravity.TOP, 0, 0)
+        }
+
+        Log.v(LOGTAG, "showPunctuationPopup()")
         return@OnLongClickListener true
     }
 
