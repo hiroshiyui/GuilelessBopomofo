@@ -90,7 +90,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         val punctuationPopupView = punctuationPopupLayoutBinding.root
         val punctuationPopup = PopupWindow(punctuationPopupView)
         viewBinding.keyImageButtonPunc.setOnLongClickListener(showPunctuationPopup(punctuationPopup))
-        punctuationPopupLayoutBinding.ImageButtonClosePopupWindow.setOnClickListener{ punctuationPopup.dismiss() }
+        punctuationPopupLayoutBinding.imageButtonClosePopupWindow.setOnClickListener{ punctuationPopup.dismiss() }
 
         return myKeyboardView
     }

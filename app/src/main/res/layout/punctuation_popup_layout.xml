@@ -18,51 +18,45 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/RelativeLayoutPunctuationPopup"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:id="@+id/linearLayoutPunctuationPopup"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:theme="@style/Theme.AppCompat.Light">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
+            android:id="@+id/keyButtonIdeographicComma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="、"
+            app:keySymbolString="、"
+            app:keyTypeEnum="KEYTYPE_CHARACTER" />
 
-            <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
-                android:id="@+id/keyButtonIdeographicComma"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="、"
-                app:keySymbolString="、"
-                app:keyTypeEnum="KEYTYPE_CHARACTER" />
+        <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
+            android:id="@+id/keyButtonPeriod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="。"
+            app:keySymbolString="。"
+            app:keyTypeEnum="KEYTYPE_CHARACTER" />
 
-            <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
-                android:id="@+id/keyButtonPeriod"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="。"
-                app:keySymbolString="。"
-                app:keyTypeEnum="KEYTYPE_CHARACTER" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/ImageButtonClosePopupWindow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#F44336"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_baseline_close_24" />
-        </LinearLayout>
-
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/imageButtonClosePopupWindow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#F44336"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_baseline_close_24" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
