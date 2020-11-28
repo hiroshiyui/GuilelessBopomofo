@@ -185,7 +185,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             punctuationPopup.height = ViewGroup.LayoutParams.WRAP_CONTENT
             punctuationPopup.width = ViewGroup.LayoutParams.WRAP_CONTENT
             punctuationPopup.showAtLocation(
-                viewBinding.LinearLayoutKeyboard,
+                viewBinding.linearLayoutKeyboard,
                 (Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL),
                 0,
                 0
@@ -214,8 +214,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     }
 
     private fun syncPreEditString() {
-        viewBinding.TextViewPreEditBuffer.text = chewingEngine.bufferStringStatic()
-        viewBinding.TextViewBopomofoBuffer.text = chewingEngine.bopomofoStringStatic()
+        viewBinding.textViewPreEditBuffer.text = chewingEngine.bufferStringStatic()
+        viewBinding.textViewBopomofoBuffer.text = chewingEngine.bopomofoStringStatic()
     }
 
     private fun setupChewingData(dataPath: String) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/LinearLayoutKeyboardContainer"
+    android:id="@+id/linearLayoutKeyboardContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
@@ -11,7 +11,7 @@
 
 
     <LinearLayout
-        android:id="@+id/LinearLayoutBufferTextViews"
+        android:id="@+id/linearLayoutBufferTextViews"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"
@@ -19,7 +19,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/TextViewPreEditBuffer"
+            android:id="@+id/textViewPreEditBuffer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#2196F3"
@@ -28,7 +28,7 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/TextViewBopomofoBuffer"
+            android:id="@+id/textViewBopomofoBuffer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#00BCD4"
@@ -37,13 +37,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/LinearLayoutKeyboard"
+        android:id="@+id/linearLayoutKeyboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/LinearLayoutKeyboardRow1"
+            android:id="@+id/linearLayoutKeyboardRow1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -163,7 +163,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/LinearLayoutKeyboardRow2"
+            android:id="@+id/linearLayoutKeyboardRow2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -273,7 +273,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/LinearLayoutKeyboardRow3"
+            android:id="@+id/linearLayoutKeyboardRow3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -373,7 +373,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/LinearLayoutKeyboardRow4"
+            android:id="@+id/linearLayoutKeyboardRow4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
