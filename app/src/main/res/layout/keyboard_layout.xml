@@ -50,7 +50,7 @@
             <LinearLayout
                 android:id="@+id/LinearLayoutKeyboardRow1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:paddingTop="4dp"
                 android:theme="@style/KeyboardTheme">
@@ -280,7 +280,7 @@
             <LinearLayout
                 android:id="@+id/LinearLayoutKeyboardRow3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:theme="@style/KeyboardTheme">
 
@@ -380,7 +380,7 @@
             <LinearLayout
                 android:id="@+id/LinearLayoutKeyboardRow4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:paddingBottom="4dp"
                 android:theme="@style/KeyboardTheme">
