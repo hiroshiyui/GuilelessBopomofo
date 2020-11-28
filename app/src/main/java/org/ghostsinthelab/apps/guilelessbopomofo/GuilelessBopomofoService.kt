@@ -69,6 +69,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     override fun onCreateCandidatesView(): View? {
         // I want to implement my own candidate selection UI
+        Log.v(LOGTAG, "onCreateCandidatesView()")
         return null
     }
 
@@ -89,9 +90,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         val punctuationPopupView = punctuationPopupLayoutBinding.root
         val punctuationPopup = PopupWindow(punctuationPopupView)
         viewBinding.keyImageButtonPunc.setOnLongClickListener(showPunctuationPopup(punctuationPopup))
-        punctuationPopupLayoutBinding.ImageButtonClosePopupWindow.setOnClickListener(
-            dismissPunctuationPopup(punctuationPopup)
-        )
+        punctuationPopupLayoutBinding.ImageButtonClosePopupWindow.setOnClickListener{ punctuationPopup.dismiss() }
 
         return myKeyboardView
     }
@@ -212,11 +211,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         ic.commitText(v.keySymbol, 1)
         syncPreEditString()
         punctuationPopup.dismiss()
-    }
-
-    private fun dismissPunctuationPopup(punctuationPopup: PopupWindow) = View.OnClickListener {
-        punctuationPopup.dismiss()
-        Log.v(LOGTAG, "dismissPunctuationPopup()")
     }
 
     private fun syncPreEditString() {
