@@ -33,7 +33,7 @@ class KeyImageButton(context: Context, attrs: AttributeSet): AppCompatImageButto
             try {
                 keyCodeString = this.getString(R.styleable.KeyImageButton_keyCodeString)
                 keyType = this.getInt(R.styleable.KeyImageButton_keyTypeEnum, -1)
-                keySymbol = this.getString(R.styleable.KeyImageButton_keySymbolString)?.get(0).toString()
+                keySymbol = this.getString(R.styleable.KeyImageButton_keySymbolString)
             } finally {
                 recycle()
             }

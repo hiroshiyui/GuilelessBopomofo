@@ -21,9 +21,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayoutPunctuationPopup"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:id="@+id/linearLayoutPunctuationPicker"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:theme="@style/Theme.AppCompat.Light">
 
@@ -39,6 +39,15 @@
             android:layout_weight="0"
             android:text="、"
             app:keySymbolString="、"
+            app:keyTypeEnum="KEYTYPE_CHARACTER" />
+
+        <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
+            android:id="@+id/keyButtonQuestionMark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="？"
+            app:keySymbolString="？"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton

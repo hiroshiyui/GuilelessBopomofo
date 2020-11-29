@@ -31,7 +31,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.PunctuationPopupLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.PunctuationPickerLayoutBinding
 import java.io.File
 import java.io.FileOutputStream
 
@@ -39,7 +39,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "Service"
     lateinit var chewingEngine: ChewingEngine
     lateinit var viewBinding: KeyboardLayoutBinding
-    lateinit var punctuationPopupLayoutBinding: PunctuationPopupLayoutBinding
+    lateinit var punctuationPickerLayoutBinding: PunctuationPickerLayoutBinding
 
     init {
         System.loadLibrary("chewing")
@@ -47,6 +47,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     override fun onCreate() {
         super.onCreate()
+        Log.v(LOGTAG, "onCreate()")
         // Initializing Chewing
         try {
             val dataPath =
@@ -85,14 +86,29 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         }
         keyImageButtonImeSwitch.setOnLongClickListener(showImePicker())
 
-        // set punctuation picker popup
-        punctuationPopupLayoutBinding = PunctuationPopupLayoutBinding.inflate(layoutInflater)
-        val punctuationPopupView = punctuationPopupLayoutBinding.root
-        val punctuationPopup = PopupWindow(punctuationPopupView)
-        viewBinding.keyImageButtonPunc.setOnLongClickListener(showPunctuationPopup(punctuationPopup))
-        punctuationPopupLayoutBinding.imageButtonClosePopupWindow.setOnClickListener{ punctuationPopup.dismiss() }
+        setupPunctuationPickerView()
 
         return myKeyboardView
+    }
+
+    override fun onInitializeInterface() {
+        super.onInitializeInterface()
+        Log.v(LOGTAG, "onInitializeInterface()")
+    }
+
+    override fun onEvaluateInputViewShown(): Boolean {
+        Log.v(LOGTAG, "onEvaluateInputViewShown()")
+        return super.onEvaluateInputViewShown()
+    }
+
+    override fun onBindInput() {
+        super.onBindInput()
+        Log.v(LOGTAG, "onBindInput()")
+    }
+
+    override fun onStartInput(attribute: EditorInfo?, restarting: Boolean) {
+        super.onStartInput(attribute, restarting)
+        Log.v(LOGTAG, "onStartInput()")
     }
 
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
@@ -127,6 +143,28 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         syncPreEditString()
     }
 
+    private fun setupPunctuationPickerView(): View? {
+        // set punctuation picker popup
+        punctuationPickerLayoutBinding = PunctuationPickerLayoutBinding.inflate(layoutInflater)
+        val punctuationPickerView = punctuationPickerLayoutBinding.root
+        val punctuationPopup = PopupWindow(punctuationPickerView)
+        viewBinding.keyImageButtonPunc.setOnLongClickListener(showPunctuationPopup(punctuationPopup))
+        punctuationPickerLayoutBinding.imageButtonClosePopupWindow.setOnClickListener { punctuationPopup.dismiss() }
+
+        punctuationPickerLayoutBinding.let { it ->
+            listOf(
+                it.keyButtonPeriod,
+                it.keyButtonIdeographicComma,
+                it.keyButtonQuestionMark
+            ).forEach { keyButton ->
+                keyButton.setOnClickListener {
+                    commitPunctuation(punctuationPopup, keyButton)
+                }
+            }
+        }
+
+        return punctuationPickerView
+    }
 
     private fun handleCharacterKey(v: BehaveLikeKey<*>) {
         v.keySymbol?.let {
@@ -157,6 +195,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                         sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
                     }
                 }
+                KeyEvent.KEYCODE_PICTSYMBOLS -> {
+                    viewBinding.linearLayoutKeyboardSymbols.visibility = View.VISIBLE
+                    viewBinding.linearLayoutKeyboardHsu.visibility = View.GONE
+                }
                 else -> {
                     Log.v(LOGTAG, "This key has not been implemented its handler")
                 }
@@ -181,21 +223,20 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         if (!punctuationPopup.isShowing) {
             punctuationPopup.isOutsideTouchable = true
             punctuationPopup.elevation = 30.0F
-            punctuationPopup.setBackgroundDrawable(AppCompatResources.getDrawable(this, android.R.drawable.screen_background_dark_transparent))
+            punctuationPopup.setBackgroundDrawable(
+                AppCompatResources.getDrawable(
+                    this,
+                    android.R.drawable.screen_background_dark_transparent
+                )
+            )
             punctuationPopup.height = ViewGroup.LayoutParams.WRAP_CONTENT
             punctuationPopup.width = ViewGroup.LayoutParams.WRAP_CONTENT
             punctuationPopup.showAtLocation(
-                viewBinding.linearLayoutKeyboard,
-                (Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL),
+                viewBinding.relativeLayoutKeyboard,
+                (Gravity.CENTER_VERTICAL or Gravity.CENTER_HORIZONTAL),
                 0,
                 0
             )
-            punctuationPopupLayoutBinding.keyButtonPeriod.setOnClickListener {
-                commitPunctuation(punctuationPopup, it as KeyButton)
-            }
-            punctuationPopupLayoutBinding.keyButtonIdeographicComma.setOnClickListener {
-                commitPunctuation(punctuationPopup, it as KeyButton)
-            }
         }
 
         Log.v(LOGTAG, "showPunctuationPopup()")

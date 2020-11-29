@@ -33,7 +33,7 @@ class KeyButton(context: Context, attrs: AttributeSet): AppCompatButton(context,
             try {
                 keyCodeString = this.getString(R.styleable.KeyButton_keyCodeString)
                 keyType = this.getInt(R.styleable.KeyButton_keyTypeEnum, 0)
-                keySymbol = this.getString(R.styleable.KeyImageButton_keySymbolString)?.get(0).toString()
+                keySymbol = this.getString(R.styleable.KeyImageButton_keySymbolString)
                 isHapticFeedbackEnabled = true
             } finally {
                 recycle()
