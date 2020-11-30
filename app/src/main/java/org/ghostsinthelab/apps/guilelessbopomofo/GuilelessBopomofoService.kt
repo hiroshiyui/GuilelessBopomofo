@@ -143,6 +143,13 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         syncPreEditString()
     }
 
+    fun onStarClick(v: View?) {
+        v?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        Log.v(LOGTAG, "onClick")
+        viewBinding.includeSymbolsPicker.linearLayoutKeyboardSymbols.visibility = View.GONE
+        viewBinding.linearLayoutKeyboard.visibility = View.VISIBLE
+    }
+
     private fun setupPunctuationPickerView(): View? {
         // set punctuation picker popup
         punctuationPickerLayoutBinding = PunctuationPickerLayoutBinding.inflate(layoutInflater)
@@ -196,8 +203,9 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                     }
                 }
                 KeyEvent.KEYCODE_PICTSYMBOLS -> {
-                    viewBinding.linearLayoutKeyboardSymbols.visibility = View.VISIBLE
-                    viewBinding.linearLayoutKeyboardHsu.visibility = View.GONE
+                    viewBinding.includeSymbolsPicker.linearLayoutKeyboardSymbols.visibility =
+                        View.VISIBLE
+                    viewBinding.linearLayoutKeyboard.visibility = View.GONE
                 }
                 else -> {
                     Log.v(LOGTAG, "This key has not been implemented its handler")

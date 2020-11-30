@@ -40,10 +40,11 @@
     <RelativeLayout
         android:id="@+id/relativeLayoutKeyboard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
         <LinearLayout
-            android:id="@+id/linearLayoutKeyboardHsu"
+            android:id="@+id/linearLayoutKeyboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -51,7 +52,7 @@
             <LinearLayout
                 android:id="@+id/linearLayoutKeyboardRow1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingTop="4dp"
                 android:theme="@style/KeyboardTheme">
@@ -172,7 +173,7 @@
             <LinearLayout
                 android:id="@+id/linearLayoutKeyboardRow2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:theme="@style/KeyboardTheme">
 
@@ -282,7 +283,7 @@
             <LinearLayout
                 android:id="@+id/linearLayoutKeyboardRow3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:theme="@style/KeyboardTheme">
 
@@ -382,7 +383,7 @@
             <LinearLayout
                 android:id="@+id/linearLayoutKeyboardRow4"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="4dp"
                 android:theme="@style/KeyboardTheme">
@@ -434,26 +435,11 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayoutKeyboardSymbols"
+        <include
+            android:id="@+id/includeSymbolsPicker"
+            layout="@layout/symbols_picker_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-                    android:id="@+id/keyImageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@android:drawable/btn_star_big_on" />
-            </LinearLayout>
-        </LinearLayout>
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
 
