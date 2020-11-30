@@ -143,7 +143,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         viewBinding.linearLayoutKeyboard.visibility = View.VISIBLE
     }
 
-    private fun setupPunctuationPickerView(): View? {
+    private fun setupPunctuationPickerView(): View {
         // set punctuation picker popup
         punctuationPickerLayoutBinding = PunctuationPickerLayoutBinding.inflate(layoutInflater)
         val punctuationPickerView = punctuationPickerLayoutBinding.root
