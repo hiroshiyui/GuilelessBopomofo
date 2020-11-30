@@ -28,7 +28,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.PunctuationPickerLayoutBinding
@@ -79,13 +78,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
         val myKeyboardView = viewBinding.root
 
-        // set IME switch/picker
-        val keyImageButtonImeSwitch = viewBinding.keyImageButtonImeSwitch
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            keyImageButtonImeSwitch.setOnClickListener(switchToNextIME())
-        }
-        keyImageButtonImeSwitch.setOnLongClickListener(showImePicker())
-
+        setupImeSwitch()
         setupPunctuationPickerView()
 
         return myKeyboardView
@@ -214,17 +207,22 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
-    private fun switchToNextIME() = View.OnClickListener {
-        it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        switchToNextInputMethod(false)
-    }
+    private fun setupImeSwitch() {
+        // set IME switch/picker
+        val keyImageButtonImeSwitch = viewBinding.keyImageButtonImeSwitch
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            keyImageButtonImeSwitch.setOnClickListener {
+                it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                switchToNextInputMethod(false)
+            }
+        }
 
-    private fun showImePicker() = View.OnLongClickListener {
-        it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showInputMethodPicker()
-        return@OnLongClickListener true
+        keyImageButtonImeSwitch.setOnLongClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showInputMethodPicker()
+            return@setOnLongClickListener true
+        }
     }
 
     private fun showPunctuationPopup(punctuationPopup: PopupWindow) = View.OnLongClickListener {
