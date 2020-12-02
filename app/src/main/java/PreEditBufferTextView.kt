@@ -33,8 +33,6 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     androidx.appcompat.widget.AppCompatTextView(context, attrs) {
     private val LOGTAG = "PreEditBufferTextView"
     private lateinit var span: SpannableString
-    // 給一個偏移值，提高選取正確率
-    private val MAGIC_SHIFT_X = 0.68F
     // which character did I touched? (index value)
     var offset: Int = 0
 
@@ -47,7 +45,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     performClick()
-                    val x = event.x * MAGIC_SHIFT_X
+                    val x = event.x
                     val y = event.y
                     offset = v.getOffsetForPosition(x, y)
 
