@@ -81,6 +81,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         setupImeSwitch()
         setupPunctuationPickerView()
 
+        viewBinding.textViewPreEditBuffer.setOnClickListener {
+            Log.d(LOGTAG, "textViewPreEditBuffer clicked, offset: ${viewBinding.textViewPreEditBuffer.offset}")
+        }
+
         return myKeyboardView
     }
 
@@ -131,6 +135,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             if (v.isControlKey()) {
                 handleControlKey(v)
             }
+        }
+
+        if (v is PreEditBufferTextView) {
+            Log.v(LOGTAG,"PreEditBufferTextView has been clicked")
         }
 
         syncPreEditString()

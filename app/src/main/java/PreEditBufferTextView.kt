@@ -25,7 +25,6 @@ import android.text.Spanned
 import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.util.Log
-import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.widget.TextView
 import androidx.core.text.toSpannable
@@ -34,34 +33,39 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     androidx.appcompat.widget.AppCompatTextView(context, attrs) {
     private val LOGTAG = "PreEditBufferTextView"
     private lateinit var span: SpannableString
-    private val MAGIC_SHIFT_X = 0.75F
+    // 給一個偏移值，提高選取正確率
+    private val MAGIC_SHIFT_X = 0.68F
+    // which character did I touched? (index value)
+    var offset: Int = 0
 
     init {
-        setOnClickListener {
-            Log.v(LOGTAG, "setOnClickListener")
-            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            return@setOnClickListener
-        }
-
         setOnTouchListener { v, event ->
-            Log.v(LOGTAG, "setOnTouchListener: ${event.action}")
+            Log.v(LOGTAG, "setOnTouchListener action: ${event.action}")
             span = (v as TextView).text.toSpannable() as SpannableString
             val underlineSpans = span.getSpans(0, span.length, UnderlineSpan::class.java)
 
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
+                    performClick()
                     val x = event.x * MAGIC_SHIFT_X
                     val y = event.y
-                    var offset = (v as TextView).getOffsetForPosition(x, y)
+                    offset = v.getOffsetForPosition(x, y)
+
+                    // 如果使用者點選最後一個字的時候很邊邊角角，
+                    // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來
                     if (offset >= this.text.length) {
                         offset -= 1
                     }
-                    Log.v(LOGTAG, offset.toString())
+
+                    Log.v(LOGTAG, "offset: $offset")
+
+                    // clear the existent underlines first
                     underlineSpans?.forEach {
                         span.removeSpan(it)
                     }
+
                     try {
-                        Log.v(LOGTAG, this.text[offset].toString())
+                        Log.v(LOGTAG, "located char: ${this.text[offset]}")
                         span.setSpan(
                             UnderlineSpan(),
                             offset,
@@ -79,12 +83,8 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                 MotionEvent.ACTION_MOVE -> {
                     return@setOnTouchListener  false
                 }
-                MotionEvent.ACTION_MASK -> {
-                    performClick()
-                    return@setOnTouchListener false
-                }
                 else -> {
-                    return@setOnTouchListener true
+                    return@setOnTouchListener false
                 }
             }
         }
