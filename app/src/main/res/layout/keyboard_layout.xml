@@ -27,7 +27,7 @@
             android:bufferType="spannable"
             android:fontFamily="serif"
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="26sp" />
 
         <TextView
             android:id="@+id/textViewBopomofoBuffer"
@@ -35,11 +35,11 @@
             android:layout_height="wrap_content"
             android:background="#00BCD4"
             android:fontFamily="serif"
-            android:textSize="24sp" />
+            android:textSize="26sp" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/relativeLayoutKeyboard"
+    <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
+        android:id="@+id/keyboardPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true">
@@ -441,7 +441,7 @@
             layout="@layout/symbols_picker_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </RelativeLayout>
+    </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel>
 
 
 </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardView>

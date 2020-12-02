@@ -19,13 +19,10 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import android.content.Context
 import android.inputmethodservice.InputMethodService
-import android.os.Build
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
@@ -78,7 +75,9 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
         val myKeyboardView = viewBinding.root
 
-        setupImeSwitch()
+        viewBinding.root.setServiceContext(this)
+        viewBinding.keyboardPanel.setServiceContext(this)
+        viewBinding.keyboardPanel.setupImeSwitch()
         setupPunctuationPickerView()
 
         viewBinding.textViewPreEditBuffer.setOnClickListener {
@@ -141,14 +140,13 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             Log.v(LOGTAG,"PreEditBufferTextView has been clicked")
         }
 
-        syncPreEditString()
+        viewBinding.root.syncPreEditString()
     }
 
     fun onStarClick(v: View?) {
         v?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        Log.v(LOGTAG, "onClick")
-        viewBinding.includeSymbolsPicker.linearLayoutKeyboardSymbols.visibility = View.GONE
-        viewBinding.linearLayoutKeyboard.visibility = View.VISIBLE
+        Log.v(LOGTAG, "onStarClick")
+        viewBinding.keyboardPanel.switchToMainLayout()
     }
 
     private fun setupPunctuationPickerView(): View {
@@ -204,32 +202,12 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                     }
                 }
                 KeyEvent.KEYCODE_PICTSYMBOLS -> {
-                    viewBinding.includeSymbolsPicker.linearLayoutKeyboardSymbols.visibility =
-                        View.VISIBLE
-                    viewBinding.linearLayoutKeyboard.visibility = View.GONE
+                    viewBinding.keyboardPanel.switchToSymbolsPicker()
                 }
                 else -> {
                     Log.v(LOGTAG, "This key has not been implemented its handler")
                 }
             }
-        }
-    }
-
-    private fun setupImeSwitch() {
-        // set IME switch/picker
-        val keyImageButtonImeSwitch = viewBinding.keyImageButtonImeSwitch
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            keyImageButtonImeSwitch.setOnClickListener {
-                it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                switchToNextInputMethod(false)
-            }
-        }
-
-        keyImageButtonImeSwitch.setOnLongClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showInputMethodPicker()
-            return@setOnLongClickListener true
         }
     }
 
@@ -246,7 +224,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             punctuationPopup.height = ViewGroup.LayoutParams.WRAP_CONTENT
             punctuationPopup.width = ViewGroup.LayoutParams.WRAP_CONTENT
             punctuationPopup.showAtLocation(
-                viewBinding.relativeLayoutKeyboard,
+                viewBinding.keyboardPanel,
                 (Gravity.CENTER_VERTICAL or Gravity.CENTER_HORIZONTAL),
                 0,
                 0
@@ -264,13 +242,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             ic.commitText(chewingEngine.commitStringStatic(), 1)
         }
         ic.commitText(v.keySymbol, 1)
-        syncPreEditString()
+        viewBinding.root.syncPreEditString()
         punctuationPopup.dismiss()
-    }
-
-    private fun syncPreEditString() {
-        viewBinding.textViewPreEditBuffer.text = chewingEngine.bufferStringStatic()
-        viewBinding.textViewBopomofoBuffer.text = chewingEngine.bopomofoStringStatic()
     }
 
     private fun setupChewingData(dataPath: String) {

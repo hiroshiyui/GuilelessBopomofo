@@ -23,12 +23,23 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.LinearLayout
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 
-class KeyboardView(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
+class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs),
+    GuilelessBopomofoServiceContext {
     private val LOGTAG: String = "KeyboardView"
+    private lateinit var v: KeyboardLayoutBinding
+    override lateinit var serviceContext: GuilelessBopomofoService
 
     init {
         this.orientation = VERTICAL
         Log.v(LOGTAG, "Building KeyboardView.")
+    }
+
+    fun syncPreEditString(imeService: GuilelessBopomofoService = serviceContext) {
+        v = imeService.viewBinding
+        v.textViewPreEditBuffer.text = imeService.chewingEngine.bufferStringStatic()
+        v.textViewBopomofoBuffer.text = imeService.chewingEngine.bopomofoStringStatic()
     }
 }
