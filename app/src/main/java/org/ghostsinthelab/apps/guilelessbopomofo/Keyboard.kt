@@ -20,25 +20,38 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
-import android.util.Log
+import android.view.HapticFeedbackConstants
+import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 
-class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs),
-    GuilelessBopomofoServiceContext {
-    private val LOGTAG: String = "KeyboardView"
+class Keyboard(context: Context, attrs: AttributeSet): LinearLayout(context, attrs), GuilelessBopomofoServiceContext {
+    private val LOGTAG: String = "Keyboard"
     private lateinit var v: KeyboardLayoutBinding
     override lateinit var serviceContext: GuilelessBopomofoService
 
     init {
         this.orientation = VERTICAL
-        Log.v(LOGTAG, "Building KeyboardView.")
+        serviceContext = GuilelessBopomofoService()
     }
 
-    fun syncPreEditString(imeService: GuilelessBopomofoService = serviceContext) {
+    fun setupImeSwitch(imeService: GuilelessBopomofoService = serviceContext) {
         v = imeService.viewBinding
-        v.textViewPreEditBuffer.text = imeService.chewingEngine.bufferStringStatic()
-        v.textViewBopomofoBuffer.text = imeService.chewingEngine.bopomofoStringStatic()
+        val keyImageButtonImeSwitch = v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonImeSwitch)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            keyImageButtonImeSwitch.setOnClickListener {
+                it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                imeService.switchToNextInputMethod(false)
+            }
+        }
+
+        keyImageButtonImeSwitch.setOnLongClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+            val imm = imeService.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showInputMethodPicker()
+            return@setOnLongClickListener true
+        }
     }
 }

@@ -20,21 +20,20 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
-import android.view.HapticFeedbackConstants
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.SymbolsPickerLayoutBinding
 
 class KeyboardPanel(context: Context, attrs: AttributeSet,
 ) : RelativeLayout(context, attrs),
     GuilelessBopomofoServiceContext {
     private val LOGTAG: String = "KeyboardLayout"
     private lateinit var v: KeyboardLayoutBinding
+    private lateinit var symbolsPickerLayoutBinding: SymbolsPickerLayoutBinding
+    private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     override lateinit var serviceContext: GuilelessBopomofoService
 
     init {
@@ -43,31 +42,16 @@ class KeyboardPanel(context: Context, attrs: AttributeSet,
 
     fun switchToSymbolsPicker(imeService: GuilelessBopomofoService = serviceContext) {
         v = imeService.viewBinding
-        v.includeSymbolsPicker.linearLayoutKeyboardSymbols.visibility = View.VISIBLE
-        v.linearLayoutKeyboard.visibility = View.GONE
+        symbolsPickerLayoutBinding = SymbolsPickerLayoutBinding.inflate(imeService.layoutInflater)
+        v.keyboardPanel.removeAllViews()
+        v.keyboardPanel.addView(symbolsPickerLayoutBinding.root)
     }
 
     fun switchToMainLayout(imeService: GuilelessBopomofoService = serviceContext) {
         v = imeService.viewBinding
-        v.includeSymbolsPicker.linearLayoutKeyboardSymbols.visibility = View.GONE
-        v.linearLayoutKeyboard.visibility = View.VISIBLE
-    }
-
-    fun setupImeSwitch(imeService: GuilelessBopomofoService = serviceContext) {
-        v = imeService.viewBinding
-        val keyImageButtonImeSwitch = v.keyImageButtonImeSwitch
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            keyImageButtonImeSwitch.setOnClickListener {
-                it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                imeService.switchToNextInputMethod(false)
-            }
-        }
-
-        keyImageButtonImeSwitch.setOnLongClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            val imm = imeService.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showInputMethodPicker()
-            return@setOnLongClickListener true
-        }
+        keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(imeService.layoutInflater)
+        v.keyboardPanel.removeAllViews()
+        v.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
+        keyboardHsuLayoutBinding.root.setupImeSwitch(serviceContext)
     }
 }

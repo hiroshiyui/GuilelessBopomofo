@@ -17,9 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.org.ghostsinthelab.apps.guilelessbopomofo
-
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
+package org.ghostsinthelab.apps.guilelessbopomofo
 
 interface GuilelessBopomofoServiceContext {
     var serviceContext: GuilelessBopomofoService

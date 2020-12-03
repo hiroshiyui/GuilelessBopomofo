@@ -26,6 +26,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.PunctuationPickerLayoutBinding
 import java.io.File
@@ -35,6 +36,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "Service"
     lateinit var chewingEngine: ChewingEngine
     lateinit var viewBinding: KeyboardLayoutBinding
+    lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     lateinit var punctuationPickerLayoutBinding: PunctuationPickerLayoutBinding
 
     init {
@@ -77,8 +79,16 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
         viewBinding.root.setServiceContext(this)
         viewBinding.keyboardPanel.setServiceContext(this)
-        viewBinding.keyboardPanel.setupImeSwitch()
-        setupPunctuationPickerView()
+
+        // 這邊有機會可以做不同鍵盤排列的抽換… perhaps a method called setMainLayout()
+        keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(layoutInflater)
+        keyboardHsuLayoutBinding.root.setServiceContext(this)
+
+        viewBinding.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
+        keyboardHsuLayoutBinding.root.setupImeSwitch()
+
+        // 這種還是做成 addView(), removeView() 處理比較好，include 然後調 visibility 太昂貴
+//        setupPunctuationPickerView()
 
         viewBinding.textViewPreEditBuffer.setOnClickListener {
             Log.d(LOGTAG, "textViewPreEditBuffer clicked, offset: ${viewBinding.textViewPreEditBuffer.offset}")
@@ -110,6 +120,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.v(LOGTAG, "onStartInputView()")
+        keyboardHsuLayoutBinding.root.setupImeSwitch()
     }
 
     override fun onFinishInput() {
@@ -146,31 +157,32 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     fun onStarClick(v: View?) {
         v?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         Log.v(LOGTAG, "onStarClick")
+        // 這種還是做成 addView(), removeView() 處理比較好，include 然後調 visibility 太昂貴
         viewBinding.keyboardPanel.switchToMainLayout()
     }
 
-    private fun setupPunctuationPickerView(): View {
-        // set punctuation picker popup
-        punctuationPickerLayoutBinding = PunctuationPickerLayoutBinding.inflate(layoutInflater)
-        val punctuationPickerView = punctuationPickerLayoutBinding.root
-        val punctuationPopup = PopupWindow(punctuationPickerView)
-        viewBinding.keyImageButtonPunc.setOnLongClickListener(showPunctuationPopup(punctuationPopup))
-        punctuationPickerLayoutBinding.imageButtonClosePopupWindow.setOnClickListener { punctuationPopup.dismiss() }
-
-        punctuationPickerLayoutBinding.let { it ->
-            listOf(
-                it.keyButtonPeriod,
-                it.keyButtonIdeographicComma,
-                it.keyButtonQuestionMark
-            ).forEach { keyButton ->
-                keyButton.setOnClickListener {
-                    commitPunctuation(punctuationPopup, keyButton)
-                }
-            }
-        }
-
-        return punctuationPickerView
-    }
+//    private fun setupPunctuationPickerView(): View {
+//        // set punctuation picker popup
+//        punctuationPickerLayoutBinding = PunctuationPickerLayoutBinding.inflate(layoutInflater)
+//        val punctuationPickerView = punctuationPickerLayoutBinding.root
+//        val punctuationPopup = PopupWindow(punctuationPickerView)
+//        viewBinding.keyImageButtonPunc.setOnLongClickListener(showPunctuationPopup(punctuationPopup))
+//        punctuationPickerLayoutBinding.keyImageButtonClose.setOnClickListener { punctuationPopup.dismiss() }
+//
+//        punctuationPickerLayoutBinding.let { it ->
+//            listOf(
+//                it.keyButtonPeriod,
+//                it.keyButtonIdeographicComma,
+//                it.keyButtonQuestionMark
+//            ).forEach { keyButton ->
+//                keyButton.setOnClickListener {
+//                    commitPunctuation(punctuationPopup, keyButton)
+//                }
+//            }
+//        }
+//
+//        return punctuationPickerView
+//    }
 
     private fun handleCharacterKey(v: BehaveLikeKey<*>) {
         v.keySymbol?.let {
@@ -202,6 +214,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                     }
                 }
                 KeyEvent.KEYCODE_PICTSYMBOLS -> {
+                    // 這種還是做成 addView(), removeView() 處理比較好，include 然後調 visibility 太昂貴
                     viewBinding.keyboardPanel.switchToSymbolsPicker()
                 }
                 else -> {
