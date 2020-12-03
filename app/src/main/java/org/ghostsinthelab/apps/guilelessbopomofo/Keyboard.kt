@@ -22,22 +22,22 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.HapticFeedbackConstants
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 
-class Keyboard(context: Context, attrs: AttributeSet): LinearLayout(context, attrs), GuilelessBopomofoServiceContext {
+class Keyboard(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
     private val LOGTAG: String = "Keyboard"
     private lateinit var v: KeyboardLayoutBinding
-    override lateinit var serviceContext: GuilelessBopomofoService
 
     init {
         this.orientation = VERTICAL
-        serviceContext = GuilelessBopomofoService()
     }
 
-    fun setupImeSwitch(imeService: GuilelessBopomofoService = serviceContext) {
+    fun setupImeSwitch(imeService: GuilelessBopomofoService) {
+        Log.v(LOGTAG, "setupImeSwitch")
         v = imeService.viewBinding
         val keyImageButtonImeSwitch = v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonImeSwitch)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -51,6 +51,17 @@ class Keyboard(context: Context, attrs: AttributeSet): LinearLayout(context, att
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
             val imm = imeService.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
+            return@setOnLongClickListener true
+        }
+    }
+
+    fun setupPuncSwitch(imeService: GuilelessBopomofoService) {
+        Log.v(LOGTAG, "setupPuncSwitch")
+        v = imeService.viewBinding
+        val keyImageButtonPunc = v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonPunc)
+        keyImageButtonPunc.setOnLongClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+            v.keyboardPanel.switchPunctuationPicker(imeService)
             return@setOnLongClickListener true
         }
     }

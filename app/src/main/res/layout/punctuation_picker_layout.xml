@@ -59,12 +59,13 @@
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButtonClose"
+            android:id="@+id/keyImageButtonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#F44336"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_baseline_close_24" />
+            android:layout_weight="0"
+            android:onClick="onClick"
+            app:srcCompat="@drawable/ic_baseline_undo_24" />
+
     </LinearLayout>
 
 </LinearLayout>
