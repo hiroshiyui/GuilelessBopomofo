@@ -42,15 +42,8 @@
         android:id="@+id/keyboardPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true">
-
-
-        <include
-            android:id="@+id/includeSymbolsPicker"
-            layout="@layout/symbols_picker_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel>
+        android:animateLayoutChanges="true"
+        android:theme="@style/KeyboardTheme" />
 
 
 </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardView>

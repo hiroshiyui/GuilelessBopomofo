@@ -80,10 +80,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         viewBinding.root.setServiceContext(this)
         viewBinding.keyboardPanel.setServiceContext(this)
 
-        // 這邊有機會可以做不同鍵盤排列的抽換… perhaps a method called setMainLayout()
         keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(layoutInflater)
         keyboardHsuLayoutBinding.root.setServiceContext(this)
 
+        // 這邊有機會可以做不同鍵盤排列的抽換… perhaps a method called setMainLayout()
         viewBinding.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
         keyboardHsuLayoutBinding.root.setupImeSwitch()
 
@@ -91,7 +91,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 //        setupPunctuationPickerView()
 
         viewBinding.textViewPreEditBuffer.setOnClickListener {
-            Log.d(LOGTAG, "textViewPreEditBuffer clicked, offset: ${viewBinding.textViewPreEditBuffer.offset}")
+            Log.d(
+                LOGTAG,
+                "textViewPreEditBuffer clicked, offset: ${viewBinding.textViewPreEditBuffer.offset}"
+            )
         }
 
         return myKeyboardView
@@ -120,7 +123,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.v(LOGTAG, "onStartInputView()")
-        keyboardHsuLayoutBinding.root.setupImeSwitch()
+        keyboardHsuLayoutBinding.root.setupImeSwitch(this)
     }
 
     override fun onFinishInput() {
@@ -145,11 +148,18 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             if (v.isControlKey()) {
                 handleControlKey(v)
             }
+
+            if (v.id == R.id.keyImageButtonBack) {
+                viewBinding.keyboardPanel.switchToMainLayout()
+            }
         }
 
         if (v is PreEditBufferTextView) {
-            Log.v(LOGTAG,"PreEditBufferTextView has been clicked")
+            Log.v(LOGTAG, "PreEditBufferTextView has been clicked")
         }
+
+
+
 
         viewBinding.root.syncPreEditString()
     }
@@ -157,7 +167,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     fun onStarClick(v: View?) {
         v?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         Log.v(LOGTAG, "onStarClick")
-        // 這種還是做成 addView(), removeView() 處理比較好，include 然後調 visibility 太昂貴
         viewBinding.keyboardPanel.switchToMainLayout()
     }
 
@@ -214,7 +223,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                     }
                 }
                 KeyEvent.KEYCODE_PICTSYMBOLS -> {
-                    // 這種還是做成 addView(), removeView() 處理比較好，include 然後調 visibility 太昂貴
                     viewBinding.keyboardPanel.switchToSymbolsPicker()
                 }
                 else -> {

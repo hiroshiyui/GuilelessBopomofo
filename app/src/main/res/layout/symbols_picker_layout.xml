@@ -19,23 +19,23 @@
 
 <org.ghostsinthelab.apps.guilelessbopomofo.Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/linearLayoutKeyboardSymbols"
+    android:id="@+id/keyboardSymbols"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:theme="@style/KeyboardTheme">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:theme="@style/KeyboardTheme">
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButton"
+            android:id="@+id/keyImageButtonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onStarClick"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            android:onClick="onClick"
+            app:srcCompat="@drawable/ic_baseline_undo_24" />
     </LinearLayout>
 </org.ghostsinthelab.apps.guilelessbopomofo.Keyboard>

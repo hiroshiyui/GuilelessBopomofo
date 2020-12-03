@@ -24,6 +24,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageButton
 
 class KeyImageButton(context: Context, attrs: AttributeSet): AppCompatImageButton(context, attrs), BehaveLikeKey<KeyImageButton> {
+    private val LOGTAG: String = "KeyImageButton"
     override var keyCodeString: String? = null
     override var keyType: Int? = null
     override var keySymbol: String? = null

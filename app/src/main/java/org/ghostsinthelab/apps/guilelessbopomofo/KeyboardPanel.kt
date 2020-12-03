@@ -52,6 +52,7 @@ class KeyboardPanel(context: Context, attrs: AttributeSet,
         keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(imeService.layoutInflater)
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
+        // never forget to pass serviceContext here
         keyboardHsuLayoutBinding.root.setupImeSwitch(serviceContext)
     }
 }
