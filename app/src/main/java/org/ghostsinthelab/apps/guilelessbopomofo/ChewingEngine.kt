@@ -53,6 +53,7 @@ class ChewingEngine constructor(dataPath: String) {
     external fun handleRight(chewingCtx: Long = context)
     external fun handleBackspace(chewingCtx: Long = context)
     external fun handleHome(chewingCtx: Long = context)
+    external fun handleEnd(chewingCtx: Long = context)
     external fun commitString(chewingCtx: Long = context): String
     external fun commitStringStatic(chewingCtx: Long = context): String
     external fun commitPreeditBuf(chewingCtx: Long = context): Int

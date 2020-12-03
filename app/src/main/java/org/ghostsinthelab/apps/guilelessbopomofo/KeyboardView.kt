@@ -41,4 +41,29 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
         v.textViewPreEditBuffer.text = imeService.chewingEngine.bufferStringStatic()
         v.textViewBopomofoBuffer.text = imeService.chewingEngine.bopomofoStringStatic()
     }
+
+    fun setOnClickPreEditCharListener(imeService: GuilelessBopomofoService = serviceContext) {
+        v = imeService.viewBinding
+        v.textViewPreEditBuffer.setOnClickListener {
+            val offset = v.textViewPreEditBuffer.offset
+
+            // move to first character
+            imeService.chewingEngine.handleHome()
+
+            // move to clicked character
+            repeat(offset) {
+                imeService.chewingEngine.handleRight()
+            }
+
+            // list candidates
+            imeService.chewingEngine.candOpen()
+            val candidates = imeService.chewingEngine.candTotalChoice()
+            repeat(candidates) { index ->
+                Log.v(LOGTAG, imeService.chewingEngine.candStringByIndexStatic(index))
+            }
+            // end
+            imeService.chewingEngine.candClose()
+            imeService.chewingEngine.handleEnd()
+        }
+    }
 }

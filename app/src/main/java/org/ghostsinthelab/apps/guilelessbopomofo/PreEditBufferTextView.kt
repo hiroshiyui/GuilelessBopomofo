@@ -25,14 +25,17 @@ import android.text.Spanned
 import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.util.Log
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.widget.TextView
 import androidx.core.text.toSpannable
+import androidx.core.view.setPadding
 
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     androidx.appcompat.widget.AppCompatTextView(context, attrs) {
     private val LOGTAG = "PreEditBufferTextView"
     private lateinit var span: SpannableString
+
     // which character did I touched? (index value)
     var offset: Int = 0
 
@@ -79,7 +82,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                     return@setOnTouchListener false
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    return@setOnTouchListener  false
+                    return@setOnTouchListener false
                 }
                 else -> {
                     return@setOnTouchListener false
@@ -88,4 +91,22 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
     }
 
+    override fun onTextChanged(
+        text: CharSequence?,
+        start: Int,
+        lengthBefore: Int,
+        lengthAfter: Int
+    ) {
+        super.onTextChanged(text, start, lengthBefore, lengthAfter)
+        if (lengthAfter != 0) {
+            // improve character click accuracy, leave text far from edges
+            val dp = 12F
+            val px =
+                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
+                    .toInt()
+            this.setPadding(px, 0, px, 0)
+        } else {
+            this.setPadding(0)
+        }
+    }
 }

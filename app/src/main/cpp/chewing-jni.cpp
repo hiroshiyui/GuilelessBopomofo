@@ -250,9 +250,19 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleHome(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle home key input from context ptr: %lld",
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle Home key input from context ptr: %lld",
                         (long long) ctx);
     chewing_handle_Home(ctx);
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleEnd(
+        JNIEnv *env, jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle End key input from context ptr: %lld",
+                        (long long) ctx);
+    chewing_handle_End(ctx);
 }
 
 /* chewing_handle_Left() */

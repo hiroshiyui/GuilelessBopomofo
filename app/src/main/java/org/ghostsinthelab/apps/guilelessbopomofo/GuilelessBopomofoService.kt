@@ -38,6 +38,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     lateinit var viewBinding: KeyboardLayoutBinding
     lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     lateinit var punctuationPickerLayoutBinding: PunctuationPickerLayoutBinding
+    lateinit var myKeyboardView: KeyboardView
 
     init {
         System.loadLibrary("chewing")
@@ -75,10 +76,11 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     override fun onCreateInputView(): View {
         Log.v(LOGTAG, "onCreateInputView()")
         viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
-        val myKeyboardView = viewBinding.root
+        myKeyboardView = viewBinding.root
 
-        viewBinding.root.setServiceContext(this)
+        myKeyboardView.setServiceContext(this)
         viewBinding.keyboardPanel.setServiceContext(this)
+        viewBinding.keyboardView.setServiceContext(this)
 
         keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(layoutInflater)
         keyboardHsuLayoutBinding.root.setServiceContext(this)
@@ -90,12 +92,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         // 這種還是做成 addView(), removeView() 處理比較好，include 然後調 visibility 太昂貴
 //        setupPunctuationPickerView()
 
-        viewBinding.textViewPreEditBuffer.setOnClickListener {
-            Log.d(
-                LOGTAG,
-                "textViewPreEditBuffer clicked, offset: ${viewBinding.textViewPreEditBuffer.offset}"
-            )
-        }
+        myKeyboardView.setOnClickPreEditCharListener(this)
 
         return myKeyboardView
     }
@@ -263,7 +260,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             ic.commitText(chewingEngine.commitStringStatic(), 1)
         }
         ic.commitText(v.keySymbol, 1)
-        viewBinding.root.syncPreEditString()
+        myKeyboardView.syncPreEditString()
         punctuationPopup.dismiss()
     }
 
