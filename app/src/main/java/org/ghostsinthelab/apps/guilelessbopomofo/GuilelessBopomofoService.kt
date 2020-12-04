@@ -143,10 +143,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             }
         }
 
-        if (v is PreEditBufferTextView) {
-            Log.v(LOGTAG, "PreEditBufferTextView has been clicked")
-        }
-
         myKeyboardView.syncPreEditString()
     }
 
