@@ -3,4 +3,6 @@
     <string name="display_name_bopomofo_keyboard_ime">Bopomofo</string>
     <string name="label_subtype_generic">%s</string>
     <string name="libchewing_init_fail">Failed to initialize libchewing</string>
+    <string name="next_cand_list">Next candidates list</string>
+    <string name="prev_cand_list">Prev. candidates list</string>
 </resources>

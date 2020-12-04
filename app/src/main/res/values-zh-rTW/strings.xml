@@ -4,4 +4,6 @@
     <string name="display_name_bopomofo_keyboard_ime">注音符號</string>
     <string name="label_subtype_generic">%s</string>
     <string name="libchewing_init_fail">無法成功初始化新酷音程式庫</string>
+    <string name="next_cand_list">次候選列表</string>
+    <string name="prev_cand_list">前候選列表</string>
 </resources>

@@ -47,7 +47,6 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
 
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    performClick()
                     val x = event.x
                     val y = event.y
                     offset = v.getOffsetForPosition(x, y)

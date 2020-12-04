@@ -23,14 +23,15 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageButton
 
-class KeyImageButton(context: Context, attrs: AttributeSet): AppCompatImageButton(context, attrs), BehaveLikeKey<KeyImageButton> {
+class KeyImageButton(context: Context, attrs: AttributeSet) : AppCompatImageButton(context, attrs),
+    BehaveLikeKey<KeyImageButton> {
     private val LOGTAG: String = "KeyImageButton"
     override var keyCodeString: String? = null
     override var keyType: Int? = null
     override var keySymbol: String? = null
 
     init {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0 ,0).apply {
+        context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0, 0).apply {
             try {
                 keyCodeString = this.getString(R.styleable.KeyImageButton_keyCodeString)
                 keyType = this.getInt(R.styleable.KeyImageButton_keyTypeEnum, -1)

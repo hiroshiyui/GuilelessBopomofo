@@ -344,15 +344,15 @@
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonPunc"
-            app:keyCodeString="KEYCODE_COMMA"
-            app:keySymbolString=","
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_punctuation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:onClick="onClick"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            app:keyCodeString="KEYCODE_COMMA"
+            app:keySymbolString=","
+            app:keyTypeEnum="KEYTYPE_CHARACTER"
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_punctuation" />
 
     </LinearLayout>
 

@@ -57,13 +57,7 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
 
             // list candidates
             imeService.chewingEngine.candOpen()
-            val candidates = imeService.chewingEngine.candTotalChoice()
-            repeat(candidates) { index ->
-                Log.v(LOGTAG, imeService.chewingEngine.candStringByIndexStatic(index))
-            }
-            // end
-            imeService.chewingEngine.candClose()
-            imeService.chewingEngine.handleEnd()
+            v.keyboardPanel.switchToCandidatesLayout(imeService)
         }
     }
 }

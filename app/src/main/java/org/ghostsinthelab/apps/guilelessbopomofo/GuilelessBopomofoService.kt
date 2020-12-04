@@ -117,8 +117,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.v(LOGTAG, "onStartInputView()")
-        keyboardHsuLayoutBinding.root.setupImeSwitch(this)
-        keyboardHsuLayoutBinding.root.setupPuncSwitch(this)
     }
 
     override fun onFinishInput() {
