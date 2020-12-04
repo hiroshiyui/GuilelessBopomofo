@@ -21,11 +21,11 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.inputmethodservice.InputMethodService
 import android.util.Log
-import android.view.*
+import android.view.HapticFeedbackConstants
+import android.view.KeyEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.PopupWindow
 import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.PunctuationPickerLayoutBinding
@@ -162,70 +162,33 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     private fun handleControlKey(v: BehaveLikeKey<*>) {
         val ic = currentInputConnection
-        v.isControlKey().let {
-            when (v.keyCode()) {
-                KeyEvent.KEYCODE_SPACE -> {
-                    chewingEngine.handleSpace()
-                }
-                KeyEvent.KEYCODE_DEL -> {
-                    if (chewingEngine.bufferStringStatic()
-                            .isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()
-                    ) {
-                        chewingEngine.handleBackspace()
-                    } else {
-                        sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
-                    }
-                }
-                KeyEvent.KEYCODE_ENTER -> {
-                    if (chewingEngine.commitPreeditBuf() == 0) { // not committed yet
-                        ic.commitText(chewingEngine.commitStringStatic(), 1)
-                    } else {
-                        sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
-                    }
-                }
-                KeyEvent.KEYCODE_PICTSYMBOLS -> {
-                    viewBinding.keyboardPanel.switchToSymbolsPicker()
-                }
-                else -> {
-                    Log.v(LOGTAG, "This key has not been implemented its handler")
+        when (v.keyCode()) {
+            KeyEvent.KEYCODE_SPACE -> {
+                chewingEngine.handleSpace()
+            }
+            KeyEvent.KEYCODE_DEL -> {
+                if (chewingEngine.bufferStringStatic()
+                        .isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()
+                ) {
+                    chewingEngine.handleBackspace()
+                } else {
+                    sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
                 }
             }
+            KeyEvent.KEYCODE_ENTER -> {
+                if (chewingEngine.commitPreeditBuf() == 0) { // not committed yet
+                    ic.commitText(chewingEngine.commitStringStatic(), 1)
+                } else {
+                    sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+                }
+            }
+            KeyEvent.KEYCODE_PICTSYMBOLS -> {
+                viewBinding.keyboardPanel.switchToSymbolsPicker()
+            }
+            else -> {
+                Log.v(LOGTAG, "This key has not been implemented its handler")
+            }
         }
-    }
-
-    private fun showPunctuationPopup(punctuationPopup: PopupWindow) = View.OnLongClickListener {
-        if (!punctuationPopup.isShowing) {
-            punctuationPopup.isOutsideTouchable = true
-            punctuationPopup.elevation = 30.0F
-            punctuationPopup.setBackgroundDrawable(
-                AppCompatResources.getDrawable(
-                    this,
-                    android.R.drawable.screen_background_dark_transparent
-                )
-            )
-            punctuationPopup.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            punctuationPopup.width = ViewGroup.LayoutParams.WRAP_CONTENT
-            punctuationPopup.showAtLocation(
-                viewBinding.keyboardPanel,
-                (Gravity.CENTER_VERTICAL or Gravity.CENTER_HORIZONTAL),
-                0,
-                0
-            )
-        }
-
-        Log.v(LOGTAG, "showPunctuationPopup()")
-        return@OnLongClickListener true
-    }
-
-    private fun commitPunctuation(punctuationPopup: PopupWindow, v: KeyButton) {
-        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        val ic = currentInputConnection
-        if (chewingEngine.commitPreeditBuf() == 0) {
-            ic.commitText(chewingEngine.commitStringStatic(), 1)
-        }
-        ic.commitText(v.keySymbol, 1)
-        myKeyboardView.syncPreEditString()
-        punctuationPopup.dismiss()
     }
 
     private fun setupChewingData(dataPath: String) {
