@@ -25,6 +25,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
+import androidx.core.view.children
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
 
 class KeyboardPanel(
@@ -57,18 +58,22 @@ class KeyboardPanel(
         val ic = imeService.currentInputConnection
         punctuationPickerLayoutBinding =
             PunctuationPickerLayoutBinding.inflate(imeService.layoutInflater)
-        punctuationPickerLayoutBinding.let { it ->
-            listOf(
-                it.keyButtonPeriod,
-                it.keyButtonIdeographicComma,
-                it.keyButtonQuestionMark
-            ).forEach { keyButton ->
-                keyButton.setOnClickListener {
-                    if (imeService.chewingEngine.commitPreeditBuf() == 0) {
-                        ic.commitText(imeService.chewingEngine.commitStringStatic(), 1)
+
+        punctuationPickerLayoutBinding.root.children.iterator().forEach {
+            if (it is KeyboardRow) {
+                it.children.iterator().forEach { child ->
+                    if (child is KeyButton) {
+                        child.setOnClickListener {
+                            if (imeService.chewingEngine.commitPreeditBuf() == 0) {
+                                ic.commitText(
+                                    imeService.chewingEngine.commitStringStatic(),
+                                    1
+                                )
+                            }
+                            ic.commitText((child as KeyButton).keySymbol, 1)
+                            v.keyboardView.syncPreEditString()
+                        }
                     }
-                    ic.commitText((it as KeyButton).keySymbol, 1)
-                    v.keyboardView.syncPreEditString()
                 }
             }
         }

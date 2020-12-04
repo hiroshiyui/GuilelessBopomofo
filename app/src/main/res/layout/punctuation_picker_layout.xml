@@ -26,7 +26,7 @@
     android:orientation="vertical"
     android:theme="@style/Theme.AppCompat.Light">
 
-    <LinearLayout
+    <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
@@ -66,6 +66,6 @@
             android:onClick="onClick"
             app:srcCompat="@drawable/ic_baseline_undo_24" />
 
-    </LinearLayout>
+    </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
 
 </LinearLayout>
