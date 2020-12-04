@@ -48,6 +48,11 @@ class KeyboardPanel(
         Log.v(LOGTAG, "switchToSymbolsPicker")
         v = imeService.viewBinding
         symbolsPickerLayoutBinding = SymbolsPickerLayoutBinding.inflate(imeService.layoutInflater)
+        symbolsPickerLayoutBinding.keyImageButtonBack.setOnClickListener {
+            switchToMainLayout(
+                imeService
+            )
+        }
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(symbolsPickerLayoutBinding.root)
     }
@@ -58,6 +63,11 @@ class KeyboardPanel(
         val ic = imeService.currentInputConnection
         punctuationPickerLayoutBinding =
             PunctuationPickerLayoutBinding.inflate(imeService.layoutInflater)
+        punctuationPickerLayoutBinding.keyImageButtonBack.setOnClickListener {
+            switchToMainLayout(
+                imeService
+            )
+        }
 
         punctuationPickerLayoutBinding.root.children.iterator().forEach {
             if (it is KeyboardRow) {
@@ -141,4 +151,5 @@ class KeyboardPanel(
             candidatesLayoutBinding.CandidatesFlow.addView(prevCandListButton)
         }
     }
+
 }

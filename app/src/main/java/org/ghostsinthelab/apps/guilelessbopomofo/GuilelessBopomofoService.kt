@@ -141,10 +141,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             if (v.isControlKey()) {
                 handleControlKey(v)
             }
-
-            if (v.id == R.id.keyImageButtonBack) {
-                viewBinding.keyboardPanel.switchToMainLayout()
-            }
         }
 
         if (v is PreEditBufferTextView) {
