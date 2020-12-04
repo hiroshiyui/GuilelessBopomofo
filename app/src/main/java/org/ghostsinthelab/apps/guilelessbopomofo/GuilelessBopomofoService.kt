@@ -28,7 +28,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.PunctuationPickerLayoutBinding
 import java.io.File
 import java.io.FileOutputStream
 
@@ -37,7 +36,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     lateinit var chewingEngine: ChewingEngine
     lateinit var viewBinding: KeyboardLayoutBinding
     lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
-    lateinit var punctuationPickerLayoutBinding: PunctuationPickerLayoutBinding
     lateinit var myKeyboardView: KeyboardView
 
     init {
