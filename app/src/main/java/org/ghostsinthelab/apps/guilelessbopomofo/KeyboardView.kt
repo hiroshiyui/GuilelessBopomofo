@@ -36,7 +36,7 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
         Log.v(LOGTAG, "Building KeyboardView.")
     }
 
-    fun syncPreEditString(imeService: GuilelessBopomofoService = serviceContext) {
+    fun syncPreEditBuffers(imeService: GuilelessBopomofoService = serviceContext) {
         v = imeService.viewBinding
         v.textViewPreEditBuffer.text = imeService.chewingEngine.bufferStringStatic()
         v.textViewBopomofoBuffer.text = imeService.chewingEngine.bopomofoStringStatic()

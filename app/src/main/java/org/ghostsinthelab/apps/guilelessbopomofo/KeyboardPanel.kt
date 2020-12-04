@@ -81,7 +81,7 @@ class KeyboardPanel(
                                 )
                             }
                             ic.commitText((child as KeyButton).keySymbol, 1)
-                            v.keyboardView.syncPreEditString()
+                            v.keyboardView.syncPreEditBuffers()
                         }
                     }
                 }
@@ -120,7 +120,7 @@ class KeyboardPanel(
             candidateButton.setOnClickListener {
                 imeService.chewingEngine.candChooseByIndex(index)
                 imeService.chewingEngine.candClose()
-                v.keyboardView.syncPreEditString(imeService)
+                v.keyboardView.syncPreEditBuffers(imeService)
                 v.keyboardPanel.switchToMainLayout(imeService)
             }
             candidatesLayoutBinding.CandidatesConstraintLayout.addView(candidateButton)

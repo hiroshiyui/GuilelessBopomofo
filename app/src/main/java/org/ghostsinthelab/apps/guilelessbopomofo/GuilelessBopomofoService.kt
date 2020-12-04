@@ -141,7 +141,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             }
         }
 
-        myKeyboardView.syncPreEditString()
+        myKeyboardView.syncPreEditBuffers()
     }
 
     private fun handleCharacterKey(v: BehaveLikeKey<*>) {
