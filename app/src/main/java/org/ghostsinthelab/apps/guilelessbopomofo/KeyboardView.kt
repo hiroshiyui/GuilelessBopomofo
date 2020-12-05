@@ -47,7 +47,7 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
         v.textViewPreEditBuffer.setOnClickListener {
             val offset = v.textViewPreEditBuffer.offset
 
-            // close any been opened candidate window first
+            // close if any been opened candidate window first
             imeService.chewingEngine.candClose()
 
             // move to first character
