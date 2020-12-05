@@ -34,7 +34,8 @@
             android:id="@+id/keyImageButtonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0"
+            android:backgroundTint="#FFC107"
             android:onClick="onClick"
             app:srcCompat="@drawable/ic_baseline_undo_24" />
     </LinearLayout>
