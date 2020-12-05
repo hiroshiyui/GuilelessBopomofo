@@ -120,6 +120,7 @@ class KeyboardPanel(
             candidateButton.setOnClickListener {
                 imeService.chewingEngine.candChooseByIndex(index)
                 imeService.chewingEngine.candClose()
+                imeService.chewingEngine.handleEnd()
                 v.keyboardView.syncPreEditBuffers(imeService)
                 v.keyboardPanel.switchToMainLayout(imeService)
             }
