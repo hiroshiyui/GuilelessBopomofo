@@ -32,7 +32,7 @@ class KeyboardPanel(
     context: Context, attrs: AttributeSet,
 ) : RelativeLayout(context, attrs),
     GuilelessBopomofoServiceContext {
-    private val LOGTAG: String = "KeyboardLayout"
+    private val LOGTAG: String = "KeyboardPanel"
     private lateinit var v: KeyboardLayoutBinding
     private lateinit var symbolsPickerLayoutBinding: SymbolsPickerLayoutBinding
     private lateinit var punctuationPickerLayoutBinding: PunctuationPickerLayoutBinding

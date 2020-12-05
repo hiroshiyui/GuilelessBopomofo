@@ -47,6 +47,9 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
         v.textViewPreEditBuffer.setOnClickListener {
             val offset = v.textViewPreEditBuffer.offset
 
+            // close any been opened candidate window first
+            imeService.chewingEngine.candClose()
+
             // move to first character
             imeService.chewingEngine.handleHome()
 
@@ -57,6 +60,7 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
 
             // list candidates
             imeService.chewingEngine.candOpen()
+
             v.keyboardPanel.switchToCandidatesLayout(imeService)
         }
     }
