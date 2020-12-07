@@ -29,6 +29,7 @@
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="serif"
         android:minWidth="0dp"
         android:minHeight="0dp"
         android:text="Button"
