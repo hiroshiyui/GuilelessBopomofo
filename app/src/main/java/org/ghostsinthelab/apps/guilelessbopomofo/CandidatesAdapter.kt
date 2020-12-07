@@ -26,12 +26,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidateItemLayout
 
 class CandidatesAdapter(imeService: GuilelessBopomofoService) : RecyclerView.Adapter<CandidateViewHolder>(), GuilelessBopomofoServiceContext {
     private val LOGTAG: String = "CandidatesAdapter"
-    private val data = (1..100).toList()
-    override lateinit var serviceContext: GuilelessBopomofoService
-
-    init {
-        serviceContext = imeService
-    }
+    override var serviceContext: GuilelessBopomofoService = imeService
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CandidateViewHolder {
         val itemView = CandidateItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -43,7 +38,6 @@ class CandidatesAdapter(imeService: GuilelessBopomofoService) : RecyclerView.Ada
     }
 
     override fun getItemCount(): Int {
-        val totalCandidates: Int = serviceContext.chewingEngine.candTotalChoice()
-        return totalCandidates
+        return serviceContext.chewingEngine.candTotalChoice()
     }
 }

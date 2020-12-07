@@ -27,10 +27,9 @@ import androidx.recyclerview.widget.RecyclerView
 class CandidateViewHolder(imeService: GuilelessBopomofoService, itemView: View): RecyclerView.ViewHolder(itemView), GuilelessBopomofoServiceContext {
     private val button: Button = itemView.findViewById(R.id.buttonCandidateItem)
     private var inputConnection: InputConnection
-    override lateinit var serviceContext: GuilelessBopomofoService
+    override var serviceContext: GuilelessBopomofoService = imeService
 
     init {
-        serviceContext = imeService
         inputConnection = serviceContext.currentInputConnection
     }
 
