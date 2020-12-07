@@ -35,10 +35,9 @@ class CandidateViewHolder(imeService: GuilelessBopomofoService, itemView: View):
     }
 
     fun setData(data: Int) {
-        val index = data - 1
-        button.text = serviceContext.chewingEngine.candStringByIndexStatic(index)
+        button.text = serviceContext.chewingEngine.candStringByIndexStatic(data)
         button.setOnClickListener {
-            serviceContext.chewingEngine.candChooseByIndex(index)
+            serviceContext.chewingEngine.candChooseByIndex(data)
             serviceContext.chewingEngine.candClose()
             serviceContext.chewingEngine.handleEnd()
             serviceContext.viewBinding.keyboardPanel.currentCandidatesList = 0

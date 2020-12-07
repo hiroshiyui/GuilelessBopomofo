@@ -129,28 +129,10 @@ class KeyboardPanel(
             currentCandidatesList = 0
         }
 
-//        val candidates = imeService.chewingEngine.candTotalChoice()
-
+        // Setup & bind RecyclerView
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
         candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
         candidatesRecyclerView.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-
-//        repeat(candidates) { index ->
-//            Log.v(LOGTAG, imeService.chewingEngine.candStringByIndexStatic(index))
-//            val candidateButton: Button = Button(imeService.applicationContext)
-//            candidateButton.id = View.generateViewId()
-//            candidateButton.text = imeService.chewingEngine.candStringByIndexStatic(index)
-//            candidateButton.setOnClickListener {
-//                imeService.chewingEngine.candChooseByIndex(index)
-//                imeService.chewingEngine.candClose()
-//                imeService.chewingEngine.handleEnd()
-//                currentCandidatesList = 0
-//                v.keyboardView.syncPreEditBuffers(imeService)
-//                v.keyboardPanel.switchToMainLayout(imeService)
-//            }
-//            candidatesLayoutBinding.CandidatesConstraintLayout.addView(candidateButton)
-//            candidatesLayoutBinding.CandidatesFlow.addView(candidateButton)
-//        }
     }
 
 }

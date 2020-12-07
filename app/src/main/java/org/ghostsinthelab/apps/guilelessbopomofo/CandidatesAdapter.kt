@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidateItemLayoutBinding
 
 class CandidatesAdapter(imeService: GuilelessBopomofoService) : RecyclerView.Adapter<CandidateViewHolder>(), GuilelessBopomofoServiceContext {
+    private val LOGTAG: String = "CandidatesAdapter"
     private val data = (1..100).toList()
     override lateinit var serviceContext: GuilelessBopomofoService
 
@@ -38,11 +39,11 @@ class CandidatesAdapter(imeService: GuilelessBopomofoService) : RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: CandidateViewHolder, position: Int) {
-        holder.setData(data[position])
+        holder.setData(position)
     }
 
     override fun getItemCount(): Int {
-        val candidates: Int = serviceContext.chewingEngine.candTotalChoice()
-        return candidates
+        val totalCandidates: Int = serviceContext.chewingEngine.candTotalChoice()
+        return totalCandidates
     }
 }
