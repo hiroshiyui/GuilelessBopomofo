@@ -7,15 +7,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="23.999996mm"
+   width="24mm"
    height="23.999996mm"
-   viewBox="0 0 23.999996 23.999996"
+   viewBox="0 0 24 23.999996"
    version="1.1"
-   id="svg4953"
+   id="svg1208"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
    sodipodi:docname="guileless_bopomofo_keyboard-hsu-si.svg">
   <defs
-     id="defs4947" />
+     id="defs1202" />
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -24,8 +24,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="45.354341"
-     inkscape:cy="45.354325"
+     inkscape:cx="-354.64567"
+     inkscape:cy="245.35432"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -36,7 +36,7 @@
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
-     id="metadata4950">
+     id="metadata1205">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -51,10 +51,10 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-93.833331,-136.16667)">
+     transform="translate(-199.66667,-83.250002)">
     <g
-       id="g4929"
-       transform="translate(-163.15727,-23.339588)">
+       id="g1184"
+       transform="translate(-57.323934,-76.256254)">
       <rect
          style="fill:none;fill-opacity:0.6;stroke-width:0.0684293"
          id="rect233-5-7-5-9-1-6-6-3"
@@ -79,7 +79,7 @@
       </g>
       <g
          id="g4646-5"
-         transform="matrix(0.27369711,0,0,0.27369711,226.14779,174.16372)">
+         transform="matrix(0.34212139,0,0,0.34212139,212.43709,171.82809)">
         <rect
            style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
            id="rect233-5-5"
