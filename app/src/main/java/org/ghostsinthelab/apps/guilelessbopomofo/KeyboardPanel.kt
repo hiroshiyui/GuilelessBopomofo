@@ -33,6 +33,8 @@ class KeyboardPanel(
 ) : RelativeLayout(context, attrs),
     GuilelessBopomofoServiceContext {
     private val LOGTAG: String = "KeyboardPanel"
+    private var currentCandidatesList: Int = 0
+    private var currentOffset: Int = 0
     private lateinit var v: KeyboardLayoutBinding
     private lateinit var symbolsPickerLayoutBinding: SymbolsPickerLayoutBinding
     private lateinit var punctuationPickerLayoutBinding: PunctuationPickerLayoutBinding
@@ -103,12 +105,30 @@ class KeyboardPanel(
         keyboardHsuLayoutBinding.root.setupPuncSwitch(serviceContext)
     }
 
-    fun switchToCandidatesLayout(imeService: GuilelessBopomofoService = serviceContext) {
+    fun switchToCandidatesLayout(offset: Int, imeService: GuilelessBopomofoService = serviceContext) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
         v = imeService.viewBinding
         candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(candidatesLayoutBinding.root)
+
+        // reset candidates list if offset has been changed
+        if (currentOffset != offset) {
+            currentOffset = offset
+            currentCandidatesList = 0
+        }
+
+        // switch to next candidates list
+        repeat(currentCandidatesList) {
+            imeService.chewingEngine.candListNext()
+        }
+
+        // circulate candidates list cursor
+        if (imeService.chewingEngine.candListHasNext()) {
+            currentCandidatesList += 1
+        } else {
+            currentCandidatesList = 0
+        }
 
         val candidates = imeService.chewingEngine.candTotalChoice()
 
@@ -121,35 +141,12 @@ class KeyboardPanel(
                 imeService.chewingEngine.candChooseByIndex(index)
                 imeService.chewingEngine.candClose()
                 imeService.chewingEngine.handleEnd()
+                currentCandidatesList = 0
                 v.keyboardView.syncPreEditBuffers(imeService)
                 v.keyboardPanel.switchToMainLayout(imeService)
             }
             candidatesLayoutBinding.CandidatesConstraintLayout.addView(candidateButton)
             candidatesLayoutBinding.CandidatesFlow.addView(candidateButton)
-        }
-
-        if (imeService.chewingEngine.candListHasNext()) {
-            val nextCandListButton: Button = Button(imeService.applicationContext)
-            nextCandListButton.id = View.generateViewId()
-            nextCandListButton.text = resources.getString(R.string.next_cand_list)
-            nextCandListButton.setOnClickListener {
-                imeService.chewingEngine.candListNext()
-                v.keyboardPanel.switchToCandidatesLayout(imeService)
-            }
-            candidatesLayoutBinding.CandidatesConstraintLayout.addView(nextCandListButton)
-            candidatesLayoutBinding.CandidatesFlow.addView(nextCandListButton)
-        }
-
-        if (imeService.chewingEngine.candListHasPrev()) {
-            val prevCandListButton: Button = Button(imeService.applicationContext)
-            prevCandListButton.id = View.generateViewId()
-            prevCandListButton.text = resources.getString(R.string.prev_cand_list)
-            prevCandListButton.setOnClickListener {
-                imeService.chewingEngine.candListPrev()
-                v.keyboardPanel.switchToCandidatesLayout(imeService)
-            }
-            candidatesLayoutBinding.CandidatesConstraintLayout.addView(prevCandListButton)
-            candidatesLayoutBinding.CandidatesFlow.addView(prevCandListButton)
         }
     }
 

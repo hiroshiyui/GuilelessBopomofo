@@ -61,7 +61,7 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
             // list candidates
             imeService.chewingEngine.candOpen()
 
-            v.keyboardPanel.switchToCandidatesLayout(imeService)
+            v.keyboardPanel.switchToCandidatesLayout(offset, imeService)
         }
     }
 }
