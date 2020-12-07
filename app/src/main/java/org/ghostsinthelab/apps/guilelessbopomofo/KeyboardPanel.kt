@@ -22,10 +22,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
-import android.view.View
-import android.widget.Button
 import android.widget.RelativeLayout
 import androidx.core.view.children
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
 
 class KeyboardPanel(
@@ -33,7 +32,7 @@ class KeyboardPanel(
 ) : RelativeLayout(context, attrs),
     GuilelessBopomofoServiceContext {
     private val LOGTAG: String = "KeyboardPanel"
-    private var currentCandidatesList: Int = 0
+    var currentCandidatesList: Int = 0
     private var currentOffset: Int = 0
     private lateinit var v: KeyboardLayoutBinding
     private lateinit var symbolsPickerLayoutBinding: SymbolsPickerLayoutBinding
@@ -130,24 +129,28 @@ class KeyboardPanel(
             currentCandidatesList = 0
         }
 
-        val candidates = imeService.chewingEngine.candTotalChoice()
+//        val candidates = imeService.chewingEngine.candTotalChoice()
 
-        repeat(candidates) { index ->
-            Log.v(LOGTAG, imeService.chewingEngine.candStringByIndexStatic(index))
-            val candidateButton: Button = Button(imeService.applicationContext)
-            candidateButton.id = View.generateViewId()
-            candidateButton.text = imeService.chewingEngine.candStringByIndexStatic(index)
-            candidateButton.setOnClickListener {
-                imeService.chewingEngine.candChooseByIndex(index)
-                imeService.chewingEngine.candClose()
-                imeService.chewingEngine.handleEnd()
-                currentCandidatesList = 0
-                v.keyboardView.syncPreEditBuffers(imeService)
-                v.keyboardPanel.switchToMainLayout(imeService)
-            }
-            candidatesLayoutBinding.CandidatesConstraintLayout.addView(candidateButton)
-            candidatesLayoutBinding.CandidatesFlow.addView(candidateButton)
-        }
+        val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
+        candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
+        candidatesRecyclerView.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+
+//        repeat(candidates) { index ->
+//            Log.v(LOGTAG, imeService.chewingEngine.candStringByIndexStatic(index))
+//            val candidateButton: Button = Button(imeService.applicationContext)
+//            candidateButton.id = View.generateViewId()
+//            candidateButton.text = imeService.chewingEngine.candStringByIndexStatic(index)
+//            candidateButton.setOnClickListener {
+//                imeService.chewingEngine.candChooseByIndex(index)
+//                imeService.chewingEngine.candClose()
+//                imeService.chewingEngine.handleEnd()
+//                currentCandidatesList = 0
+//                v.keyboardView.syncPreEditBuffers(imeService)
+//                v.keyboardPanel.switchToMainLayout(imeService)
+//            }
+//            candidatesLayoutBinding.CandidatesConstraintLayout.addView(candidateButton)
+//            candidatesLayoutBinding.CandidatesFlow.addView(candidateButton)
+//        }
     }
 
 }
