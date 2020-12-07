@@ -9,11 +9,16 @@
 
     <style name="KeyboardTheme">
         <item name="android:background">@color/colorKeyboardBackground</item>
-        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="android:imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
-        <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+        <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="KeyboardRow" parent="KeyboardTheme">
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
     </style>
 </resources>

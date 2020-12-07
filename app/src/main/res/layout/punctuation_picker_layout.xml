@@ -24,12 +24,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:theme="@style/Theme.AppCompat.Light">
+    android:theme="@style/KeyboardTheme">
 
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:theme="@style/KeyboardRow">
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
             android:id="@+id/keyButtonColon"
@@ -97,7 +98,8 @@
 
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:theme="@style/KeyboardRow">
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
             android:id="@+id/keyButtonSemicolon"
@@ -166,7 +168,8 @@
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:theme="@style/KeyboardRow">
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
             android:id="@+id/keyButtonEllipsis"
@@ -235,7 +238,8 @@
 
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:theme="@style/KeyboardRow">
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
             android:id="@+id/keyButtonEmDash"
