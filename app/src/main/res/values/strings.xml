@@ -9,4 +9,10 @@
     <string name="test_text_input_here">Test text input here.</string>
     <string name="chewing_data_files_status">Chewing data files status:</string>
     <string name="engineering_mode_label">Engineering Mode</string>
+    <string name="general_settings_label">General settings</string>
+    <string name="bopomofo_keyboard_layout">Bopomofo keyboard layout</string>
+    <string name="bopomofo_keyboard_layout_description">Choose a Bopomofo keyboard layout</string>
+    <string name="bopomofo_keyboard_layout_dachen">DaChen</string>
+    <string name="bopomofo_keyboard_layout_hsu">Hsu</string>
+    <string name="bopomofo_keyboard_layout_eten26">E-TEN 26 Keys</string>
 </resources>

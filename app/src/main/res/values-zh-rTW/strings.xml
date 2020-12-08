@@ -10,4 +10,10 @@
     <string name="test_text_input_here">請在此測試文字輸入</string>
     <string name="chewing_data_files_status">新酷音程式庫資料檔狀態：</string>
     <string name="engineering_mode_label">工程模式</string>
+    <string name="general_settings_label">一般設定</string>
+    <string name="bopomofo_keyboard_layout">注音鍵盤排列方式</string>
+    <string name="bopomofo_keyboard_layout_description">選擇偏好的注音鍵盤排列方式</string>
+    <string name="bopomofo_keyboard_layout_dachen">大千</string>
+    <string name="bopomofo_keyboard_layout_hsu">許氏鍵盤</string>
+    <string name="bopomofo_keyboard_layout_eten26">倚天26鍵</string>
 </resources>
