@@ -24,7 +24,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.widget.RelativeLayout
 import androidx.core.view.children
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
 
 class KeyboardPanel(
@@ -104,7 +104,10 @@ class KeyboardPanel(
         keyboardHsuLayoutBinding.root.setupPuncSwitch(serviceContext)
     }
 
-    fun switchToCandidatesLayout(offset: Int, imeService: GuilelessBopomofoService = serviceContext) {
+    fun switchToCandidatesLayout(
+        offset: Int,
+        imeService: GuilelessBopomofoService = serviceContext
+    ) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
         v = imeService.viewBinding
         candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
@@ -132,7 +135,7 @@ class KeyboardPanel(
         // Setup & bind RecyclerView
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
         candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
-        candidatesRecyclerView.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+        candidatesRecyclerView.layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
     }
 
 }
