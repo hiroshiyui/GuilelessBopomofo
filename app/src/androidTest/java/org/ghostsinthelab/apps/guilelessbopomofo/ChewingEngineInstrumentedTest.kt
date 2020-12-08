@@ -283,6 +283,45 @@ class ChewingEngineInstrumentedTest {
         assertEquals(chewingEngine.commitString(), "冷凍")
     }
 
+    @Test
+    fun switchToSymbolSelectionMode() {
+        chewingEngine.setChiEngMode(CHINESE_MODE)
+        chewingEngine.setMaxChiSymbolLen(10)
+        chewingEngine.setCandPerPage(10)
+        chewingEngine.setPhraseChoiceRearward(false)
+        chewingEngine.handleDefault('`')
+        chewingEngine.candOpen()
+        assertEquals(chewingEngine.candTotalChoice(), 13)
+        assertEquals(chewingEngine.candStringByIndexStatic(0), "…")
+        assertEquals(chewingEngine.candStringByIndexStatic(1), "※")
+        assertEquals(chewingEngine.candStringByIndexStatic(2), "常用符號")
+        assertEquals(chewingEngine.candStringByIndexStatic(10), "雙線框")
+        assertEquals(chewingEngine.candStringByIndexStatic(12), "線段")
+        chewingEngine.handleDefault('1')
+        chewingEngine.commitPreeditBuf()
+        assertEquals(chewingEngine.commitString(), "…")
+
+        // 換頁到「雙線框」
+        // keyboardless API 版
+        chewingEngine.handleDefault('`')
+        chewingEngine.candChooseByIndex(10)
+        assertEquals(chewingEngine.candTotalChoice(), 29)
+        assertEquals(chewingEngine.candStringByIndexStatic(0), "╔")
+        chewingEngine.candChooseByIndex(0)
+        chewingEngine.commitPreeditBuf()
+        assertEquals(chewingEngine.commitString(), "╔")
+
+        // 模擬鍵盤操作版
+        chewingEngine.handleDefault('`')
+        chewingEngine.handleSpace()
+        chewingEngine.handleDefault('1')
+        assertEquals(chewingEngine.candTotalChoice(), 29)
+        chewingEngine.handleDefault('1')
+        chewingEngine.commitPreeditBuf()
+        chewingEngine.candClose()
+        assertEquals(chewingEngine.commitString(), "╔")
+    }
+
     @After
     fun deleteChewingEngine() {
         chewingEngine.delete()
