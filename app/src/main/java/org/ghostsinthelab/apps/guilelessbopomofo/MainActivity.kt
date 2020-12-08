@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        binding.textViewAppVersion?.text = applicationContext.packageManager.getPackageInfo(this.packageName, 0).versionName ?: ""
+        binding.textViewAppVersion.text = applicationContext.packageManager.getPackageInfo(this.packageName, 0).versionName
         val view = binding.root
 
         binding.imageViewAppIcon.setOnClickListener {
