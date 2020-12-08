@@ -19,33 +19,42 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private var engineeringModeEnterCount: Int = 0
+    private val engineeringModeEnterClicks: Int = 5
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        binding.textViewAppVersion?.text = applicationContext.packageManager.getPackageInfo(this.packageName, 0).versionName ?: ""
         val view = binding.root
-        setContentView(view)
 
-        // Example of a call to a native method
-        binding.sampleText.text = stringFromJNI()
-    }
+        binding.imageViewAppIcon.setOnClickListener {
+            engineeringModeEnterCount += 1
+            if (engineeringModeEnterCount < engineeringModeEnterClicks) {
+                val engineeringModeHint: String = getString(
+                    R.string.engineering_mode_hint,
+                    (engineeringModeEnterClicks - engineeringModeEnterCount)
+                )
+                val engineeringModeHintToast: Toast =
+                    Toast.makeText(this, engineeringModeHint, Toast.LENGTH_SHORT)
+                engineeringModeHintToast.show()
+            } else {
+                val engineeringModeIntent = Intent(this, EngineeringModeActivity::class.java)
+                startActivity(engineeringModeIntent)
+            }
 
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    external fun stringFromJNI(): String
-
-    companion object {
-        // Used to load the 'native-lib' library on application startup.
-        init {
-            System.loadLibrary("native-lib")
+            return@setOnClickListener
         }
+
+        setContentView(view)
     }
+
 }

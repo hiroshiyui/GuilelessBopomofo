@@ -5,4 +5,8 @@
     <string name="libchewing_init_fail">Failed to initialize libchewing</string>
     <string name="next_cand_list">Next candidates list</string>
     <string name="prev_cand_list">Prev. candidates list</string>
+    <string name="engineering_mode_hint">%1$d clicks to launch engineering mode</string>
+    <string name="test_text_input_here">Test text input here.</string>
+    <string name="chewing_data_files_status">Chewing data files status:</string>
+    <string name="engineering_mode_label">Engineering Mode</string>
 </resources>

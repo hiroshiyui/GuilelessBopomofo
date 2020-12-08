@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".EngineeringModeActivity"
+            android:label="@string/engineering_mode_label" />
+
         <service
             android:name=".GuilelessBopomofoService"
             android:enabled="true"
@@ -17,11 +22,14 @@
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
             </intent-filter>
-            <meta-data android:name="android.view.im"
+
+            <meta-data
+                android:name="android.view.im"
                 android:resource="@xml/input_method" />
         </service>
 
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:configChanges="orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
