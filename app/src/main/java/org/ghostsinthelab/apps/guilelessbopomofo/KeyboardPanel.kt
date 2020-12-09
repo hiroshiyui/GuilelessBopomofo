@@ -49,16 +49,6 @@ class KeyboardPanel(
         Log.v(LOGTAG, "Building KeyboardLayout.")
     }
 
-    fun switchToSymbolsPicker(imeService: GuilelessBopomofoService = serviceContext) {
-        Log.v(LOGTAG, "switchToSymbolsPicker")
-        v = imeService.viewBinding
-        symbolsPickerLayoutBinding = SymbolsPickerLayoutBinding.inflate(imeService.layoutInflater)
-
-        v.keyboardPanel.removeAllViews()
-        v.keyboardPanel.addView(symbolsPickerLayoutBinding.root)
-        currentKeyboardLayout = KeyboardLayout.SYMBOLS
-    }
-
     fun switchToMainLayout(imeService: GuilelessBopomofoService = serviceContext) {
         Log.v(LOGTAG, "switchToMainLayout")
         v = imeService.viewBinding
@@ -71,8 +61,10 @@ class KeyboardPanel(
         // never forget to pass serviceContext here
         keyboardHsuLayoutBinding.root.setupImeSwitch(serviceContext)
         keyboardHsuLayoutBinding.root.setupPuncSwitch(serviceContext)
+        keyboardHsuLayoutBinding.root.setupSymbolSwitch(serviceContext)
     }
 
+    // list current offset's candidates in the candidate window
     fun switchToCandidatesLayout(
         offset: Int,
         imeService: GuilelessBopomofoService = serviceContext
@@ -108,4 +100,16 @@ class KeyboardPanel(
         candidatesRecyclerView.layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
     }
 
+    // just list current candidates in the candidate window
+    fun switchToCandidatesLayout(imeService: GuilelessBopomofoService = serviceContext) {
+        Log.v(LOGTAG, "switchToCandidatesLayout")
+        candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
+        v.keyboardPanel.removeAllViews()
+        v.keyboardPanel.addView(candidatesLayoutBinding.root)
+        currentKeyboardLayout = KeyboardLayout.SYMBOLS
+
+        val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
+        candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
+        candidatesRecyclerView.layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
+    }
 }

@@ -581,3 +581,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_cleanBopomofoBuf(
     return result;
 }
 
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_bufferLen(
+        JNIEnv *env, jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    jint result = chewing_buffer_Len(ctx);
+    return result;
+}

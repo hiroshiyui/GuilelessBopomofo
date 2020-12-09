@@ -17,24 +17,30 @@
   ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   -->
 
-<org.ghostsinthelab.apps.guilelessbopomofo.Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/SymbolsPicker"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:theme="@style/KeyboardTheme">
 
-    <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/SymbolsConstraintLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
-            android:id="@+id/keyButton"
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/SymbolsFlow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Test" />
-    </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
+            android:orientation="horizontal"
+            app:flow_wrapMode="aligned"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</org.ghostsinthelab.apps.guilelessbopomofo.Keyboard>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

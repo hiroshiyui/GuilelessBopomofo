@@ -72,5 +72,6 @@ class ChewingEngine constructor(dataPath: String) {
     external fun candListLast(chewingCtx: Long = context): Int
     external fun bufferString(chewingCtx: Long = context): String
     external fun bufferStringStatic(chewingCtx: Long = context): String
+    external fun bufferLen(chewingCtx: Long = context): Int
     external fun bopomofoStringStatic(chewingCtx: Long = context): String
 }

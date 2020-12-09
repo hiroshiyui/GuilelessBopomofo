@@ -42,7 +42,7 @@
             android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_PICTSYMBOLS"
             app:keyTypeEnum="KEYTYPE_CONTROL"
-            app:srcCompat="@drawable/ic_baseline_sentiment_satisfied_alt_24" />
+            app:srcCompat="@drawable/ic_baseline_format_quote_24" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonW"

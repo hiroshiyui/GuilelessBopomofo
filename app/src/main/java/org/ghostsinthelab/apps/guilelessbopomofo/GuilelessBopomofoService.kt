@@ -86,6 +86,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         viewBinding.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
         keyboardHsuLayoutBinding.root.setupImeSwitch(this)
         keyboardHsuLayoutBinding.root.setupPuncSwitch(this)
+        keyboardHsuLayoutBinding.root.setupSymbolSwitch(this)
 
         myKeyboardView.setOnClickPreEditCharListener(this)
 
@@ -187,9 +188,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                 } else {
                     sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
                 }
-            }
-            KeyEvent.KEYCODE_PICTSYMBOLS -> {
-                viewBinding.keyboardPanel.switchToSymbolsPicker()
             }
             else -> {
                 Log.v(LOGTAG, "This key has not been implemented its handler")
