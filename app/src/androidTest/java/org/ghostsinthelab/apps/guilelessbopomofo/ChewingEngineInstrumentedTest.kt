@@ -188,7 +188,7 @@ class ChewingEngineInstrumentedTest {
         chewingEngine.handleLeft()
         chewingEngine.handleLeft()
         chewingEngine.candOpen()
-        val candidateString: String = chewingEngine.candStringByIndexStatic(0);
+        val candidateString: String = chewingEngine.candStringByIndexStatic(0)
         assertEquals(candidateString, "蜂膠")
         chewingEngine.candChooseByIndex(0)
         chewingEngine.commitPreeditBuf()

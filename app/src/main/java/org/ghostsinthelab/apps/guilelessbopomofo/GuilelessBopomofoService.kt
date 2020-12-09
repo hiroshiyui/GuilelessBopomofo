@@ -52,7 +52,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             setupChewingData(dataPath)
             chewingEngine = ChewingEngine(dataPath)
             chewingEngine.context.let {
-                Log.v(LOGTAG, "Chewing context ptr: ${it.toString()}")
+                Log.v(LOGTAG, "Chewing context ptr: $it")
             }
             val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
             chewingEngine.setKBType(newKeyboardType)
@@ -142,7 +142,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                 }
             }
         }
-        return super.onKeyDown(keyCode, event);
+        return super.onKeyDown(keyCode, event)
     }
 
     override fun onClick(v: View?) {
