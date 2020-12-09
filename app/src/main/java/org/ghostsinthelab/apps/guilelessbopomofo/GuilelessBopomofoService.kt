@@ -133,6 +133,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         when(keyCode) {
             KeyEvent.KEYCODE_BACK -> {
                 if (viewBinding.keyboardPanel.currentKeyboardLayout != KeyboardPanel.KeyboardLayout.MAIN) {
+                    // close if any been opened candidate window first
+                    chewingEngine.candClose()
                     viewBinding.keyboardPanel.switchToMainLayout(this)
                     // intercept general back key action
                     return true

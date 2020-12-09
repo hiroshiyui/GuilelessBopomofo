@@ -26,12 +26,10 @@
 
     <Button
         android:id="@+id/buttonCandidateItem"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="serif"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
         android:text="Button"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"

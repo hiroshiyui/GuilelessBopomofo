@@ -26,11 +26,14 @@ import android.util.Log
 import android.view.HapticFeedbackConstants
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 
 class Keyboard(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
     private val LOGTAG: String = "Keyboard"
     private lateinit var v: KeyboardLayoutBinding
+    private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
 
     init {
         this.orientation = VERTICAL
@@ -61,7 +64,21 @@ class Keyboard(context: Context, attrs: AttributeSet): LinearLayout(context, att
         val keyImageButtonPunc = v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonPunc)
         keyImageButtonPunc.setOnLongClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            v.keyboardPanel.switchPunctuationPicker(imeService)
+            imeService.chewingEngine.candClose()
+            imeService.chewingEngine.handleDefault('`')
+            imeService.chewingEngine.handleDefault('3')
+            imeService.chewingEngine.candOpen()
+            candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
+            v.keyboardPanel.removeAllViews()
+            v.keyboardPanel.addView(candidatesLayoutBinding.root)
+            v.keyboardPanel.currentKeyboardLayout = KeyboardPanel.KeyboardLayout.CANDIDATES
+
+            val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
+            candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
+            val layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
+            layoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+            candidatesRecyclerView.layoutManager = layoutManager
+
             return@setOnLongClickListener true
         }
     }

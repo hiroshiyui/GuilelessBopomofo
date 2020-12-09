@@ -23,9 +23,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.RelativeLayout
-import androidx.core.view.children
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.SymbolsPickerLayoutBinding
 
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
@@ -36,12 +38,11 @@ class KeyboardPanel(
     private var currentOffset: Int = 0
     private lateinit var v: KeyboardLayoutBinding
     private lateinit var symbolsPickerLayoutBinding: SymbolsPickerLayoutBinding
-    private lateinit var punctuationPickerLayoutBinding: PunctuationPickerLayoutBinding
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     override lateinit var serviceContext: GuilelessBopomofoService
 
-    enum class KeyboardLayout { MAIN, SYMBOLS, PUNCTUATIONS, CANDIDATES}
+    enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES}
     lateinit var currentKeyboardLayout: KeyboardLayout
 
     init {
@@ -58,37 +59,6 @@ class KeyboardPanel(
         currentKeyboardLayout = KeyboardLayout.SYMBOLS
     }
 
-    fun switchPunctuationPicker(imeService: GuilelessBopomofoService = serviceContext) {
-        Log.v(LOGTAG, "switchPunctuationPicker")
-        v = imeService.viewBinding
-        val ic = imeService.currentInputConnection
-        punctuationPickerLayoutBinding =
-            PunctuationPickerLayoutBinding.inflate(imeService.layoutInflater)
-
-        punctuationPickerLayoutBinding.root.children.iterator().forEach {
-            if (it is KeyboardRow) {
-                it.children.iterator().forEach { child ->
-                    if (child is KeyButton) {
-                        child.setOnClickListener {
-                            if (imeService.chewingEngine.commitPreeditBuf() == 0) {
-                                ic.commitText(
-                                    imeService.chewingEngine.commitStringStatic(),
-                                    1
-                                )
-                            }
-                            ic.commitText((child as KeyButton).keySymbol, 1)
-                            v.keyboardView.syncPreEditBuffers()
-                        }
-                    }
-                }
-            }
-        }
-
-        v.keyboardPanel.removeAllViews()
-        v.keyboardPanel.addView(punctuationPickerLayoutBinding.root)
-        currentKeyboardLayout = KeyboardLayout.PUNCTUATIONS
-    }
-
     fun switchToMainLayout(imeService: GuilelessBopomofoService = serviceContext) {
         Log.v(LOGTAG, "switchToMainLayout")
         v = imeService.viewBinding
@@ -97,6 +67,7 @@ class KeyboardPanel(
         v.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
         currentKeyboardLayout = KeyboardLayout.MAIN
 
+        v.keyboardView.syncPreEditBuffers(imeService)
         // never forget to pass serviceContext here
         keyboardHsuLayoutBinding.root.setupImeSwitch(serviceContext)
         keyboardHsuLayoutBinding.root.setupPuncSwitch(serviceContext)
