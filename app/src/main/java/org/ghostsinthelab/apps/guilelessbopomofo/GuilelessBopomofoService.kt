@@ -84,12 +84,14 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
         chewingEngine.setKBType(newKeyboardType)
         viewBinding.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
+
         keyboardHsuLayoutBinding.root.setupImeSwitch(this)
         keyboardHsuLayoutBinding.root.setupPuncSwitch(this)
         keyboardHsuLayoutBinding.root.setupSymbolSwitch(this)
 
         myKeyboardView.setOnClickPreEditCharListener(this)
 
+        viewBinding.keyboardPanel.currentKeyboardLayout = KeyboardPanel.KeyboardLayout.MAIN
         return myKeyboardView
     }
 

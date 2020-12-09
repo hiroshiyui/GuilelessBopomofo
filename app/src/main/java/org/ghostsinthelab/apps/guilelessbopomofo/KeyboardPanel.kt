@@ -42,14 +42,15 @@ class KeyboardPanel(
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     override lateinit var serviceContext: GuilelessBopomofoService
 
-    enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES}
+    enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES }
+
     lateinit var currentKeyboardLayout: KeyboardLayout
 
     init {
         Log.v(LOGTAG, "Building KeyboardLayout.")
     }
 
-    fun switchToMainLayout(imeService: GuilelessBopomofoService = serviceContext) {
+    fun switchToMainLayout(imeService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "switchToMainLayout")
         v = imeService.viewBinding
         keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(imeService.layoutInflater)
@@ -59,15 +60,15 @@ class KeyboardPanel(
 
         v.keyboardView.syncPreEditBuffers(imeService)
         // never forget to pass serviceContext here
-        keyboardHsuLayoutBinding.root.setupImeSwitch(serviceContext)
-        keyboardHsuLayoutBinding.root.setupPuncSwitch(serviceContext)
-        keyboardHsuLayoutBinding.root.setupSymbolSwitch(serviceContext)
+        keyboardHsuLayoutBinding.root.setupImeSwitch(imeService)
+        keyboardHsuLayoutBinding.root.setupPuncSwitch(imeService)
+        keyboardHsuLayoutBinding.root.setupSymbolSwitch(imeService)
     }
 
     // list current offset's candidates in the candidate window
     fun switchToCandidatesLayout(
         offset: Int,
-        imeService: GuilelessBopomofoService = serviceContext
+        imeService: GuilelessBopomofoService
     ) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
         v = imeService.viewBinding
@@ -97,19 +98,22 @@ class KeyboardPanel(
         // Setup & bind RecyclerView
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
         candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
-        candidatesRecyclerView.layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
+        candidatesRecyclerView.layoutManager =
+            StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
     }
 
     // just list current candidates in the candidate window
-    fun switchToCandidatesLayout(imeService: GuilelessBopomofoService = serviceContext) {
+    fun switchToCandidatesLayout(imeService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
         candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
+        v = imeService.viewBinding
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(candidatesLayoutBinding.root)
         currentKeyboardLayout = KeyboardLayout.SYMBOLS
 
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
         candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
-        candidatesRecyclerView.layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
+        candidatesRecyclerView.layoutManager =
+            StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
     }
 }
