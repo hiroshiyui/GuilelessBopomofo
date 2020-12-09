@@ -19,24 +19,22 @@
 
 <org.ghostsinthelab.apps.guilelessbopomofo.Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/keyboardSymbols"
+    android:id="@+id/SymbolsPicker"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@style/KeyboardTheme">
 
-    <LinearLayout
+    <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:theme="@style/KeyboardTheme">
+        android:layout_height="match_parent">
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButtonBack"
+        <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
+            android:id="@+id/keyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:backgroundTint="#FFC107"
-            android:onClick="onClick"
-            app:srcCompat="@drawable/ic_baseline_undo_24" />
-    </LinearLayout>
+            android:layout_weight="1"
+            android:text="Test" />
+    </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
+
 </org.ghostsinthelab.apps.guilelessbopomofo.Keyboard>

@@ -41,6 +41,9 @@ class KeyboardPanel(
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     override lateinit var serviceContext: GuilelessBopomofoService
 
+    enum class KeyboardLayout { MAIN, SYMBOLS, PUNCTUATIONS, CANDIDATES}
+    lateinit var currentKeyboardLayout: KeyboardLayout
+
     init {
         Log.v(LOGTAG, "Building KeyboardLayout.")
     }
@@ -49,13 +52,10 @@ class KeyboardPanel(
         Log.v(LOGTAG, "switchToSymbolsPicker")
         v = imeService.viewBinding
         symbolsPickerLayoutBinding = SymbolsPickerLayoutBinding.inflate(imeService.layoutInflater)
-        symbolsPickerLayoutBinding.keyImageButtonBack.setOnClickListener {
-            switchToMainLayout(
-                imeService
-            )
-        }
+
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(symbolsPickerLayoutBinding.root)
+        currentKeyboardLayout = KeyboardLayout.SYMBOLS
     }
 
     fun switchPunctuationPicker(imeService: GuilelessBopomofoService = serviceContext) {
@@ -64,11 +64,6 @@ class KeyboardPanel(
         val ic = imeService.currentInputConnection
         punctuationPickerLayoutBinding =
             PunctuationPickerLayoutBinding.inflate(imeService.layoutInflater)
-        punctuationPickerLayoutBinding.keyImageButtonBack.setOnClickListener {
-            switchToMainLayout(
-                imeService
-            )
-        }
 
         punctuationPickerLayoutBinding.root.children.iterator().forEach {
             if (it is KeyboardRow) {
@@ -91,6 +86,7 @@ class KeyboardPanel(
 
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(punctuationPickerLayoutBinding.root)
+        currentKeyboardLayout = KeyboardLayout.PUNCTUATIONS
     }
 
     fun switchToMainLayout(imeService: GuilelessBopomofoService = serviceContext) {
@@ -99,6 +95,8 @@ class KeyboardPanel(
         keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(imeService.layoutInflater)
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
+        currentKeyboardLayout = KeyboardLayout.MAIN
+
         // never forget to pass serviceContext here
         keyboardHsuLayoutBinding.root.setupImeSwitch(serviceContext)
         keyboardHsuLayoutBinding.root.setupPuncSwitch(serviceContext)
@@ -113,6 +111,7 @@ class KeyboardPanel(
         candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(candidatesLayoutBinding.root)
+        currentKeyboardLayout = KeyboardLayout.CANDIDATES
 
         // reset candidates list if offset has been changed
         if (currentOffset != offset) {

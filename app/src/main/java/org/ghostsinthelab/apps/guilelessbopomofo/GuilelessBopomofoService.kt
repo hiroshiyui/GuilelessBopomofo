@@ -128,6 +128,20 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         chewingEngine.delete()
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.v(LOGTAG, "onKeyDown()")
+        when(keyCode) {
+            KeyEvent.KEYCODE_BACK -> {
+                if (viewBinding.keyboardPanel.currentKeyboardLayout != KeyboardPanel.KeyboardLayout.MAIN) {
+                    viewBinding.keyboardPanel.switchToMainLayout(this)
+                    // intercept general back key action
+                    return true
+                }
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     override fun onClick(v: View?) {
         v?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         Log.v(LOGTAG, "onClick")
