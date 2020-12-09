@@ -54,8 +54,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             chewingEngine.context.let {
                 Log.v(LOGTAG, "Chewing context ptr: $it")
             }
-            val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
-            chewingEngine.setKBType(newKeyboardType)
         } catch (e: Exception) {
             Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
                 .show()
@@ -83,6 +81,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(layoutInflater)
 
         // 這邊有機會可以做不同鍵盤排列的抽換… perhaps a method called setMainLayout()
+        val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
+        chewingEngine.setKBType(newKeyboardType)
         viewBinding.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
         keyboardHsuLayoutBinding.root.setupImeSwitch(this)
         keyboardHsuLayoutBinding.root.setupPuncSwitch(this)
