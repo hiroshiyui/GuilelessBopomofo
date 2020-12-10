@@ -589,3 +589,13 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_bufferLen(
     jint result = chewing_buffer_Len(ctx);
     return result;
 }
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setEasySymbolInput(
+        JNIEnv *env,
+        jobject,
+        jint mode,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    chewing_set_easySymbolInput(ctx, mode);
+}

@@ -207,6 +207,14 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                     sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
                 }
             }
+            // 在大千鍵盤下，標準的逗號鍵會對映到「ㄝ」，這裡的逗號鍵要另外當成特別的「常用符號」功能鍵，
+            // 短觸會輸出全形逗號，長按交給 setupPuncSwitch() 處理
+            KeyEvent.KEYCODE_COMMA -> {
+                // simulates Shift + ,
+                chewingEngine.setEasySymbolInput(1)
+                chewingEngine.handleDefault(',')
+                chewingEngine.setEasySymbolInput(0)
+            }
             else -> {
                 Log.v(LOGTAG, "This key has not been implemented its handler")
             }
