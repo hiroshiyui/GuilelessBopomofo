@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.SymbolsPickerLayoutBinding
 
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
@@ -37,7 +36,6 @@ class KeyboardPanel(
     var currentCandidatesList: Int = 0
     private var currentOffset: Int = 0
     private lateinit var v: KeyboardLayoutBinding
-    private lateinit var symbolsPickerLayoutBinding: SymbolsPickerLayoutBinding
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     override lateinit var serviceContext: GuilelessBopomofoService
@@ -102,7 +100,7 @@ class KeyboardPanel(
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
     }
 
-    // just list current candidates in the candidate window
+    // just list current candidate window
     fun switchToCandidatesLayout(imeService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
         candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
