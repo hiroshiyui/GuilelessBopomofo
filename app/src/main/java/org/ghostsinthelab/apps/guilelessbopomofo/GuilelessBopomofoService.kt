@@ -173,27 +173,36 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                 chewingEngine.setKBType(newKeyboardType)
                 keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(layoutInflater)
                 viewBinding.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
-                keyboardHsuLayoutBinding.root.setupImeSwitch(this)
-                keyboardHsuLayoutBinding.root.setupPuncSwitch(this)
-                keyboardHsuLayoutBinding.root.setupSymbolSwitch(this)
+                keyboardHsuLayoutBinding.root.apply {
+                    setupImeSwitch(this@GuilelessBopomofoService)
+                    setupPuncSwitch(this@GuilelessBopomofoService)
+                    setupSymbolSwitch(this@GuilelessBopomofoService)
+                    setupBackspace(this@GuilelessBopomofoService)
+                }
             }
             "KB_ET26" -> {
                 val newKeyboardType = chewingEngine.convKBStr2Num("KB_ET26")
                 chewingEngine.setKBType(newKeyboardType)
                 keyboardEt26LayoutBinding = KeyboardEt26LayoutBinding.inflate(layoutInflater)
                 viewBinding.keyboardPanel.addView(keyboardEt26LayoutBinding.root)
-                keyboardEt26LayoutBinding.root.setupImeSwitch(this)
-                keyboardEt26LayoutBinding.root.setupPuncSwitch(this)
-                keyboardEt26LayoutBinding.root.setupSymbolSwitch(this)
+                keyboardEt26LayoutBinding.root.apply {
+                    setupImeSwitch(this@GuilelessBopomofoService)
+                    setupPuncSwitch(this@GuilelessBopomofoService)
+                    setupSymbolSwitch(this@GuilelessBopomofoService)
+                    setupBackspace(this@GuilelessBopomofoService)
+                }
             }
             "KB_DEFAULT" -> {
                 val newKeyboardType = chewingEngine.convKBStr2Num("KB_DEFAULT")
                 chewingEngine.setKBType(newKeyboardType)
                 keyboardDachenLayoutBinding = KeyboardDachenLayoutBinding.inflate(layoutInflater)
                 viewBinding.keyboardPanel.addView(keyboardDachenLayoutBinding.root)
-                keyboardDachenLayoutBinding.root.setupImeSwitch(this)
-                keyboardDachenLayoutBinding.root.setupPuncSwitch(this)
-                keyboardDachenLayoutBinding.root.setupSymbolSwitch(this)
+                keyboardDachenLayoutBinding.root.apply {
+                    setupImeSwitch(this@GuilelessBopomofoService)
+                    setupPuncSwitch(this@GuilelessBopomofoService)
+                    setupSymbolSwitch(this@GuilelessBopomofoService)
+                    setupBackspace(this@GuilelessBopomofoService)
+                }
             }
         }
     }
@@ -234,9 +243,11 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             // 短觸會輸出全形逗號，長按交給 setupPuncSwitch() 處理
             KeyEvent.KEYCODE_COMMA -> {
                 // simulates Shift + ,
-                chewingEngine.setEasySymbolInput(1)
-                chewingEngine.handleDefault(',')
-                chewingEngine.setEasySymbolInput(0)
+                chewingEngine.apply {
+                    setEasySymbolInput(1)
+                    handleDefault(',')
+                    setEasySymbolInput(0)
+                }
             }
             else -> {
                 Log.v(LOGTAG, "This key has not been implemented its handler")
