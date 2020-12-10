@@ -16,4 +16,10 @@
     <string name="bopomofo_keyboard_layout_dachen">大千</string>
     <string name="bopomofo_keyboard_layout_hsu">許氏鍵盤</string>
     <string name="bopomofo_keyboard_layout_eten26">倚天26鍵</string>
+    <string name="guileless_bopomofo_inputservice_status">樸實注音鍵盤服務啟用狀態</string>
+    <string name="guileless_bopomofo_service_status">目前的樸實注音鍵盤服務啟用狀態：</string>
+    <string name="guileless_bopomofo_service_status_description">偵測目前的樸實注音鍵盤服務啟用狀態</string>
+    <string name="service_is_enabled">啟用</string>
+    <string name="service_is_disabled">尚未啟用</string>
+    <string name="launch_input_method_system_settings">開啟系統鍵盤管理設定</string>
 </resources>

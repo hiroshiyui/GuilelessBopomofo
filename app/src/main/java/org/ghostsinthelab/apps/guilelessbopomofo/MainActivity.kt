@@ -21,19 +21,26 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
+import android.view.inputmethod.InputMethodInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private val LOGTAG: String = "MainActivity"
     private lateinit var binding: ActivityMainBinding
     private var engineeringModeEnterCount: Int = 0
     private val engineeringModeEnterClicks: Int = 5
+    private var currentServiceStatus: Boolean = false
+    private val imeSettingsRequestCode: Int = 254
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        binding.textViewAppVersion.text = applicationContext.packageManager.getPackageInfo(this.packageName, 0).versionName
+        binding.textViewAppVersion.text =
+            applicationContext.packageManager.getPackageInfo(this.packageName, 0).versionName
         val view = binding.root
 
         binding.imageViewAppIcon.setOnClickListener {
@@ -54,7 +61,43 @@ class MainActivity : AppCompatActivity() {
             return@setOnClickListener
         }
 
+        updateGuilelessBopomofoStatus()
+
+        binding.buttonLaunchImeSystemSettings?.setOnClickListener {
+            val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
+            startActivityForResult(intent, imeSettingsRequestCode)
+        }
+
         setContentView(view)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == imeSettingsRequestCode) {
+            updateGuilelessBopomofoStatus()
+        }
+    }
+
+    private fun enabledInputMethodList(): List<InputMethodInfo> {
+        val inputMethodManager: InputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        return inputMethodManager.enabledInputMethodList
+    }
+
+    private fun isGuilelessBopomofoEnabled(): Boolean {
+        enabledInputMethodList().forEach {
+            if (it.serviceName == "org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService") {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun updateGuilelessBopomofoStatus() {
+        if (isGuilelessBopomofoEnabled()) {
+            binding.textViewServiceStatus?.text = getString(R.string.service_is_enabled)
+        } else {
+            binding.textViewServiceStatus?.text = getString(R.string.service_is_disabled)
+        }
+    }
 }

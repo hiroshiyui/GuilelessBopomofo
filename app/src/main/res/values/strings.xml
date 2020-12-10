@@ -15,4 +15,10 @@
     <string name="bopomofo_keyboard_layout_dachen">DaChen</string>
     <string name="bopomofo_keyboard_layout_hsu">Hsu</string>
     <string name="bopomofo_keyboard_layout_eten26">E-TEN 26 Keys</string>
+    <string name="guileless_bopomofo_inputservice_status">Guileless Bopofomo Service Status</string>
+    <string name="guileless_bopomofo_service_status">Current Guileless Bopomofo service is:</string>
+    <string name="guileless_bopomofo_service_status_description">Detect current Guileless Bopomofo service status</string>
+    <string name="service_is_enabled">Enabled</string>
+    <string name="service_is_disabled">Disabled</string>
+    <string name="launch_input_method_system_settings">Launch keyboard system  settings</string>
 </resources>
