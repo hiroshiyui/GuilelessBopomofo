@@ -19,6 +19,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.content.SharedPreferences
 import android.inputmethodservice.InputMethodService
 import android.util.Log
 import android.view.HapticFeedbackConstants
@@ -37,6 +38,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     lateinit var viewBinding: KeyboardLayoutBinding
     lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     lateinit var myKeyboardView: KeyboardView
+    private lateinit var sharedPreferences: SharedPreferences
+    private val default_keyboard_layout = "KB_HSU"
 
     init {
         System.loadLibrary("chewing")
@@ -44,6 +47,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     override fun onCreate() {
         super.onCreate()
+        sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
         Log.v(LOGTAG, "onCreate()")
         // Initializing Chewing
         try {
@@ -78,16 +82,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         viewBinding.keyboardPanel.setServiceContext(this)
         viewBinding.keyboardView.setServiceContext(this)
 
-        keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(layoutInflater)
-
-        // 這邊有機會可以做不同鍵盤排列的抽換… perhaps a method called setMainLayout()
-        val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
-        chewingEngine.setKBType(newKeyboardType)
-        viewBinding.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
-
-        keyboardHsuLayoutBinding.root.setupImeSwitch(this)
-        keyboardHsuLayoutBinding.root.setupPuncSwitch(this)
-        keyboardHsuLayoutBinding.root.setupSymbolSwitch(this)
+        // 不同鍵盤排列的抽換 support different Bopomofo keyboard layouts
+        setMainLayout()
 
         myKeyboardView.setOnClickPreEditCharListener(this)
 
@@ -133,7 +129,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         Log.v(LOGTAG, "onKeyDown()")
-        when(keyCode) {
+        when (keyCode) {
             KeyEvent.KEYCODE_BACK -> {
                 if (viewBinding.keyboardPanel.currentKeyboardLayout != KeyboardPanel.KeyboardLayout.MAIN) {
                     // close if any been opened candidate window first
@@ -161,6 +157,26 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         }
 
         myKeyboardView.syncPreEditBuffers()
+    }
+
+    fun setMainLayout() {
+        Log.v(LOGTAG, "setMainLayout()")
+        viewBinding.keyboardPanel.removeAllViews()
+        when (getUserKeyboardLayoutPreferences()) {
+            "KB_HSU" -> {
+                val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
+                chewingEngine.setKBType(newKeyboardType)
+                keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(layoutInflater)
+                viewBinding.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
+                keyboardHsuLayoutBinding.root.setupImeSwitch(this)
+                keyboardHsuLayoutBinding.root.setupPuncSwitch(this)
+                keyboardHsuLayoutBinding.root.setupSymbolSwitch(this)
+            }
+        }
+    }
+
+    private fun getUserKeyboardLayoutPreferences(): String? {
+        return sharedPreferences.getString("user_keyboard_layout", default_keyboard_layout)
     }
 
     private fun handleCharacterKey(v: BehaveLikeKey<*>) {

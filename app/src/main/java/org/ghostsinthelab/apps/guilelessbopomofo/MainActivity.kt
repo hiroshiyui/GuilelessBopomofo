@@ -20,11 +20,13 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.inputmethod.InputMethodInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
@@ -35,10 +37,13 @@ class MainActivity : AppCompatActivity() {
     private var engineeringModeEnterCount: Int = 0
     private val engineeringModeEnterClicks: Int = 5
     private val imeSettingsRequestCode: Int = 254
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.v(LOGTAG, "onCreate()")
         super.onCreate(savedInstanceState)
+        sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.textViewAppVersion.text =
             applicationContext.packageManager.getPackageInfo(this.packageName, 0).versionName
@@ -67,6 +72,17 @@ class MainActivity : AppCompatActivity() {
         binding.buttonLaunchImeSystemSettings?.setOnClickListener {
             val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
             startActivityForResult(intent, imeSettingsRequestCode)
+        }
+
+        for ((button, layout) in
+        mapOf<RadioButton, String>(
+            binding.radioButtonLayoutDaChen to "KB_DEFAULT",
+            binding.radioButtonLayoutETen26 to "KB_ET26",
+            binding.radioButtonLayoutHsu to "KB_HSU"
+        )) {
+            button.setOnClickListener {
+                sharedPreferences.edit().putString("user_keyboard_layout", layout).apply()
+            }
         }
 
         setContentView(view)

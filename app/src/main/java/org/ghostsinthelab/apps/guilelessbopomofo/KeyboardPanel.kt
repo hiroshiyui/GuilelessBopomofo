@@ -51,16 +51,10 @@ class KeyboardPanel(
     fun switchToMainLayout(imeService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "switchToMainLayout")
         v = imeService.viewBinding
-        keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(imeService.layoutInflater)
-        v.keyboardPanel.removeAllViews()
-        v.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
+        imeService.setMainLayout()
         currentKeyboardLayout = KeyboardLayout.MAIN
 
         v.keyboardView.syncPreEditBuffers(imeService)
-        // never forget to pass serviceContext here
-        keyboardHsuLayoutBinding.root.setupImeSwitch(imeService)
-        keyboardHsuLayoutBinding.root.setupPuncSwitch(imeService)
-        keyboardHsuLayoutBinding.root.setupSymbolSwitch(imeService)
     }
 
     // list current offset's candidates in the candidate window
