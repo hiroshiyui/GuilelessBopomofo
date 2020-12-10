@@ -27,7 +27,6 @@ import android.util.Log
 import android.view.inputmethod.InputMethodInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
 
@@ -51,15 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.imageViewAppIcon.setOnClickListener {
             engineeringModeEnterCount += 1
-            if (engineeringModeEnterCount < engineeringModeEnterClicks) {
-                val engineeringModeHint: String = getString(
-                    R.string.engineering_mode_hint,
-                    (engineeringModeEnterClicks - engineeringModeEnterCount)
-                )
-                val engineeringModeHintToast: Toast =
-                    Toast.makeText(this, engineeringModeHint, Toast.LENGTH_SHORT)
-                engineeringModeHintToast.show()
-            } else {
+            if (engineeringModeEnterCount >= engineeringModeEnterClicks) {
                 val engineeringModeIntent = Intent(this, EngineeringModeActivity::class.java)
                 startActivity(engineeringModeIntent)
             }
@@ -69,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         updateGuilelessBopomofoStatus()
 
-        binding.buttonLaunchImeSystemSettings?.setOnClickListener {
+        binding.buttonLaunchImeSystemSettings.setOnClickListener {
             val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
             startActivityForResult(intent, imeSettingsRequestCode)
         }
@@ -82,6 +73,10 @@ class MainActivity : AppCompatActivity() {
         )) {
             button.setOnClickListener {
                 sharedPreferences.edit().putString("user_keyboard_layout", layout).apply()
+            }
+
+            if (sharedPreferences.getString("user_keyboard_layout", "KB_HSU") == layout) {
+                button.isChecked = true
             }
         }
 
@@ -112,9 +107,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateGuilelessBopomofoStatus() {
         if (isGuilelessBopomofoEnabled()) {
-            binding.textViewServiceStatus?.text = getString(R.string.service_is_enabled)
+            binding.textViewServiceStatus.text = getString(R.string.service_is_enabled)
         } else {
-            binding.textViewServiceStatus?.text = getString(R.string.service_is_disabled)
+            binding.textViewServiceStatus.text = getString(R.string.service_is_disabled)
         }
     }
 }

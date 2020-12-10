@@ -27,6 +27,8 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26LayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import java.io.File
@@ -37,6 +39,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     lateinit var chewingEngine: ChewingEngine
     lateinit var viewBinding: KeyboardLayoutBinding
     lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
+    lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
+    lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
     lateinit var myKeyboardView: KeyboardView
     private lateinit var sharedPreferences: SharedPreferences
     private val default_keyboard_layout = "KB_HSU"
@@ -162,7 +166,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     fun setMainLayout() {
         Log.v(LOGTAG, "setMainLayout()")
         viewBinding.keyboardPanel.removeAllViews()
-        when (getUserKeyboardLayoutPreferences()) {
+
+        when (getUserKeyboardLayoutPreference()) {
             "KB_HSU" -> {
                 val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
                 chewingEngine.setKBType(newKeyboardType)
@@ -172,10 +177,28 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                 keyboardHsuLayoutBinding.root.setupPuncSwitch(this)
                 keyboardHsuLayoutBinding.root.setupSymbolSwitch(this)
             }
+            "KB_ET26" -> {
+                val newKeyboardType = chewingEngine.convKBStr2Num("KB_ET26")
+                chewingEngine.setKBType(newKeyboardType)
+                keyboardEt26LayoutBinding = KeyboardEt26LayoutBinding.inflate(layoutInflater)
+                viewBinding.keyboardPanel.addView(keyboardEt26LayoutBinding.root)
+                keyboardEt26LayoutBinding.root.setupImeSwitch(this)
+                keyboardEt26LayoutBinding.root.setupPuncSwitch(this)
+                keyboardEt26LayoutBinding.root.setupSymbolSwitch(this)
+            }
+            "KB_DEFAULT" -> {
+                val newKeyboardType = chewingEngine.convKBStr2Num("KB_DEFAULT")
+                chewingEngine.setKBType(newKeyboardType)
+                keyboardDachenLayoutBinding = KeyboardDachenLayoutBinding.inflate(layoutInflater)
+                viewBinding.keyboardPanel.addView(keyboardDachenLayoutBinding.root)
+                keyboardDachenLayoutBinding.root.setupImeSwitch(this)
+                keyboardDachenLayoutBinding.root.setupPuncSwitch(this)
+                keyboardDachenLayoutBinding.root.setupSymbolSwitch(this)
+            }
         }
     }
 
-    private fun getUserKeyboardLayoutPreferences(): String? {
+    fun getUserKeyboardLayoutPreference(): String? {
         return sharedPreferences.getString("user_keyboard_layout", default_keyboard_layout)
     }
 

@@ -139,7 +139,8 @@
             android:id="@+id/textViewServiceStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
+            android:fontFamily="sans-serif-black"
             android:text="TextView"
             app:layout_constraintStart_toEndOf="@+id/textViewSettingLabelServiceStatus"
             app:layout_constraintTop_toTopOf="@+id/textViewSettingLabelServiceStatus" />

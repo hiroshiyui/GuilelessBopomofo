@@ -25,7 +25,6 @@ import android.util.Log
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 
 class KeyboardPanel(
@@ -37,7 +36,6 @@ class KeyboardPanel(
     private var currentOffset: Int = 0
     private lateinit var v: KeyboardLayoutBinding
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
-    private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     override lateinit var serviceContext: GuilelessBopomofoService
 
     enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES }
