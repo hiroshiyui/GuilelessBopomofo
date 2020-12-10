@@ -47,19 +47,16 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
         v.textViewPreEditBuffer.setOnClickListener {
             val offset = v.textViewPreEditBuffer.offset
 
-            // close if any been opened candidate window first
-            imeService.chewingEngine.candClose()
-
-            // move to first character
-            imeService.chewingEngine.handleHome()
-
-            // move to clicked character
-            repeat(offset) {
-                imeService.chewingEngine.handleRight()
+            imeService.chewingEngine.apply {
+                // close if any been opened candidate window first
+                candClose()
+                // move to first character
+                handleHome()
+                // move to clicked character
+                repeat(offset) { handleRight() }
+                // open candidates window
+                candOpen()
             }
-
-            // list candidates
-            imeService.chewingEngine.candOpen()
 
             v.keyboardPanel.switchToCandidatesLayout(offset, imeService)
         }
