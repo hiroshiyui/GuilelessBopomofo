@@ -177,7 +177,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                     setupImeSwitch(this@GuilelessBopomofoService)
                     setupPuncSwitch(this@GuilelessBopomofoService)
                     setupSymbolSwitch(this@GuilelessBopomofoService)
-                    setupBackspace(this@GuilelessBopomofoService)
                 }
             }
             "KB_ET26" -> {
@@ -189,7 +188,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                     setupImeSwitch(this@GuilelessBopomofoService)
                     setupPuncSwitch(this@GuilelessBopomofoService)
                     setupSymbolSwitch(this@GuilelessBopomofoService)
-                    setupBackspace(this@GuilelessBopomofoService)
                 }
             }
             "KB_DEFAULT" -> {
@@ -201,7 +199,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                     setupImeSwitch(this@GuilelessBopomofoService)
                     setupPuncSwitch(this@GuilelessBopomofoService)
                     setupSymbolSwitch(this@GuilelessBopomofoService)
-                    setupBackspace(this@GuilelessBopomofoService)
                 }
             }
         }
