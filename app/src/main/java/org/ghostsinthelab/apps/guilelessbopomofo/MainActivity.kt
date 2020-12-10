@@ -106,10 +106,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateGuilelessBopomofoStatus() {
-        if (isGuilelessBopomofoEnabled()) {
-            binding.textViewServiceStatus.text = getString(R.string.service_is_enabled)
-        } else {
-            binding.textViewServiceStatus.text = getString(R.string.service_is_disabled)
-        }
+        binding.textViewServiceStatus.text =
+            if (isGuilelessBopomofoEnabled()) getString(R.string.service_is_enabled) else getString(
+                R.string.service_is_disabled
+            )
     }
 }
