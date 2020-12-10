@@ -22,6 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.inputmethod.InputMethodInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -33,10 +34,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var engineeringModeEnterCount: Int = 0
     private val engineeringModeEnterClicks: Int = 5
-    private var currentServiceStatus: Boolean = false
     private val imeSettingsRequestCode: Int = 254
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.v(LOGTAG, "onCreate()")
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.textViewAppVersion.text =

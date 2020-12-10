@@ -22,4 +22,5 @@
     <string name="service_is_enabled">啟用</string>
     <string name="service_is_disabled">尚未啟用</string>
     <string name="launch_input_method_system_settings">開啟系統鍵盤管理設定</string>
+    <string name="applcation_version_label">應用程式版本</string>
 </resources>

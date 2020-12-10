@@ -8,14 +8,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/textViewAppVersion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="AppVersion"
+            android:contentDescription="@string/applcation_version_label"
+            android:text="@string/applcation_version_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewAppName" />
@@ -36,6 +37,7 @@
             android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:contentDescription="@string/app_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -43,16 +45,16 @@
 
         <TextView
             android:id="@+id/textViewSettingDescriptionBopomofoKeyboardLayout"
+            style="@style/SettingsDescription"
             android:text="@string/bopomofo_keyboard_layout_description"
             app:layout_constraintStart_toStartOf="@+id/textViewSettingBopomofoKeyboardLayout"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSettingBopomofoKeyboardLayout"
-            style="@style/SettingsDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingBopomofoKeyboardLayout" />
 
         <RadioGroup
             android:id="@+id/radioGroupSettingBopomofoKeyboardLayout"
+            style="@style/SettingsWidget"
             app:layout_constraintStart_toStartOf="@+id/textViewSettingBopomofoKeyboardLayout"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionBopomofoKeyboardLayout"
-            style="@style/SettingsWidget">
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionBopomofoKeyboardLayout">
 
             <RadioButton
                 android:id="@+id/radioButtonLayoutDaChen"
@@ -85,10 +87,10 @@
 
         <TextView
             android:id="@+id/textViewHeadingGenericSettings"
+            style="@style/SettingsPrimaryHeader"
             android:text="@string/general_settings_label"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
-            style="@style/SettingsPrimaryHeader" />
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
 
         <TextView
             android:id="@+id/textViewSettingBopomofoKeyboardLayout"
@@ -106,7 +108,7 @@
             app:layout_constraintTop_toBottomOf="@+id/radioGroupSettingBopomofoKeyboardLayout" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textViewSettingServiceStatus"
             style="@style/SettingsLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -116,22 +118,22 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewHeadingGenericSettings" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textViewSettingDescriptionServiceStatus"
             style="@style/SettingsDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/guileless_bopomofo_service_status_description"
-            app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintStart_toStartOf="@+id/textViewSettingServiceStatus"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingServiceStatus" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/textViewSettingLabelServiceStatus"
             style="@style/SettingsWidget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/guileless_bopomofo_service_status"
-            app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintStart_toStartOf="@+id/textViewSettingServiceStatus"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionServiceStatus" />
 
         <TextView
             android:id="@+id/textViewServiceStatus"
@@ -139,8 +141,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="TextView"
-            app:layout_constraintStart_toEndOf="@+id/textView5"
-            app:layout_constraintTop_toTopOf="@+id/textView5" />
+            app:layout_constraintStart_toEndOf="@+id/textViewSettingLabelServiceStatus"
+            app:layout_constraintTop_toTopOf="@+id/textViewSettingLabelServiceStatus" />
 
         <Button
             android:id="@+id/buttonLaunchImeSystemSettings"
@@ -148,8 +150,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/launch_input_method_system_settings"
-            app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintStart_toStartOf="@+id/textViewSettingServiceStatus"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingLabelServiceStatus" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
