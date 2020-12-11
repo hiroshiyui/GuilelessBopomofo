@@ -1,0 +1,29 @@
+<!--
+  ~ Guileless Bopomofo
+  ~ Copyright (C) 2020 YOU, HUI-HONG
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="m16.2861,16.7985 l-0.3843,-0.335q-0.1281,-0.1084 -0.3646,-0.3547 -2.1775,-2.3155 -4.5423,-4.2762 -2.3844,-1.9805 -3.3501,-2.5421 -0.4927,-0.2857 -0.4927,-0.5419 0,-0.3547 0.7488,-1.0641 0.6503,-0.6109 1.0346,-0.6109 0.1675,0 0.4828,0.2759 0.1774,0.1478 1.2908,1.4188l0.8671,1.0543q1.1035,1.3105 2.7983,3.4387 1.7637,2.2071 2.0199,2.5815l0.266,0.3744q0.1872,0.2759 0.1872,0.4631 0,0.2463 -0.2463,0.2463 -0.1675,0 -0.3153,-0.1281z"
+      android:strokeWidth="0.575999"
+      android:fillColor="#6a5753"/>
+</vector>

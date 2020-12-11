@@ -1,0 +1,33 @@
+<!--
+  ~ Guileless Bopomofo
+  ~ Copyright (C) 2020 YOU, HUI-HONG
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="m22.0857,19.1114 l1.0572,0.4793q0.3524,0.155 0.3524,0.3101 0,0.2396 -0.733,0.5779 -1.5506,0.7048 -2.5796,0.7048 -1.17,0 -4.2852,-2.5373 -6.3573,-5.1873 -10.0645,-12.2635 -0.6061,-1.1559 -1.0572,-1.1559 -0.592,0 -1.7056,1.2827 -0.5216,0.592 -1.0854,0.592 -0.592,0 -1.1418,-0.4088 -0.3383,-0.2537 -0.3383,-0.5075 0,-0.1833 0.6625,-0.6061 1.7338,-1.0572 2.8897,-2.1426 0.6625,-0.6202 1.0713,-0.6202 0.5075,0 0.7471,0.3806 0.1128,0.1833 0.5497,1.2827 0.9585,2.4668 3.5522,5.6807 4.4543,5.5256 12.1085,8.951z"
+      android:strokeWidth="0.824033"
+      android:fillColor="#6a5753"/>
+  <path
+      android:pathData="m22.0857,19.1114 l1.0572,0.4793q0.3524,0.155 0.3524,0.3101 0,0.2396 -0.733,0.5779 -1.5506,0.7048 -2.5796,0.7048 -1.17,0 -4.2852,-2.5373 -6.3573,-5.1873 -10.0645,-12.2635 -0.6061,-1.1559 -1.0572,-1.1559 -0.592,0 -1.7056,1.2827 -0.5216,0.592 -1.0854,0.592 -0.592,0 -1.1418,-0.4088 -0.3383,-0.2537 -0.3383,-0.5075 0,-0.1833 0.6625,-0.6061 1.7338,-1.0572 2.8897,-2.1426 0.6625,-0.6202 1.0713,-0.6202 0.5075,0 0.7471,0.3806 0.1128,0.1833 0.5497,1.2827 0.9585,2.4668 3.5522,5.6807 4.4543,5.5256 12.1085,8.951z"
+      android:strokeWidth="0.824033"
+      android:fillColor="#6a5753"/>
+</vector>

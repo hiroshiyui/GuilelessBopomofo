@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24mm"
+   height="24mm"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg2512"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="guileless_bopomofo_keyboard-zhi.svg">
+  <defs
+     id="defs2506" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-103.21711"
+     inkscape:cy="488.21147"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1049"
+     inkscape:window-x="1"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata2509">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-133.14286,-18.994048)">
+    <g
+       id="g3866"
+       transform="matrix(0.82109133,0,0,0.82109133,125.24211,-106.06721)">
+      <rect
+         style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
+         id="rect233-20"
+         width="29.229391"
+         height="29.229391"
+         x="9.6222563"
+         y="152.31102" />
+      <path
+         d="m 24.556177,176.94918 2.18889,-0.18241 q 5.03454,-0.4013 7.64301,-0.78436 0.47428,-0.073 0.69315,-0.073 0.62018,0 1.40457,0.76612 1.02149,1.0215 1.02149,1.84234 0,0.45603 -0.52898,0.45603 -0.16413,0 -1.02152,-0.16417 -1.55048,-0.27361 -3.00975,-0.27361 -2.99155,0 -7.3329,0.38306 -6.29313,0.54723 -10.26967,1.7329 -0.87559,0.2736 -1.09446,0.2736 -0.40131,0 -1.29514,-0.47426 -0.87555,-0.47426 -1.49574,-1.03974 -0.49251,-0.45602 -0.49251,-0.83908 0,-0.23714 0.36481,-0.23714 0.12774,0 0.76612,0.073 0.25547,0.0182 0.72965,0.0182 0.56545,0 2.48077,-0.20064 l 1.58697,-0.23714 5.38112,-0.8026 q 0.0546,-2.15244 0.14593,-5.36286 l 0.0364,-1.58697 0.0199,-0.51075 q -3.75767,0.45603 -5.23517,1.00326 -0.54722,0.20064 -0.98503,0.20064 -0.82082,0 -1.84232,-1.13095 -0.67491,-0.74788 -0.67491,-1.1127 0,-0.29184 0.14593,-0.67492 0.23728,-0.63843 0.23728,-1.45928 0,-6.1837 -1.05797,-8.75568 -0.21874,-0.52899 -0.21874,-0.65668 0,-0.56547 0.83909,-0.56547 0.72965,0 1.82408,0.56547 0.98503,0.49251 0.98503,1.03974 v 0.073 q 0,0.1277 -0.10954,0.51075 -0.21874,0.82084 -0.21874,2.02475 0,3.73941 0.29188,6.1837 0.16414,1.27687 0.94852,1.27687 0.23728,0 0.71139,-0.073 l 4.32315,-0.62019 v -6.74918 q 0,-4.4508 -0.74789,-6.63972 -0.23727,-0.72965 -0.23727,-0.85733 0,-0.38306 0.41954,-0.38306 1.1127,0 2.73614,1.2039 0.94853,0.7114 0.94853,1.24039 0,0.21891 -0.21874,0.74788 -0.49251,1.16743 -0.54725,4.88859 l -0.10953,6.3114 3.06448,-0.27361 q 3.06451,-0.27361 3.53876,-1.00325 0.29187,-0.47427 0.62022,-3.08274 0.34657,-2.71791 0.34657,-4.14071 0,-1.65993 -0.14594,-2.17068 -0.14593,-0.51075 -0.14593,-0.69316 0,-0.34658 0.45604,-0.34658 0.93029,0 2.04299,0.89381 0.91206,0.72964 0.91206,1.36808 0,0.32834 -0.34661,1.0215 -1.00323,2.11595 -1.14917,5.72767 l -0.0731,1.86059 q -0.0913,2.17068 -1.84235,2.35309 l -4.85209,0.38306 -2.42607,0.25537 z"
+         style="font-weight:bold;font-size:11.2889px;line-height:1.25;font-family:MOESongUN;-inkscape-font-specification:'MOESongUN Bold';letter-spacing:0px;word-spacing:0px;fill:#6a5753;fill-opacity:1;stroke-width:0.875567"
+         id="path582-9" />
+    </g>
+  </g>
+</svg>

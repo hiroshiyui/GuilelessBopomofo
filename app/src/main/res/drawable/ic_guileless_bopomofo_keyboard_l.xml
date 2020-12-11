@@ -1,0 +1,29 @@
+<!--
+  ~ Guileless Bopomofo
+  ~ Copyright (C) 2020 YOU, HUI-HONG
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="m12.8017,8.2698 l0.7023,-0.1723q2.2527,-0.5698 3.3393,-0.9276 0.5168,-0.1723 1.3781,-0.6493 0.2252,-0.1193 0.4373,-0.1193 0.5035,0 1.3118,0.6361 0.9938,0.7951 0.9938,1.2721 0,0.1723 -0.1589,0.6095 -0.1724,0.5168 -0.5963,4.4391 -0.5168,4.7306 -2.5972,7.6194 -0.9673,1.3384 -2.1599,2.0804 -0.7023,0.4373 -1.1396,0.4373 -0.3843,0 -0.6228,-0.4638 -0.5433,-1.0203 -1.5636,-2.0274l-0.3975,-0.4108q-0.106,-0.0927 -0.106,-0.212 0,-0.1723 0.1988,-0.1723 0.0663,0 0.106,0.0132l0.5301,0.1723q1.0601,0.3578 1.5769,0.3578 2.0142,0 3.3923,-4.3198 0.5433,-1.6961 0.9143,-3.8693 0.3843,-2.3057 0.3843,-3.22 0,-0.8878 -0.7421,-0.8878 -0.5433,0 -5.5522,1.1528 -1.2854,3.114 -1.8817,4.2403 -1.8021,3.4055 -4.3596,6.016 -1.0866,1.0998 -2.7695,2.1467 -0.2518,0.159 -0.3313,0.1193 -0.0531,-0.0132 -0.0531,-0.0795 0,-0.1988 0.7951,-1.0468 2.3454,-2.5044 4.6776,-6.9833 1.0071,-1.9347 1.6431,-3.7368 -4.0018,1.1396 -5.0619,1.7359 -0.2915,0.159 -0.4505,0.159 -0.318,0 -0.7156,-0.3843 -0.6758,-0.6891 -0.6758,-1.1661 0,-0.2783 0.6891,-1.1661 0.5565,-0.7156 1.4311,-3.2333 0.8083,-2.3322 0.8481,-3.4718 0.0145,-0.5433 0.3313,-0.5433 0.4638,0 1.1263,0.5963 0.6891,0.6228 0.6891,1.0468 0,0.212 -0.4373,0.7951 -0.5168,0.6493 -1.3119,2.7562 -0.7023,1.8419 -0.7023,2.2129 0,0.3048 0.318,0.3048 0.2783,0 2.1864,-0.4903 0.4903,-0.1193 1.1793,-0.2915 0.5565,-0.1325 0.9938,-0.2518 0.7288,-2.3322 1.1396,-6.7315 0.0531,-0.8613 0.1192,-1.0468 0.212,-0.6095 0.9143,-0.6095 1.6034,0 1.6034,1.2191 0,1.5239 -1.5636,6.546z"
+      android:strokeWidth="0.774638"
+      android:fillColor="#6a5753"/>
+</vector>
