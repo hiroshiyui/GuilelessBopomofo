@@ -27,135 +27,6 @@
     android:theme="@style/KeyboardTheme">
 
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
-        android:id="@+id/linearLayoutKeyboardRow0"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButton1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="1"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_b" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="2"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_d" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButton3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="3"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_tone_3" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButton4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="4"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_tone_4" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButton5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="5"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_zhi" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButton6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="6"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_tone_2" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButton7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="7"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_tone_light" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButton8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="8"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_a" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButton9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="9"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ai" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButton0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="0"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_an" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButtonMinus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="-"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_er" />
-
-
-    </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
-
-    <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
         android:id="@+id/linearLayoutKeyboardRow1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -168,10 +39,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="q"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_p" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_zi_ei" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonW"
@@ -179,10 +50,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="w"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_t" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_ci_ie" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonE"
@@ -190,10 +61,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="e"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_g" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_yi" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonR"
@@ -201,10 +72,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="r"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_j" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_e" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonT"
@@ -212,10 +83,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="t"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_chi" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_t_ang" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonY"
@@ -223,10 +94,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="y"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_zi" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_chi" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonU"
@@ -234,10 +105,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="u"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_yi" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_yu" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonI"
@@ -245,10 +116,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="i"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_o" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ai" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonO"
@@ -256,10 +127,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="o"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ei" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_o" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonP"
@@ -267,11 +138,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_P"
             app:keySymbolString="p"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_en" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_p_ou" />
 
     </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
 
@@ -288,10 +159,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="a"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_m" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_a" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonS"
@@ -299,10 +170,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="s"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_n" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_si" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonD"
@@ -310,10 +181,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="d"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_k" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_d" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonF"
@@ -321,11 +192,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_F"
             app:keySymbolString="f"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_q" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_f" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonG"
@@ -333,10 +204,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="g"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_shi" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_j_zhi" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonH"
@@ -344,10 +215,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="h"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ci" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_h_er" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonJ"
@@ -355,10 +226,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="j"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_wu" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_ri" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonK"
@@ -366,10 +237,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="k"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_e" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_k" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonL"
@@ -377,22 +248,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_L"
             app:keySymbolString="l"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ao" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButtonSemicolon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString=";"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ang" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_l_eng" />
 
     </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
 
@@ -409,10 +269,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="z"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_f" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ao" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonX"
@@ -420,10 +280,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="x"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_l" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_wu" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonC"
@@ -431,10 +291,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="c"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_h" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_x_shi" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonV"
@@ -442,10 +302,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="v"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_x" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_g_q" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonB"
@@ -453,11 +313,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_B"
             app:keySymbolString="b"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ri" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_b" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonN"
@@ -465,10 +325,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="n"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_si" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_n_en" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonM"
@@ -476,45 +336,23 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_M"
             app:keySymbolString="m"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_yu" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_m_an" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButtonComma"
+            android:id="@+id/keyImageButtonPunc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_COMMA"
             app:keySymbolString=","
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ie" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButtonPeriod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="."
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ou" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButtonBackslash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString="/"
-            app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_eng" />
+            app:keyTypeEnum="KEYTYPE_CONTROL"
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_punctuation" />
 
     </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
 
@@ -551,21 +389,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:onClick="onClick"
-            android:scaleType="fitCenter"
+            android:scaleType="center"
             app:keyCodeString="KEYCODE_SPACE"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:srcCompat="@drawable/ic_baseline_space_bar_24" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButtonPunc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            app:keySymbolString=","
-            app:keyTypeEnum="KEYTYPE_CONTROL"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_punctuation" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonBackspace"

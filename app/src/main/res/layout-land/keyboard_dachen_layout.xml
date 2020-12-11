@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="1"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_b" />
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="2"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_d" />
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="3"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_tone_3" />
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="4"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_tone_4" />
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="5"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_zhi" />
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="6"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_tone_2" />
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="7"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_tone_light" />
@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="8"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_a" />
@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="9"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ai" />
@@ -136,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="0"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_an" />
@@ -147,7 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="-"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_er" />
@@ -168,7 +168,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="q"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_p" />
@@ -179,7 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="w"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_t" />
@@ -190,7 +190,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="e"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_g" />
@@ -201,7 +201,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="r"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_j" />
@@ -212,7 +212,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="t"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_chi" />
@@ -223,7 +223,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="y"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_zi" />
@@ -234,7 +234,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="u"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_yi" />
@@ -245,7 +245,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="i"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_o" />
@@ -256,7 +256,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="o"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ei" />
@@ -267,7 +267,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_P"
             app:keySymbolString="p"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
@@ -288,7 +288,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="a"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_m" />
@@ -299,7 +299,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="s"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_n" />
@@ -310,7 +310,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="d"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_k" />
@@ -321,7 +321,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_F"
             app:keySymbolString="f"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
@@ -333,7 +333,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="g"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_shi" />
@@ -344,7 +344,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="h"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ci" />
@@ -355,7 +355,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="j"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_wu" />
@@ -366,7 +366,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="k"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_e" />
@@ -377,7 +377,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_L"
             app:keySymbolString="l"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
@@ -389,7 +389,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString=";"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ang" />
@@ -409,7 +409,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="z"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_f" />
@@ -420,7 +420,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="x"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_l" />
@@ -431,7 +431,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="c"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_h" />
@@ -442,7 +442,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="v"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_x" />
@@ -453,7 +453,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_B"
             app:keySymbolString="b"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
@@ -465,7 +465,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="n"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_si" />
@@ -476,7 +476,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_M"
             app:keySymbolString="m"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
@@ -488,7 +488,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keyCodeString="KEYCODE_COMMA"
             app:keySymbolString=","
             app:keyTypeEnum="KEYTYPE_CHARACTER"
@@ -500,7 +500,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="."
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ou" />
@@ -511,7 +511,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             app:keySymbolString="/"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_eng" />
