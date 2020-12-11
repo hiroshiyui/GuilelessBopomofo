@@ -35,7 +35,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
-    val LOGTAG = "Service"
+    val LOGTAG = "GuilelessBopomofoSvc"
     lateinit var chewingEngine: ChewingEngine
     lateinit var viewBinding: KeyboardLayoutBinding
     lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
@@ -167,39 +167,34 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         Log.v(LOGTAG, "setMainLayout()")
         viewBinding.keyboardPanel.removeAllViews()
 
+        val keyboardSetup: (Keyboard) -> Unit = { keyboard ->
+            keyboard.setupImeSwitch(this)
+            keyboard.setupPuncSwitch(this)
+            keyboard.setupSymbolSwitch(this)
+            keyboard.setupBackspace(this)
+        }
+
         when (getUserKeyboardLayoutPreference()) {
             "KB_HSU" -> {
                 val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
                 chewingEngine.setKBType(newKeyboardType)
                 keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(layoutInflater)
                 viewBinding.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
-                keyboardHsuLayoutBinding.root.apply {
-                    setupImeSwitch(this@GuilelessBopomofoService)
-                    setupPuncSwitch(this@GuilelessBopomofoService)
-                    setupSymbolSwitch(this@GuilelessBopomofoService)
-                }
+                keyboardSetup(keyboardHsuLayoutBinding.root)
             }
             "KB_ET26" -> {
                 val newKeyboardType = chewingEngine.convKBStr2Num("KB_ET26")
                 chewingEngine.setKBType(newKeyboardType)
                 keyboardEt26LayoutBinding = KeyboardEt26LayoutBinding.inflate(layoutInflater)
                 viewBinding.keyboardPanel.addView(keyboardEt26LayoutBinding.root)
-                keyboardEt26LayoutBinding.root.apply {
-                    setupImeSwitch(this@GuilelessBopomofoService)
-                    setupPuncSwitch(this@GuilelessBopomofoService)
-                    setupSymbolSwitch(this@GuilelessBopomofoService)
-                }
+                keyboardSetup(keyboardEt26LayoutBinding.root)
             }
             "KB_DEFAULT" -> {
                 val newKeyboardType = chewingEngine.convKBStr2Num("KB_DEFAULT")
                 chewingEngine.setKBType(newKeyboardType)
                 keyboardDachenLayoutBinding = KeyboardDachenLayoutBinding.inflate(layoutInflater)
                 viewBinding.keyboardPanel.addView(keyboardDachenLayoutBinding.root)
-                keyboardDachenLayoutBinding.root.apply {
-                    setupImeSwitch(this@GuilelessBopomofoService)
-                    setupPuncSwitch(this@GuilelessBopomofoService)
-                    setupSymbolSwitch(this@GuilelessBopomofoService)
-                }
+                keyboardSetup(keyboardDachenLayoutBinding.root)
             }
         }
     }
@@ -219,15 +214,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         when (v.keyCode()) {
             KeyEvent.KEYCODE_SPACE -> {
                 chewingEngine.handleSpace()
-            }
-            KeyEvent.KEYCODE_DEL -> {
-                if (chewingEngine.bufferStringStatic()
-                        .isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()
-                ) {
-                    chewingEngine.handleBackspace()
-                } else {
-                    sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
-                }
             }
             KeyEvent.KEYCODE_ENTER -> {
                 if (chewingEngine.commitPreeditBuf() == 0) { // not committed yet

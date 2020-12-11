@@ -19,21 +19,29 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.HapticFeedbackConstants
+import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.SymbolsPickerLayoutBinding
+import kotlin.concurrent.fixedRateTimer
 
 class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
+    private var backspacePressed: Boolean = false
     private val LOGTAG: String = "Keyboard"
     private lateinit var v: KeyboardLayoutBinding
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
@@ -137,5 +145,51 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
                 symbolsPickerLayoutBinding.SymbolsFlow.addView(button)
             }
         }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun setupBackspace(imeService: GuilelessBopomofoService) {
+        Log.v(LOGTAG, "setupBackspace")
+        v = imeService.viewBinding
+        val keyImageButtonBackspace =
+            v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonBackspace)
+
+        keyImageButtonBackspace.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                    if (imeService.chewingEngine.bufferStringStatic()
+                            .isNotEmpty() || imeService.chewingEngine.bopomofoStringStatic()
+                            .isNotEmpty()
+                    ) {
+                        imeService.chewingEngine.handleBackspace()
+                        imeService.viewBinding.keyboardView.syncPreEditBuffers(imeService)
+                    } else {
+                        // acts as general and repeatable backspace key
+                        runBlocking {
+                            launch {
+                                backspacePressed = true
+                                repeatBackspace(imeService)
+                            }
+                        }
+                    }
+                }
+                MotionEvent.ACTION_UP -> {
+                    backspacePressed = false
+                }
+            }
+            return@setOnTouchListener true
+        }
+    }
+
+    private suspend fun repeatBackspace(imeService: GuilelessBopomofoService) {
+        fixedRateTimer("repeatBackspace", true, 0L, 200L) {
+            if (backspacePressed) {
+                imeService.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
+            } else {
+                this.cancel()
+            }
+        }
+        delay(50L)
     }
 }
