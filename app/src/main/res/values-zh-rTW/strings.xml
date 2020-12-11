@@ -4,9 +4,6 @@
     <string name="display_name_bopomofo_keyboard_ime">注音符號</string>
     <string name="label_subtype_generic">%s</string>
     <string name="libchewing_init_fail">無法成功初始化新酷音程式庫</string>
-    <string name="next_cand_list">次候選列表</string>
-    <string name="prev_cand_list">前候選列表</string>
-    <string name="engineering_mode_hint">再 %1$d 次點擊開啟工程模式</string>
     <string name="test_text_input_here">請在此測試文字輸入</string>
     <string name="chewing_data_files_status">新酷音程式庫資料檔狀態：</string>
     <string name="engineering_mode_label">工程模式</string>
