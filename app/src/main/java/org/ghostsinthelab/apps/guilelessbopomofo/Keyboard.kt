@@ -24,10 +24,7 @@ import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
-import android.view.HapticFeedbackConstants
-import android.view.KeyEvent
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.LinearLayout
@@ -49,6 +46,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
 
     init {
         this.orientation = VERTICAL
+        this.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     fun setupImeSwitch(imeService: GuilelessBopomofoService) {
