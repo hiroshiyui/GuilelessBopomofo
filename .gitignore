@@ -15,3 +15,6 @@
 
 # Chewing assets should be dynamically generated from CMake
 app/src/main/assets/chewing/
+
+app/debug/
+app/release/
