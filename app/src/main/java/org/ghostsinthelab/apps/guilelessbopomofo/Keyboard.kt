@@ -122,7 +122,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
                 button.text = imeService.chewingEngine.candStringByIndexStatic(category)
                 button.id = View.generateViewId()
 
-                button.setOnClickListener { listener ->
+                button.setOnClickListener {
                     imeService.chewingEngine.candChooseByIndex(category)
 
                     Log.v(LOGTAG, "'${imeService.chewingEngine.candStringByIndexStatic(0)}'")
@@ -152,7 +152,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         val keyImageButtonBackspace =
             v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonBackspace)
 
-        keyImageButtonBackspace.setOnTouchListener { v, event ->
+        keyImageButtonBackspace.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
