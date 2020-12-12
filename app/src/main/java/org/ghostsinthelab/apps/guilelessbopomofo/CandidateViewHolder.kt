@@ -24,7 +24,8 @@ import android.view.inputmethod.InputConnection
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 
-class CandidateViewHolder(imeService: GuilelessBopomofoService, itemView: View): RecyclerView.ViewHolder(itemView), GuilelessBopomofoServiceContext {
+class CandidateViewHolder(imeService: GuilelessBopomofoService, itemView: View) :
+    RecyclerView.ViewHolder(itemView), GuilelessBopomofoServiceContext {
     private val LOGTAG: String = "CandidateViewHolder"
     private val button: Button = itemView.findViewById(R.id.buttonCandidateItem)
     private var inputConnection: InputConnection
@@ -37,12 +38,16 @@ class CandidateViewHolder(imeService: GuilelessBopomofoService, itemView: View):
     fun setData(data: Int) {
         button.text = serviceContext.chewingEngine.candStringByIndexStatic(data)
         button.setOnClickListener {
-            serviceContext.chewingEngine.candChooseByIndex(data)
-            serviceContext.chewingEngine.candClose()
-            serviceContext.chewingEngine.handleEnd()
-            serviceContext.viewBinding.keyboardPanel.currentCandidatesList = 0
-            serviceContext.viewBinding.keyboardView.syncPreEditBuffers(serviceContext)
-            serviceContext.viewBinding.keyboardPanel.switchToMainLayout(serviceContext)
+            serviceContext.chewingEngine.apply {
+                candChooseByIndex(data)
+                candClose()
+                handleEnd()
+            }
+            serviceContext.viewBinding.apply {
+                keyboardPanel.currentCandidatesList = 0
+                keyboardView.syncPreEditBuffers(serviceContext)
+                keyboardPanel.switchToMainLayout(serviceContext)
+            }
         }
     }
 }

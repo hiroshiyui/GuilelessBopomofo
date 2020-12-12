@@ -19,6 +19,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.SpannableString
 import android.text.Spanned
@@ -31,6 +32,7 @@ import android.widget.TextView
 import androidx.core.text.toSpannable
 import androidx.core.view.setPadding
 
+@SuppressLint("ClickableViewAccessibility")
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     androidx.appcompat.widget.AppCompatTextView(context, attrs) {
     private val LOGTAG = "PreEditBufferTextView"

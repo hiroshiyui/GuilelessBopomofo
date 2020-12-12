@@ -46,7 +46,8 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
 
     init {
         this.orientation = VERTICAL
-        this.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        this.layoutParams =
+            LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     fun setupImeSwitch(imeService: GuilelessBopomofoService) {
@@ -77,16 +78,21 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
             v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonPunc)
         keyImageButtonPunc.setOnLongClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            imeService.chewingEngine.candClose()
-            // 「常用符號」
-            imeService.chewingEngine.handleDefault('`')
-            imeService.chewingEngine.handleDefault('3')
-            imeService.chewingEngine.candOpen()
+            imeService.chewingEngine.apply {
+                candClose()
+                // 「常用符號」
+                handleDefault('`')
+                handleDefault('3')
+                candOpen()
+            }
 
             candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
-            v.keyboardPanel.removeAllViews()
-            v.keyboardPanel.addView(candidatesLayoutBinding.root)
-            v.keyboardPanel.currentKeyboardLayout = KeyboardPanel.KeyboardLayout.CANDIDATES
+
+            v.keyboardPanel.apply {
+                removeAllViews()
+                addView(candidatesLayoutBinding.root)
+                currentKeyboardLayout = KeyboardPanel.KeyboardLayout.CANDIDATES
+            }
 
             val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
             candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
@@ -111,9 +117,11 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
             imeService.chewingEngine.handleDefault('`')
             imeService.chewingEngine.candOpen()
 
-            v.keyboardPanel.removeAllViews()
-            v.keyboardPanel.addView(symbolsPickerLayoutBinding.root)
-            v.keyboardPanel.currentKeyboardLayout = KeyboardPanel.KeyboardLayout.SYMBOLS
+            v.keyboardPanel.apply {
+                removeAllViews()
+                addView(symbolsPickerLayoutBinding.root)
+                currentKeyboardLayout = KeyboardPanel.KeyboardLayout.SYMBOLS
+            }
 
             val totalCategories = imeService.chewingEngine.candTotalChoice()
 
