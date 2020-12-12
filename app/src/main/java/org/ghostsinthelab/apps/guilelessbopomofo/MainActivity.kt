@@ -24,7 +24,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.inputmethod.InputMethodInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var engineeringModeEnterCount: Int = 0
     private val engineeringModeEnterClicks: Int = 5
+    private var engineeringModeEnabled: Boolean = false
     private val imeSettingsRequestCode: Int = 254
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -44,25 +44,32 @@ class MainActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        binding.textViewAppVersion.text =
-            applicationContext.packageManager.getPackageInfo(this.packageName, 0).versionName
-        val view = binding.root
+        binding.apply {
+            textViewAppVersion.text =
+                applicationContext.packageManager.getPackageInfo(
+                    this@MainActivity.packageName,
+                    0
+                ).versionName
 
-        binding.imageViewAppIcon.setOnClickListener {
-            engineeringModeEnterCount += 1
-            if (engineeringModeEnterCount >= engineeringModeEnterClicks) {
-                val engineeringModeIntent = Intent(this, EngineeringModeActivity::class.java)
-                startActivity(engineeringModeIntent)
+            imageViewAppIcon.setOnClickListener {
+                if (engineeringModeEnterCount >= engineeringModeEnterClicks || engineeringModeEnabled) {
+                    engineeringModeEnabled = true
+                    val engineeringModeIntent =
+                        Intent(this@MainActivity, EngineeringModeActivity::class.java)
+                    startActivity(engineeringModeIntent)
+                } else {
+                    engineeringModeEnterCount += 1
+                }
+
+                return@setOnClickListener
             }
 
-            return@setOnClickListener
-        }
+            buttonLaunchImeSystemSettings.setOnClickListener {
+                val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
+                startActivityForResult(intent, imeSettingsRequestCode)
+            }
 
-        updateGuilelessBopomofoStatus()
-
-        binding.buttonLaunchImeSystemSettings.setOnClickListener {
-            val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
-            startActivityForResult(intent, imeSettingsRequestCode)
+            textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
         }
 
         for ((button, layout) in
@@ -80,24 +87,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val view = binding.root
         setContentView(view)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == imeSettingsRequestCode) {
-            updateGuilelessBopomofoStatus()
+            binding.textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
         }
     }
 
-    private fun enabledInputMethodList(): List<InputMethodInfo> {
+    private fun isGuilelessBopomofoEnabled(): Boolean {
         val inputMethodManager: InputMethodManager =
             getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        return inputMethodManager.enabledInputMethodList
-    }
+        val enabledInputMethodList = inputMethodManager.enabledInputMethodList
 
-    private fun isGuilelessBopomofoEnabled(): Boolean {
-        enabledInputMethodList().forEach {
+        enabledInputMethodList.forEach {
             if (it.serviceName == "org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService") {
                 return true
             }
@@ -105,10 +111,9 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
-    private fun updateGuilelessBopomofoStatus() {
-        binding.textViewServiceStatus.text =
-            if (isGuilelessBopomofoEnabled()) getString(R.string.service_is_enabled) else getString(
-                R.string.service_is_disabled
-            )
+    private fun currentGuilelessBopomofoServiceStatus(): String {
+        return if (isGuilelessBopomofoEnabled()) getString(R.string.service_is_enabled) else getString(
+            R.string.service_is_disabled
+        )
     }
 }
