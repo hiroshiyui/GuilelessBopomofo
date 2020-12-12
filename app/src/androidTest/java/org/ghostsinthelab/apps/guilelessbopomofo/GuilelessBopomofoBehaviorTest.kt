@@ -19,56 +19,74 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
-import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.ext.junit.rules.ActivityScenarioRule
+import android.content.Context
+import android.content.Intent
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.*
+import junit.framework.TestCase.assertEquals
+import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+private const val PACKAGE_NAME = "org.ghostsinthelab.apps.guilelessbopomofo"
+private const val LAUNCH_TIMEOUT = 5000L
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class GuilelessBopomofoBehaviorTest {
-    private lateinit var testString: String
     private lateinit var device: UiDevice
-
-    @get:Rule
-    var activityRule: ActivityScenarioRule<MainActivity> =
-        ActivityScenarioRule(MainActivity::class.java)
-
-    @Before
-    fun initVakudStrung() {
-        testString = "Test!"
-    }
 
     @Before
     fun setup() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        device.pressHome()
+        device.swipe(
+            (device.displayWidth / 2),
+            (device.displayHeight / 4 * 3),
+            (device.displayWidth / 2),
+            (device.displayHeight / 4 * 1),
+            20
+        )
+
+        val launcherPackage: String = device.launcherPackageName
+        assertThat(launcherPackage, notNullValue())
+        device.wait(
+            Until.hasObject(By.pkg(launcherPackage).depth(0)),
+            LAUNCH_TIMEOUT
+        )
+
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val intent = context.packageManager.getLaunchIntentForPackage(PACKAGE_NAME)?.apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        }
+        context.startActivity(intent)
+
+        device.wait(
+            Until.hasObject(By.pkg(PACKAGE_NAME).depth(0)),
+            LAUNCH_TIMEOUT
+        )
     }
 
     @Test
     fun testBasicActions() {
-        device.pressHome()
-    }
+        val imageViewAppIcon: UiObject = device.findObject(
+            UiSelector().resourceId("${PACKAGE_NAME}:id/imageViewAppIcon")
+        )
+        repeat(5) { imageViewAppIcon.click() }
 
-    @Test
-    fun chageSoftKeyboard() {
-        activityRule.scenario.recreate()
-        onView(withId(R.id.testTextInputEditText))
-            .perform(typeText(testString))
-            .perform(closeSoftKeyboard())
+        val chewingDataFilesStatus = device.findObject(
+            UiSelector().resourceId("${PACKAGE_NAME}:id/chewingDataFilesStatus")
+        )
+        assertEquals("true", chewingDataFilesStatus.text)
 
-        onView(withId(R.id.testTextInputEditText))
-            .check(matches(withText(testString)))
+        val testTextInputEditText = device.findObject(
+            UiSelector().resourceId("${PACKAGE_NAME}:id/testTextInputEditText")
+        )
+        testTextInputEditText.click()
     }
 }
