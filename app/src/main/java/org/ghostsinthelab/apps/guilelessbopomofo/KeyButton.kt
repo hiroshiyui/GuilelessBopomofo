@@ -30,7 +30,7 @@ class KeyButton(context: Context, attrs: AttributeSet): AppCompatButton(context,
     override var keySymbol: String? = null
 
     init {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.KeyButton, 0 ,R.style.Theme_AppCompat_Light).apply {
+        context.theme.obtainStyledAttributes(attrs, R.styleable.KeyButton, 0 ,0).apply {
             try {
                 keyCodeString = this.getString(R.styleable.KeyButton_keyCodeString)
                 keyType = this.getInt(R.styleable.KeyButton_keyTypeEnum, 0)
