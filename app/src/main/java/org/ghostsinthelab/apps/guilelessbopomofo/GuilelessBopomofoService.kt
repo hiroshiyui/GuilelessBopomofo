@@ -77,6 +77,11 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         return null
     }
 
+    // Disable fullscreen mode when device's orientation is landscape
+    override fun onEvaluateFullscreenMode(): Boolean {
+        return false
+    }
+
     override fun onCreateInputView(): View {
         Log.v(LOGTAG, "onCreateInputView()")
         viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
