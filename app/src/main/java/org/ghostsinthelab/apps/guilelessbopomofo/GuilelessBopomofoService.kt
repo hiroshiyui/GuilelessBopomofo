@@ -20,6 +20,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.util.Log
 import android.view.HapticFeedbackConstants
@@ -79,7 +80,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     // Disable fullscreen mode when device's orientation is landscape
     override fun onEvaluateFullscreenMode(): Boolean {
-        if (sharedPreferences.getBoolean("user_fullscreen_when_in_landscape", true)) {
+        super.onEvaluateFullscreenMode()
+        if (sharedPreferences.getBoolean("user_fullscreen_when_in_landscape", true) && resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             return true
         }
         return false
