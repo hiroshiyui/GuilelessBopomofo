@@ -42,9 +42,9 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
     lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
-    lateinit var myKeyboardView: KeyboardView
+    lateinit var inputView: KeyboardView
     private lateinit var sharedPreferences: SharedPreferences
-    private val default_keyboard_layout = "KB_HSU"
+    private val defaultKeyboardLayout = "KB_HSU"
 
     init {
         System.loadLibrary("chewing")
@@ -90,19 +90,19 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     override fun onCreateInputView(): View {
         Log.v(LOGTAG, "onCreateInputView()")
         viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
-        myKeyboardView = viewBinding.root
 
-        myKeyboardView.setServiceContext(this)
-        viewBinding.keyboardPanel.setServiceContext(this)
-        viewBinding.keyboardView.setServiceContext(this)
+        viewBinding.apply {
+            keyboardView.setServiceContext(this@GuilelessBopomofoService)
+            keyboardPanel.setServiceContext(this@GuilelessBopomofoService)
+            keyboardView.setOnClickPreEditCharListener(this@GuilelessBopomofoService)
+        }
 
-        // 不同鍵盤排列的抽換 support different Bopomofo keyboard layouts
+        // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
         setMainLayout()
-
-        myKeyboardView.setOnClickPreEditCharListener(this)
-
         viewBinding.keyboardPanel.currentKeyboardLayout = KeyboardPanel.KeyboardLayout.MAIN
-        return myKeyboardView
+
+        inputView = viewBinding.root
+        return inputView
     }
 
     override fun onInitializeInterface() {
@@ -170,7 +170,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             }
         }
 
-        myKeyboardView.syncPreEditBuffers()
+        inputView.syncPreEditBuffers()
     }
 
     fun setMainLayout() {
@@ -209,8 +209,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         }
     }
 
-    fun getUserKeyboardLayoutPreference(): String? {
-        return sharedPreferences.getString("user_keyboard_layout", default_keyboard_layout)
+    private fun getUserKeyboardLayoutPreference(): String? {
+        return sharedPreferences.getString("user_keyboard_layout", defaultKeyboardLayout)
     }
 
     private fun handleCharacterKey(v: BehaveLikeKey<*>) {
@@ -235,7 +235,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             // 在大千鍵盤下，標準的逗號鍵會對映到「ㄝ」，這裡的逗號鍵要另外當成特別的「常用符號」功能鍵，
             // 短觸會輸出全形逗號，長按交給 setupPuncSwitch() 處理
             KeyEvent.KEYCODE_COMMA -> {
-                // simulates Shift + ,
+                // simulates [Shift] + [,]
                 chewingEngine.apply {
                     setEasySymbolInput(1)
                     handleDefault(',')
