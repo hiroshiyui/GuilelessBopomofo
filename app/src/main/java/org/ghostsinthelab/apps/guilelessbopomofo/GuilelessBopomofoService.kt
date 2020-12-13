@@ -79,6 +79,9 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     // Disable fullscreen mode when device's orientation is landscape
     override fun onEvaluateFullscreenMode(): Boolean {
+        if (sharedPreferences.getBoolean("user_fullscreen_when_in_landscape", true)) {
+            return true
+        }
         return false
     }
 

@@ -19,4 +19,7 @@
     <string name="service_is_disabled">Disabled</string>
     <string name="launch_input_method_system_settings">Launch keyboard system  settings</string>
     <string name="applcation_version_label">Application version</string>
+    <string name="fullscreen_when_in_landscape_setting_title">Fullscreen when in landscape</string>
+    <string name="fullscreen_when_in_landscape_setting_description">When orientation of device is in landscape, let keyboard fits fullscreen</string>
+    <string name="fullscreen_when_in_landscape_setting_switch">Enable fullscreen when in landscape?</string>
 </resources>

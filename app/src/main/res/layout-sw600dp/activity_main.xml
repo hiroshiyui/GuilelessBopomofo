@@ -114,17 +114,10 @@
         <TextView
             android:id="@+id/textViewSettingBopomofoKeyboardLayout"
             style="@style/SettingsLabel"
+            android:layout_marginTop="32dp"
             android:text="@string/bopomofo_keyboard_layout"
             app:layout_constraintStart_toStartOf="@+id/textViewHeadingGenericSettings"
             app:layout_constraintTop_toBottomOf="@+id/buttonLaunchImeSystemSettings" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroupSettingBopomofoKeyboardLayout" />
 
         <TextView
             android:id="@+id/textViewSettingServiceStatus"
@@ -172,6 +165,43 @@
             android:text="@string/launch_input_method_system_settings"
             app:layout_constraintStart_toStartOf="@+id/textViewSettingServiceStatus"
             app:layout_constraintTop_toBottomOf="@+id/textViewSettingLabelServiceStatus" />
+
+        <TextView
+            android:id="@+id/textViewSettingFullscreenWhenInLandscape"
+            style="@style/SettingsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/fullscreen_when_in_landscape_setting_title"
+            app:layout_constraintStart_toStartOf="@+id/textViewHeadingGenericSettings"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupSettingBopomofoKeyboardLayout" />
+
+        <TextView
+            android:id="@+id/textViewSettingDescriptionFullscreenWhenInLandscape"
+            style="@style/SettingsDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fullscreen_when_in_landscape_setting_description"
+            app:layout_constraintStart_toStartOf="@+id/textViewSettingFullscreenWhenInLandscape"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingFullscreenWhenInLandscape" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchSettingFullscreenWhenInLandscape"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fullscreen_when_in_landscape_setting_switch"
+            app:layout_constraintStart_toStartOf="@+id/textViewHeadingGenericSettings"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionFullscreenWhenInLandscape" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switchSettingFullscreenWhenInLandscape" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

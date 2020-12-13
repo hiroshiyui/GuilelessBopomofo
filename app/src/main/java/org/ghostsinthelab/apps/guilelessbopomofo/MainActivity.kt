@@ -70,6 +70,18 @@ class MainActivity : AppCompatActivity() {
             }
 
             textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
+
+            if (sharedPreferences.getBoolean("user_fullscreen_when_in_landscape", true)) {
+                switchSettingFullscreenWhenInLandscape.isChecked = true
+            }
+
+            switchSettingFullscreenWhenInLandscape.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    sharedPreferences.edit().putBoolean("user_fullscreen_when_in_landscape", true).apply()
+                } else {
+                    sharedPreferences.edit().putBoolean("user_fullscreen_when_in_landscape", false).apply()
+                }
+            }
         }
 
         for ((button, layout) in
