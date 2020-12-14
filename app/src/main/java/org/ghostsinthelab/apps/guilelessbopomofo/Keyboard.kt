@@ -22,6 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
+import android.os.IBinder
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
@@ -59,6 +60,17 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
             keyImageButtonImeSwitch.setOnClickListener {
                 it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
                 imeService.switchToNextInputMethod(false)
+            }
+        } else {
+            // backward compatibility, support IME switch on legacy devices
+            val imm =
+                imeService.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imeToken: IBinder? = imeService.window?.let {
+                it.window?.attributes?.token
+            }
+            keyImageButtonImeSwitch.setOnClickListener {
+                it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                imm.switchToNextInputMethod(imeToken, false)
             }
         }
 

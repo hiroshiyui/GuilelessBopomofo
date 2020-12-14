@@ -45,16 +45,17 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     private lateinit var inputView: KeyboardView
     private lateinit var sharedPreferences: SharedPreferences
 
-    init {
-        System.loadLibrary("chewing")
-    }
-
     companion object {
         const val defaultKeyboardLayout = "KB_DEFAULT"
+        init {
+            System.loadLibrary("native-lib")
+            System.loadLibrary("chewing")
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
+
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
         Log.v(LOGTAG, "onCreate()")
         // Initializing Chewing
@@ -84,7 +85,11 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     // Disable fullscreen mode when device's orientation is landscape
     override fun onEvaluateFullscreenMode(): Boolean {
         super.onEvaluateFullscreenMode()
-        if (sharedPreferences.getBoolean("user_fullscreen_when_in_landscape", true) && resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (sharedPreferences.getBoolean(
+                "user_fullscreen_when_in_landscape",
+                true
+            ) && resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        ) {
             return true
         }
         return false
