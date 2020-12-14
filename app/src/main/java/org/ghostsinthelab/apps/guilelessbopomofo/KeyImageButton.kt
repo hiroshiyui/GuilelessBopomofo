@@ -21,14 +21,15 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 
-class KeyImageButton(context: Context, attrs: AttributeSet) : AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
+class KeyImageButton(context: Context, attrs: AttributeSet) :
+    AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
     BehaveLikeKey<KeyImageButton> {
     private val LOGTAG: String = "KeyImageButton"
-    private val sharedPreferences = context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
+    private val sharedPreferences =
+        context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
     override var keyCodeString: String? = null
     override var keyType: Int? = null
     override var keySymbol: String? = null
@@ -44,11 +45,17 @@ class KeyImageButton(context: Context, attrs: AttributeSet) : AppCompatImageButt
             }
         }
 
-        if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
-            val dp = 2F
-            val px =
-                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
-            this.elevation = px
+        this.apply {
+            minimumHeight = KeyboardView.convertDpToPx(48F, resources).toInt()
+            minimumWidth = KeyboardView.convertDpToPx(48F, resources).toInt()
+
+            if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
+                elevation = KeyboardView.convertDpToPx(2F, resources)
+            }
         }
     }
+
+//    private fun convertDpToPx(dp: Float): Float {
+//        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
+//    }
 }

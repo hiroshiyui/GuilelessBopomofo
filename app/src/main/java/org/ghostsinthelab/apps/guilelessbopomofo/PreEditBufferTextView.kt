@@ -26,7 +26,6 @@ import android.text.Spanned
 import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.util.Log
-import android.util.TypedValue
 import android.view.MotionEvent
 import android.widget.TextView
 import androidx.core.text.toSpannable
@@ -101,10 +100,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         super.onTextChanged(text, start, lengthBefore, lengthAfter)
         if (lengthAfter != 0) {
             // improve character click accuracy, leave text far from edges
-            val dp = 12F
-            val px =
-                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
-                    .toInt()
+            val px = KeyboardView.convertDpToPx(12F, resources).toInt()
             this.setPadding(px, 0, px, 0)
         } else {
             this.setPadding(0)

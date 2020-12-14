@@ -20,8 +20,10 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
+import android.content.res.Resources
 import android.util.AttributeSet
 import android.util.Log
+import android.util.TypedValue
 import android.widget.LinearLayout
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 
@@ -59,6 +61,12 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
             }
 
             v.keyboardPanel.switchToCandidatesLayout(offset, imeService)
+        }
+    }
+
+    companion object {
+        fun convertDpToPx(dp: Float, resources: Resources): Float {
+            return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
         }
     }
 }
