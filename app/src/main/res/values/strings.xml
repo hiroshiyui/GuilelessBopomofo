@@ -22,4 +22,7 @@
     <string name="fullscreen_when_in_landscape_setting_title">Fullscreen when in landscape</string>
     <string name="fullscreen_when_in_landscape_setting_description">When orientation of device is in landscape, let keyboard fits fullscreen</string>
     <string name="fullscreen_when_in_landscape_setting_switch">Enable fullscreen when in landscape?</string>
+    <string name="switch_enable_keybutton_elevation">Enrich key buttons visual elevation?</string>
+    <string name="switch_description_enable_keybutton_elevation">Is the default flat style looks too boring? Change it!</string>
+    <string name="switch_title_enrich_key_button_elevation">Enrich key buttons visual elevation</string>
 </resources>

@@ -23,4 +23,7 @@
     <string name="fullscreen_when_in_landscape_setting_title">當畫面橫置時，使用全螢幕編輯</string>
     <string name="fullscreen_when_in_landscape_setting_description">當裝置螢幕橫置時，是否讓鍵盤以全螢幕方式運作</string>
     <string name="fullscreen_when_in_landscape_setting_switch">當畫面橫置時，啟用全螢幕模式？</string>
+    <string name="switch_enable_keybutton_elevation">使按鍵看起來更立體？</string>
+    <string name="switch_description_enable_keybutton_elevation">預設的按鍵平坦外觀看起來太無聊了嗎？改一下！</string>
+    <string name="switch_title_enrich_key_button_elevation">使按鍵看起來更立體</string>
 </resources>

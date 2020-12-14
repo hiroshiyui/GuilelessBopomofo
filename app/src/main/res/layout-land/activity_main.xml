@@ -193,15 +193,42 @@
             app:layout_constraintStart_toStartOf="@+id/textViewHeadingGenericSettings"
             app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionFullscreenWhenInLandscape" />
 
+        <TextView
+            android:id="@+id/textViewSettingKeyButtonsElevation"
+            style="@style/SettingsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/switch_title_enrich_key_button_elevation"
+            app:layout_constraintStart_toStartOf="@+id/textViewHeadingGenericSettings"
+            app:layout_constraintTop_toBottomOf="@+id/switchSettingFullscreenWhenInLandscape" />
+
+        <TextView
+            android:id="@+id/textViewSettingDescriptionKeyButtonsElevation"
+            style="@style/SettingsDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/switch_description_enable_keybutton_elevation"
+            app:layout_constraintStart_toStartOf="@+id/textViewSettingKeyButtonsElevation"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingKeyButtonsElevation" />
+
+        <Switch
+            android:id="@+id/switchSettingKeyButtonsElevation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/switch_enable_keybutton_elevation"
+            app:layout_constraintStart_toStartOf="@+id/switchSettingFullscreenWhenInLandscape"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionKeyButtonsElevation" />
+
         <Space
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switchSettingFullscreenWhenInLandscape" />
+            app:layout_constraintTop_toBottomOf="@+id/switchSettingKeyButtonsElevation" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
