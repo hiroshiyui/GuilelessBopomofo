@@ -39,10 +39,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "GuilelessBopomofoSvc"
     lateinit var chewingEngine: ChewingEngine
     lateinit var viewBinding: KeyboardLayoutBinding
-    lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
-    lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
-    lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
-    lateinit var inputView: KeyboardView
+    private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
+    private lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
+    private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
+    private lateinit var inputView: KeyboardView
     private lateinit var sharedPreferences: SharedPreferences
 
     init {
