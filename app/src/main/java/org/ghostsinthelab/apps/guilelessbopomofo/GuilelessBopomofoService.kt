@@ -48,7 +48,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     companion object {
         const val defaultKeyboardLayout = "KB_DEFAULT"
         init {
-            System.loadLibrary("native-lib")
             System.loadLibrary("chewing")
         }
     }
