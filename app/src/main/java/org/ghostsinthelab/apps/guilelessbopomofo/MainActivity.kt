@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                 sharedPreferences.edit().putString("user_keyboard_layout", layout).apply()
             }
 
-            if (sharedPreferences.getString("user_keyboard_layout", "KB_HSU") == layout) {
+            if (sharedPreferences.getString("user_keyboard_layout", GuilelessBopomofoService.defaultKeyboardLayout) == layout) {
                 button.isChecked = true
             }
         }

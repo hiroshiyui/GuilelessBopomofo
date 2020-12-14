@@ -44,10 +44,13 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
     lateinit var inputView: KeyboardView
     private lateinit var sharedPreferences: SharedPreferences
-    private val defaultKeyboardLayout = "KB_HSU"
 
     init {
         System.loadLibrary("chewing")
+    }
+
+    companion object {
+        const val defaultKeyboardLayout = "KB_DEFAULT"
     }
 
     override fun onCreate() {
