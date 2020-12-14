@@ -284,6 +284,28 @@ class ChewingEngineInstrumentedTest {
     }
 
     @Test
+    fun switchToDaChenLayout() {
+        val newKeyboardType = chewingEngine.convKBStr2Num("KB_DEFAULT")
+        chewingEngine.setKBType(newKeyboardType)
+        val currentKeyboardType = chewingEngine.getKBType()
+        val currentKeyboardTypeString = chewingEngine.getKBString()
+        assertEquals(currentKeyboardType, 0)
+        assertEquals(currentKeyboardTypeString, "KB_DEFAULT")
+
+        chewingEngine.handleDefault('x')
+        chewingEngine.handleDefault('/')
+        assertEquals(chewingEngine.bopomofoStringStatic(), "ㄌㄥ")
+        chewingEngine.handleDefault('3')
+        assertEquals(chewingEngine.bufferString(), "冷")
+        chewingEngine.handleDefault('2')
+        chewingEngine.handleDefault('j')
+        chewingEngine.handleDefault('/')
+        chewingEngine.handleDefault('4')
+        chewingEngine.commitPreeditBuf()
+        assertEquals(chewingEngine.commitString(), "冷凍")
+    }
+
+    @Test
     fun switchToSymbolSelectionMode() {
         chewingEngine.setChiEngMode(CHINESE_MODE)
         chewingEngine.setMaxChiSymbolLen(10)
