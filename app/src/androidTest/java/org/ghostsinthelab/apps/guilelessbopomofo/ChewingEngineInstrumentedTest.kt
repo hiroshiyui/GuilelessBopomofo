@@ -33,7 +33,7 @@ import org.junit.runner.RunWith
 class ChewingEngineInstrumentedTest {
     private lateinit var chewingEngine: ChewingEngine
     private lateinit var dataPath: String
-    val CHINESE_MODE = 1
+    private val CHINESE_MODE = 1
 
     @Before
     fun setupChewingEngine() {
@@ -58,8 +58,8 @@ class ChewingEngineInstrumentedTest {
     @Test
     fun validChiEngMode() {
         chewingEngine.setChiEngMode(CHINESE_MODE)
-        val chewing_chi_mode = chewingEngine.getChiEngMode()
-        assertEquals(chewing_chi_mode, CHINESE_MODE)
+        val chewingChiMode = chewingEngine.getChiEngMode()
+        assertEquals(chewingChiMode, CHINESE_MODE)
     }
 
     @Test
@@ -137,7 +137,7 @@ class ChewingEngineInstrumentedTest {
         chewingEngine.candTotalChoice()
         chewingEngine.candChooseByIndex(0)
         chewingEngine.commitPreeditBuf()
-        var commitString: String = chewingEngine.commitString()
+        val commitString: String = chewingEngine.commitString()
         assertEquals(commitString, "綠茶")
     }
 

@@ -212,7 +212,7 @@
             app:layout_constraintStart_toStartOf="@+id/textViewSettingKeyButtonsElevation"
             app:layout_constraintTop_toBottomOf="@+id/textViewSettingKeyButtonsElevation" />
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchSettingKeyButtonsElevation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
