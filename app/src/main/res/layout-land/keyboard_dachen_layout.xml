@@ -528,7 +528,6 @@
             android:onClick="onClick"
             android:scaleType="fitCenter"
             android:theme="@style/KeyImageButton"
-            app:keyCodeString="KEYCODE_COMMA"
             app:keySymbolString=","
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ie" />
@@ -608,6 +607,7 @@
             android:onClick="onClick"
             android:scaleType="centerCrop"
             android:theme="@style/KeyImageButton"
+            app:keyCodeString="KEYCODE_COMMA"
             app:keySymbolString=","
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_punctuation" />
