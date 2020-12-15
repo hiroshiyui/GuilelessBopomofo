@@ -29,7 +29,6 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.LinearLayout
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -88,6 +87,8 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         v = imeService.viewBinding
         val keyImageButtonPunc =
             v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonPunc)
+        candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
+
         keyImageButtonPunc.setOnLongClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
             imeService.chewingEngine.apply {
@@ -98,20 +99,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
                 candOpen()
             }
 
-            candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
-
-            v.keyboardPanel.apply {
-                removeAllViews()
-                addView(candidatesLayoutBinding.root)
-                currentKeyboardLayout = KeyboardPanel.KeyboardLayout.CANDIDATES
-            }
-
-            val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
-            candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
-            val layoutManager = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
-            layoutManager.gapStrategy =
-                StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-            candidatesRecyclerView.layoutManager = layoutManager
+            v.keyboardPanel.switchToCandidatesLayout(imeService)
 
             return@setOnLongClickListener true
         }
@@ -163,6 +151,9 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
                 symbolsPickerLayoutBinding.SymbolsFlow.addView(button)
             }
         }
+
+        val keyButtonBackToMain = symbolsPickerLayoutBinding.keyButtonBackToMain
+        keyButtonBackToMain.setBackMainLayoutOnClickListener(imeService)
     }
 
     @SuppressLint("ClickableViewAccessibility")

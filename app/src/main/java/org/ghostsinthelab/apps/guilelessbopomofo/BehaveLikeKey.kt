@@ -57,4 +57,13 @@ interface BehaveLikeKey<T : View> {
     fun isFuntionKey(): Boolean {
         return (keyType == KeyType.KEYTYPE_FUNCTION.value)
     }
+
+    fun setBackMainLayoutOnClickListener(imeService: GuilelessBopomofoService) {
+        this as View
+        this.setOnClickListener {
+            imeService.chewingEngine.candClose()
+            imeService.chewingEngine.handleEnd()
+            imeService.viewBinding.keyboardPanel.switchToMainLayout(imeService)
+        }
+    }
 }

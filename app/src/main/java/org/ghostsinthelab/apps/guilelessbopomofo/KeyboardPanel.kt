@@ -90,6 +90,9 @@ class KeyboardPanel(
         candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
         candidatesRecyclerView.layoutManager =
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
+
+        val keyButtonBackToMain = candidatesLayoutBinding.keyButtonBackToMain
+        keyButtonBackToMain.setBackMainLayoutOnClickListener(imeService)
     }
 
     // just list current candidate window
@@ -105,5 +108,8 @@ class KeyboardPanel(
         candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
         candidatesRecyclerView.layoutManager =
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
+
+        val keyButtonBackToMain = candidatesLayoutBinding.keyButtonBackToMain
+        keyButtonBackToMain.setBackMainLayoutOnClickListener(imeService)
     }
 }

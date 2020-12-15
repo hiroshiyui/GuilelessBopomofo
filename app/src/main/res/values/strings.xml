@@ -25,4 +25,5 @@
     <string name="switch_enable_keybutton_elevation">Enrich key buttons visual elevation?</string>
     <string name="switch_description_enable_keybutton_elevation">Is the default flat style looks too boring? Change it!</string>
     <string name="switch_title_enrich_key_button_elevation">Enrich key buttons visual elevation</string>
+    <string name="back_to_main_layout">Back to keyboard</string>
 </resources>
