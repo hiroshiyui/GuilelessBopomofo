@@ -33,7 +33,7 @@ import androidx.core.view.setPadding
 
 @SuppressLint("ClickableViewAccessibility")
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
-    androidx.appcompat.widget.AppCompatTextView(context, attrs) {
+    androidx.appcompat.widget.AppCompatTextView(context, attrs), DisplayMetricsComputable {
     private val LOGTAG = "PreEditBufferTextView"
     private lateinit var span: SpannableString
 
@@ -100,7 +100,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         super.onTextChanged(text, start, lengthBefore, lengthAfter)
         if (lengthAfter != 0) {
             // improve character click accuracy, leave text far from edges
-            val px = KeyboardView.convertDpToPx(12F, resources).toInt()
+            val px = convertDpToPx(12F).toInt()
             this.setPadding(px, 0, px, 0)
         } else {
             this.setPadding(0)

@@ -26,7 +26,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 
 class KeyImageButton(context: Context, attrs: AttributeSet) :
     AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
-    BehaveLikeKey<KeyImageButton> {
+    BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable {
     private val LOGTAG: String = "KeyImageButton"
     private val sharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
@@ -46,16 +46,12 @@ class KeyImageButton(context: Context, attrs: AttributeSet) :
         }
 
         this.apply {
-            minimumHeight = KeyboardView.convertDpToPx(48F, resources).toInt()
-            minimumWidth = KeyboardView.convertDpToPx(48F, resources).toInt()
+            minimumHeight = convertDpToPx(48F).toInt()
+            minimumWidth = convertDpToPx(48F).toInt()
 
             if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
-                elevation = KeyboardView.convertDpToPx(2F, resources)
+                elevation = convertDpToPx(2F)
             }
         }
     }
-
-//    private fun convertDpToPx(dp: Float): Float {
-//        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
-//    }
 }
