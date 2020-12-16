@@ -13,10 +13,11 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutBufferTextViews"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#00FFFFFF"
-        android:backgroundTint="#FFFFFF"
+        android:background="@color/colorPrimary"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:backgroundTintMode="screen"
         android:orientation="horizontal">
 
         <org.ghostsinthelab.apps.guilelessbopomofo.PreEditBufferTextView
@@ -36,15 +37,25 @@
             android:background="#00BCD4"
             android:fontFamily="serif"
             android:textSize="26sp" />
+
     </LinearLayout>
+
+    <View
+        android:id="@+id/dividerKeyboardPanelTopBorder"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        android:backgroundTint="#33AAAAAA"
+        android:backgroundTintMode="screen" />
 
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
         android:id="@+id/keyboardPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:theme="@style/KeyboardTheme" />
 
 
