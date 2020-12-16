@@ -47,6 +47,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     companion object {
         const val defaultKeyboardLayout = "KB_DEFAULT"
+
         init {
             System.loadLibrary("chewing")
         }
@@ -230,7 +231,13 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         val ic = currentInputConnection
         when (v.keyCode()) {
             KeyEvent.KEYCODE_SPACE -> {
-                chewingEngine.handleSpace()
+                if (chewingEngine.bufferStringStatic()
+                        .isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()
+                ) {
+                    chewingEngine.handleSpace()
+                } else {
+                    sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
+                }
             }
             KeyEvent.KEYCODE_ENTER -> {
                 if (chewingEngine.commitPreeditBuf() == 0) { // not committed yet

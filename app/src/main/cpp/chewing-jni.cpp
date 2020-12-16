@@ -599,3 +599,13 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setEasySymbolInput(
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     chewing_set_easySymbolInput(ctx, mode);
 }
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setSpaceAsSelection(
+        JNIEnv *env,
+        jobject,
+        jint mode,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    chewing_set_spaceAsSelection(ctx, mode);
+}
