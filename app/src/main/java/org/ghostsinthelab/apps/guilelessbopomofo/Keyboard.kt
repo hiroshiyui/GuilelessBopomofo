@@ -29,7 +29,6 @@ import android.widget.LinearLayout
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.SymbolsPickerLayoutBinding
 import kotlin.concurrent.fixedRateTimer
@@ -38,7 +37,6 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
     private var backspacePressed: Boolean = false
     private val LOGTAG: String = "Keyboard"
     private lateinit var v: KeyboardLayoutBinding
-    private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
     private lateinit var symbolsPickerLayoutBinding: SymbolsPickerLayoutBinding
 
     init {
