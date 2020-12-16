@@ -21,12 +21,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
-import android.os.IBinder
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.LinearLayout
 import kotlinx.coroutines.delay
@@ -55,31 +52,9 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         v = imeService.viewBinding
         val keyImageButtonImeSwitch =
             v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonImeSwitch)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            keyImageButtonImeSwitch.setOnClickListener {
-                it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                imeService.switchToNextInputMethod(false)
-            }
-        } else {
-            // backward compatibility, support IME switch on legacy devices
-            val imm =
-                imeService.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            val imeToken: IBinder? = imeService.window?.let {
-                it.window?.attributes?.token
-            }
-            keyImageButtonImeSwitch.setOnClickListener {
-                it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                imm.switchToNextInputMethod(imeToken, false)
-            }
-        }
 
-        keyImageButtonImeSwitch.setOnLongClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            val imm =
-                imeService.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showInputMethodPicker()
-            return@setOnLongClickListener true
-        }
+        keyImageButtonImeSwitch.setImeSwitchButtonOnClickListener(imeService)
+        keyImageButtonImeSwitch.setImeSwitchButtonOnLongClickListener(imeService)
     }
 
     fun setupPuncSwitch(imeService: GuilelessBopomofoService) {
@@ -87,22 +62,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         v = imeService.viewBinding
         val keyImageButtonPunc =
             v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonPunc)
-        candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
-
-        keyImageButtonPunc.setOnLongClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            imeService.chewingEngine.apply {
-                candClose()
-                // 「常用符號」
-                handleDefault('`')
-                handleDefault('3')
-                candOpen()
-            }
-
-            v.keyboardPanel.switchToCandidatesLayout(imeService)
-
-            return@setOnLongClickListener true
-        }
+        keyImageButtonPunc.setKeyImageButtonPuncOnLongClickListener(imeService)
     }
 
     fun setupSymbolSwitch(imeService: GuilelessBopomofoService) {
@@ -132,8 +92,6 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
 
                 button.setOnClickListener {
                     imeService.chewingEngine.candChooseByIndex(category)
-
-                    Log.v(LOGTAG, "'${imeService.chewingEngine.candStringByIndexStatic(0)}'")
 
                     if (imeService.chewingEngine.candStringByIndexStatic(0).isEmpty()) {
                         imeService.chewingEngine.candClose()

@@ -26,7 +26,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 
 class KeyImageButton(context: Context, attrs: AttributeSet) :
     AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
-    BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable {
+    BehaveLikeKey<KeyImageButton>, BehaveLikeButton<KeyImageButton>, DisplayMetricsComputable {
     private val LOGTAG: String = "KeyImageButton"
     private val sharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)

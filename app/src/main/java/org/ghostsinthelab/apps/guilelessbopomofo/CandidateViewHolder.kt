@@ -21,13 +21,12 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.view.View
 import android.view.inputmethod.InputConnection
-import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 
 class CandidateViewHolder(imeService: GuilelessBopomofoService, itemView: View) :
     RecyclerView.ViewHolder(itemView), GuilelessBopomofoServiceContext {
     private val LOGTAG: String = "CandidateViewHolder"
-    private val button: Button = itemView.findViewById(R.id.buttonCandidateItem)
+    private val candidateButton: CandidateButton = itemView.findViewById(R.id.buttonCandidateItem)
     private var inputConnection: InputConnection
     override var serviceContext: GuilelessBopomofoService = imeService
 
@@ -36,18 +35,7 @@ class CandidateViewHolder(imeService: GuilelessBopomofoService, itemView: View) 
     }
 
     fun setData(data: Int) {
-        button.text = serviceContext.chewingEngine.candStringByIndexStatic(data)
-        button.setOnClickListener {
-            serviceContext.chewingEngine.apply {
-                candChooseByIndex(data)
-                candClose()
-                handleEnd()
-            }
-            serviceContext.viewBinding.apply {
-                keyboardPanel.currentCandidatesList = 0
-                keyboardView.syncPreEditBuffers(serviceContext)
-                keyboardPanel.switchToMainLayout(serviceContext)
-            }
-        }
+        candidateButton.text = serviceContext.chewingEngine.candStringByIndexStatic(data)
+        candidateButton.setCandidateButtonOnClickListener(serviceContext, data)
     }
 }

@@ -23,20 +23,12 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
 
-class KeyButton(context: Context, attrs: AttributeSet) :
-    AppCompatButton(context, attrs, R.attr.buttonStyle), BehaveLikeKey<KeyButton>,
-    BehaveLikeButton<KeyButton> {
-    private val LOGTAG: String = "KeyButton"
-    override var keyCodeString: String? = null
-    override var keyType: Int? = null
-    override var keySymbol: String? = null
+class CandidateButton(context: Context, attrs: AttributeSet) :
+    AppCompatButton(context, attrs, R.attr.buttonStyle), BehaveLikeButton<CandidateButton> {
 
     init {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.KeyButton, 0, 0).apply {
+        context.theme.obtainStyledAttributes(attrs, R.styleable.MaterialButton, 0, 0).apply {
             try {
-                keyCodeString = this.getString(R.styleable.KeyButton_keyCodeString)
-                keyType = this.getInt(R.styleable.KeyButton_keyTypeEnum, 0)
-                keySymbol = this.getString(R.styleable.KeyImageButton_keySymbolString)
                 isHapticFeedbackEnabled = true
             } finally {
                 recycle()
