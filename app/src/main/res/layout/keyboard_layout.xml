@@ -32,7 +32,7 @@
             android:textColor="#FFFFFF"
             android:textSize="26sp" />
 
-        <TextView
+        <org.ghostsinthelab.apps.guilelessbopomofo.BopomofoBufferTextView
             android:id="@+id/textViewBopomofoBuffer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -19,18 +19,9 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import android.content.res.Resources
-import android.util.TypedValue
+import android.content.Context
+import android.util.AttributeSet
 
-val resources: Resources = Resources.getSystem()
-
-interface DisplayMetricsComputable {
-
-    fun convertDpToPx(dp: Float): Float {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
-    }
-
-    fun convertSpToPx(sp: Float): Float {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, resources.displayMetrics)
-    }
+abstract class BufferTextView(context: Context, attrs: AttributeSet) :
+    androidx.appcompat.widget.AppCompatTextView(context, attrs), DisplayMetricsComputable {
 }

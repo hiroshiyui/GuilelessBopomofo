@@ -19,18 +19,18 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import android.content.res.Resources
-import android.util.TypedValue
+import android.content.Context
+import android.util.AttributeSet
 
-val resources: Resources = Resources.getSystem()
+class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
+    BufferTextView(context, attrs) {
+    private val LOGTAG = "BopomofoBufferTextView"
 
-interface DisplayMetricsComputable {
-
-    fun convertDpToPx(dp: Float): Float {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
-    }
-
-    fun convertSpToPx(sp: Float): Float {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, resources.displayMetrics)
+    init {
+        // Purposes to this padding setting:
+        //   1. Acts as, and looks like a cursor
+        //   2. Set its height early
+        val px = convertDpToPx(2F).toInt()
+        this.setPadding(px, 0, px, 0)
     }
 }

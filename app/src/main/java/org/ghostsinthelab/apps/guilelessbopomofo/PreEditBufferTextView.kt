@@ -33,7 +33,7 @@ import androidx.core.view.setPadding
 
 @SuppressLint("ClickableViewAccessibility")
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
-    androidx.appcompat.widget.AppCompatTextView(context, attrs), DisplayMetricsComputable {
+    BufferTextView(context, attrs) {
     private val LOGTAG = "PreEditBufferTextView"
     private lateinit var span: SpannableString
 
