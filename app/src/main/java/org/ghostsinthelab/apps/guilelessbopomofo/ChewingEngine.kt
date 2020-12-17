@@ -31,6 +31,7 @@ class ChewingEngine constructor(dataPath: String) {
     // Chewing API JNIs
     private external fun chewingNew(dataPath: String): Long
     external fun bopomofoStringStatic(chewingCtx: Long = context): String
+    external fun bufferCheck(chewingCtx: Long = context): Int
     external fun bufferLen(chewingCtx: Long = context): Int
     external fun bufferString(chewingCtx: Long = context): String
     external fun bufferStringStatic(chewingCtx: Long = context): String

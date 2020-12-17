@@ -617,3 +617,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_commitCheck(
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     return chewing_commit_Check(ctx);
 }
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_bufferCheck(
+        JNIEnv *env, jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    return chewing_buffer_Check(ctx);
+}
+

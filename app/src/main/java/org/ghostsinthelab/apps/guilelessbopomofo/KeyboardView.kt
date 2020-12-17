@@ -44,8 +44,11 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
         // chewingEngine.setMaxChiSymbolLen() 到達閾值時，
         // 會把 pre-edit buffer 開頭送到 commit buffer，
         // 所以要先丟出來：
-        if (imeService.chewingEngine.commitString().isNotEmpty() && imeService.chewingEngine.commitCheck() == 1) {
+        if (imeService.chewingEngine.commitCheck() == 1) {
             imeService.currentInputConnection.commitText(imeService.chewingEngine.commitString(), 1)
+            // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
+            // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
+            imeService.chewingEngine.handleEnd()
         }
     }
 
