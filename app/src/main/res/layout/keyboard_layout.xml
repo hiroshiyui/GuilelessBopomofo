@@ -11,14 +11,16 @@
     android:visibility="visible">
 
 
-    <LinearLayout
-        android:id="@+id/linearLayoutBufferTextViews"
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flexBoxLayoutBufferTextViews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:backgroundTint="@color/colorPrimaryDark"
         android:backgroundTintMode="screen"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:flexDirection="row"
+        app:flexWrap="wrap">
 
         <org.ghostsinthelab.apps.guilelessbopomofo.PreEditBufferTextView
             android:id="@+id/textViewPreEditBuffer"
@@ -38,7 +40,7 @@
             android:fontFamily="serif"
             android:textSize="26sp" />
 
-    </LinearLayout>
+    </com.google.android.flexbox.FlexboxLayout>
 
     <View
         android:id="@+id/dividerKeyboardPanelTopBorder"

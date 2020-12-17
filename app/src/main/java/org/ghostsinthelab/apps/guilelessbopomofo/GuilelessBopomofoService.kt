@@ -67,7 +67,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             chewingEngine.context.let {
                 Log.v(LOGTAG, "Chewing context ptr: $it")
             }
-            chewingEngine.setMaxChiSymbolLen(10)
         } catch (e: Exception) {
             Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
                 .show()
