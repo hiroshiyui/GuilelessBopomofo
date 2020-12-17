@@ -228,7 +228,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     }
 
     private fun handleControlKey(v: BehaveLikeKey<*>) {
-        val ic = currentInputConnection
         when (v.keyCode()) {
             KeyEvent.KEYCODE_SPACE -> {
                 if (chewingEngine.bufferStringStatic()
