@@ -94,7 +94,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
                     if (imeService.chewingEngine.candStringByIndexStatic(0).isEmpty()) {
                         imeService.chewingEngine.candClose()
                         imeService.chewingEngine.handleEnd()
-                        imeService.viewBinding.keyboardView.syncPreEditBuffers(imeService)
+                        imeService.viewBinding.keyboardView.updateBuffers(imeService)
                         imeService.viewBinding.keyboardPanel.switchToMainLayout(imeService)
                     } else { // 如果候選區還有資料，代表目前進入次分類
                         imeService.viewBinding.keyboardPanel.switchToCandidatesLayout(imeService)
@@ -128,7 +128,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
                             .isNotEmpty()
                     ) {
                         imeService.chewingEngine.handleBackspace()
-                        imeService.viewBinding.keyboardView.syncPreEditBuffers(imeService)
+                        imeService.viewBinding.keyboardView.updateBuffers(imeService)
                     } else {
                         // acts as general and repeatable backspace key
                         runBlocking {

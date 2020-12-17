@@ -52,7 +52,7 @@ class KeyboardPanel(
         imeService.setMainLayout()
         currentKeyboardLayout = KeyboardLayout.MAIN
 
-        v.keyboardView.syncPreEditBuffers(imeService)
+        v.keyboardView.updateBuffers(imeService)
     }
 
     // list current offset's candidates in the candidate window

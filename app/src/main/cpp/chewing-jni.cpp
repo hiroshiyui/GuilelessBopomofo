@@ -609,3 +609,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setSpaceAsSelection
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     chewing_set_spaceAsSelection(ctx, mode);
 }
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_commitCheck(
+        JNIEnv *env, jobject,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    return chewing_commit_Check(ctx);
+}

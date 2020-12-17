@@ -344,6 +344,38 @@ class ChewingEngineInstrumentedTest {
         assertEquals(chewingEngine.commitString(), "╔")
     }
 
+    @Test
+    fun testCommitCheck() {
+        chewingEngine.setChiEngMode(CHINESE_MODE)
+        chewingEngine.setMaxChiSymbolLen(10)
+        chewingEngine.setCandPerPage(10)
+        chewingEngine.setPhraseChoiceRearward(false)
+        val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
+        chewingEngine.setKBType(newKeyboardType)
+
+        chewingEngine.handleDefault('l')
+        chewingEngine.handleDefault('w')
+        chewingEngine.handleDefault('f')
+        chewingEngine.handleDefault('c')
+        chewingEngine.handleDefault('x')
+        chewingEngine.handleDefault('f')
+
+        repeat(5) {
+            chewingEngine.handleDefault('m')
+            chewingEngine.handleDefault('w')
+            chewingEngine.handleSpace()
+            chewingEngine.handleDefault('m')
+            chewingEngine.handleDefault('e')
+            chewingEngine.handleSpace()
+        }
+
+        assertEquals(chewingEngine.commitStringStatic(), "老鼠")
+        assertEquals(chewingEngine.bufferStringStatic(), "貓咪貓咪貓咪貓咪貓咪")
+        assertEquals(chewingEngine.commitCheck(), 0)
+        chewingEngine.commitPreeditBuf()
+        assertEquals(chewingEngine.commitCheck(), 1)
+    }
+
     @After
     fun deleteChewingEngine() {
         chewingEngine.delete()

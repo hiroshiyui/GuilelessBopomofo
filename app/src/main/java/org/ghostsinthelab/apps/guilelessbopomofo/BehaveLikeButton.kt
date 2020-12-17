@@ -46,7 +46,7 @@ interface BehaveLikeButton<T : View> {
             }
             imeService.viewBinding.apply {
                 keyboardPanel.currentCandidatesList = 0
-                keyboardView.syncPreEditBuffers(imeService)
+                keyboardView.updateBuffers(imeService)
                 keyboardPanel.switchToMainLayout(imeService)
             }
         }

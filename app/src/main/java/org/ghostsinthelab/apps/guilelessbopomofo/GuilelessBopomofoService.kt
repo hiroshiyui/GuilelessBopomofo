@@ -67,6 +67,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             chewingEngine.context.let {
                 Log.v(LOGTAG, "Chewing context ptr: $it")
             }
+            chewingEngine.setMaxChiSymbolLen(10)
         } catch (e: Exception) {
             Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
                 .show()
@@ -178,7 +179,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             }
         }
 
-        inputView.syncPreEditBuffers()
+        inputView.updateBuffers()
     }
 
     fun setMainLayout() {
@@ -240,8 +241,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                 }
             }
             KeyEvent.KEYCODE_ENTER -> {
-                if (chewingEngine.commitPreeditBuf() == 0) { // not committed yet
-                    ic.commitText(chewingEngine.commitStringStatic(), 1)
+                if (chewingEngine.bufferStringStatic()
+                        .isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()
+                ) { // not committed yet
+                    chewingEngine.handleEnter()
                 } else {
                     sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
                 }

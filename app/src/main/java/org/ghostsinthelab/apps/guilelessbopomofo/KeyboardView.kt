@@ -36,10 +36,17 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
         Log.v(LOGTAG, "Building KeyboardView.")
     }
 
-    fun syncPreEditBuffers(imeService: GuilelessBopomofoService = serviceContext) {
+    fun updateBuffers(imeService: GuilelessBopomofoService = serviceContext) {
         v = imeService.viewBinding
         v.textViewPreEditBuffer.text = imeService.chewingEngine.bufferStringStatic()
         v.textViewBopomofoBuffer.text = imeService.chewingEngine.bopomofoStringStatic()
+
+        // chewingEngine.setMaxChiSymbolLen() 到達閾值時，
+        // 會把 pre-edit buffer 開頭送到 commit buffer，
+        // 所以要先丟出來：
+        if (imeService.chewingEngine.commitString().isNotEmpty() && imeService.chewingEngine.commitCheck() == 1) {
+            imeService.currentInputConnection.commitText(imeService.chewingEngine.commitString(), 1)
+        }
     }
 
     fun setOnClickPreEditCharListener(imeService: GuilelessBopomofoService = serviceContext) {
