@@ -67,6 +67,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             chewingEngine.context.let {
                 Log.v(LOGTAG, "Chewing context ptr: $it")
             }
+            chewingEngine.setSpaceAsSelection(1)
         } catch (e: Exception) {
             Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
                 .show()
@@ -234,6 +235,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                         .isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()
                 ) {
                     chewingEngine.handleSpace()
+                    // 空白鍵是否為選字鍵？
+                    if (chewingEngine.getSpaceAsSelection() == 1 && chewingEngine.candTotalChoice() > 0) {
+                        viewBinding.keyboardPanel.switchToCandidatesLayout(this)
+                    }
                 } else {
                     sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
                 }

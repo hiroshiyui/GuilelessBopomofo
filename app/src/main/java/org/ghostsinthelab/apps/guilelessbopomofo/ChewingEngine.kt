@@ -62,6 +62,7 @@ class ChewingEngine constructor(dataPath: String) {
     external fun getMaxChiSymbolLen(chewingCtx: Long = context): Int
     external fun getPhraseChoiceRearward(chewingCtx: Long = context): Boolean
     external fun getSelKey(chewingCtx: Long = context): Long
+    external fun getSpaceAsSelection(chewingCtx: Long = context): Int
     external fun handleBackspace(chewingCtx: Long = context)
     external fun handleDefault(key: Char, chewingCtx: Long = context)
     external fun handleEnd(chewingCtx: Long = context)
