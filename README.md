@@ -31,4 +31,5 @@ A [Bopomofo](https://en.wikipedia.org/wiki/Bopomofo) software keyboard (aka inpu
 * [Bobby Tung](https://bobtung.medium.com/)
 * [Wen-Chun Lin](https://github.com/cataska)
 * [Jim Huang (jserv)](https://github.com/jserv)
+* [StarForcefield](https://starforcefield.wordpress.com/)
 * My dear friends, my family, and my wife.
