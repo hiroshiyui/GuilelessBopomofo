@@ -44,14 +44,13 @@
     <style name="SettingsDescription">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
     </style>
 
     <style name="SettingsWidget">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">16dp</item>
     </style>
 
     <style name="SettingsPrimaryHeader">

@@ -67,7 +67,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             chewingEngine.context.let {
                 Log.v(LOGTAG, "Chewing context ptr: $it")
             }
-            chewingEngine.setSpaceAsSelection(1)
+
+            if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
+                chewingEngine.setSpaceAsSelection(1)
+            }
         } catch (e: Exception) {
             Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
                 .show()

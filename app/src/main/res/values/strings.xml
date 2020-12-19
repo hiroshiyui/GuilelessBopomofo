@@ -26,4 +26,7 @@
     <string name="switch_description_enable_keybutton_elevation">Is the default flat style looks too boring? Change it!</string>
     <string name="switch_title_enrich_key_button_elevation">Enrich key buttons visual elevation</string>
     <string name="back_to_main_layout">Back to keyboard</string>
+    <string name="space_as_selection_key">Use Space key as candidates selection shortcut key</string>
+    <string name="space_as_selection_key_description">If enabled, when Space key is being pressed, candidates selection list will be opened for the last word or phrase in the pre-edit buffer</string>
+    <string name="space_as_selection_key_switch_label">Use Space key as candidates selection shortcut key?</string>
 </resources>

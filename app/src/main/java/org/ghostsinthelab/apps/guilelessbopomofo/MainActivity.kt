@@ -94,6 +94,18 @@ class MainActivity : AppCompatActivity() {
                     sharedPreferences.edit().putBoolean("user_enable_button_elevation", false).apply()
                 }
             }
+
+            if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
+                switchSettingSpaceAsSelection.isChecked = true
+            }
+
+            switchSettingSpaceAsSelection.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    sharedPreferences.edit().putBoolean("user_enable_space_as_selection", true).apply()
+                } else {
+                    sharedPreferences.edit().putBoolean("user_enable_space_as_selection", false).apply()
+                }
+            }
         }
 
         for ((button, layout) in

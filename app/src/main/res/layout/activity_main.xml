@@ -24,28 +24,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="24dp" />
 
-        <TextView
-            android:id="@+id/textViewAppVersion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:contentDescription="@string/applcation_version_label"
-            android:text="@string/applcation_version_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAppName" />
-
-        <TextView
-            android:id="@+id/textViewAppName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/app_name"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewAppIcon" />
-
         <ImageView
             android:id="@+id/imageViewAppIcon"
             android:layout_width="72dp"
@@ -58,40 +36,26 @@
             app:srcCompat="@mipmap/ic_launcher_round" />
 
         <TextView
-            android:id="@+id/textViewSettingDescriptionBopomofoKeyboardLayout"
-            style="@style/SettingsDescription"
-            android:layout_width="0dp"
-            android:text="@string/bopomofo_keyboard_layout_description"
-            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSettingBopomofoKeyboardLayout" />
+            android:id="@+id/textViewAppName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/app_name"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewAppIcon" />
 
-        <RadioGroup
-            android:id="@+id/radioGroupSettingBopomofoKeyboardLayout"
-            style="@style/SettingsWidget"
-            android:layout_width="0dp"
-            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionBopomofoKeyboardLayout">
-
-            <RadioButton
-                android:id="@+id/radioButtonLayoutDaChen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bopomofo_keyboard_layout_dachen" />
-
-            <RadioButton
-                android:id="@+id/radioButtonLayoutHsu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bopomofo_keyboard_layout_hsu" />
-
-            <RadioButton
-                android:id="@+id/radioButtonLayoutETen26"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bopomofo_keyboard_layout_eten26" />
-        </RadioGroup>
+        <TextView
+            android:id="@+id/textViewAppVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/applcation_version_label"
+            android:text="@string/applcation_version_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewAppName" />
 
         <View
             android:id="@+id/divider"
@@ -113,16 +77,6 @@
             app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-        <TextView
-            android:id="@+id/textViewSettingBopomofoKeyboardLayout"
-            style="@style/SettingsLabel"
-            android:layout_width="0dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/bopomofo_keyboard_layout"
-            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@+id/buttonLaunchImeSystemSettings" />
 
         <TextView
             android:id="@+id/textViewSettingServiceStatus"
@@ -177,6 +131,84 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewSettingLabelServiceStatus" />
 
         <TextView
+            android:id="@+id/textViewSettingBopomofoKeyboardLayout"
+            style="@style/SettingsLabel"
+            android:layout_width="0dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/bopomofo_keyboard_layout"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/buttonLaunchImeSystemSettings" />
+
+        <TextView
+            android:id="@+id/textViewSettingDescriptionBopomofoKeyboardLayout"
+            style="@style/SettingsDescription"
+            android:layout_width="0dp"
+            android:text="@string/bopomofo_keyboard_layout_description"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingBopomofoKeyboardLayout" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupSettingBopomofoKeyboardLayout"
+            style="@style/SettingsWidget"
+            android:layout_width="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionBopomofoKeyboardLayout">
+
+            <RadioButton
+                android:id="@+id/radioButtonLayoutDaChen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bopomofo_keyboard_layout_dachen" />
+
+            <RadioButton
+                android:id="@+id/radioButtonLayoutHsu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bopomofo_keyboard_layout_hsu" />
+
+            <RadioButton
+                android:id="@+id/radioButtonLayoutETen26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bopomofo_keyboard_layout_eten26" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textViewSettingSpaceAsSelection"
+            style="@style/SettingsLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/space_as_selection_key"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupSettingBopomofoKeyboardLayout" />
+
+        <TextView
+            android:id="@+id/textViewSettingDescriptionSpaceAsSelection"
+            style="@style/SettingsDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/space_as_selection_key_description"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/textViewSettingSpaceAsSelection" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchSettingSpaceAsSelection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/space_as_selection_key_switch_label"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/textViewSettingDescriptionSpaceAsSelection" />
+
+        <TextView
             android:id="@+id/textViewSettingFullscreenWhenInLandscape"
             style="@style/SettingsLabel"
             android:layout_width="0dp"
@@ -185,7 +217,7 @@
             android:text="@string/fullscreen_when_in_landscape_setting_title"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroupSettingBopomofoKeyboardLayout" />
+            app:layout_constraintTop_toBottomOf="@id/switchSettingSpaceAsSelection" />
 
         <TextView
             android:id="@+id/textViewSettingDescriptionFullscreenWhenInLandscape"
@@ -201,6 +233,7 @@
             android:id="@+id/switchSettingFullscreenWhenInLandscape"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@string/fullscreen_when_in_landscape_setting_switch"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
@@ -231,6 +264,7 @@
             android:id="@+id/switchSettingKeyButtonsElevation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="32dp"
             android:text="@string/switch_enable_keybutton_elevation"
             app:layout_constraintBottom_toBottomOf="@id/guidelineBottom"
