@@ -209,6 +209,36 @@
             app:layout_constraintTop_toBottomOf="@id/textViewSettingDescriptionSpaceAsSelection" />
 
         <TextView
+            android:id="@+id/textViewRearwardPhraseChoice"
+            style="@style/SettingsLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/rearward_phrase_choice"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/switchSettingSpaceAsSelection" />
+
+        <TextView
+            android:id="@+id/textViewRearwardPhraseChoiceDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/rearward_phrase_choice"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/textViewRearwardPhraseChoice" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchRearwardPhraseChoice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/rearward_phrase_choice_description"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/textViewRearwardPhraseChoiceDescription" />
+
+        <TextView
             android:id="@+id/textViewSettingFullscreenWhenInLandscape"
             style="@style/SettingsLabel"
             android:layout_width="0dp"
@@ -217,7 +247,7 @@
             android:text="@string/fullscreen_when_in_landscape_setting_title"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/switchSettingSpaceAsSelection" />
+            app:layout_constraintTop_toBottomOf="@id/switchRearwardPhraseChoice" />
 
         <TextView
             android:id="@+id/textViewSettingDescriptionFullscreenWhenInLandscape"
@@ -239,36 +269,6 @@
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionFullscreenWhenInLandscape" />
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/switchRearwardPhraseChoice"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/rearward_phrase_choice_description"
-            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toEndOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/textViewRearwardPhraseChoiceDescription" />
-
-        <TextView
-            android:id="@+id/textViewRearwardPhraseChoice"
-            style="@style/SettingsLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/rearward_phrase_choice"
-            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@+id/switchSettingFullscreenWhenInLandscape" />
-
-        <TextView
-            android:id="@+id/textViewRearwardPhraseChoiceDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/rearward_phrase_choice"
-            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/textViewRearwardPhraseChoice" />
-
         <TextView
             android:id="@+id/textViewSettingKeyButtonsElevation"
             style="@style/SettingsLabel"
@@ -278,7 +278,7 @@
             android:text="@string/switch_title_enrich_key_button_elevation"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/switchRearwardPhraseChoice" />
+            app:layout_constraintTop_toBottomOf="@id/switchSettingFullscreenWhenInLandscape" />
 
         <TextView
             android:id="@+id/textViewSettingDescriptionKeyButtonsElevation"
