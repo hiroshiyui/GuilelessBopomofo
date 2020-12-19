@@ -1,5 +1,7 @@
 # Guileless Bopomofo 樸實注音鍵盤
 
+![Guileless Bopomofo](./app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png)
+
 ## About
 
 A [Bopomofo](https://en.wikipedia.org/wiki/Bopomofo) software keyboard (aka input method editor) on Android, which is utilizing [libchewing](http://chewing.im/) for intelligent phonetic processing.
