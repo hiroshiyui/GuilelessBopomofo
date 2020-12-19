@@ -30,4 +30,7 @@
     <string name="space_as_selection_key">把空白鍵當成候選字詞快速鍵</string>
     <string name="space_as_selection_key_description">如果啟用本功能，按下空白鍵會立即開啟「預編輯緩衝區」最尾端字詞的候選字詞列表</string>
     <string name="space_as_selection_key_switch_label">把空白鍵當成候選字詞快速鍵？</string>
+    <string name="rearward_phrase_choice">從後方往前選詞</string>
+    <string name="rearward_phrase_choice_switch">從後方往前選詞？</string>
+    <string name="rearward_phrase_choice_description">如果啟用本功能，會從游標處向前選詞</string>
 </resources>

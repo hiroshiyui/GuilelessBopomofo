@@ -77,9 +77,11 @@ class MainActivity : AppCompatActivity() {
 
             switchSettingFullscreenWhenInLandscape.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
-                    sharedPreferences.edit().putBoolean("user_fullscreen_when_in_landscape", true).apply()
+                    sharedPreferences.edit().putBoolean("user_fullscreen_when_in_landscape", true)
+                        .apply()
                 } else {
-                    sharedPreferences.edit().putBoolean("user_fullscreen_when_in_landscape", false).apply()
+                    sharedPreferences.edit().putBoolean("user_fullscreen_when_in_landscape", false)
+                        .apply()
                 }
             }
 
@@ -89,9 +91,11 @@ class MainActivity : AppCompatActivity() {
 
             switchSettingKeyButtonsElevation.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
-                    sharedPreferences.edit().putBoolean("user_enable_button_elevation", true).apply()
+                    sharedPreferences.edit().putBoolean("user_enable_button_elevation", true)
+                        .apply()
                 } else {
-                    sharedPreferences.edit().putBoolean("user_enable_button_elevation", false).apply()
+                    sharedPreferences.edit().putBoolean("user_enable_button_elevation", false)
+                        .apply()
                 }
             }
 
@@ -101,9 +105,24 @@ class MainActivity : AppCompatActivity() {
 
             switchSettingSpaceAsSelection.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
-                    sharedPreferences.edit().putBoolean("user_enable_space_as_selection", true).apply()
+                    sharedPreferences.edit().putBoolean("user_enable_space_as_selection", true)
+                        .apply()
                 } else {
-                    sharedPreferences.edit().putBoolean("user_enable_space_as_selection", false).apply()
+                    sharedPreferences.edit().putBoolean("user_enable_space_as_selection", false)
+                        .apply()
+                }
+            }
+
+            if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
+                switchRearwardPhraseChoice.isChecked = true
+            }
+
+            switchRearwardPhraseChoice.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    sharedPreferences.edit().putBoolean("user_phrase_choice_rearward", true).apply()
+                } else {
+                    sharedPreferences.edit().putBoolean("user_phrase_choice_rearward", false)
+                        .apply()
                 }
             }
         }
@@ -118,7 +137,11 @@ class MainActivity : AppCompatActivity() {
                 sharedPreferences.edit().putString("user_keyboard_layout", layout).apply()
             }
 
-            if (sharedPreferences.getString("user_keyboard_layout", GuilelessBopomofoService.defaultKeyboardLayout) == layout) {
+            if (sharedPreferences.getString(
+                    "user_keyboard_layout",
+                    GuilelessBopomofoService.defaultKeyboardLayout
+                ) == layout
+            ) {
                 button.isChecked = true
             }
         }

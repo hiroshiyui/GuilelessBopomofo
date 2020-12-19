@@ -71,6 +71,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
                 chewingEngine.setSpaceAsSelection(1)
             }
+
+            if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
+                chewingEngine.setPhraseChoiceRearward(true)
+            }
         } catch (e: Exception) {
             Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
                 .show()
