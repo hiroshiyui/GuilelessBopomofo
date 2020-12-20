@@ -92,10 +92,14 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
                     guilelessBopomofoService.chewingEngine.candChooseByIndex(category)
 
                     if (guilelessBopomofoService.chewingEngine.candStringByIndexStatic(0).isEmpty()) {
-                        guilelessBopomofoService.chewingEngine.candClose()
-                        guilelessBopomofoService.chewingEngine.handleEnd()
-                        guilelessBopomofoService.viewBinding.keyboardView.updateBuffers(guilelessBopomofoService)
-                        guilelessBopomofoService.viewBinding.keyboardPanel.switchToMainLayout(guilelessBopomofoService)
+                        guilelessBopomofoService.chewingEngine.apply {
+                            candClose()
+                            handleEnd()
+                        }
+                        guilelessBopomofoService.viewBinding.apply {
+                            keyboardView.updateBuffers(guilelessBopomofoService)
+                            keyboardPanel.switchToMainLayout(guilelessBopomofoService)
+                        }
                     } else { // 如果候選區還有資料，代表目前進入次分類
                         guilelessBopomofoService.viewBinding.keyboardPanel.switchToCandidatesLayout(guilelessBopomofoService)
                     }
