@@ -56,18 +56,7 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
         v = guilelessBopomofoService.viewBinding
         v.textViewPreEditBuffer.setOnClickListener {
             val offset = v.textViewPreEditBuffer.offset
-
-            guilelessBopomofoService.chewingEngine.apply {
-                // close if any been opened candidate window first
-                candClose()
-                // move to first character
-                handleHome()
-                // move to clicked character
-                repeat(offset) { handleRight() }
-                // open candidates window
-                candOpen()
-            }
-
+            guilelessBopomofoService.chewingEngine.moveToPreEditBufferOffset(offset)
             v.keyboardPanel.switchToCandidatesLayout(offset, guilelessBopomofoService)
         }
     }

@@ -68,12 +68,12 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         v = guilelessBopomofoService.viewBinding
         val keyImageButtonSymbol =
             v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonSymbol)
-        symbolsPickerLayoutBinding = SymbolsPickerLayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
+        symbolsPickerLayoutBinding =
+            SymbolsPickerLayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
 
         keyImageButtonSymbol.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            guilelessBopomofoService.chewingEngine.handleDefault('`')
-            guilelessBopomofoService.chewingEngine.candOpen()
+            guilelessBopomofoService.chewingEngine.openSymbolCandidates()
 
             v.keyboardPanel.apply {
                 removeAllViews()
@@ -85,23 +85,24 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
 
             repeat(totalCategories) { category ->
                 val button: Button = Button(context)
-                button.text = guilelessBopomofoService.chewingEngine.candStringByIndexStatic(category)
+                button.text =
+                    guilelessBopomofoService.chewingEngine.candStringByIndexStatic(category)
                 button.id = View.generateViewId()
 
                 button.setOnClickListener {
                     guilelessBopomofoService.chewingEngine.candChooseByIndex(category)
 
-                    if (guilelessBopomofoService.chewingEngine.candStringByIndexStatic(0).isEmpty()) {
-                        guilelessBopomofoService.chewingEngine.apply {
-                            candClose()
-                            handleEnd()
-                        }
+                    if (guilelessBopomofoService.chewingEngine.hasCandidates()) {
+                        // 如果候選區還有資料，代表目前進入次分類
+                        guilelessBopomofoService.viewBinding.keyboardPanel.switchToCandidatesLayout(
+                            guilelessBopomofoService
+                        )
+                    } else {
+                        guilelessBopomofoService.chewingEngine.endCandidateChoice()
                         guilelessBopomofoService.viewBinding.apply {
                             keyboardView.updateBuffers(guilelessBopomofoService)
                             keyboardPanel.switchToMainLayout(guilelessBopomofoService)
                         }
-                    } else { // 如果候選區還有資料，代表目前進入次分類
-                        guilelessBopomofoService.viewBinding.keyboardPanel.switchToCandidatesLayout(guilelessBopomofoService)
                     }
 
                     guilelessBopomofoService.viewBinding.keyboardPanel.currentCandidatesList = 0
@@ -127,12 +128,11 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                    if (guilelessBopomofoService.chewingEngine.bufferStringStatic()
-                            .isNotEmpty() || guilelessBopomofoService.chewingEngine.bopomofoStringStatic()
-                            .isNotEmpty()
-                    ) {
+                    if (guilelessBopomofoService.chewingEngine.anyPreeditBufferIsNotEmpty()) {
                         guilelessBopomofoService.chewingEngine.handleBackspace()
-                        guilelessBopomofoService.viewBinding.keyboardView.updateBuffers(guilelessBopomofoService)
+                        guilelessBopomofoService.viewBinding.keyboardView.updateBuffers(
+                            guilelessBopomofoService
+                        )
                     } else {
                         // acts as general and repeatable backspace key
                         runBlocking {

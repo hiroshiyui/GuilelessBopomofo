@@ -79,4 +79,50 @@ class ChewingEngine constructor(dataPath: String) {
     external fun setPhraseChoiceRearward(boolean: Boolean, chewingCtx: Long = context)
     external fun setSelKey(selKeys: List<Int>, length: Int, chewingCtx: Long = context)
     external fun setSpaceAsSelection(mode: Int, chewingCtx: Long = context)
+
+    // derived methods
+    fun hasCandidates(): Boolean {
+        if (candStringByIndexStatic(0).isEmpty()) {
+            return false
+        }
+        return true
+    }
+
+    fun anyPreeditBufferIsNotEmpty(): Boolean {
+        if (bufferStringStatic()
+                .isNotEmpty() || bopomofoStringStatic().isNotEmpty()
+        ) {
+            return true
+        }
+        return false
+    }
+
+    fun openSymbolCandidates() {
+        handleDefault('`')
+        candOpen()
+    }
+
+    fun openPuncCandidates() {
+        candClose()
+        // 「常用符號」
+        handleDefault('`')
+        handleDefault('3')
+        candOpen()
+    }
+
+    fun endCandidateChoice() {
+        candClose()
+        handleEnd()
+    }
+
+    fun moveToPreEditBufferOffset(offset: Int) {
+        // close if any been opened candidate window first
+        candClose()
+        // move to first character
+        handleHome()
+        // move to clicked character
+        repeat(offset) { handleRight() }
+        // open candidates window
+        candOpen()
+    }
 }

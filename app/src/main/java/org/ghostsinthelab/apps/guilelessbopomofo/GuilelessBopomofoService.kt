@@ -222,9 +222,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     private fun handleControlKey(v: BehaveLikeKey<*>) {
         when (v.keyCode()) {
             KeyEvent.KEYCODE_SPACE -> {
-                if (chewingEngine.bufferStringStatic()
-                        .isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()
-                ) {
+                if (chewingEngine.anyPreeditBufferIsNotEmpty()) {
                     chewingEngine.handleSpace()
                     // 空白鍵是否為選字鍵？
                     if (chewingEngine.getSpaceAsSelection() == 1 && chewingEngine.candTotalChoice() > 0) {
@@ -235,9 +233,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                 }
             }
             KeyEvent.KEYCODE_ENTER -> {
-                if (chewingEngine.bufferStringStatic()
-                        .isNotEmpty() || chewingEngine.bopomofoStringStatic().isNotEmpty()
-                ) { // not committed yet
+                if (chewingEngine.anyPreeditBufferIsNotEmpty()) { // not committed yet
                     chewingEngine.handleEnter()
                 } else {
                     sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
