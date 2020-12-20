@@ -125,4 +125,11 @@ class ChewingEngine constructor(dataPath: String) {
         // open candidates window
         candOpen()
     }
+
+    // simulates [Shift] + [,]
+    fun simulateShiftComma() {
+        setEasySymbolInput(1)
+        handleDefault(',')
+        setEasySymbolInput(0)
+    }
 }
