@@ -36,7 +36,7 @@ class KeyboardPanel(
     private var currentOffset: Int = 0
     private lateinit var v: KeyboardLayoutBinding
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
-    override lateinit var serviceContext: GuilelessBopomofoService
+    override lateinit var guilelessBopomofoService: GuilelessBopomofoService
 
     enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES }
 
@@ -46,23 +46,23 @@ class KeyboardPanel(
         Log.v(LOGTAG, "Building KeyboardLayout.")
     }
 
-    fun switchToMainLayout(imeService: GuilelessBopomofoService) {
+    fun switchToMainLayout(guilelessBopomofoService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "switchToMainLayout")
-        v = imeService.viewBinding
-        imeService.setMainLayout()
+        v = guilelessBopomofoService.viewBinding
+        guilelessBopomofoService.setMainLayout()
         currentKeyboardLayout = KeyboardLayout.MAIN
 
-        v.keyboardView.updateBuffers(imeService)
+        v.keyboardView.updateBuffers(guilelessBopomofoService)
     }
 
     // list current offset's candidates in the candidate window
     fun switchToCandidatesLayout(
         offset: Int,
-        imeService: GuilelessBopomofoService
+        guilelessBopomofoService: GuilelessBopomofoService
     ) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
-        v = imeService.viewBinding
-        candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
+        v = guilelessBopomofoService.viewBinding
+        candidatesLayoutBinding = CandidatesLayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(candidatesLayoutBinding.root)
         currentKeyboardLayout = KeyboardLayout.CANDIDATES
@@ -75,11 +75,11 @@ class KeyboardPanel(
 
         // switch to next candidates list
         repeat(currentCandidatesList) {
-            imeService.chewingEngine.candListNext()
+            guilelessBopomofoService.chewingEngine.candListNext()
         }
 
         // circulate candidates list cursor
-        if (imeService.chewingEngine.candListHasNext()) {
+        if (guilelessBopomofoService.chewingEngine.candListHasNext()) {
             currentCandidatesList += 1
         } else {
             currentCandidatesList = 0
@@ -87,29 +87,29 @@ class KeyboardPanel(
 
         // Setup & bind RecyclerView
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
-        candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
+        candidatesRecyclerView.adapter = CandidatesAdapter(guilelessBopomofoService)
         candidatesRecyclerView.layoutManager =
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
 
         val keyButtonBackToMain = candidatesLayoutBinding.keyButtonBackToMain
-        keyButtonBackToMain.setBackMainLayoutOnClickListener(imeService)
+        keyButtonBackToMain.setBackMainLayoutOnClickListener(guilelessBopomofoService)
     }
 
     // just list current candidate window
-    fun switchToCandidatesLayout(imeService: GuilelessBopomofoService) {
+    fun switchToCandidatesLayout(guilelessBopomofoService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
-        candidatesLayoutBinding = CandidatesLayoutBinding.inflate(imeService.layoutInflater)
-        v = imeService.viewBinding
+        candidatesLayoutBinding = CandidatesLayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
+        v = guilelessBopomofoService.viewBinding
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(candidatesLayoutBinding.root)
         currentKeyboardLayout = KeyboardLayout.SYMBOLS
 
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
-        candidatesRecyclerView.adapter = CandidatesAdapter(imeService)
+        candidatesRecyclerView.adapter = CandidatesAdapter(guilelessBopomofoService)
         candidatesRecyclerView.layoutManager =
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
 
         val keyButtonBackToMain = candidatesLayoutBinding.keyButtonBackToMain
-        keyButtonBackToMain.setBackMainLayoutOnClickListener(imeService)
+        keyButtonBackToMain.setBackMainLayoutOnClickListener(guilelessBopomofoService)
     }
 }

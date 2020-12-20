@@ -23,19 +23,18 @@ import android.view.View
 import android.view.inputmethod.InputConnection
 import androidx.recyclerview.widget.RecyclerView
 
-class CandidateViewHolder(imeService: GuilelessBopomofoService, itemView: View) :
+class CandidateViewHolder(override var guilelessBopomofoService: GuilelessBopomofoService, itemView: View) :
     RecyclerView.ViewHolder(itemView), GuilelessBopomofoServiceContext {
     private val LOGTAG: String = "CandidateViewHolder"
     private val candidateButton: CandidateButton = itemView.findViewById(R.id.buttonCandidateItem)
     private var inputConnection: InputConnection
-    override var serviceContext: GuilelessBopomofoService = imeService
 
     init {
-        inputConnection = serviceContext.currentInputConnection
+        inputConnection = this.guilelessBopomofoService.currentInputConnection
     }
 
     fun setData(data: Int) {
-        candidateButton.text = serviceContext.chewingEngine.candStringByIndexStatic(data)
-        candidateButton.setCandidateButtonOnClickListener(serviceContext, data)
+        candidateButton.text = guilelessBopomofoService.chewingEngine.candStringByIndexStatic(data)
+        candidateButton.setCandidateButtonOnClickListener(guilelessBopomofoService, data)
     }
 }

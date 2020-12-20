@@ -29,35 +29,35 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
     GuilelessBopomofoServiceContext {
     private val LOGTAG: String = "KeyboardView"
     private lateinit var v: KeyboardLayoutBinding
-    override lateinit var serviceContext: GuilelessBopomofoService
+    override lateinit var guilelessBopomofoService: GuilelessBopomofoService
 
     init {
         this.orientation = VERTICAL
         Log.v(LOGTAG, "Building KeyboardView.")
     }
 
-    fun updateBuffers(imeService: GuilelessBopomofoService = serviceContext) {
-        v = imeService.viewBinding
-        v.textViewPreEditBuffer.text = imeService.chewingEngine.bufferStringStatic()
-        v.textViewBopomofoBuffer.text = imeService.chewingEngine.bopomofoStringStatic()
+    fun updateBuffers(guilelessBopomofoService: GuilelessBopomofoService = this.guilelessBopomofoService) {
+        v = guilelessBopomofoService.viewBinding
+        v.textViewPreEditBuffer.text = guilelessBopomofoService.chewingEngine.bufferStringStatic()
+        v.textViewBopomofoBuffer.text = guilelessBopomofoService.chewingEngine.bopomofoStringStatic()
 
         // chewingEngine.setMaxChiSymbolLen() 到達閾值時，
         // 會把 pre-edit buffer 開頭送到 commit buffer，
         // 所以要先丟出來：
-        if (imeService.chewingEngine.commitCheck() == 1) {
-            imeService.currentInputConnection.commitText(imeService.chewingEngine.commitString(), 1)
+        if (guilelessBopomofoService.chewingEngine.commitCheck() == 1) {
+            guilelessBopomofoService.currentInputConnection.commitText(guilelessBopomofoService.chewingEngine.commitString(), 1)
             // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
             // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
-            imeService.chewingEngine.handleEnd()
+            guilelessBopomofoService.chewingEngine.handleEnd()
         }
     }
 
-    fun setOnClickPreEditCharListener(imeService: GuilelessBopomofoService = serviceContext) {
-        v = imeService.viewBinding
+    fun setOnClickPreEditCharListener(guilelessBopomofoService: GuilelessBopomofoService = this.guilelessBopomofoService) {
+        v = guilelessBopomofoService.viewBinding
         v.textViewPreEditBuffer.setOnClickListener {
             val offset = v.textViewPreEditBuffer.offset
 
-            imeService.chewingEngine.apply {
+            guilelessBopomofoService.chewingEngine.apply {
                 // close if any been opened candidate window first
                 candClose()
                 // move to first character
@@ -68,7 +68,7 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
                 candOpen()
             }
 
-            v.keyboardPanel.switchToCandidatesLayout(offset, imeService)
+            v.keyboardPanel.switchToCandidatesLayout(offset, guilelessBopomofoService)
         }
     }
 }

@@ -20,10 +20,9 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 interface GuilelessBopomofoServiceContext {
-    var serviceContext: GuilelessBopomofoService
+    var guilelessBopomofoService: GuilelessBopomofoService
 
-    fun setServiceContext(imeService: GuilelessBopomofoService): GuilelessBopomofoService {
-        serviceContext = imeService
-        return serviceContext
+    fun bindGuilelessBopomofoService(guilelessBopomofoService: GuilelessBopomofoService) {
+        this.guilelessBopomofoService = guilelessBopomofoService
     }
 }

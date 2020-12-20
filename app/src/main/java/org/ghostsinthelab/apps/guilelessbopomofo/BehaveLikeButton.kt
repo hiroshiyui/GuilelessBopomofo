@@ -27,43 +27,43 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 
 interface BehaveLikeButton<T : View> {
-    fun setBackMainLayoutOnClickListener(imeService: GuilelessBopomofoService) {
+    fun setBackMainLayoutOnClickListener(guilelessBopomofoService: GuilelessBopomofoService) {
         this as View
         this.setOnClickListener {
-            imeService.chewingEngine.candClose()
-            imeService.chewingEngine.handleEnd()
-            imeService.viewBinding.keyboardPanel.switchToMainLayout(imeService)
+            guilelessBopomofoService.chewingEngine.candClose()
+            guilelessBopomofoService.chewingEngine.handleEnd()
+            guilelessBopomofoService.viewBinding.keyboardPanel.switchToMainLayout(guilelessBopomofoService)
         }
     }
 
-    fun setCandidateButtonOnClickListener(imeService: GuilelessBopomofoService, data: Int) {
+    fun setCandidateButtonOnClickListener(guilelessBopomofoService: GuilelessBopomofoService, data: Int) {
         this as View
         this.setOnClickListener {
-            imeService.chewingEngine.apply {
+            guilelessBopomofoService.chewingEngine.apply {
                 candChooseByIndex(data)
                 candClose()
                 handleEnd()
             }
-            imeService.viewBinding.apply {
+            guilelessBopomofoService.viewBinding.apply {
                 keyboardPanel.currentCandidatesList = 0
-                keyboardView.updateBuffers(imeService)
-                keyboardPanel.switchToMainLayout(imeService)
+                keyboardView.updateBuffers(guilelessBopomofoService)
+                keyboardPanel.switchToMainLayout(guilelessBopomofoService)
             }
         }
     }
 
-    fun setImeSwitchButtonOnClickListener(imeService: GuilelessBopomofoService) {
+    fun setImeSwitchButtonOnClickListener(guilelessBopomofoService: GuilelessBopomofoService) {
         this as KeyImageButton
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             this.setOnClickListener {
                 it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                imeService.switchToNextInputMethod(false)
+                guilelessBopomofoService.switchToNextInputMethod(false)
             }
         } else {
             // backward compatibility, support IME switch on legacy devices
             val imm =
-                imeService.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            val imeToken: IBinder? = imeService.window?.let {
+                guilelessBopomofoService.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imeToken: IBinder? = guilelessBopomofoService.window?.let {
                 it.window?.attributes?.token
             }
             this.setOnClickListener {
@@ -73,22 +73,22 @@ interface BehaveLikeButton<T : View> {
         }
     }
 
-    fun setImeSwitchButtonOnLongClickListener(imeService: GuilelessBopomofoService) {
+    fun setImeSwitchButtonOnLongClickListener(guilelessBopomofoService: GuilelessBopomofoService) {
         this as KeyImageButton
         this.setOnLongClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
             val imm =
-                imeService.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                guilelessBopomofoService.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
             return@setOnLongClickListener true
         }
     }
 
-    fun setKeyImageButtonPuncOnLongClickListener(imeService: GuilelessBopomofoService) {
+    fun setKeyImageButtonPuncOnLongClickListener(guilelessBopomofoService: GuilelessBopomofoService) {
         this as KeyImageButton
         this.setOnLongClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            imeService.chewingEngine.apply {
+            guilelessBopomofoService.chewingEngine.apply {
                 candClose()
                 // 「常用符號」
                 handleDefault('`')
@@ -96,7 +96,7 @@ interface BehaveLikeButton<T : View> {
                 candOpen()
             }
 
-            imeService.viewBinding.keyboardPanel.switchToCandidatesLayout(imeService)
+            guilelessBopomofoService.viewBinding.keyboardPanel.switchToCandidatesLayout(guilelessBopomofoService)
 
             return@setOnLongClickListener true
         }

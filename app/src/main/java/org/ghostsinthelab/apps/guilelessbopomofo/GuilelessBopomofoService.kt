@@ -108,8 +108,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
 
         viewBinding.apply {
-            keyboardView.setServiceContext(this@GuilelessBopomofoService)
-            keyboardPanel.setServiceContext(this@GuilelessBopomofoService)
+            keyboardView.bindGuilelessBopomofoService(this@GuilelessBopomofoService)
+            keyboardPanel.bindGuilelessBopomofoService(this@GuilelessBopomofoService)
             keyboardView.setOnClickPreEditCharListener(this@GuilelessBopomofoService)
         }
 

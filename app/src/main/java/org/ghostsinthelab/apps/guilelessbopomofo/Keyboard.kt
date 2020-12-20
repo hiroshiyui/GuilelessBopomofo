@@ -45,35 +45,35 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
             LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    fun setupImeSwitch(imeService: GuilelessBopomofoService) {
+    fun setupImeSwitch(guilelessBopomofoService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "setupImeSwitch")
-        v = imeService.viewBinding
+        v = guilelessBopomofoService.viewBinding
         val keyImageButtonImeSwitch =
             v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonImeSwitch)
 
-        keyImageButtonImeSwitch.setImeSwitchButtonOnClickListener(imeService)
-        keyImageButtonImeSwitch.setImeSwitchButtonOnLongClickListener(imeService)
+        keyImageButtonImeSwitch.setImeSwitchButtonOnClickListener(guilelessBopomofoService)
+        keyImageButtonImeSwitch.setImeSwitchButtonOnLongClickListener(guilelessBopomofoService)
     }
 
-    fun setupPuncSwitch(imeService: GuilelessBopomofoService) {
+    fun setupPuncSwitch(guilelessBopomofoService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "setupPuncSwitch")
-        v = imeService.viewBinding
+        v = guilelessBopomofoService.viewBinding
         val keyImageButtonPunc =
             v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonPunc)
-        keyImageButtonPunc.setKeyImageButtonPuncOnLongClickListener(imeService)
+        keyImageButtonPunc.setKeyImageButtonPuncOnLongClickListener(guilelessBopomofoService)
     }
 
-    fun setupSymbolSwitch(imeService: GuilelessBopomofoService) {
+    fun setupSymbolSwitch(guilelessBopomofoService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "setupSymbolSwitch")
-        v = imeService.viewBinding
+        v = guilelessBopomofoService.viewBinding
         val keyImageButtonSymbol =
             v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonSymbol)
-        symbolsPickerLayoutBinding = SymbolsPickerLayoutBinding.inflate(imeService.layoutInflater)
+        symbolsPickerLayoutBinding = SymbolsPickerLayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
 
         keyImageButtonSymbol.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            imeService.chewingEngine.handleDefault('`')
-            imeService.chewingEngine.candOpen()
+            guilelessBopomofoService.chewingEngine.handleDefault('`')
+            guilelessBopomofoService.chewingEngine.candOpen()
 
             v.keyboardPanel.apply {
                 removeAllViews()
@@ -81,26 +81,26 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
                 currentKeyboardLayout = KeyboardPanel.KeyboardLayout.SYMBOLS
             }
 
-            val totalCategories = imeService.chewingEngine.candTotalChoice()
+            val totalCategories = guilelessBopomofoService.chewingEngine.candTotalChoice()
 
             repeat(totalCategories) { category ->
                 val button: Button = Button(context)
-                button.text = imeService.chewingEngine.candStringByIndexStatic(category)
+                button.text = guilelessBopomofoService.chewingEngine.candStringByIndexStatic(category)
                 button.id = View.generateViewId()
 
                 button.setOnClickListener {
-                    imeService.chewingEngine.candChooseByIndex(category)
+                    guilelessBopomofoService.chewingEngine.candChooseByIndex(category)
 
-                    if (imeService.chewingEngine.candStringByIndexStatic(0).isEmpty()) {
-                        imeService.chewingEngine.candClose()
-                        imeService.chewingEngine.handleEnd()
-                        imeService.viewBinding.keyboardView.updateBuffers(imeService)
-                        imeService.viewBinding.keyboardPanel.switchToMainLayout(imeService)
+                    if (guilelessBopomofoService.chewingEngine.candStringByIndexStatic(0).isEmpty()) {
+                        guilelessBopomofoService.chewingEngine.candClose()
+                        guilelessBopomofoService.chewingEngine.handleEnd()
+                        guilelessBopomofoService.viewBinding.keyboardView.updateBuffers(guilelessBopomofoService)
+                        guilelessBopomofoService.viewBinding.keyboardPanel.switchToMainLayout(guilelessBopomofoService)
                     } else { // 如果候選區還有資料，代表目前進入次分類
-                        imeService.viewBinding.keyboardPanel.switchToCandidatesLayout(imeService)
+                        guilelessBopomofoService.viewBinding.keyboardPanel.switchToCandidatesLayout(guilelessBopomofoService)
                     }
 
-                    imeService.viewBinding.keyboardPanel.currentCandidatesList = 0
+                    guilelessBopomofoService.viewBinding.keyboardPanel.currentCandidatesList = 0
                 }
 
                 symbolsPickerLayoutBinding.SymbolsConstraintLayout.addView(button)
@@ -109,13 +109,13 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         }
 
         val keyButtonBackToMain = symbolsPickerLayoutBinding.keyButtonBackToMain
-        keyButtonBackToMain.setBackMainLayoutOnClickListener(imeService)
+        keyButtonBackToMain.setBackMainLayoutOnClickListener(guilelessBopomofoService)
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    fun setupBackspace(imeService: GuilelessBopomofoService) {
+    fun setupBackspace(guilelessBopomofoService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "setupBackspace")
-        v = imeService.viewBinding
+        v = guilelessBopomofoService.viewBinding
         val keyImageButtonBackspace =
             v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonBackspace)
 
@@ -123,18 +123,18 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                    if (imeService.chewingEngine.bufferStringStatic()
-                            .isNotEmpty() || imeService.chewingEngine.bopomofoStringStatic()
+                    if (guilelessBopomofoService.chewingEngine.bufferStringStatic()
+                            .isNotEmpty() || guilelessBopomofoService.chewingEngine.bopomofoStringStatic()
                             .isNotEmpty()
                     ) {
-                        imeService.chewingEngine.handleBackspace()
-                        imeService.viewBinding.keyboardView.updateBuffers(imeService)
+                        guilelessBopomofoService.chewingEngine.handleBackspace()
+                        guilelessBopomofoService.viewBinding.keyboardView.updateBuffers(guilelessBopomofoService)
                     } else {
                         // acts as general and repeatable backspace key
                         runBlocking {
                             launch {
                                 backspacePressed = true
-                                repeatBackspace(imeService)
+                                repeatBackspace(guilelessBopomofoService)
                             }
                         }
                     }
@@ -147,10 +147,10 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         }
     }
 
-    private suspend fun repeatBackspace(imeService: GuilelessBopomofoService) {
+    private suspend fun repeatBackspace(guilelessBopomofoService: GuilelessBopomofoService) {
         fixedRateTimer("repeatBackspace", true, 0L, 200L) {
             if (backspacePressed) {
-                imeService.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
+                guilelessBopomofoService.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
             } else {
                 this.cancel()
             }

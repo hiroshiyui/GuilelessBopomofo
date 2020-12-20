@@ -24,13 +24,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidateItemLayoutBinding
 
-class CandidatesAdapter(imeService: GuilelessBopomofoService) : RecyclerView.Adapter<CandidateViewHolder>(), GuilelessBopomofoServiceContext {
+class CandidatesAdapter(
+    override var guilelessBopomofoService: GuilelessBopomofoService
+) : RecyclerView.Adapter<CandidateViewHolder>(), GuilelessBopomofoServiceContext {
     private val LOGTAG: String = "CandidatesAdapter"
-    override var serviceContext: GuilelessBopomofoService = imeService
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CandidateViewHolder {
-        val itemView = CandidateItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CandidateViewHolder(serviceContext, itemView.root)
+        val itemView =
+            CandidateItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CandidateViewHolder(guilelessBopomofoService, itemView.root)
     }
 
     override fun onBindViewHolder(holder: CandidateViewHolder, position: Int) {
@@ -38,6 +40,6 @@ class CandidatesAdapter(imeService: GuilelessBopomofoService) : RecyclerView.Ada
     }
 
     override fun getItemCount(): Int {
-        return serviceContext.chewingEngine.candTotalChoice()
+        return guilelessBopomofoService.chewingEngine.candTotalChoice()
     }
 }
