@@ -61,12 +61,6 @@ class KeyboardPanel(
         guilelessBopomofoService: GuilelessBopomofoService
     ) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
-        v = guilelessBopomofoService.viewBinding
-        candidatesLayoutBinding = CandidatesLayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
-        v.keyboardPanel.removeAllViews()
-        v.keyboardPanel.addView(candidatesLayoutBinding.root)
-        currentKeyboardLayout = KeyboardLayout.CANDIDATES
-
         // reset candidates list if offset has been changed
         if (currentOffset != offset) {
             currentOffset = offset
@@ -85,19 +79,17 @@ class KeyboardPanel(
             currentCandidatesList = 0
         }
 
-        // Setup & bind RecyclerView
-        val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
-        candidatesRecyclerView.adapter = CandidatesAdapter(guilelessBopomofoService)
-        candidatesRecyclerView.layoutManager =
-            StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
-
-        val keyButtonBackToMain = candidatesLayoutBinding.keyButtonBackToMain
-        keyButtonBackToMain.setBackMainLayoutOnClickListener(guilelessBopomofoService)
+        renderCandidatesLayout(guilelessBopomofoService)
     }
 
     // just list current candidate window
     fun switchToCandidatesLayout(guilelessBopomofoService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
+        renderCandidatesLayout(guilelessBopomofoService)
+    }
+
+    private fun renderCandidatesLayout(guilelessBopomofoService: GuilelessBopomofoService) {
+        Log.v(LOGTAG, "renderCandidatesLayout")
         candidatesLayoutBinding = CandidatesLayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
         v = guilelessBopomofoService.viewBinding
         v.keyboardPanel.removeAllViews()
