@@ -42,11 +42,7 @@ interface BehaveLikeButton<T : View> {
                 candChooseByIndex(data)
                 endCandidateChoice()
             }
-            guilelessBopomofoService.viewBinding.apply {
-                keyboardPanel.currentCandidatesList = 0
-                keyboardView.updateBuffers(guilelessBopomofoService)
-                keyboardPanel.switchToMainLayout(guilelessBopomofoService)
-            }
+            guilelessBopomofoService.doneCandidateChoice()
         }
     }
 

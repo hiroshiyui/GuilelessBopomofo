@@ -99,13 +99,8 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
                         )
                     } else {
                         guilelessBopomofoService.chewingEngine.endCandidateChoice()
-                        guilelessBopomofoService.viewBinding.apply {
-                            keyboardView.updateBuffers(guilelessBopomofoService)
-                            keyboardPanel.switchToMainLayout(guilelessBopomofoService)
-                        }
+                        guilelessBopomofoService.doneCandidateChoice()
                     }
-
-                    guilelessBopomofoService.viewBinding.keyboardPanel.currentCandidatesList = 0
                 }
 
                 symbolsPickerLayoutBinding.SymbolsConstraintLayout.addView(button)

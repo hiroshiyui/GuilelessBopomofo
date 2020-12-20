@@ -209,6 +209,14 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         }
     }
 
+    fun doneCandidateChoice() {
+        viewBinding.apply {
+            keyboardPanel.currentCandidatesList = 0
+            keyboardView.updateBuffers(this@GuilelessBopomofoService)
+            keyboardPanel.switchToMainLayout(this@GuilelessBopomofoService)
+        }
+    }
+
     private fun getUserKeyboardLayoutPreference(): String? {
         return sharedPreferences.getString("user_keyboard_layout", defaultKeyboardLayout)
     }
