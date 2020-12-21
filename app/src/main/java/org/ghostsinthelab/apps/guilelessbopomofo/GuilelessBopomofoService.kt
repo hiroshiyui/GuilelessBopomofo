@@ -110,7 +110,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
         // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
         setMainLayout()
-        viewBinding.keyboardPanel.currentKeyboardLayout = KeyboardPanel.KeyboardLayout.MAIN
 
         inputView = viewBinding.root
         return inputView
@@ -202,6 +201,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                 keyboardSetup(keyboardDachenLayoutBinding.root)
             }
         }
+
+        viewBinding.keyboardPanel.currentKeyboardLayout = KeyboardPanel.KeyboardLayout.MAIN
     }
 
     fun doneCandidateChoice() {

@@ -94,7 +94,7 @@ class KeyboardPanel(
         v = guilelessBopomofoService.viewBinding
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(candidatesLayoutBinding.root)
-        currentKeyboardLayout = KeyboardLayout.SYMBOLS
+        currentKeyboardLayout = KeyboardLayout.CANDIDATES
 
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
         candidatesRecyclerView.adapter = CandidatesAdapter(guilelessBopomofoService)
