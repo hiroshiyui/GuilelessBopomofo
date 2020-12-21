@@ -19,17 +19,16 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-class ChewingEngine constructor(dataPath: String) {
+object ChewingEngine {
     // Chewing context pointer, represent its address as a Long
-    val context: Long
+    var context: Long = 0
 
     init {
         System.loadLibrary("chewing")
-        context = chewingNew(dataPath)
     }
 
     // Chewing API JNIs
-    private external fun chewingNew(dataPath: String): Long
+    external fun chewingNew(dataPath: String): Long
     external fun bopomofoStringStatic(chewingCtx: Long = context): String
     external fun bufferCheck(chewingCtx: Long = context): Int
     external fun bufferLen(chewingCtx: Long = context): Int
@@ -79,6 +78,11 @@ class ChewingEngine constructor(dataPath: String) {
     external fun setPhraseChoiceRearward(boolean: Boolean, chewingCtx: Long = context)
     external fun setSelKey(selKeys: List<Int>, length: Int, chewingCtx: Long = context)
     external fun setSpaceAsSelection(mode: Int, chewingCtx: Long = context)
+
+    fun start(dataPath: String): Long {
+        context = chewingNew(dataPath)
+        return context
+    }
 
     // derived methods
     fun hasCandidates(): Boolean {

@@ -40,6 +40,6 @@ class CandidatesAdapter(
     }
 
     override fun getItemCount(): Int {
-        return guilelessBopomofoService.chewingEngine.candTotalChoice()
+        return ChewingEngine.candTotalChoice()
     }
 }

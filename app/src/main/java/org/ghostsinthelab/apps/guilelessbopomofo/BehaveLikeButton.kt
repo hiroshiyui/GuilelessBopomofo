@@ -30,7 +30,7 @@ interface BehaveLikeButton<T : View> {
     fun setBackMainLayoutOnClickListener(guilelessBopomofoService: GuilelessBopomofoService) {
         this as View
         this.setOnClickListener {
-            guilelessBopomofoService.chewingEngine.endCandidateChoice()
+            ChewingEngine.endCandidateChoice()
             guilelessBopomofoService.viewBinding.keyboardPanel.switchToMainLayout(guilelessBopomofoService)
         }
     }
@@ -38,7 +38,7 @@ interface BehaveLikeButton<T : View> {
     fun setCandidateButtonOnClickListener(guilelessBopomofoService: GuilelessBopomofoService, data: Int) {
         this as View
         this.setOnClickListener {
-            guilelessBopomofoService.chewingEngine.apply {
+            ChewingEngine.apply {
                 candChooseByIndex(data)
                 endCandidateChoice()
             }
@@ -82,7 +82,7 @@ interface BehaveLikeButton<T : View> {
         this as KeyImageButton
         this.setOnLongClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            guilelessBopomofoService.chewingEngine.openPuncCandidates()
+            ChewingEngine.openPuncCandidates()
             guilelessBopomofoService.viewBinding.keyboardPanel.switchToCandidatesLayout(guilelessBopomofoService)
             return@setOnLongClickListener true
         }

@@ -69,11 +69,11 @@ class KeyboardPanel(
 
         // switch to next candidates list
         repeat(currentCandidatesList) {
-            guilelessBopomofoService.chewingEngine.candListNext()
+            ChewingEngine.candListNext()
         }
 
         // circulate candidates list cursor
-        if (guilelessBopomofoService.chewingEngine.candListHasNext()) {
+        if (ChewingEngine.candListHasNext()) {
             currentCandidatesList += 1
         } else {
             currentCandidatesList = 0

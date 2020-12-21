@@ -73,7 +73,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
 
         keyImageButtonSymbol.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            guilelessBopomofoService.chewingEngine.openSymbolCandidates()
+            ChewingEngine.openSymbolCandidates()
 
             v.keyboardPanel.apply {
                 removeAllViews()
@@ -81,24 +81,24 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
                 currentKeyboardLayout = KeyboardPanel.KeyboardLayout.SYMBOLS
             }
 
-            val totalCategories = guilelessBopomofoService.chewingEngine.candTotalChoice()
+            val totalCategories = ChewingEngine.candTotalChoice()
 
             repeat(totalCategories) { category ->
                 val button: Button = Button(context)
                 button.text =
-                    guilelessBopomofoService.chewingEngine.candStringByIndexStatic(category)
+                    ChewingEngine.candStringByIndexStatic(category)
                 button.id = View.generateViewId()
 
                 button.setOnClickListener {
-                    guilelessBopomofoService.chewingEngine.candChooseByIndex(category)
+                    ChewingEngine.candChooseByIndex(category)
 
-                    if (guilelessBopomofoService.chewingEngine.hasCandidates()) {
+                    if (ChewingEngine.hasCandidates()) {
                         // 如果候選區還有資料，代表目前進入次分類
                         guilelessBopomofoService.viewBinding.keyboardPanel.switchToCandidatesLayout(
                             guilelessBopomofoService
                         )
                     } else {
-                        guilelessBopomofoService.chewingEngine.endCandidateChoice()
+                        ChewingEngine.endCandidateChoice()
                         guilelessBopomofoService.doneCandidateChoice()
                     }
                 }
@@ -123,8 +123,8 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                    if (guilelessBopomofoService.chewingEngine.anyPreeditBufferIsNotEmpty()) {
-                        guilelessBopomofoService.chewingEngine.handleBackspace()
+                    if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
+                        ChewingEngine.handleBackspace()
                         guilelessBopomofoService.viewBinding.keyboardView.updateBuffers(
                             guilelessBopomofoService
                         )

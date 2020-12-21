@@ -28,7 +28,7 @@ class CandidateViewHolder(override var guilelessBopomofoService: GuilelessBopomo
     private val candidateButton: CandidateButton = itemView.findViewById(R.id.buttonCandidateItem)
 
     fun setData(data: Int) {
-        candidateButton.text = guilelessBopomofoService.chewingEngine.candStringByIndexStatic(data)
+        candidateButton.text = ChewingEngine.candStringByIndexStatic(data)
         candidateButton.setCandidateButtonOnClickListener(guilelessBopomofoService, data)
     }
 }

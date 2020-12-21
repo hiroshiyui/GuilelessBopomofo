@@ -38,17 +38,17 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
 
     fun updateBuffers(guilelessBopomofoService: GuilelessBopomofoService = this.guilelessBopomofoService) {
         v = guilelessBopomofoService.viewBinding
-        v.textViewPreEditBuffer.text = guilelessBopomofoService.chewingEngine.bufferStringStatic()
-        v.textViewBopomofoBuffer.text = guilelessBopomofoService.chewingEngine.bopomofoStringStatic()
+        v.textViewPreEditBuffer.text = ChewingEngine.bufferStringStatic()
+        v.textViewBopomofoBuffer.text = ChewingEngine.bopomofoStringStatic()
 
         // chewingEngine.setMaxChiSymbolLen() 到達閾值時，
         // 會把 pre-edit buffer 開頭送到 commit buffer，
         // 所以要先丟出來：
-        if (guilelessBopomofoService.chewingEngine.commitCheck() == 1) {
-            guilelessBopomofoService.currentInputConnection.commitText(guilelessBopomofoService.chewingEngine.commitString(), 1)
+        if (ChewingEngine.commitCheck() == 1) {
+            guilelessBopomofoService.currentInputConnection.commitText(ChewingEngine.commitString(), 1)
             // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
             // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
-            guilelessBopomofoService.chewingEngine.handleEnd()
+            ChewingEngine.handleEnd()
         }
     }
 
@@ -56,7 +56,7 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
         v = guilelessBopomofoService.viewBinding
         v.textViewPreEditBuffer.setOnClickListener {
             val offset = v.textViewPreEditBuffer.offset
-            guilelessBopomofoService.chewingEngine.moveToPreEditBufferOffset(offset)
+            ChewingEngine.moveToPreEditBufferOffset(offset)
             v.keyboardPanel.switchToCandidatesLayout(offset, guilelessBopomofoService)
         }
     }

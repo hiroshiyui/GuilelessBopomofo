@@ -37,7 +37,6 @@ import java.io.FileOutputStream
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "GuilelessBopomofoSvc"
-    lateinit var chewingEngine: ChewingEngine
     lateinit var viewBinding: KeyboardLayoutBinding
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     private lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
@@ -47,10 +46,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     companion object {
         const val defaultKeyboardLayout = "KB_DEFAULT"
-
-        init {
-            System.loadLibrary("chewing")
-        }
     }
 
     override fun onCreate() {
@@ -63,17 +58,17 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             val dataPath =
                 packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
             setupChewingData(dataPath)
-            chewingEngine = ChewingEngine(dataPath)
-            chewingEngine.context.let {
+            ChewingEngine.start(dataPath)
+            ChewingEngine.context.let {
                 Log.v(LOGTAG, "Chewing context ptr: $it")
             }
 
             if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
-                chewingEngine.setSpaceAsSelection(1)
+                ChewingEngine.setSpaceAsSelection(1)
             }
 
             if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
-                chewingEngine.setPhraseChoiceRearward(true)
+                ChewingEngine.setPhraseChoiceRearward(true)
             }
         } catch (e: Exception) {
             Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
@@ -154,7 +149,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     override fun onDestroy() {
         super.onDestroy()
         Log.v(LOGTAG, "onDestroy()")
-        chewingEngine.delete()
+        ChewingEngine.delete()
     }
 
     override fun onClick(v: View?) {
@@ -186,22 +181,22 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
         when (getUserKeyboardLayoutPreference()) {
             "KB_HSU" -> {
-                val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
-                chewingEngine.setKBType(newKeyboardType)
+                val newKeyboardType = ChewingEngine.convKBStr2Num("KB_HSU")
+                ChewingEngine.setKBType(newKeyboardType)
                 keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(layoutInflater)
                 viewBinding.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
                 keyboardSetup(keyboardHsuLayoutBinding.root)
             }
             "KB_ET26" -> {
-                val newKeyboardType = chewingEngine.convKBStr2Num("KB_ET26")
-                chewingEngine.setKBType(newKeyboardType)
+                val newKeyboardType = ChewingEngine.convKBStr2Num("KB_ET26")
+                ChewingEngine.setKBType(newKeyboardType)
                 keyboardEt26LayoutBinding = KeyboardEt26LayoutBinding.inflate(layoutInflater)
                 viewBinding.keyboardPanel.addView(keyboardEt26LayoutBinding.root)
                 keyboardSetup(keyboardEt26LayoutBinding.root)
             }
             "KB_DEFAULT" -> {
-                val newKeyboardType = chewingEngine.convKBStr2Num("KB_DEFAULT")
-                chewingEngine.setKBType(newKeyboardType)
+                val newKeyboardType = ChewingEngine.convKBStr2Num("KB_DEFAULT")
+                ChewingEngine.setKBType(newKeyboardType)
                 keyboardDachenLayoutBinding = KeyboardDachenLayoutBinding.inflate(layoutInflater)
                 viewBinding.keyboardPanel.addView(keyboardDachenLayoutBinding.root)
                 keyboardSetup(keyboardDachenLayoutBinding.root)
@@ -223,17 +218,17 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     private fun handleCharacterKey(v: BehaveLikeKey<*>) {
         v.keySymbol?.let {
-            chewingEngine.handleDefault(it.get(0))
+            ChewingEngine.handleDefault(it.get(0))
         }
     }
 
     private fun handleControlKey(v: BehaveLikeKey<*>) {
         when (v.keyCode()) {
             KeyEvent.KEYCODE_SPACE -> {
-                if (chewingEngine.anyPreeditBufferIsNotEmpty()) {
-                    chewingEngine.handleSpace()
+                if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
+                    ChewingEngine.handleSpace()
                     // 空白鍵是否為選字鍵？
-                    if (chewingEngine.getSpaceAsSelection() == 1 && chewingEngine.candTotalChoice() > 0) {
+                    if (ChewingEngine.getSpaceAsSelection() == 1 && ChewingEngine.candTotalChoice() > 0) {
                         viewBinding.keyboardPanel.switchToCandidatesLayout(this)
                     }
                 } else {
@@ -241,8 +236,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                 }
             }
             KeyEvent.KEYCODE_ENTER -> {
-                if (chewingEngine.anyPreeditBufferIsNotEmpty()) { // not committed yet
-                    chewingEngine.handleEnter()
+                if (ChewingEngine.anyPreeditBufferIsNotEmpty()) { // not committed yet
+                    ChewingEngine.handleEnter()
                 } else {
                     sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
                 }
@@ -250,7 +245,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             // 在大千鍵盤下，標準的逗號鍵會對映到「ㄝ」，這裡的逗號鍵要另外當成特別的「常用符號」功能鍵，
             // 短觸會輸出全形逗號，長按交給 setupPuncSwitch() 處理
             KeyEvent.KEYCODE_COMMA -> {
-                chewingEngine.simulateShiftComma()
+                ChewingEngine.simulateShiftComma()
             }
             else -> {
                 Log.v(LOGTAG, "This key has not been implemented its handler")
