@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                 switchSettingFullscreenWhenInLandscape.isChecked = true
             }
 
-            switchSettingFullscreenWhenInLandscape.setOnCheckedChangeListener { buttonView, isChecked ->
+            switchSettingFullscreenWhenInLandscape.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     sharedPreferences.edit().putBoolean("user_fullscreen_when_in_landscape", true)
                         .apply()
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                 switchSettingKeyButtonsElevation.isChecked = true
             }
 
-            switchSettingKeyButtonsElevation.setOnCheckedChangeListener { buttonView, isChecked ->
+            switchSettingKeyButtonsElevation.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     sharedPreferences.edit().putBoolean("user_enable_button_elevation", true)
                         .apply()
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 switchSettingSpaceAsSelection.isChecked = true
             }
 
-            switchSettingSpaceAsSelection.setOnCheckedChangeListener { buttonView, isChecked ->
+            switchSettingSpaceAsSelection.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     sharedPreferences.edit().putBoolean("user_enable_space_as_selection", true)
                         .apply()
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                 switchRearwardPhraseChoice.isChecked = true
             }
 
-            switchRearwardPhraseChoice.setOnCheckedChangeListener { buttonView, isChecked ->
+            switchRearwardPhraseChoice.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     sharedPreferences.edit().putBoolean("user_phrase_choice_rearward", true).apply()
                 } else {
