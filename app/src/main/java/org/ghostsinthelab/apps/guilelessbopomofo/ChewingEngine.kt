@@ -28,7 +28,7 @@ object ChewingEngine {
     }
 
     // Chewing API JNIs
-    external fun chewingNew(dataPath: String): Long
+    private external fun chewingNew(dataPath: String): Long
     external fun bopomofoStringStatic(chewingCtx: Long = context): String
     external fun bufferCheck(chewingCtx: Long = context): Int
     external fun bufferLen(chewingCtx: Long = context): Int
