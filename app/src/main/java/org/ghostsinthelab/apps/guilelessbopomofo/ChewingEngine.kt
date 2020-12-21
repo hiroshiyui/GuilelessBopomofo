@@ -79,12 +79,13 @@ object ChewingEngine {
     external fun setSelKey(selKeys: List<Int>, length: Int, chewingCtx: Long = context)
     external fun setSpaceAsSelection(mode: Int, chewingCtx: Long = context)
 
+    // derived methods
+
     fun start(dataPath: String): Long {
         context = chewingNew(dataPath)
         return context
     }
 
-    // derived methods
     fun hasCandidates(): Boolean {
         if (candStringByIndexStatic(0).isEmpty()) {
             return false
