@@ -131,7 +131,7 @@ object ChewingEngine {
     }
 
     // simulates [Shift] + [,]
-    fun simulateShiftComma() {
+    fun handleShiftComma() {
         setEasySymbolInput(1)
         handleDefault(',')
         setEasySymbolInput(0)
