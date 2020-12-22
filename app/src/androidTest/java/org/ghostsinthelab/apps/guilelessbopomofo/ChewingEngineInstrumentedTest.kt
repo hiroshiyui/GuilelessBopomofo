@@ -31,7 +31,6 @@ import org.junit.runner.RunWith
 // NOTICE: You have to manually enable Guileless Bopomofo from system settings first.
 @RunWith(AndroidJUnit4::class)
 class ChewingEngineInstrumentedTest {
-    private lateinit var chewingEngine: ChewingEngine
     private lateinit var dataPath: String
     private val CHINESE_MODE = 1
 
@@ -39,7 +38,7 @@ class ChewingEngineInstrumentedTest {
     fun setupChewingEngine() {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         dataPath = appContext.dataDir.absolutePath
-        chewingEngine = ChewingEngine(dataPath)
+        ChewingEngine.start(dataPath)
     }
 
     @Test
@@ -57,327 +56,327 @@ class ChewingEngineInstrumentedTest {
 
     @Test
     fun validChiEngMode() {
-        chewingEngine.setChiEngMode(CHINESE_MODE)
-        val chewingChiMode = chewingEngine.getChiEngMode()
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        val chewingChiMode = ChewingEngine.getChiEngMode()
         assertEquals(chewingChiMode, CHINESE_MODE)
     }
 
     @Test
     fun validSelKeys() {
         val selKeys = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9').map { it.toInt() }
-        chewingEngine.setSelKey(selKeys, 9)
-        val listKeys = chewingEngine.getSelKey()
+        ChewingEngine.setSelKey(selKeys, 9)
+        val listKeys = ChewingEngine.getSelKey()
         // listKeys should be a pointer address, which should not be zero:
         assertNotEquals(listKeys, 0)
-        chewingEngine.free(listKeys)
+        ChewingEngine.free(listKeys)
         // TODO: 可能需要一個給 Android 這邊用的 listKeys
     }
 
     @Test
     fun validMaxChiSymbolLen() {
-        chewingEngine.setMaxChiSymbolLen(10)
-        assertEquals(chewingEngine.getMaxChiSymbolLen(), 10)
+        ChewingEngine.setMaxChiSymbolLen(10)
+        assertEquals(ChewingEngine.getMaxChiSymbolLen(), 10)
     }
 
     @Test
     fun validCandPerPage() {
-        chewingEngine.setCandPerPage(9)
-        assertEquals(chewingEngine.getCandPerPage(), 9)
+        ChewingEngine.setCandPerPage(9)
+        assertEquals(ChewingEngine.getCandPerPage(), 9)
     }
 
     @Test
     fun validPhraseChoiceRearward() {
-        chewingEngine.setPhraseChoiceRearward(true)
-        assertTrue(chewingEngine.getPhraseChoiceRearward())
-        chewingEngine.setPhraseChoiceRearward(false)
-        assertFalse(chewingEngine.getPhraseChoiceRearward())
+        ChewingEngine.setPhraseChoiceRearward(true)
+        assertTrue(ChewingEngine.getPhraseChoiceRearward())
+        ChewingEngine.setPhraseChoiceRearward(false)
+        assertFalse(ChewingEngine.getPhraseChoiceRearward())
     }
 
     @Test
     fun validCommitPhrase() {
         // ref: https://starforcefield.wordpress.com/2012/08/13/%E6%8E%A2%E7%B4%A2%E6%96%B0%E9%85%B7%E9%9F%B3%E8%BC%B8%E5%85%A5%E6%B3%95%EF%BC%9A%E4%BD%BF%E7%94%A8libchewing/
-        chewingEngine.setChiEngMode(CHINESE_MODE)
-        chewingEngine.setMaxChiSymbolLen(10)
-        chewingEngine.setCandPerPage(9)
-        chewingEngine.setPhraseChoiceRearward(false)
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        ChewingEngine.setMaxChiSymbolLen(10)
+        ChewingEngine.setCandPerPage(9)
+        ChewingEngine.setPhraseChoiceRearward(false)
         val keys = arrayOf('x', 'm', '4', 't', '8', '6')
         for (key in keys) {
-            chewingEngine.handleDefault(key)
+            ChewingEngine.handleDefault(key)
         }
-        chewingEngine.handleLeft()
-        chewingEngine.handleLeft()
-        chewingEngine.candOpen()
-        chewingEngine.candTotalChoice()
-        chewingEngine.candChooseByIndex(0)
-        chewingEngine.commitPreeditBuf()
-        var commitString: String = chewingEngine.commitString()
+        ChewingEngine.handleLeft()
+        ChewingEngine.handleLeft()
+        ChewingEngine.candOpen()
+        ChewingEngine.candTotalChoice()
+        ChewingEngine.candChooseByIndex(0)
+        ChewingEngine.commitPreeditBuf()
+        var commitString: String = ChewingEngine.commitString()
         assertEquals(commitString, "綠茶")
 
-        chewingEngine.handleDefault('5')
-        chewingEngine.handleSpace()
-        chewingEngine.candOpen()
-        chewingEngine.candTotalChoice()
-        chewingEngine.candChooseByIndex(12)
-        chewingEngine.commitPreeditBuf()
-        commitString = chewingEngine.commitString()
+        ChewingEngine.handleDefault('5')
+        ChewingEngine.handleSpace()
+        ChewingEngine.candOpen()
+        ChewingEngine.candTotalChoice()
+        ChewingEngine.candChooseByIndex(12)
+        ChewingEngine.commitPreeditBuf()
+        commitString = ChewingEngine.commitString()
         assertEquals(commitString, "蜘")
     }
 
     @Test
     fun testSetPhraseChoiceRearward() { // 後方選詞
-        chewingEngine.setChiEngMode(CHINESE_MODE)
-        chewingEngine.setMaxChiSymbolLen(10)
-        chewingEngine.setCandPerPage(9)
-        chewingEngine.setPhraseChoiceRearward(true)
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        ChewingEngine.setMaxChiSymbolLen(10)
+        ChewingEngine.setCandPerPage(9)
+        ChewingEngine.setPhraseChoiceRearward(true)
         val keys = arrayOf('x', 'm', '4', 't', '8', '6')
         for (key in keys) {
-            chewingEngine.handleDefault(key)
+            ChewingEngine.handleDefault(key)
         }
-        chewingEngine.candOpen()
-        chewingEngine.candTotalChoice()
-        chewingEngine.candChooseByIndex(0)
-        chewingEngine.commitPreeditBuf()
-        val commitString: String = chewingEngine.commitString()
+        ChewingEngine.candOpen()
+        ChewingEngine.candTotalChoice()
+        ChewingEngine.candChooseByIndex(0)
+        ChewingEngine.commitPreeditBuf()
+        val commitString: String = ChewingEngine.commitString()
         assertEquals(commitString, "綠茶")
     }
 
     @Test
     fun validCommitPreeditBuf() { // 測試 commitPreeditBuf() 回傳值
-        chewingEngine.setChiEngMode(CHINESE_MODE)
-        chewingEngine.setMaxChiSymbolLen(10)
-        chewingEngine.setCandPerPage(9)
-        chewingEngine.setPhraseChoiceRearward(true)
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        ChewingEngine.setMaxChiSymbolLen(10)
+        ChewingEngine.setCandPerPage(9)
+        ChewingEngine.setPhraseChoiceRearward(true)
         val keys = arrayOf('x', 'm', '4', 't', '8', '6')
         for (key in keys) {
-            chewingEngine.handleDefault(key)
+            ChewingEngine.handleDefault(key)
         }
-        chewingEngine.candOpen()
-        chewingEngine.candTotalChoice()
-        chewingEngine.candChooseByIndex(0)
-        assertEquals(chewingEngine.commitPreeditBuf(), 0)
-        assertEquals(chewingEngine.commitPreeditBuf(), -1)
+        ChewingEngine.candOpen()
+        ChewingEngine.candTotalChoice()
+        ChewingEngine.candChooseByIndex(0)
+        assertEquals(ChewingEngine.commitPreeditBuf(), 0)
+        assertEquals(ChewingEngine.commitPreeditBuf(), -1)
     }
 
     @Test
     fun validMiddlePhraseCandidate() {
-        chewingEngine.setChiEngMode(CHINESE_MODE)
-        chewingEngine.setMaxChiSymbolLen(10)
-        chewingEngine.setCandPerPage(9)
-        chewingEngine.setPhraseChoiceRearward(false)
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        ChewingEngine.setMaxChiSymbolLen(10)
+        ChewingEngine.setCandPerPage(9)
+        ChewingEngine.setPhraseChoiceRearward(false)
         // 密封膠帶 蜜蜂 交代 交待 蜂膠
         // ㄇ一ˋ
-        chewingEngine.handleDefault('a')
-        chewingEngine.handleDefault('u')
-        chewingEngine.handleDefault('4')
+        ChewingEngine.handleDefault('a')
+        ChewingEngine.handleDefault('u')
+        ChewingEngine.handleDefault('4')
         // ㄈㄥ
-        chewingEngine.handleDefault('z')
-        chewingEngine.handleDefault('/')
-        chewingEngine.handleSpace()
+        ChewingEngine.handleDefault('z')
+        ChewingEngine.handleDefault('/')
+        ChewingEngine.handleSpace()
         // ㄐㄧㄠ
-        chewingEngine.handleDefault('r')
-        chewingEngine.handleDefault('u')
-        chewingEngine.handleDefault('l')
-        chewingEngine.handleSpace()
+        ChewingEngine.handleDefault('r')
+        ChewingEngine.handleDefault('u')
+        ChewingEngine.handleDefault('l')
+        ChewingEngine.handleSpace()
         // ㄉㄞˋ
-        chewingEngine.handleDefault('2')
-        chewingEngine.handleDefault('9')
-        chewingEngine.handleDefault('4')
+        ChewingEngine.handleDefault('2')
+        ChewingEngine.handleDefault('9')
+        ChewingEngine.handleDefault('4')
 
         // 蜂膠
-        chewingEngine.handleLeft()
-        chewingEngine.handleLeft()
-        chewingEngine.handleLeft()
-        chewingEngine.candOpen()
-        val candidateString: String = chewingEngine.candStringByIndexStatic(0)
+        ChewingEngine.handleLeft()
+        ChewingEngine.handleLeft()
+        ChewingEngine.handleLeft()
+        ChewingEngine.candOpen()
+        val candidateString: String = ChewingEngine.candStringByIndexStatic(0)
         assertEquals(candidateString, "蜂膠")
-        chewingEngine.candChooseByIndex(0)
-        chewingEngine.commitPreeditBuf()
-        val commitString: String = chewingEngine.commitString()
+        ChewingEngine.candChooseByIndex(0)
+        ChewingEngine.commitPreeditBuf()
+        val commitString: String = ChewingEngine.commitString()
         assertEquals(commitString, "密蜂膠代")
-        assertEquals(chewingEngine.candClose(), 0)
+        assertEquals(ChewingEngine.candClose(), 0)
     }
 
     @Test
     fun validCandListNext() {
-        chewingEngine.setChiEngMode(CHINESE_MODE)
-        chewingEngine.setMaxChiSymbolLen(10)
-        chewingEngine.setCandPerPage(10)
-        chewingEngine.setPhraseChoiceRearward(false)
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        ChewingEngine.setMaxChiSymbolLen(10)
+        ChewingEngine.setCandPerPage(10)
+        ChewingEngine.setPhraseChoiceRearward(false)
         // 零用金 零用 零
-        chewingEngine.handleDefault('x')
-        chewingEngine.handleDefault('u')
-        chewingEngine.handleDefault('/')
-        chewingEngine.handleDefault('6')
+        ChewingEngine.handleDefault('x')
+        ChewingEngine.handleDefault('u')
+        ChewingEngine.handleDefault('/')
+        ChewingEngine.handleDefault('6')
 
-        chewingEngine.handleDefault('m')
-        chewingEngine.handleDefault('/')
-        chewingEngine.handleDefault('4')
+        ChewingEngine.handleDefault('m')
+        ChewingEngine.handleDefault('/')
+        ChewingEngine.handleDefault('4')
 
-        chewingEngine.handleDefault('r')
-        chewingEngine.handleDefault('u')
-        chewingEngine.handleDefault('p')
-        chewingEngine.handleSpace()
+        ChewingEngine.handleDefault('r')
+        ChewingEngine.handleDefault('u')
+        ChewingEngine.handleDefault('p')
+        ChewingEngine.handleSpace()
 
-        chewingEngine.handleHome()
-        chewingEngine.candOpen()
+        ChewingEngine.handleHome()
+        ChewingEngine.candOpen()
 
-        assertEquals(chewingEngine.candStringByIndexStatic(0), "零用金")
-        assertEquals(chewingEngine.candListHasNext(), true)
-        assertEquals(chewingEngine.candListNext(), 0)
-        assertEquals(chewingEngine.candStringByIndexStatic(0), "零用")
-        assertEquals(chewingEngine.candListHasNext(), true)
-        assertEquals(chewingEngine.candListNext(), 0)
-        assertEquals(chewingEngine.candStringByIndexStatic(0), "零")
-        assertEquals(chewingEngine.candListNext(), -1)
-        assertEquals(chewingEngine.candListHasNext(), false)
+        assertEquals(ChewingEngine.candStringByIndexStatic(0), "零用金")
+        assertEquals(ChewingEngine.candListHasNext(), true)
+        assertEquals(ChewingEngine.candListNext(), 0)
+        assertEquals(ChewingEngine.candStringByIndexStatic(0), "零用")
+        assertEquals(ChewingEngine.candListHasNext(), true)
+        assertEquals(ChewingEngine.candListNext(), 0)
+        assertEquals(ChewingEngine.candStringByIndexStatic(0), "零")
+        assertEquals(ChewingEngine.candListNext(), -1)
+        assertEquals(ChewingEngine.candListHasNext(), false)
 
-        chewingEngine.candListLast()
-        assertEquals(chewingEngine.candStringByIndexStatic(0), "零")
+        ChewingEngine.candListLast()
+        assertEquals(ChewingEngine.candStringByIndexStatic(0), "零")
 
-        chewingEngine.candListFirst()
-        assertEquals(chewingEngine.candStringByIndexStatic(0), "零用金")
-        assertEquals(chewingEngine.candClose(), 0)
+        ChewingEngine.candListFirst()
+        assertEquals(ChewingEngine.candStringByIndexStatic(0), "零用金")
+        assertEquals(ChewingEngine.candClose(), 0)
     }
 
     @Test
     fun switchToHsuLayout() {
-        val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
-        chewingEngine.setKBType(newKeyboardType)
-        val currentKeyboardType = chewingEngine.getKBType()
-        val currentKeyboardTypeString = chewingEngine.getKBString()
+        val newKeyboardType = ChewingEngine.convKBStr2Num("KB_HSU")
+        ChewingEngine.setKBType(newKeyboardType)
+        val currentKeyboardType = ChewingEngine.getKBType()
+        val currentKeyboardTypeString = ChewingEngine.getKBString()
         assertEquals(currentKeyboardType, 1)
         assertEquals(currentKeyboardTypeString, "KB_HSU")
 
-        chewingEngine.handleDefault('l')
-        chewingEngine.handleDefault('l')
-        assertEquals(chewingEngine.bopomofoStringStatic(), "ㄌㄥ")
-        chewingEngine.handleDefault('f')
-        assertEquals(chewingEngine.bufferString(), "冷")
-        chewingEngine.handleDefault('d')
-        chewingEngine.handleDefault('x')
-        chewingEngine.handleDefault('l')
-        chewingEngine.handleDefault('j')
-        chewingEngine.commitPreeditBuf()
-        assertEquals(chewingEngine.commitString(), "冷凍")
+        ChewingEngine.handleDefault('l')
+        ChewingEngine.handleDefault('l')
+        assertEquals(ChewingEngine.bopomofoStringStatic(), "ㄌㄥ")
+        ChewingEngine.handleDefault('f')
+        assertEquals(ChewingEngine.bufferString(), "冷")
+        ChewingEngine.handleDefault('d')
+        ChewingEngine.handleDefault('x')
+        ChewingEngine.handleDefault('l')
+        ChewingEngine.handleDefault('j')
+        ChewingEngine.commitPreeditBuf()
+        assertEquals(ChewingEngine.commitString(), "冷凍")
     }
 
     @Test
     fun switchToEten26Layout() {
-        val newKeyboardType = chewingEngine.convKBStr2Num("KB_ET26")
-        chewingEngine.setKBType(newKeyboardType)
-        val currentKeyboardType = chewingEngine.getKBType()
-        val currentKeyboardTypeString = chewingEngine.getKBString()
+        val newKeyboardType = ChewingEngine.convKBStr2Num("KB_ET26")
+        ChewingEngine.setKBType(newKeyboardType)
+        val currentKeyboardType = ChewingEngine.getKBType()
+        val currentKeyboardTypeString = ChewingEngine.getKBString()
         assertEquals(currentKeyboardType, 5)
         assertEquals(currentKeyboardTypeString, "KB_ET26")
 
-        chewingEngine.handleDefault('l')
-        chewingEngine.handleDefault('l')
-        assertEquals(chewingEngine.bopomofoStringStatic(), "ㄌㄥ")
-        chewingEngine.handleDefault('j')
-        assertEquals(chewingEngine.bufferString(), "冷")
-        chewingEngine.handleDefault('d')
-        chewingEngine.handleDefault('x')
-        chewingEngine.handleDefault('l')
-        chewingEngine.handleDefault('k')
-        chewingEngine.commitPreeditBuf()
-        assertEquals(chewingEngine.commitString(), "冷凍")
+        ChewingEngine.handleDefault('l')
+        ChewingEngine.handleDefault('l')
+        assertEquals(ChewingEngine.bopomofoStringStatic(), "ㄌㄥ")
+        ChewingEngine.handleDefault('j')
+        assertEquals(ChewingEngine.bufferString(), "冷")
+        ChewingEngine.handleDefault('d')
+        ChewingEngine.handleDefault('x')
+        ChewingEngine.handleDefault('l')
+        ChewingEngine.handleDefault('k')
+        ChewingEngine.commitPreeditBuf()
+        assertEquals(ChewingEngine.commitString(), "冷凍")
     }
 
     @Test
     fun switchToDaChenLayout() {
-        val newKeyboardType = chewingEngine.convKBStr2Num("KB_DEFAULT")
-        chewingEngine.setKBType(newKeyboardType)
-        val currentKeyboardType = chewingEngine.getKBType()
-        val currentKeyboardTypeString = chewingEngine.getKBString()
+        val newKeyboardType = ChewingEngine.convKBStr2Num("KB_DEFAULT")
+        ChewingEngine.setKBType(newKeyboardType)
+        val currentKeyboardType = ChewingEngine.getKBType()
+        val currentKeyboardTypeString = ChewingEngine.getKBString()
         assertEquals(currentKeyboardType, 0)
         assertEquals(currentKeyboardTypeString, "KB_DEFAULT")
 
-        chewingEngine.handleDefault('x')
-        chewingEngine.handleDefault('/')
-        assertEquals(chewingEngine.bopomofoStringStatic(), "ㄌㄥ")
-        chewingEngine.handleDefault('3')
-        assertEquals(chewingEngine.bufferString(), "冷")
-        chewingEngine.handleDefault('2')
-        chewingEngine.handleDefault('j')
-        chewingEngine.handleDefault('/')
-        chewingEngine.handleDefault('4')
-        chewingEngine.commitPreeditBuf()
-        assertEquals(chewingEngine.commitString(), "冷凍")
+        ChewingEngine.handleDefault('x')
+        ChewingEngine.handleDefault('/')
+        assertEquals(ChewingEngine.bopomofoStringStatic(), "ㄌㄥ")
+        ChewingEngine.handleDefault('3')
+        assertEquals(ChewingEngine.bufferString(), "冷")
+        ChewingEngine.handleDefault('2')
+        ChewingEngine.handleDefault('j')
+        ChewingEngine.handleDefault('/')
+        ChewingEngine.handleDefault('4')
+        ChewingEngine.commitPreeditBuf()
+        assertEquals(ChewingEngine.commitString(), "冷凍")
     }
 
     @Test
     fun switchToSymbolSelectionMode() {
-        chewingEngine.setChiEngMode(CHINESE_MODE)
-        chewingEngine.setMaxChiSymbolLen(10)
-        chewingEngine.setCandPerPage(10)
-        chewingEngine.setPhraseChoiceRearward(false)
-        chewingEngine.handleDefault('`')
-        chewingEngine.candOpen()
-        assertEquals(chewingEngine.candTotalChoice(), 13)
-        assertEquals(chewingEngine.candStringByIndexStatic(0), "…")
-        assertEquals(chewingEngine.candStringByIndexStatic(1), "※")
-        assertEquals(chewingEngine.candStringByIndexStatic(2), "常用符號")
-        assertEquals(chewingEngine.candStringByIndexStatic(10), "雙線框")
-        assertEquals(chewingEngine.candStringByIndexStatic(12), "線段")
-        chewingEngine.handleDefault('1')
-        chewingEngine.commitPreeditBuf()
-        assertEquals(chewingEngine.commitString(), "…")
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        ChewingEngine.setMaxChiSymbolLen(10)
+        ChewingEngine.setCandPerPage(10)
+        ChewingEngine.setPhraseChoiceRearward(false)
+        ChewingEngine.handleDefault('`')
+        ChewingEngine.candOpen()
+        assertEquals(ChewingEngine.candTotalChoice(), 13)
+        assertEquals(ChewingEngine.candStringByIndexStatic(0), "…")
+        assertEquals(ChewingEngine.candStringByIndexStatic(1), "※")
+        assertEquals(ChewingEngine.candStringByIndexStatic(2), "常用符號")
+        assertEquals(ChewingEngine.candStringByIndexStatic(10), "雙線框")
+        assertEquals(ChewingEngine.candStringByIndexStatic(12), "線段")
+        ChewingEngine.handleDefault('1')
+        ChewingEngine.commitPreeditBuf()
+        assertEquals(ChewingEngine.commitString(), "…")
 
         // 換頁到「雙線框」
         // keyboardless API 版
-        chewingEngine.handleDefault('`')
-        chewingEngine.candChooseByIndex(10)
-        assertEquals(chewingEngine.candTotalChoice(), 29)
-        assertEquals(chewingEngine.candStringByIndexStatic(0), "╔")
-        chewingEngine.candChooseByIndex(0)
-        chewingEngine.commitPreeditBuf()
-        assertEquals(chewingEngine.commitString(), "╔")
+        ChewingEngine.handleDefault('`')
+        ChewingEngine.candChooseByIndex(10)
+        assertEquals(ChewingEngine.candTotalChoice(), 29)
+        assertEquals(ChewingEngine.candStringByIndexStatic(0), "╔")
+        ChewingEngine.candChooseByIndex(0)
+        ChewingEngine.commitPreeditBuf()
+        assertEquals(ChewingEngine.commitString(), "╔")
 
         // 模擬鍵盤操作版
-        chewingEngine.handleDefault('`')
-        chewingEngine.handleSpace()
-        chewingEngine.handleDefault('1')
-        assertEquals(chewingEngine.candTotalChoice(), 29)
-        chewingEngine.handleDefault('1')
-        chewingEngine.commitPreeditBuf()
-        chewingEngine.candClose()
-        assertEquals(chewingEngine.commitString(), "╔")
+        ChewingEngine.handleDefault('`')
+        ChewingEngine.handleSpace()
+        ChewingEngine.handleDefault('1')
+        assertEquals(ChewingEngine.candTotalChoice(), 29)
+        ChewingEngine.handleDefault('1')
+        ChewingEngine.commitPreeditBuf()
+        ChewingEngine.candClose()
+        assertEquals(ChewingEngine.commitString(), "╔")
     }
 
     @Test
     fun testCommitCheck() {
-        chewingEngine.setChiEngMode(CHINESE_MODE)
-        chewingEngine.setMaxChiSymbolLen(10)
-        chewingEngine.setCandPerPage(10)
-        chewingEngine.setPhraseChoiceRearward(false)
-        val newKeyboardType = chewingEngine.convKBStr2Num("KB_HSU")
-        chewingEngine.setKBType(newKeyboardType)
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        ChewingEngine.setMaxChiSymbolLen(10)
+        ChewingEngine.setCandPerPage(10)
+        ChewingEngine.setPhraseChoiceRearward(false)
+        val newKeyboardType = ChewingEngine.convKBStr2Num("KB_HSU")
+        ChewingEngine.setKBType(newKeyboardType)
 
-        chewingEngine.handleDefault('l')
-        chewingEngine.handleDefault('w')
-        chewingEngine.handleDefault('f')
-        chewingEngine.handleDefault('c')
-        chewingEngine.handleDefault('x')
-        chewingEngine.handleDefault('f')
+        ChewingEngine.handleDefault('l')
+        ChewingEngine.handleDefault('w')
+        ChewingEngine.handleDefault('f')
+        ChewingEngine.handleDefault('c')
+        ChewingEngine.handleDefault('x')
+        ChewingEngine.handleDefault('f')
 
         repeat(5) {
-            chewingEngine.handleDefault('m')
-            chewingEngine.handleDefault('w')
-            chewingEngine.handleSpace()
-            chewingEngine.handleDefault('m')
-            chewingEngine.handleDefault('e')
-            chewingEngine.handleSpace()
+            ChewingEngine.handleDefault('m')
+            ChewingEngine.handleDefault('w')
+            ChewingEngine.handleSpace()
+            ChewingEngine.handleDefault('m')
+            ChewingEngine.handleDefault('e')
+            ChewingEngine.handleSpace()
         }
 
-        assertEquals(chewingEngine.commitStringStatic(), "老鼠")
-        assertEquals(chewingEngine.bufferStringStatic(), "貓咪貓咪貓咪貓咪貓咪")
-        assertEquals(chewingEngine.commitCheck(), 0)
-        chewingEngine.commitPreeditBuf()
-        assertEquals(chewingEngine.commitCheck(), 1)
+        assertEquals(ChewingEngine.commitStringStatic(), "老鼠")
+        assertEquals(ChewingEngine.bufferStringStatic(), "貓咪貓咪貓咪貓咪貓咪")
+        assertEquals(ChewingEngine.commitCheck(), 0)
+        ChewingEngine.commitPreeditBuf()
+        assertEquals(ChewingEngine.commitCheck(), 1)
     }
 
     @After
     fun deleteChewingEngine() {
-        chewingEngine.delete()
+        ChewingEngine.delete()
     }
 }
