@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
 import android.content.Intent
+import android.widget.RadioButton
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -77,7 +78,7 @@ class GuilelessBopomofoBehaviorTest {
         val imageViewAppIcon: UiObject = device.findObject(
             UiSelector().resourceId("${PACKAGE_NAME}:id/imageViewAppIcon")
         )
-        repeat(5) { imageViewAppIcon.click() }
+        repeat(6) { imageViewAppIcon.click() }
 
         val chewingDataFilesStatus = device.findObject(
             UiSelector().resourceId("${PACKAGE_NAME}:id/chewingDataFilesStatus")
@@ -87,6 +88,14 @@ class GuilelessBopomofoBehaviorTest {
         val testTextInputEditText = device.findObject(
             UiSelector().resourceId("${PACKAGE_NAME}:id/testTextInputEditText")
         )
+        testTextInputEditText.longClick()
+
+        val imePickerRadioButtons = device.findObjects(
+            By.clazz(RadioButton::class.java)
+        )
+
+        imePickerRadioButtons[1].click()
+
         testTextInputEditText.click()
     }
 }

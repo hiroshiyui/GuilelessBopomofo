@@ -19,7 +19,9 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.content.Context
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityEngineeringModeBinding
 import java.io.File
@@ -31,6 +33,13 @@ class EngineeringModeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val activityEngineeringModeBinding: ActivityEngineeringModeBinding = ActivityEngineeringModeBinding.inflate(this.layoutInflater)
         activityEngineeringModeBinding.chewingDataFilesStatus.text = checkChewingDateFiles().toString()
+
+        activityEngineeringModeBinding.testTextInputEditText.setOnLongClickListener {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showInputMethodPicker()
+            return@setOnLongClickListener true
+        }
+
         setContentView(activityEngineeringModeBinding.root)
     }
 
