@@ -359,7 +359,7 @@ class ChewingEngineInstrumentedTest {
         ChewingEngine.handleDefault('x')
         ChewingEngine.handleDefault('f')
 
-        repeat(5) {
+        repeat(4) {
             ChewingEngine.handleDefault('m')
             ChewingEngine.handleDefault('w')
             ChewingEngine.handleSpace()
@@ -367,6 +367,15 @@ class ChewingEngineInstrumentedTest {
             ChewingEngine.handleDefault('e')
             ChewingEngine.handleSpace()
         }
+
+        ChewingEngine.handleDefault('m')
+        ChewingEngine.handleDefault('w')
+        ChewingEngine.handleSpace() // 此時應該觸發送出最前端詞「老鼠」
+        assertEquals(ChewingEngine.commitCheck(), 1)
+
+        ChewingEngine.handleDefault('m')
+        ChewingEngine.handleDefault('e')
+        ChewingEngine.handleSpace()
 
         assertEquals(ChewingEngine.commitStringStatic(), "老鼠")
         assertEquals(ChewingEngine.bufferStringStatic(), "貓咪貓咪貓咪貓咪貓咪")
