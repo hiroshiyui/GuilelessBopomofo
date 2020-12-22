@@ -32,4 +32,9 @@
     <string name="rearward_phrase_choice">Choose phrase rearward</string>
     <string name="rearward_phrase_choice_switch">Choose phrase rearward?</string>
     <string name="rearward_phrase_choice_description">If enabled, phrase will be chosen before the cursor</string>
+    <string name="haptic_feedback_strength">Haptic feedback strength</string>
+    <string name="haptic_feedback_strength_description">Adjust haptic feedback strength of character keys, the effect varies on different devices</string>
+    <string name="haptic_feedback_strength_light">Light</string>
+    <string name="haptic_feedback_strength_medium">Medium</string>
+    <string name="haptic_feedback_strength_heavy">Heavy</string>
 </resources>

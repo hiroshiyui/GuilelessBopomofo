@@ -240,6 +240,55 @@
             app:layout_constraintTop_toBottomOf="@id/textViewRearwardPhraseChoiceDescription" />
 
         <TextView
+            android:id="@+id/textViewHapticFeedbackStrength"
+            style="@style/SettingsLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/haptic_feedback_strength"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/switchRearwardPhraseChoice" />
+
+        <TextView
+            android:id="@+id/textViewtextViewHapticFeedbackStrengthDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/haptic_feedback_strength_description"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHapticFeedbackStrength" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupHapticFeedbackStrength"
+            style="@style/SettingsWidget"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/textViewtextViewHapticFeedbackStrengthDescription">
+
+            <RadioButton
+                android:id="@+id/radioButtonHapticFeedbackStrengthLight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/haptic_feedback_strength_light" />
+
+            <RadioButton
+                android:id="@+id/radioButtonHapticFeedbackStrengthMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/haptic_feedback_strength_medium" />
+
+            <RadioButton
+                android:id="@+id/radioButtonHapticFeedbackStrengthHeavy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/haptic_feedback_strength_heavy" />
+        </RadioGroup>
+
+        <TextView
             android:id="@+id/textViewSettingFullscreenWhenInLandscape"
             style="@style/SettingsLabel"
             android:layout_width="0dp"
@@ -248,7 +297,7 @@
             android:text="@string/fullscreen_when_in_landscape_setting_title"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/switchRearwardPhraseChoice" />
+            app:layout_constraintTop_toBottomOf="@id/radioGroupHapticFeedbackStrength" />
 
         <TextView
             android:id="@+id/textViewSettingDescriptionFullscreenWhenInLandscape"

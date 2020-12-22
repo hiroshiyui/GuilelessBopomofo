@@ -33,4 +33,9 @@
     <string name="rearward_phrase_choice">從後方往前選詞</string>
     <string name="rearward_phrase_choice_switch">從後方往前選詞？</string>
     <string name="rearward_phrase_choice_description">如果啟用本功能，會從游標處向前選詞</string>
+    <string name="haptic_feedback_strength">按鍵觸感力道</string>
+    <string name="haptic_feedback_strength_description">調整字符鍵的按鍵觸感力道，實際效果依不同機種而有差異</string>
+    <string name="haptic_feedback_strength_light">輕柔</string>
+    <string name="haptic_feedback_strength_medium">適中</string>
+    <string name="haptic_feedback_strength_heavy">強勁</string>
 </resources>

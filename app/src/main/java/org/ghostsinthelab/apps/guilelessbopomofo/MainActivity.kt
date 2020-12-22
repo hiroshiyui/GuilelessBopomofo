@@ -24,6 +24,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.HapticFeedbackConstants
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
@@ -141,6 +142,25 @@ class MainActivity : AppCompatActivity() {
                     "user_keyboard_layout",
                     GuilelessBopomofoService.defaultKeyboardLayout
                 ) == layout
+            ) {
+                button.isChecked = true
+            }
+        }
+
+        for ((button, strength) in
+        mapOf<RadioButton, Int>(
+            binding.radioButtonHapticFeedbackStrengthLight to HapticFeedbackConstants.CONTEXT_CLICK,
+            binding.radioButtonHapticFeedbackStrengthMedium to HapticFeedbackConstants.KEYBOARD_TAP,
+            binding.radioButtonHapticFeedbackStrengthHeavy to HapticFeedbackConstants.VIRTUAL_KEY
+        )) {
+            button.setOnClickListener {
+                sharedPreferences.edit().putInt("user_haptic_feedback_strength", strength).apply()
+            }
+
+            if (sharedPreferences.getInt(
+                    "user_haptic_feedback_strength",
+                    GuilelessBopomofoService.defaultHapticFeedbackStrength
+                ) == strength
             ) {
                 button.isChecked = true
             }

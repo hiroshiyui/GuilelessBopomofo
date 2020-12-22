@@ -43,9 +43,11 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
     private lateinit var inputView: KeyboardView
     private lateinit var sharedPreferences: SharedPreferences
+    var userHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
 
     companion object {
-        const val defaultKeyboardLayout = "KB_DEFAULT"
+        const val defaultHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
+        const val defaultKeyboardLayout: String = "KB_DEFAULT"
     }
 
     override fun onCreate() {
@@ -77,6 +79,9 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                 Log.e(LOGTAG, it)
             }
         }
+
+        userHapticFeedbackStrength =
+            sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
     }
 
     override fun onCreateCandidatesView(): View? {
@@ -152,7 +157,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        v?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        v?.performHapticFeedback(userHapticFeedbackStrength)
         Log.v(LOGTAG, "onClick")
 
         if (v is BehaveLikeKey<*>) {
