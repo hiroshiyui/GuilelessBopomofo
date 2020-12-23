@@ -267,21 +267,30 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         // Get app data directory
         val chewingDataDir = File(dataPath)
 
+        if (!checkChewingData(dataPath)) {
+            Log.v(LOGTAG, "Install Chewing data files.")
+            installChewingData(dataPath)
+        }
+
         // Save app version
         val chewingAppVersion =
             packageManager.getPackageInfo(this.packageName, 0).versionName.toByteArray()
         val chewingDataAppVersionTxt =
             File(String.format("%s/%s", chewingDataDir.absolutePath, "data_appversion.txt"))
 
-        // install Chewing data files by version
+        // update Chewing data files by version
         if (!chewingDataAppVersionTxt.exists()) {
             chewingDataAppVersionTxt.appendBytes(chewingAppVersion)
-            installChewingData(dataPath)
         }
 
         if (!chewingDataAppVersionTxt.readBytes().contentEquals(chewingAppVersion)) {
             Log.v(LOGTAG, "Here comes a new version.")
             installChewingData(dataPath)
+
+            // refresh app version
+            val chewingDataAppVersionTxtOutputStream = FileOutputStream(chewingDataAppVersionTxt)
+            chewingDataAppVersionTxtOutputStream.write(chewingAppVersion)
+            chewingDataAppVersionTxtOutputStream.close()
         }
     }
 
@@ -308,5 +317,18 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                 dataOutputStream.close()
             }
         }
+    }
+
+    private fun checkChewingData(dataPath: String): Boolean {
+        Log.v(LOGTAG, "Checking Chewing data files...")
+        val chewingDataDir = File(dataPath)
+
+        for (file in chewingDataFiles) {
+            val destinationFile = File(String.format("%s/%s", chewingDataDir.absolutePath, file))
+            if (!destinationFile.exists()) {
+                return false
+            }
+        }
+        return true
     }
 }
