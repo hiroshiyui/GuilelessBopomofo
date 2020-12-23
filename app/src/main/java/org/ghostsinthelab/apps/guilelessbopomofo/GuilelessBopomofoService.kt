@@ -44,6 +44,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     private lateinit var inputView: KeyboardView
     private lateinit var sharedPreferences: SharedPreferences
     var userHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
+    private val chewingDataFiles =
+        listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
 
     companion object {
         const val defaultHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
@@ -263,28 +265,45 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         // Get app data directory
         val chewingDataDir = File(dataPath)
 
-        // Copying data files
-        val chewingDataFiles =
-            listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
+        // Save app version
+        val chewingAppVersion =
+            packageManager.getPackageInfo(this.packageName, 0).versionName.toByteArray()
+        val chewingDataAppVersionTxt =
+            File(String.format("%s/%s", chewingDataDir.absolutePath, "data_appversion.txt"))
 
+        // install Chewing data files by version
+        if (!chewingDataAppVersionTxt.exists()) {
+            chewingDataAppVersionTxt.appendBytes(chewingAppVersion)
+            installChewingData(dataPath)
+        }
+
+        if (!chewingDataAppVersionTxt.readBytes().contentEquals(chewingAppVersion)) {
+            Log.v(LOGTAG, "Here comes a new version.")
+            installChewingData(dataPath)
+        }
+    }
+
+    private fun installChewingData(dataPath: String) {
+        // Get app data directory
+        val chewingDataDir = File(dataPath)
+
+        // Copying data files
         for (file in chewingDataFiles) {
             val destinationFile = File(String.format("%s/%s", chewingDataDir.absolutePath, file))
-            if (!destinationFile.exists()) {
-                Log.v(LOGTAG, "Copying ${file}...")
-                val dataInputStream = assets.open(file)
-                val dataOutputStream = FileOutputStream(destinationFile)
+            Log.v(LOGTAG, "Copying ${file}...")
+            val dataInputStream = assets.open(file)
+            val dataOutputStream = FileOutputStream(destinationFile)
 
-                try {
-                    dataInputStream.copyTo(dataOutputStream)
-                } catch (e: java.lang.Exception) {
-                    e.message?.let {
-                        Log.e(LOGTAG, it)
-                    }
-                } finally {
-                    Log.v(LOGTAG, "Closing data I/O streams")
-                    dataInputStream.close()
-                    dataOutputStream.close()
+            try {
+                dataInputStream.copyTo(dataOutputStream)
+            } catch (e: java.lang.Exception) {
+                e.message?.let {
+                    Log.e(LOGTAG, it)
                 }
+            } finally {
+                Log.v(LOGTAG, "Closing data I/O streams")
+                dataInputStream.close()
+                dataOutputStream.close()
             }
         }
     }
