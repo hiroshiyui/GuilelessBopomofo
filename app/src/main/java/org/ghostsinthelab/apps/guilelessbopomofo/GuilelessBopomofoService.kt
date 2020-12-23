@@ -74,6 +74,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
                 ChewingEngine.setPhraseChoiceRearward(true)
             }
+
+            ChewingEngine.setChiEngMode(CHINESE_MODE)
         } catch (e: Exception) {
             Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
                 .show()

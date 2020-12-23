@@ -19,6 +19,9 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+const val SYMBOL_MODE: Int = 0
+const val CHINESE_MODE: Int = 1
+
 object ChewingEngine {
     // Chewing context pointer, represent its address as a Long
     var context: Long = 0
