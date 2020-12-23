@@ -359,10 +359,10 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:scaleType="fitCenter"
+            android:theme="@style/KeyImageButton"
             app:keySymbolString="g"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_shi"
-            android:theme="@style/KeyImageButton" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_shi" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonH"
@@ -564,6 +564,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:theme="@style/KeyboardRow">
+
+        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
+            android:id="@+id/keyImageButtonModeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:onClick="onClick"
+            android:scaleType="centerCrop"
+            android:theme="@style/KeyImageButton"
+            app:keyTypeEnum="KEYTYPE_CONTROL"
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_mode_switch" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonSymbol"

@@ -184,6 +184,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             keyboard.setupImeSwitch(this)
             keyboard.setupPuncSwitch(this)
             keyboard.setupSymbolSwitch(this)
+            keyboard.setupModeSwitch(this)
             keyboard.setupBackspace(this)
         }
 

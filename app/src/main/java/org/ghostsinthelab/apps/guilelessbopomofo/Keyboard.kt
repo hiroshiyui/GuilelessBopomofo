@@ -112,6 +112,15 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         keyButtonBackToMain.setBackMainLayoutOnClickListener(guilelessBopomofoService)
     }
 
+    fun setupModeSwitch(guilelessBopomofoService: GuilelessBopomofoService) {
+        Log.v(LOGTAG, "setupImeSwitch")
+        v = guilelessBopomofoService.viewBinding
+        val keyImageButtonModeSwitch =
+            v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonModeSwitch)
+
+        keyImageButtonModeSwitch.setModeSwitchButtonOnClickListener(guilelessBopomofoService)
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     fun setupBackspace(guilelessBopomofoService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "setupBackspace")

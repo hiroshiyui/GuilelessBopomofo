@@ -395,10 +395,10 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:scaleType="fitCenter"
+            android:theme="@style/KeyImageButton"
             app:keySymbolString="k"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_e"
-            android:theme="@style/KeyImageButton" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_e" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonL"
@@ -566,12 +566,23 @@
         android:theme="@style/KeyboardRow">
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
+            android:id="@+id/keyImageButtonModeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:scaleType="fitCenter"
+            android:theme="@style/KeyImageButton"
+            app:keyTypeEnum="KEYTYPE_CONTROL"
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_mode_switch" />
+
+        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonSymbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:theme="@style/KeyImageButton"
             app:keyCodeString="KEYCODE_PICTSYMBOLS"
             app:keyTypeEnum="KEYTYPE_CONTROL"
@@ -581,8 +592,8 @@
             android:id="@+id/keyImageButtonImeSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:scaleType="centerCrop"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_baseline_language_24"
             android:theme="@style/KeyImageButton"
             app:keyTypeEnum="KEYTYPE_FUNCTION" />
@@ -591,7 +602,7 @@
             android:id="@+id/keyImageButtonSpace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="7"
             android:onClick="onClick"
             android:scaleType="fitCenter"
             android:theme="@style/KeyImageButton"
@@ -603,9 +614,9 @@
             android:id="@+id/keyImageButtonPunc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:theme="@style/KeyImageButton"
             app:keyCodeString="KEYCODE_COMMA"
             app:keySymbolString=","
@@ -616,9 +627,9 @@
             android:id="@+id/keyImageButtonBackspace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="1"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:theme="@style/KeyImageButton"
             app:keyCodeString="KEYCODE_DEL"
             app:keyTypeEnum="KEYTYPE_CONTROL"
@@ -628,7 +639,7 @@
             android:id="@+id/keyImageButtonEnter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_weight="1.5"
             android:backgroundTint="#8BC34A"
             android:onClick="onClick"
             android:scaleType="fitCenter"

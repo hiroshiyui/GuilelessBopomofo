@@ -87,4 +87,19 @@ interface BehaveLikeButton<T : View> {
             return@setOnLongClickListener true
         }
     }
+
+    fun setModeSwitchButtonOnClickListener(guilelessBopomofoService: GuilelessBopomofoService) {
+        this as KeyImageButton
+        this.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            val chewingChiEngMode = ChewingEngine.getChiEngMode()
+            if (chewingChiEngMode == CHINESE_MODE) {
+                ChewingEngine.setChiEngMode(SYMBOL_MODE)
+                guilelessBopomofoService.viewBinding.keyboardPanel.switchToQwertyLayout(guilelessBopomofoService)
+            } else {
+                ChewingEngine.setChiEngMode(CHINESE_MODE)
+                guilelessBopomofoService.viewBinding.keyboardPanel.switchToMainLayout(guilelessBopomofoService)
+            }
+        }
+    }
 }

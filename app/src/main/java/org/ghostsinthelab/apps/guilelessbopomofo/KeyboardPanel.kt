@@ -22,10 +22,12 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayoutBinding
 
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
@@ -36,14 +38,21 @@ class KeyboardPanel(
     private var currentOffset: Int = 0
     private lateinit var v: KeyboardLayoutBinding
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
+    private lateinit var keyboardQwertyLayoutBinding: KeyboardQwertyLayoutBinding
     override lateinit var guilelessBopomofoService: GuilelessBopomofoService
 
-    enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES }
+    enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY }
 
     lateinit var currentKeyboardLayout: KeyboardLayout
 
     init {
         Log.v(LOGTAG, "Building KeyboardLayout.")
+    }
+
+    // TODO: Let this be the 'router'
+    override fun onViewAdded(child: View?) {
+        super.onViewAdded(child)
+        Log.v(LOGTAG, "onViewAdded - ${child}")
     }
 
     fun switchToMainLayout(guilelessBopomofoService: GuilelessBopomofoService) {
@@ -53,6 +62,19 @@ class KeyboardPanel(
         currentKeyboardLayout = KeyboardLayout.MAIN
 
         v.keyboardView.updateBuffers(guilelessBopomofoService)
+    }
+
+    fun switchToQwertyLayout(guilelessBopomofoService: GuilelessBopomofoService) {
+        Log.v(LOGTAG, "switchToQwertyLayout")
+        keyboardQwertyLayoutBinding = KeyboardQwertyLayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
+        v = guilelessBopomofoService.viewBinding
+        v.keyboardPanel.removeAllViews()
+        v.keyboardPanel.addView(keyboardQwertyLayoutBinding.root)
+        v.keyboardPanel.keyboardQwertyLayoutBinding.root.setupModeSwitch(guilelessBopomofoService)
+        currentKeyboardLayout = KeyboardLayout.QWERTY
+
+        v.keyboardView.updateBuffers(guilelessBopomofoService)
+
     }
 
     // list current offset's candidates in the candidate window
