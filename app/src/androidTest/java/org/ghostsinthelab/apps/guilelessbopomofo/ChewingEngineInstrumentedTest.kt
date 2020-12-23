@@ -32,7 +32,6 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ChewingEngineInstrumentedTest {
     private lateinit var dataPath: String
-    private val CHINESE_MODE = 1
 
     @Before
     fun setupChewingEngine() {
@@ -56,9 +55,37 @@ class ChewingEngineInstrumentedTest {
 
     @Test
     fun validChiEngMode() {
+        ChewingEngine.setChiEngMode(SYMBOL_MODE)
+        assertEquals(ChewingEngine.getChiEngMode(), SYMBOL_MODE)
+
+        ChewingEngine.handleDefault('t')
+        ChewingEngine.handleDefault('e')
+        ChewingEngine.handleDefault('a')
+        // 如果一開始 pre-edit buffer 完全無資料，SYMBOL_MODE 會直接送出字符
+        assertEquals(ChewingEngine.bufferStringStatic(), "")
+
         ChewingEngine.setChiEngMode(CHINESE_MODE)
-        val chewingChiMode = ChewingEngine.getChiEngMode()
-        assertEquals(chewingChiMode, CHINESE_MODE)
+        assertEquals(ChewingEngine.getChiEngMode(), CHINESE_MODE)
+
+        val keys = arrayOf('x', 'm', '4', 't', '8', '6')
+        for (key in keys) {
+            ChewingEngine.handleDefault(key)
+        }
+
+        ChewingEngine.setChiEngMode(SYMBOL_MODE)
+        assertEquals(ChewingEngine.getChiEngMode(), SYMBOL_MODE)
+
+        ChewingEngine.handleSpace()
+        ChewingEngine.handleDefault('g')
+        ChewingEngine.handleDefault('r')
+        ChewingEngine.handleDefault('e')
+        ChewingEngine.handleDefault('e')
+        ChewingEngine.handleDefault('n')
+        ChewingEngine.handleSpace()
+        ChewingEngine.handleDefault('t')
+        ChewingEngine.handleDefault('e')
+        ChewingEngine.handleDefault('a')
+        assertEquals(ChewingEngine.bufferStringStatic(), "綠茶 green tea")
     }
 
     @Test
