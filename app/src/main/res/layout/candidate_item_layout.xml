@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="serif"
         android:text="Button"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
