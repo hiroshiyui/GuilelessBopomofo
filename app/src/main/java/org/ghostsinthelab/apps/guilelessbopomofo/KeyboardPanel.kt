@@ -85,13 +85,14 @@ class KeyboardPanel(
         }
     }
 
-    fun setMainLayout(guilelessBopomofoService: GuilelessBopomofoService) {
-        Log.v(LOGTAG, "setMainLayout")
+    fun switchToMainLayout(guilelessBopomofoService: GuilelessBopomofoService) {
+        Log.v(LOGTAG, "switchToMainLayout")
         currentKeyboardLayout = KeyboardLayout.MAIN
 
         v = guilelessBopomofoService.viewBinding
         v.keyboardPanel.removeAllViews()
 
+        // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
         val userKeyboardLayoutPreference = guilelessBopomofoService.sharedPreferences.getString(
             "user_keyboard_layout",
             GuilelessBopomofoService.defaultKeyboardLayout
@@ -117,14 +118,6 @@ class KeyboardPanel(
                 v.keyboardPanel.addView(keyboardDachenLayoutBinding.root)
             }
         }
-    }
-
-    fun switchToMainLayout(guilelessBopomofoService: GuilelessBopomofoService) {
-        Log.v(LOGTAG, "switchToMainLayout")
-        currentKeyboardLayout = KeyboardLayout.MAIN
-
-        v = guilelessBopomofoService.viewBinding
-        setMainLayout(guilelessBopomofoService)
     }
 
     fun switchToQwertyLayout(guilelessBopomofoService: GuilelessBopomofoService) {

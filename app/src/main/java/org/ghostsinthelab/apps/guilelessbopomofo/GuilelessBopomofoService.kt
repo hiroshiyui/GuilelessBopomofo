@@ -109,8 +109,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             keyboardView.bindGuilelessBopomofoService(this@GuilelessBopomofoService)
             keyboardPanel.bindGuilelessBopomofoService(this@GuilelessBopomofoService)
             keyboardView.setOnClickPreEditCharListener(this@GuilelessBopomofoService)
-            // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
-            keyboardPanel.setMainLayout(this@GuilelessBopomofoService)
+            keyboardPanel.switchToMainLayout(this@GuilelessBopomofoService)
         }
 
         inputView = viewBinding.root
