@@ -76,9 +76,9 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
             ChewingEngine.openSymbolCandidates()
 
             v.keyboardPanel.apply {
+                currentKeyboardLayout = KeyboardPanel.KeyboardLayout.SYMBOLS
                 removeAllViews()
                 addView(symbolsPickerLayoutBinding.root)
-                currentKeyboardLayout = KeyboardPanel.KeyboardLayout.SYMBOLS
             }
 
             val totalCategories = ChewingEngine.candTotalChoice()
