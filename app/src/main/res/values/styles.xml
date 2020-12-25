@@ -31,6 +31,8 @@
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:minWidth">48dip</item>
     </style>
 
     <style name="SettingsLabel">

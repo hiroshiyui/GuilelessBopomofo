@@ -33,13 +33,15 @@ class KeyButton(context: Context, attrs: AttributeSet) :
     override var keyCodeString: String? = null
     override var keyType: Int? = null
     override var keySymbol: String? = null
+    override var keyShiftSymbol: String? = null
 
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyButton, 0, 0).apply {
             try {
                 keyCodeString = this.getString(R.styleable.KeyButton_keyCodeString)
                 keyType = this.getInt(R.styleable.KeyButton_keyTypeEnum, 0)
-                keySymbol = this.getString(R.styleable.KeyImageButton_keySymbolString)
+                keySymbol = this.getString(R.styleable.KeyButton_keySymbolString)
+                keyShiftSymbol = this.getString(R.styleable.KeyButton_keyShiftSymbolString)
             } finally {
                 recycle()
             }

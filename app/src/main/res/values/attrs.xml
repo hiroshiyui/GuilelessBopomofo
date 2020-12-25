@@ -26,14 +26,17 @@
     </attr>
     <attr name="keyCodeString" format="string" />
     <attr name="keySymbolString" format="string" />
+    <attr name="keyShiftSymbolString" format="string" />
     <declare-styleable name="KeyImageButton">
         <attr name="keyTypeEnum" />
         <attr name="keyCodeString" />
         <attr name="keySymbolString" />
+        <attr name="keyShiftSymbolString" />
     </declare-styleable>
     <declare-styleable name="KeyButton">
         <attr name="keyTypeEnum" />
         <attr name="keyCodeString" />
         <attr name="keySymbolString" />
+        <attr name="keyShiftSymbolString" />
     </declare-styleable>
 </resources>

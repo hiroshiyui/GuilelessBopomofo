@@ -29,17 +29,18 @@
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
         android:id="@+id/linearLayoutKeyboardRow0"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
             android:id="@+id/keyButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="1"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
+            app:keyShiftSymbolString="!"
             app:keySymbolString="1"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
 
@@ -48,9 +49,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="2"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="2"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -60,9 +61,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="3"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="3"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -72,9 +73,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="4"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="4"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -84,9 +85,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="5"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="5"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -96,9 +97,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="6"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="6"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -108,9 +109,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="7"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="7"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -120,9 +121,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="8"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="8"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -132,9 +133,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="9"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="9"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -144,9 +145,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="0"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="0"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -165,9 +166,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="Q"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="q"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -177,9 +178,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="W"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="w"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -189,9 +190,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="E"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="e"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -201,9 +202,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="R"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="r"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -213,9 +214,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="T"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="t"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -225,9 +226,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="Y"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="y"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -237,9 +238,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="U"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="u"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -249,9 +250,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="I"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="i"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -261,9 +262,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="O"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="o"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -273,9 +274,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="P"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="p"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -294,9 +295,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="A"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="a"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -306,9 +307,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="S"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="s"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -318,9 +319,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="D"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="d"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -330,9 +331,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="F"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="f"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -342,9 +343,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="G"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="g"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -354,9 +355,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="H"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="h"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -366,9 +367,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="J"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="j"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -378,9 +379,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="K"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="k"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -390,9 +391,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="L"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="l"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -406,14 +407,26 @@
         android:orientation="horizontal"
         android:theme="@style/KeyboardRow">
 
+        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
+            android:id="@+id/keyImageButtonShift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:backgroundTint="@color/colorKeyboardSpecialKeyBackground"
+            android:onClick="onClick"
+            android:scaleType="fitCenter"
+            app:keyCodeString="KEYCODE_SHIFT_LEFT"
+            app:keyTypeEnum="KEYTYPE_MODIFIER"
+            app:srcCompat="@drawable/ic_baseline_keyboard_capslock_24" />
+
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
             android:id="@+id/keyButtonZ"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="Z"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="z"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -423,9 +436,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="X"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="x"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -435,9 +448,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="C"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="c"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -447,9 +460,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="V"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="v"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -459,9 +472,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="B"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="b"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -471,9 +484,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="N"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="n"
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
@@ -483,11 +496,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:onClick="onClick"
             android:text="M"
-            android:textSize="18sp"
             android:theme="@style/KeyButton"
             app:keySymbolString="m"
+            app:keyTypeEnum="KEYTYPE_CHARACTER" />
+
+        <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
+            android:id="@+id/keyButtonComma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:onClick="onClick"
+            android:text=","
+            android:theme="@style/KeyButton"
+            app:keySymbolString=","
+            app:keyTypeEnum="KEYTYPE_CHARACTER" />
+
+        <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
+            android:id="@+id/keyButtonPeriod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:onClick="onClick"
+            android:text="."
+            android:theme="@style/KeyButton"
+            app:keySymbolString="."
             app:keyTypeEnum="KEYTYPE_CHARACTER" />
 
     </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
@@ -503,9 +540,10 @@
             android:id="@+id/keyImageButtonModeSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorKeyboardSpecialKeyBackground"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:theme="@style/KeyImageButton"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_mode_switch" />
@@ -514,29 +552,20 @@
             android:id="@+id/keyImageButtonSymbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorKeyboardSpecialKeyBackground"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:theme="@style/KeyImageButton"
             app:keyCodeString="KEYCODE_PICTSYMBOLS"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:srcCompat="@drawable/ic_baseline_format_quote_24" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButtonImeSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_baseline_language_24"
-            android:theme="@style/KeyImageButton"
-            app:keyTypeEnum="KEYTYPE_FUNCTION" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonSpace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="7"
             android:onClick="onClick"
             android:scaleType="fitCenter"
             android:theme="@style/KeyImageButton"
@@ -545,25 +574,13 @@
             app:srcCompat="@drawable/ic_baseline_space_bar_24" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
-            android:id="@+id/keyImageButtonPunc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:onClick="onClick"
-            android:scaleType="centerCrop"
-            android:theme="@style/KeyImageButton"
-            app:keyCodeString="KEYCODE_COMMA"
-            app:keySymbolString=","
-            app:keyTypeEnum="KEYTYPE_CONTROL"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_punctuation" />
-
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonBackspace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorKeyboardSpecialKeyBackground"
             android:onClick="onClick"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:theme="@style/KeyImageButton"
             app:keyCodeString="KEYCODE_DEL"
             app:keyTypeEnum="KEYTYPE_CONTROL"
@@ -573,8 +590,8 @@
             android:id="@+id/keyImageButtonEnter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:backgroundTint="#8BC34A"
+            android:layout_weight="1.5"
+            android:backgroundTint="@color/colorKeyboardEnterKeyBackground"
             android:onClick="onClick"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_baseline_keyboard_return_24"

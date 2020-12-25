@@ -33,6 +33,7 @@ class KeyImageButton(context: Context, attrs: AttributeSet) :
     override var keyCodeString: String? = null
     override var keyType: Int? = null
     override var keySymbol: String? = null
+    override var keyShiftSymbol: String? = null
 
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0, 0).apply {
@@ -40,15 +41,13 @@ class KeyImageButton(context: Context, attrs: AttributeSet) :
                 keyCodeString = this.getString(R.styleable.KeyImageButton_keyCodeString)
                 keyType = this.getInt(R.styleable.KeyImageButton_keyTypeEnum, -1)
                 keySymbol = this.getString(R.styleable.KeyImageButton_keySymbolString)
+                keyShiftSymbol = this.getString(R.styleable.KeyImageButton_keyShiftSymbolString)
             } finally {
                 recycle()
             }
         }
 
         this.apply {
-            minimumHeight = convertDpToPx(48F).toInt()
-            minimumWidth = convertDpToPx(48F).toInt()
-
             if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
                 elevation = convertDpToPx(2F)
             }

@@ -31,6 +31,7 @@ import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.properties.Delegates
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "GuilelessBopomofoSvc"
@@ -40,6 +41,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     var userHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
     private val chewingDataFiles =
         listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
+
+    enum class ShiftKeyState { RELEASE, PRESSED, HOLD }
+
+    private var currentShiftKeyState = ShiftKeyState.RELEASE
 
     companion object {
         const val defaultHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
@@ -163,6 +168,9 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             if (v.isControlKey()) {
                 handleControlKey(v)
             }
+            if (v.isModifierKey()) {
+                handleModifierKey(v)
+            }
         }
 
         inputView.updateBuffers()
@@ -177,9 +185,22 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     }
 
     private fun handleCharacterKey(v: BehaveLikeKey<*>) {
+        var sendCharacter by Delegates.notNull<Char>()
+
         v.keySymbol?.let {
-            ChewingEngine.handleDefault(it.get(0))
+            sendCharacter = it.get(0)
         }
+
+        if (currentShiftKeyState == ShiftKeyState.PRESSED) {
+            if (v.keyShiftSymbol?.isNotEmpty() == true) {
+                sendCharacter = v.keyShiftSymbol.toString().get(0)
+            } else {
+                sendCharacter = v.keySymbol.toString().get(0).toUpperCase()
+            }
+        }
+
+        ChewingEngine.handleDefault(sendCharacter)
+        currentShiftKeyState = ShiftKeyState.RELEASE
     }
 
     private fun handleControlKey(v: BehaveLikeKey<*>) {
@@ -206,6 +227,18 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             // 短觸會輸出全形逗號，長按交給 setupPuncSwitch() 處理
             KeyEvent.KEYCODE_COMMA -> {
                 ChewingEngine.handleShiftComma()
+            }
+            else -> {
+                Log.v(LOGTAG, "This key has not been implemented its handler")
+            }
+        }
+    }
+
+    private fun handleModifierKey(v: BehaveLikeKey<*>) {
+        when (v.keyCode()) {
+            KeyEvent.KEYCODE_SHIFT_LEFT -> {
+                Log.v(LOGTAG, "Shift is pressed")
+                currentShiftKeyState = ShiftKeyState.PRESSED
             }
             else -> {
                 Log.v(LOGTAG, "This key has not been implemented its handler")
