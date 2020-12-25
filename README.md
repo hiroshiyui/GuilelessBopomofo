@@ -26,6 +26,7 @@ A [Bopomofo](https://en.wikipedia.org/wiki/Bopomofo) software keyboard (aka inpu
 ## Sponsor me or hire me!
 
 * https://www.patreon.com/hiroshiyui
+* https://paypal.me/hiroshiyui
 * https://www.linkedin.com/in/huihongyou/
 
 ## Acknowledgements
