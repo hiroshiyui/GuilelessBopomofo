@@ -33,6 +33,8 @@
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:minHeight">48dip</item>
         <item name="android:minWidth">48dip</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="fontFamily">sans-serif-black</item>
     </style>
 
     <style name="SettingsLabel">

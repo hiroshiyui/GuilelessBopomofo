@@ -21,19 +21,17 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageButton
+import android.util.Log
 
-open class KeyImageButton(context: Context, attrs: AttributeSet) :
-    AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
-    BehaveLikeKey<KeyImageButton>, BehaveLikeButton<KeyImageButton>, DisplayMetricsComputable {
-    open val LOGTAG: String = "KeyImageButton"
-    val sharedPreferences =
-        context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
-    override var keyCodeString: String? = null
-    override var keyType: Int? = null
-    override var keySymbol: String? = null
-    override var keyShiftSymbol: String? = null
+class ShiftKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
+    override val LOGTAG: String = "ShiftKeyImageButton"
+
+    // manage Shift key state
+    enum class ShiftKeyState { RELEASED, PRESSED, HOLD }
+
+    var currentShiftKeyState = ShiftKeyState.RELEASED
+    var isLocked: Boolean = false
+    var isActive: Boolean = false
 
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0, 0).apply {
@@ -50,6 +48,39 @@ open class KeyImageButton(context: Context, attrs: AttributeSet) :
         this.apply {
             if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
                 elevation = convertDpToPx(2F)
+            }
+        }
+
+        this.setOnClickListener {
+            when (currentShiftKeyState) {
+                ShiftKeyState.RELEASED -> {
+                    switchToState(ShiftKeyState.PRESSED)
+                }
+                ShiftKeyState.PRESSED -> {
+                    switchToState(ShiftKeyState.HOLD)
+                }
+                ShiftKeyState.HOLD -> {
+                    switchToState(ShiftKeyState.PRESSED)
+                }
+            }
+        }
+    }
+
+    fun switchToState(state: ShiftKeyState) {
+        Log.v(LOGTAG, "Switch to state: ${state}")
+        this.currentShiftKeyState = state
+        when (state) {
+            ShiftKeyState.RELEASED -> {
+                isActive = false
+                isLocked = false
+            }
+            ShiftKeyState.PRESSED -> {
+                isActive = true
+                isLocked = false
+            }
+            ShiftKeyState.HOLD -> {
+                isActive = true
+                isLocked = true
             }
         }
     }

@@ -42,10 +42,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     private val chewingDataFiles =
         listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
 
-    enum class ShiftKeyState { RELEASE, PRESSED, HOLD }
-
-    private var currentShiftKeyState = ShiftKeyState.RELEASE
-
     companion object {
         const val defaultHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
         const val defaultKeyboardLayout: String = "KB_DEFAULT"
@@ -168,9 +164,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             if (v.isControlKey()) {
                 handleControlKey(v)
             }
-            if (v.isModifierKey()) {
-                handleModifierKey(v)
-            }
         }
 
         inputView.updateBuffers()
@@ -191,16 +184,27 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             sendCharacter = it.get(0)
         }
 
-        if (currentShiftKeyState == ShiftKeyState.PRESSED) {
-            if (v.keyShiftSymbol?.isNotEmpty() == true) {
-                sendCharacter = v.keyShiftSymbol.toString().get(0)
-            } else {
-                sendCharacter = v.keySymbol.toString().get(0).toUpperCase()
+        val shiftKeyImageButton =
+            viewBinding.keyboardPanel.findViewById<ShiftKeyImageButton>(R.id.keyImageButtonShift)
+        shiftKeyImageButton?.let {
+            if (shiftKeyImageButton.isActive) {
+                Log.v(LOGTAG, "Shift is active")
+                if (v.keyShiftSymbol?.isNotEmpty() == true) {
+                    sendCharacter = v.keyShiftSymbol.toString().get(0)
+                } else {
+                    sendCharacter = v.keySymbol.toString().get(0).toUpperCase()
+                }
             }
         }
 
         ChewingEngine.handleDefault(sendCharacter)
-        currentShiftKeyState = ShiftKeyState.RELEASE
+
+        shiftKeyImageButton?.let {
+            if (shiftKeyImageButton.isLocked == false) {
+                Log.v(LOGTAG, "Release shift key")
+                shiftKeyImageButton.switchToState(ShiftKeyImageButton.ShiftKeyState.RELEASED)
+            }
+        }
     }
 
     private fun handleControlKey(v: BehaveLikeKey<*>) {
@@ -227,18 +231,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             // 短觸會輸出全形逗號，長按交給 setupPuncSwitch() 處理
             KeyEvent.KEYCODE_COMMA -> {
                 ChewingEngine.handleShiftComma()
-            }
-            else -> {
-                Log.v(LOGTAG, "This key has not been implemented its handler")
-            }
-        }
-    }
-
-    private fun handleModifierKey(v: BehaveLikeKey<*>) {
-        when (v.keyCode()) {
-            KeyEvent.KEYCODE_SHIFT_LEFT -> {
-                Log.v(LOGTAG, "Shift is pressed")
-                currentShiftKeyState = ShiftKeyState.PRESSED
             }
             else -> {
                 Log.v(LOGTAG, "This key has not been implemented its handler")
