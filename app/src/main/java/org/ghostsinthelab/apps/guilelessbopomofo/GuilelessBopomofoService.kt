@@ -110,12 +110,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             keyboardView.bindGuilelessBopomofoService(this@GuilelessBopomofoService)
             keyboardPanel.bindGuilelessBopomofoService(this@GuilelessBopomofoService)
             keyboardView.setOnClickPreEditCharListener(this@GuilelessBopomofoService)
-
-            if (ChewingEngine.getChiEngMode() == CHINESE_MODE) {
-                keyboardPanel.switchToMainLayout(this@GuilelessBopomofoService)
-            } else {
-                keyboardPanel.switchToQwertyLayout(this@GuilelessBopomofoService)
-            }
+            keyboardPanel.switchToMainLayout(this@GuilelessBopomofoService)
         }
 
         inputView = viewBinding.root

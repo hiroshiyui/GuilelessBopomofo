@@ -107,7 +107,7 @@ interface BehaveLikeButton<T : View> {
                 )
             } else {
                 ChewingEngine.setChiEngMode(CHINESE_MODE)
-                guilelessBopomofoService.viewBinding.keyboardPanel.switchToMainLayout(
+                guilelessBopomofoService.viewBinding.keyboardPanel.switchToBopomofoLayout(
                     guilelessBopomofoService
                 )
             }

@@ -86,6 +86,14 @@ class KeyboardPanel(
     }
 
     fun switchToMainLayout(guilelessBopomofoService: GuilelessBopomofoService) {
+        if (ChewingEngine.getChiEngMode() == CHINESE_MODE) {
+            switchToBopomofoLayout(guilelessBopomofoService)
+        } else {
+            switchToQwertyLayout(guilelessBopomofoService)
+        }
+    }
+
+    fun switchToBopomofoLayout(guilelessBopomofoService: GuilelessBopomofoService) {
         Log.v(LOGTAG, "switchToMainLayout")
         currentKeyboardLayout = KeyboardLayout.MAIN
 
