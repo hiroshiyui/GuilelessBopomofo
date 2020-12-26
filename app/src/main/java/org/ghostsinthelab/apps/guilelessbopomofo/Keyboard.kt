@@ -113,7 +113,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
     }
 
     fun setupModeSwitch(guilelessBopomofoService: GuilelessBopomofoService) {
-        Log.v(LOGTAG, "setupImeSwitch")
+        Log.v(LOGTAG, "setupModeSwitch")
         v = guilelessBopomofoService.viewBinding
         val keyImageButtonModeSwitch =
             v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonModeSwitch)

@@ -1,0 +1,43 @@
+<!--
+  ~ Guileless Bopomofo
+  ~ Copyright (C) 2020 YOU, HUI-HONG
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="m16.8474,18.7785l-2.0125,0l-4.8035,-6.4743 -1.386,1.2151l0,5.2592l-1.7088,0l0,-13.5561l1.7088,0l0,6.6831c0.3797,-0.4304 0.7658,-0.8607 1.1582,-1.2911l1.1771,-1.2911 3.6643,-4.101l1.9935,0l-5.3731,5.9047z"
+      android:strokeLineJoin="miter"
+      android:strokeWidth="0.264583"
+      android:fillColor="#6c5a57"
+      android:fillAlpha="0.952941"
+      android:strokeColor="#00000000"
+      android:fillType="nonZero"
+      android:strokeLineCap="butt"/>
+  <path
+      android:pathData="m6.7147,5l0,14l2.1549,0l0,-5.3806l1.1267,-0.9887 4.7269,6.3693l2.5622,0l-0.2595,-0.3515 -5.4725,-7.5059 5.5875,-6.1427l-2.595,0l-3.7316,4.175 -1.176,1.2909c-0.2609,0.2862 -0.5133,0.5712 -0.7687,0.8573l0,-6.3233zM7.1581,5.4435l1.2647,0l0,7.0493l0.3909,-0.4402c0.3789,-0.4294 0.7614,-0.8582 1.153,-1.2877L11.1459,9.474 14.7461,5.4435l1.3895,0l-5.1572,5.6696 5.4331,7.4435l-1.465,0l-4.8813,-6.5795 -1.6424,1.442l0,5.1375l-1.2647,0z"
+      android:strokeLineJoin="miter"
+      android:strokeWidth="0.264583"
+      android:fillColor="#6c5a57"
+      android:fillAlpha="0.952941"
+      android:strokeColor="#00000000"
+      android:fillType="nonZero"
+      android:strokeLineCap="butt"/>
+</vector>

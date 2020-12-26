@@ -1,0 +1,43 @@
+<!--
+  ~ Guileless Bopomofo
+  ~ Copyright (C) 2020 YOU, HUI-HONG
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="M17.3739,18.7777L15.3803,18.7777L8.1276,7.5189l-0.076,0c0.0253,0.443 0.057,0.9936 0.0949,1.6518 0.038,0.6582 0.057,1.3354 0.057,2.0315L8.2036,18.7777L6.6277,18.7777L6.6277,5.2216l1.9746,0l7.2337,11.2208l0.076,0c-0.0126,-0.2025 -0.0317,-0.5063 -0.057,-0.9113 -0.0126,-0.405 -0.0316,-0.848 -0.057,-1.329 -0.0126,-0.481 -0.019,-0.924 -0.019,-1.329L15.779,5.2216l1.5948,0z"
+      android:strokeLineJoin="miter"
+      android:strokeWidth="0.264583"
+      android:fillColor="#6c5a57"
+      android:fillAlpha="0.952941"
+      android:strokeColor="#00000000"
+      android:fillType="nonZero"
+      android:strokeLineCap="butt"/>
+  <path
+      android:pathData="M6.4043,5L6.4043,19l2.0202,0L8.4244,11.2018c0,-0.7002 -0.0176,-1.3805 -0.0558,-2.0432 -0.0216,-0.3742 -0.0351,-0.6348 -0.0526,-0.9395l6.9442,10.7809l2.3355,0L17.5957,18.7766 17.5957,5l-2.0399,0L15.5558,12.8738c0,0.4074 0.0071,0.851 0.0197,1.3336l0,0.0033 0,0.0033c0.0252,0.4797 0.0432,0.9206 0.0558,1.3238l0,0.0033 0,0.0033c0.0052,0.0845 0.0084,0.1148 0.0131,0.1905L8.7234,5ZM6.851,5.4434l1.6293,0l7.2332,11.221l0.4369,0l-0.0165,-0.2365c-0.0126,-0.2011 -0.0308,-0.5027 -0.0558,-0.9033l0,-0.0066c-0.0126,-0.4033 -0.0341,-0.8433 -0.0591,-1.3205l0,-0.0066c-0.0124,-0.4766 -0.0165,-0.9165 -0.0165,-1.3172L16.0024,5.4434l1.1497,0l0,13.1131L15.5033,18.5565L8.2503,7.2961l-0.4336,0l0.0131,0.2365c0.0253,0.4431 0.0573,0.9941 0.0953,1.6523 0.0377,0.6537 0.0558,1.3248 0.0558,2.0169l0,7.3548l-1.13,0z"
+      android:strokeLineJoin="miter"
+      android:strokeWidth="0.264583"
+      android:fillColor="#6c5a57"
+      android:fillAlpha="0.952941"
+      android:strokeColor="#00000000"
+      android:fillType="nonZero"
+      android:strokeLineCap="butt"/>
+</vector>

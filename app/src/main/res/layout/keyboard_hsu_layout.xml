@@ -27,7 +27,7 @@
     android:theme="@style/KeyboardTheme">
 
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
-        android:id="@+id/linearLayoutKeyboardRow1"
+        android:id="@+id/KeyboardRow2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -145,7 +145,7 @@
     </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
 
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
-        android:id="@+id/linearLayoutKeyboardRow2"
+        android:id="@+id/KeyboardRow3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -264,7 +264,7 @@
     </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
 
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
-        android:id="@+id/linearLayoutKeyboardRow3"
+        android:id="@+id/KeyboardRow4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -373,7 +373,7 @@
     </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
 
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow
-        android:id="@+id/linearLayoutKeyboardRow4"
+        android:id="@+id/KeyboardRow5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -389,7 +389,7 @@
             android:scaleType="centerCrop"
             android:theme="@style/KeyImageButton"
             app:keyTypeEnum="KEYTYPE_CONTROL"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_mode_switch" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_mode_switch_eng" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.KeyImageButton
             android:id="@+id/keyImageButtonSymbol"
