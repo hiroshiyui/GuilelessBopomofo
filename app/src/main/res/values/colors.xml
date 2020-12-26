@@ -6,6 +6,6 @@
     <color name="colorKeyboardBackground">#E6E6E6</color>
     <color name="colorKeyboardEnterKeyBackground">#8BC34A</color>
     <color name="colorKeyboardSpecialKeyBackground">#C5C5C5</color>
-    <color name="colorKeyboardSpecialKeyBackgroundPressed">#FFEB3B</color>
-    <color name="colorKeyboardSpecialKeyBackgroundHold">#FF5722</color>
+    <color name="colorKeyboardSpecialKeyBackgroundPressed">#69CDDA</color>
+    <color name="colorKeyboardSpecialKeyBackgroundHold">#B2EDF4</color>
 </resources>
