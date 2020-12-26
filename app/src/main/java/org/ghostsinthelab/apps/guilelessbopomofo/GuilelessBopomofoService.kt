@@ -28,21 +28,16 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26LayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.properties.Delegates
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "GuilelessBopomofoSvc"
     lateinit var viewBinding: KeyboardLayoutBinding
-    private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
-    private lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
-    private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
     private lateinit var inputView: KeyboardView
-    private lateinit var sharedPreferences: SharedPreferences
+    lateinit var sharedPreferences: SharedPreferences
     var userHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
     private val chewingDataFiles =
         listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
@@ -115,10 +110,13 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             keyboardView.bindGuilelessBopomofoService(this@GuilelessBopomofoService)
             keyboardPanel.bindGuilelessBopomofoService(this@GuilelessBopomofoService)
             keyboardView.setOnClickPreEditCharListener(this@GuilelessBopomofoService)
-        }
 
-        // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
-        setMainLayout()
+            if (ChewingEngine.getChiEngMode() == CHINESE_MODE) {
+                keyboardPanel.switchToMainLayout(this@GuilelessBopomofoService)
+            } else {
+                keyboardPanel.switchToQwertyLayout(this@GuilelessBopomofoService)
+            }
+        }
 
         inputView = viewBinding.root
         return inputView
@@ -176,44 +174,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         inputView.updateBuffers()
     }
 
-    fun setMainLayout() {
-        Log.v(LOGTAG, "setMainLayout()")
-        viewBinding.keyboardPanel.removeAllViews()
-
-        val keyboardSetup: (Keyboard) -> Unit = { keyboard ->
-            keyboard.setupImeSwitch(this)
-            keyboard.setupPuncSwitch(this)
-            keyboard.setupSymbolSwitch(this)
-            keyboard.setupBackspace(this)
-        }
-
-        when (getUserKeyboardLayoutPreference()) {
-            "KB_HSU" -> {
-                val newKeyboardType = ChewingEngine.convKBStr2Num("KB_HSU")
-                ChewingEngine.setKBType(newKeyboardType)
-                keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(layoutInflater)
-                viewBinding.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
-                keyboardSetup(keyboardHsuLayoutBinding.root)
-            }
-            "KB_ET26" -> {
-                val newKeyboardType = ChewingEngine.convKBStr2Num("KB_ET26")
-                ChewingEngine.setKBType(newKeyboardType)
-                keyboardEt26LayoutBinding = KeyboardEt26LayoutBinding.inflate(layoutInflater)
-                viewBinding.keyboardPanel.addView(keyboardEt26LayoutBinding.root)
-                keyboardSetup(keyboardEt26LayoutBinding.root)
-            }
-            "KB_DEFAULT" -> {
-                val newKeyboardType = ChewingEngine.convKBStr2Num("KB_DEFAULT")
-                ChewingEngine.setKBType(newKeyboardType)
-                keyboardDachenLayoutBinding = KeyboardDachenLayoutBinding.inflate(layoutInflater)
-                viewBinding.keyboardPanel.addView(keyboardDachenLayoutBinding.root)
-                keyboardSetup(keyboardDachenLayoutBinding.root)
-            }
-        }
-
-        viewBinding.keyboardPanel.currentKeyboardLayout = KeyboardPanel.KeyboardLayout.MAIN
-    }
-
     fun doneCandidateChoice() {
         viewBinding.apply {
             keyboardPanel.currentCandidatesList = 0
@@ -222,13 +182,33 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         }
     }
 
-    private fun getUserKeyboardLayoutPreference(): String? {
-        return sharedPreferences.getString("user_keyboard_layout", defaultKeyboardLayout)
-    }
-
     private fun handleCharacterKey(v: BehaveLikeKey<*>) {
+        var sendCharacter by Delegates.notNull<Char>()
+
         v.keySymbol?.let {
-            ChewingEngine.handleDefault(it.get(0))
+            sendCharacter = it.get(0)
+        }
+
+        val shiftKeyImageButton =
+            viewBinding.keyboardPanel.findViewById<ShiftKeyImageButton>(R.id.keyImageButtonShift)
+        shiftKeyImageButton?.let {
+            if (shiftKeyImageButton.isActive) {
+                Log.v(LOGTAG, "Shift is active")
+                if (v.keyShiftSymbol?.isNotEmpty() == true) {
+                    sendCharacter = v.keyShiftSymbol.toString().get(0)
+                } else {
+                    sendCharacter = v.keySymbol.toString().get(0).toUpperCase()
+                }
+            }
+        }
+
+        ChewingEngine.handleDefault(sendCharacter)
+
+        shiftKeyImageButton?.let {
+            if (shiftKeyImageButton.isLocked == false) {
+                Log.v(LOGTAG, "Release shift key")
+                shiftKeyImageButton.switchToState(ShiftKeyImageButton.ShiftKeyState.RELEASED)
+            }
         }
     }
 

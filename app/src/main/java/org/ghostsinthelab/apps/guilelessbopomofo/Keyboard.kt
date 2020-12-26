@@ -76,9 +76,9 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
             ChewingEngine.openSymbolCandidates()
 
             v.keyboardPanel.apply {
+                currentKeyboardLayout = KeyboardPanel.KeyboardLayout.SYMBOLS
                 removeAllViews()
                 addView(symbolsPickerLayoutBinding.root)
-                currentKeyboardLayout = KeyboardPanel.KeyboardLayout.SYMBOLS
             }
 
             val totalCategories = ChewingEngine.candTotalChoice()
@@ -110,6 +110,15 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
 
         val keyButtonBackToMain = symbolsPickerLayoutBinding.keyButtonBackToMain
         keyButtonBackToMain.setBackMainLayoutOnClickListener(guilelessBopomofoService)
+    }
+
+    fun setupModeSwitch(guilelessBopomofoService: GuilelessBopomofoService) {
+        Log.v(LOGTAG, "setupModeSwitch")
+        v = guilelessBopomofoService.viewBinding
+        val keyImageButtonModeSwitch =
+            v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonModeSwitch)
+
+        keyImageButtonModeSwitch.setModeSwitchButtonOnClickListener(guilelessBopomofoService)
     }
 
     @SuppressLint("ClickableViewAccessibility")

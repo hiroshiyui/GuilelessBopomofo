@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24mm"
+   height="24mm"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg3073"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="guileless_bopomofo_keyboard_qwerty_b.svg">
+  <defs
+     id="defs3067" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-563.21709"
+     inkscape:cy="362.49718"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1049"
+     inkscape:window-x="1"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3070">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-254.85119,-52.255955)">
+    <g
+       id="g709"
+       transform="translate(137.98043,-143.03854)">
+      <rect
+         style="fill:none;stroke:none;stroke-width:0.1"
+         id="rect10-7-4"
+         width="24"
+         height="24"
+         x="116.87076"
+         y="195.29449" />
+      <g
+         id="g1133-4"
+         style="font-weight:bold;font-size:11.2889px;line-height:1.25;font-family:MOESongUN;-inkscape-font-specification:'MOESongUN Bold';letter-spacing:0px;word-spacing:0px;fill:#6c5a57;fill-opacity:0.952941;stroke-width:0.264583"
+         transform="matrix(1.6818395,0,0,1.6818395,66.915339,198.80646)">
+        <path
+           style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#6c5a57;fill-opacity:0.952941;fill-rule:nonzero;stroke:none;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+           d="m 36.32458,1.0165341 c 1.008475,0 1.768595,0.1505187 2.280358,0.451556 0.519289,0.2935114 0.778934,0.8090378 0.778934,1.5465793 0,0.4741339 -0.131704,0.8692454 -0.395111,1.1853346 -0.263408,0.3085633 -0.643468,0.5080005 -1.140179,0.5983117 v 0.056445 c 0.338667,0.052681 0.643468,0.1505185 0.914401,0.2935114 0.278459,0.1429927 0.496711,0.3461929 0.654756,0.6096006 0.158045,0.2634077 0.237067,0.6058377 0.237067,1.02729 0,0.7300155 -0.252119,1.2944605 -0.756356,1.693335 -0.496712,0.3988745 -1.177809,0.5983117 -2.043291,0.5983117 H 34.021645 V 1.0165341 Z m 0.203201,3.4318257 c 0.692385,0 1.166519,-0.109126 1.422401,-0.3273781 0.255882,-0.225778 0.383823,-0.5569191 0.383823,-0.9934233 0,-0.4440301 -0.158045,-0.7601193 -0.474134,-0.9482676 C 37.551308,1.9836165 37.054596,1.8857794 36.369736,1.8857794 h -1.33209 v 2.5625804 z m -1.490135,0.8466675 v 2.9238252 h 1.625601 c 0.714964,0 1.211676,-0.1392298 1.490135,-0.4176893 0.27846,-0.2784595 0.41769,-0.6434673 0.41769,-1.0950233 0,-0.4214523 -0.146756,-0.7601194 -0.440267,-1.0160011 -0.285986,-0.2634077 -0.801513,-0.3951115 -1.54658,-0.3951115 z"
+           id="path1135-7" />
+        <path
+           style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#6c5a57;fill-opacity:0.952941;fill-rule:nonzero;stroke:none;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+           d="M 33.888672,0.88476562 V 9.2089844 h 2.966797 c 0.885805,0 1.599039,-0.2045913 2.125,-0.6269532 0.535035,-0.4232372 0.80664,-1.0364006 0.80664,-1.796875 0,-0.4379887 -0.0818,-0.8056039 -0.255859,-1.0957031 C 39.361004,5.4057091 39.122995,5.1846756 38.824219,5.03125 38.611427,4.9189429 38.361315,4.8615331 38.111328,4.8027344 38.494575,4.689341 38.859825,4.554606 39.089844,4.2851562 39.374077,3.9440763 39.515625,3.5142573 39.515625,3.015625 c 0,-0.7685895 -0.285091,-1.3452417 -0.845703,-1.6621094 C 38.125483,1.0337531 37.34504,0.88476562 36.324219,0.88476562 Z m 0.265625,0.26367188 h 2.169922 c 0.995312,0 1.73386,0.1518109 2.21289,0.4335937 h 0.002 v 0.00195 C 39.017076,1.8541363 39.252,2.3091283 39.252,3.0156218 c 0,0.4489162 -0.123426,0.8068036 -0.365234,1.0976562 -3.88e-4,4.661e-4 3.88e-4,0.00149 0,0.00195 -0.240825,0.2811375 -0.588871,0.4666199 -1.0625,0.5527344 L 37.716797,4.6875 v 0.28125 l 0.111328,0.017578 c 0.325999,0.050711 0.616306,0.1437943 0.873047,0.2792969 h 0.002 c 0.258143,0.1325599 0.45572,0.3174756 0.601563,0.5605469 0.142029,0.2367161 0.21875,0.5540685 0.21875,0.9589843 0,0.6995567 -0.233593,1.2153321 -0.707032,1.5898438 -0.467463,0.3753871 -1.115778,0.5703125 -1.960937,0.5703125 h -2.701172 z m 0.751953,0.6054687 v 2.8261719 h 1.621094 c 0.706285,0 1.207107,-0.102891 1.507812,-0.359375 h 0.002 c 0.287597,-0.2537616 0.429688,-0.6313957 0.429688,-1.09375 0,-0.4747255 -0.184692,-0.8468822 -0.539063,-1.0585937 -8.3e-5,-5.29e-5 8.4e-5,-0.0019 0,-0.00195 -0.345936,-0.2181427 -0.862979,-0.3125 -1.558593,-0.3125 z m 0.263672,0.2636719 h 1.199219 c 0.67226,0 1.148741,0.1014693 1.419921,0.2734375 l 0.002,0.00195 h 0.002 c 0.276785,0.164753 0.408203,0.4213455 0.408203,0.8339843 0,0.4095731 -0.112934,0.6948422 -0.335938,0.8925781 -2.93e-4,2.505e-4 -0.0017,-2.502e-4 -0.002,0 -0.21142,0.1795909 -0.658396,0.296875 -1.335937,0.296875 H 35.169922 Z M 34.90625,5.1621094 v 0.1328125 3.0566406 h 1.757812 c 0.732139,0 1.263542,-0.1385415 1.582032,-0.4570313 0.303742,-0.3037417 0.457031,-0.7087507 0.457031,-1.1875 0,-0.4505444 -0.166004,-0.8340137 -0.484375,-1.1132812 C 37.890532,5.2922835 37.343793,5.1621094 36.583984,5.1621094 Z m 0.263672,0.265625 h 1.414062 c 0.729478,0 1.213155,0.1347518 1.457032,0.359375 l 0.002,0.00195 c 0.266393,0.2322405 0.396484,0.5272269 0.396484,0.9179687 0,0.4243628 -0.125728,0.7468227 -0.378906,1 -0.238429,0.2384293 -0.698695,0.3789063 -1.396485,0.3789063 h -1.49414 z"
+           id="path1137-8" />
+      </g>
+    </g>
+  </g>
+</svg>

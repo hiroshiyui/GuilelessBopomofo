@@ -136,8 +136,12 @@ object ChewingEngine {
 
     // simulates [Shift] + [,]
     fun handleShiftComma() {
-        setEasySymbolInput(1)
-        handleDefault(',')
-        setEasySymbolInput(0)
+        if (getChiEngMode() == CHINESE_MODE) {
+            setEasySymbolInput(1)
+            handleDefault(',')
+            setEasySymbolInput(0)
+        } else {
+            handleDefault(',')
+        }
     }
 }

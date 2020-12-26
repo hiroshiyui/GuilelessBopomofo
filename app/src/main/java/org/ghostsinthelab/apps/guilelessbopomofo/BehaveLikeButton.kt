@@ -31,11 +31,16 @@ interface BehaveLikeButton<T : View> {
         this as View
         this.setOnClickListener {
             ChewingEngine.endCandidateChoice()
-            guilelessBopomofoService.viewBinding.keyboardPanel.switchToMainLayout(guilelessBopomofoService)
+            guilelessBopomofoService.viewBinding.keyboardPanel.switchToMainLayout(
+                guilelessBopomofoService
+            )
         }
     }
 
-    fun setCandidateButtonOnClickListener(guilelessBopomofoService: GuilelessBopomofoService, data: Int) {
+    fun setCandidateButtonOnClickListener(
+        guilelessBopomofoService: GuilelessBopomofoService,
+        data: Int
+    ) {
         this as View
         this.setOnClickListener {
             ChewingEngine.apply {
@@ -83,8 +88,29 @@ interface BehaveLikeButton<T : View> {
         this.setOnLongClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
             ChewingEngine.openPuncCandidates()
-            guilelessBopomofoService.viewBinding.keyboardPanel.switchToCandidatesLayout(guilelessBopomofoService)
+            guilelessBopomofoService.viewBinding.keyboardPanel.switchToCandidatesLayout(
+                guilelessBopomofoService
+            )
             return@setOnLongClickListener true
+        }
+    }
+
+    fun setModeSwitchButtonOnClickListener(guilelessBopomofoService: GuilelessBopomofoService) {
+        this as KeyImageButton
+        this.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            val chewingChiEngMode = ChewingEngine.getChiEngMode()
+            if (chewingChiEngMode == CHINESE_MODE) {
+                ChewingEngine.setChiEngMode(SYMBOL_MODE)
+                guilelessBopomofoService.viewBinding.keyboardPanel.switchToQwertyLayout(
+                    guilelessBopomofoService
+                )
+            } else {
+                ChewingEngine.setChiEngMode(CHINESE_MODE)
+                guilelessBopomofoService.viewBinding.keyboardPanel.switchToMainLayout(
+                    guilelessBopomofoService
+                )
+            }
         }
     }
 }
