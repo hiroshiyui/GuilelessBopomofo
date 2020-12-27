@@ -1,7 +1,7 @@
 # Guileless Bopomofo 樸實注音鍵盤
 
-![Screenshot of Guileless Bopomofo](./device-2020-12-19-230300.png)
-![Screenshot of Guileless Bopomofo](./device-2020-12-19-231246.png)
+![Screenshot of Guileless Bopomofo](./device-2020-12-27-132602.png)
+![Screenshot of Guileless Bopomofo](./device-2020-12-27-133440.png)
 
 ## About 這是啥
 
