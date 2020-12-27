@@ -161,19 +161,19 @@
 
             <RadioButton
                 android:id="@+id/radioButtonLayoutDaChen"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/bopomofo_keyboard_layout_dachen" />
 
             <RadioButton
                 android:id="@+id/radioButtonLayoutHsu"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/bopomofo_keyboard_layout_hsu" />
 
             <RadioButton
                 android:id="@+id/radioButtonLayoutETen26"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/bopomofo_keyboard_layout_eten26" />
         </RadioGroup>
