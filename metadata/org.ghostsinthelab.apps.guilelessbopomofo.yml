@@ -1,0 +1,39 @@
+Categories:
+  - System
+  - Writing
+License: GPL-2.0-or-later
+SourceCode: https://github.com/hiroshiyui/GuilelessBopomofo
+Donate: https://paypal.me/hiroshiyui
+
+AutoName: Guileless Bopomofo
+Summary: A simple Bopomofo software keyboard (input method editor) for typing Hanyu
+Description: |-
+    Hello, it's me, Guileless Bopomofo Keyboard.
+
+    I have implemented most features of libchewing (http://chewing.im/),
+    to provide you a choice of Bopomofo software keyboard
+    (aka input method editor).
+
+    * Unlike other similar products, though I don't have fuzzy, error-tolerance design, I do still have ability to predict possible phrases by context, and I do remember phrases from your typing history automatically.
+
+    * Besides the most common "DaChen", I also provide you "Hsu" & "E-Ten 26 keys" Bopomofo keyboard layouts.
+
+    My source code repository: https://github.com/hiroshiyui/GuilelessBopomofo
+
+RepoType: git
+Repo: https://github.com/hiroshiyui/GuilelessBopomofo.git
+
+Builds:
+  - versionName: 1.1.1
+    versionCode: 13
+    commit: 1.1.1
+    subdir: app
+    submodules: true
+    gradle:
+      - yes
+    scanignore: 'app/libs/libchewing/'
+
+AutoUpdateMode: Version %v
+UpdateCheckMode: Tags
+CurrentVersion: 1.1.1
+CurrentVersionCode: 13
