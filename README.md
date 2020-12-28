@@ -17,13 +17,13 @@ A [Bopomofo](https://en.wikipedia.org/wiki/Bopomofo) software keyboard (aka inpu
 
         git clone --recursive https://github.com/hiroshiyui/GuilelessBopomofo.git
 
-1. Build essential data files of libchewing:
+1. Build it:
+    * Import this project into Android Studio, then run **"Buile -> Make Project"**, or...
+    * execute `./gradlew :app:assembleDebug` or `./gradlew :app:assembleRelease` from shell command line
 
-        cd GuilelessBopomofo/app/libs/libchewing && ./build-android.sh
+1. Locate the generated APK files from `./app/build/outputs/apk/`
 
-1. Import this project into Android Studio
-
-1. Build it, enjoy!
+1. Enjoy!
 
 ## Sponsor me or hire me! 贊助我，或者僱用我
 
