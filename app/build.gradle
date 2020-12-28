@@ -50,21 +50,28 @@ android {
         }
     }
 
+    task prepareChewing(type: Exec) {
+        workingDir("$rootDir/app/libs/libchewing")
+        commandLine('./build-android.sh')
+    }
+
     task copyChewingDataFiles(type: Copy) {
         from("$rootDir/app/libs/libchewing/data") {
             include("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
         }
         into("$rootDir/app/src/main/assets")
     }
+
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
 
-    preBuild.dependsOn('copyChewingDataFiles')
+    preBuild.dependsOn('prepareChewing', 'copyChewingDataFiles')
 }
 
 dependencies {
