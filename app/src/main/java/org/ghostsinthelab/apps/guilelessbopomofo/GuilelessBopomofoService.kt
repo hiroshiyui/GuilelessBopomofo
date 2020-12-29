@@ -37,10 +37,10 @@ import kotlin.properties.Delegates
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "GuilelessBopomofoSvc"
-    lateinit var viewBinding: KeyboardLayoutBinding
-    private lateinit var inputView: KeyboardView
-    lateinit var sharedPreferences: SharedPreferences
     var userHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
+    lateinit var viewBinding: KeyboardLayoutBinding
+    lateinit var sharedPreferences: SharedPreferences
+    private lateinit var inputView: KeyboardView
     private val chewingDataFiles =
         listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
 
