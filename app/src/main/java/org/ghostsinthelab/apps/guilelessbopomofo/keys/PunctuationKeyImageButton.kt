@@ -25,7 +25,7 @@ import android.view.HapticFeedbackConstants
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 
-class PuncKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
+class PunctuationKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         // 在大千鍵盤下，標準的逗號鍵會對映到「ㄝ」，這裡的逗號鍵要另外當成特別的「常用符號」功能鍵，
         // 短觸會輸出全形逗號
