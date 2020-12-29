@@ -24,15 +24,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidateItemLayoutBinding
 
-class CandidatesAdapter(
-    override var guilelessBopomofoService: GuilelessBopomofoService
-) : RecyclerView.Adapter<CandidateViewHolder>(), GuilelessBopomofoServiceContext {
+class CandidatesAdapter() : RecyclerView.Adapter<CandidateViewHolder>() {
     private val LOGTAG: String = "CandidatesAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CandidateViewHolder {
         val itemView =
             CandidateItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CandidateViewHolder(guilelessBopomofoService, itemView.root)
+        return CandidateViewHolder(itemView.root)
     }
 
     override fun onBindViewHolder(holder: CandidateViewHolder, position: Int) {

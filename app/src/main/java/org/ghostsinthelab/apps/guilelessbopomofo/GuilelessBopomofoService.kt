@@ -83,6 +83,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
         userHapticFeedbackStrength =
             sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
+
+        GuilelessBopomofoServiceContext.bindGuilelessBopomofoService(this)
     }
 
     override fun onCreateCandidatesView(): View? {
@@ -109,10 +111,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
 
         viewBinding.apply {
-            keyboardView.bindGuilelessBopomofoService(this@GuilelessBopomofoService)
-            keyboardPanel.bindGuilelessBopomofoService(this@GuilelessBopomofoService)
-            keyboardView.setOnClickPreEditCharListener(this@GuilelessBopomofoService)
-            keyboardPanel.switchToMainLayout(this@GuilelessBopomofoService)
+            keyboardView.setOnClickPreEditCharListener()
+            keyboardPanel.switchToMainLayout()
         }
 
         inputView = viewBinding.root
@@ -174,8 +174,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     fun doneCandidateChoice() {
         viewBinding.apply {
             keyboardPanel.currentCandidatesList = 0
-            keyboardView.updateBuffers(this@GuilelessBopomofoService)
-            keyboardPanel.switchToMainLayout(this@GuilelessBopomofoService)
+            keyboardView.updateBuffers()
+            keyboardPanel.switchToMainLayout()
         }
     }
 
@@ -216,7 +216,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
                     ChewingEngine.handleSpace()
                     // 空白鍵是否為選字鍵？
                     if (ChewingEngine.getSpaceAsSelection() == 1 && ChewingEngine.candTotalChoice() > 0) {
-                        viewBinding.keyboardPanel.switchToCandidatesLayout(this)
+                        viewBinding.keyboardPanel.switchToCandidatesLayout()
                     }
                 } else {
                     sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)

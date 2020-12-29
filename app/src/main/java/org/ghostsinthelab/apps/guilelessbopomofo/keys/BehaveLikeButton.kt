@@ -19,22 +19,16 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
-import android.content.Context
-import android.os.Build
-import android.os.IBinder
 import android.view.HapticFeedbackConstants
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import org.ghostsinthelab.apps.guilelessbopomofo.*
 
 interface BehaveLikeButton<T : View> {
-    fun setBackMainLayoutOnClickListener(guilelessBopomofoService: GuilelessBopomofoService) {
+    fun setBackMainLayoutOnClickListener() {
         this as View
         this.setOnClickListener {
             ChewingEngine.endCandidateChoice()
-            guilelessBopomofoService.viewBinding.keyboardPanel.switchToMainLayout(
-                guilelessBopomofoService
-            )
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToMainLayout()
         }
     }
 
@@ -52,65 +46,27 @@ interface BehaveLikeButton<T : View> {
         }
     }
 
-    fun setImeSwitchButtonOnClickListener(guilelessBopomofoService: GuilelessBopomofoService) {
-        this as KeyImageButton
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            this.setOnClickListener {
-                it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                guilelessBopomofoService.switchToNextInputMethod(false)
-            }
-        } else {
-            // backward compatibility, support IME switch on legacy devices
-            val imm =
-                guilelessBopomofoService.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            val imeToken: IBinder? = guilelessBopomofoService.window?.let {
-                it.window?.attributes?.token
-            }
-            this.setOnClickListener {
-                it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                imm.switchToNextInputMethod(imeToken, false)
-            }
-        }
-    }
-
-    fun setImeSwitchButtonOnLongClickListener(guilelessBopomofoService: GuilelessBopomofoService) {
-        this as KeyImageButton
-        this.setOnLongClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            val imm =
-                guilelessBopomofoService.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showInputMethodPicker()
-            return@setOnLongClickListener true
-        }
-    }
-
-    fun setKeyImageButtonPuncOnLongClickListener(guilelessBopomofoService: GuilelessBopomofoService) {
+    fun setKeyImageButtonPuncOnLongClickListener() {
         this as KeyImageButton
         this.setOnLongClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
             ChewingEngine.openPuncCandidates()
-            guilelessBopomofoService.viewBinding.keyboardPanel.switchToCandidatesLayout(
-                guilelessBopomofoService
-            )
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
             return@setOnLongClickListener true
         }
     }
 
-    fun setModeSwitchButtonOnClickListener(guilelessBopomofoService: GuilelessBopomofoService) {
+    fun setModeSwitchButtonOnClickListener() {
         this as KeyImageButton
         this.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             val chewingChiEngMode = ChewingEngine.getChiEngMode()
             if (chewingChiEngMode == CHINESE_MODE) {
                 ChewingEngine.setChiEngMode(SYMBOL_MODE)
-                guilelessBopomofoService.viewBinding.keyboardPanel.switchToQwertyLayout(
-                    guilelessBopomofoService
-                )
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToQwertyLayout()
             } else {
                 ChewingEngine.setChiEngMode(CHINESE_MODE)
-                guilelessBopomofoService.viewBinding.keyboardPanel.switchToBopomofoLayout(
-                    guilelessBopomofoService
-                )
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToBopomofoLayout()
             }
         }
     }

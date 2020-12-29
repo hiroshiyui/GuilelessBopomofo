@@ -25,19 +25,17 @@ import android.util.Log
 import android.widget.LinearLayout
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 
-class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs),
-    GuilelessBopomofoServiceContext {
+class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
     private val LOGTAG: String = "KeyboardView"
     private lateinit var v: KeyboardLayoutBinding
-    override lateinit var guilelessBopomofoService: GuilelessBopomofoService
 
     init {
         this.orientation = VERTICAL
         Log.v(LOGTAG, "Building KeyboardView.")
     }
 
-    fun updateBuffers(guilelessBopomofoService: GuilelessBopomofoService = this.guilelessBopomofoService) {
-        v = guilelessBopomofoService.viewBinding
+    fun updateBuffers() {
+        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
         v.textViewPreEditBuffer.text = ChewingEngine.bufferStringStatic()
         v.textViewBopomofoBuffer.text = ChewingEngine.bopomofoStringStatic()
 
@@ -45,19 +43,22 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
         // 會把 pre-edit buffer 開頭送到 commit buffer，
         // 所以要先丟出來：
         if (ChewingEngine.commitCheck() == 1) {
-            guilelessBopomofoService.currentInputConnection.commitText(ChewingEngine.commitString(), 1)
+            GuilelessBopomofoServiceContext.serviceInstance.currentInputConnection.commitText(
+                ChewingEngine.commitString(),
+                1
+            )
             // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
             // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
             ChewingEngine.handleEnd()
         }
     }
 
-    fun setOnClickPreEditCharListener(guilelessBopomofoService: GuilelessBopomofoService = this.guilelessBopomofoService) {
-        v = guilelessBopomofoService.viewBinding
+    fun setOnClickPreEditCharListener() {
+        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
         v.textViewPreEditBuffer.setOnClickListener {
             val offset = v.textViewPreEditBuffer.offset
             ChewingEngine.moveToPreEditBufferOffset(offset)
-            v.keyboardPanel.switchToCandidatesLayout(offset, guilelessBopomofoService)
+            v.keyboardPanel.switchToCandidatesLayout(offset)
         }
     }
 }

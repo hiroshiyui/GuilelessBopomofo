@@ -19,10 +19,10 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-interface GuilelessBopomofoServiceContext {
-    var guilelessBopomofoService: GuilelessBopomofoService
+object GuilelessBopomofoServiceContext {
+    lateinit var serviceInstance: GuilelessBopomofoService
 
     fun bindGuilelessBopomofoService(guilelessBopomofoService: GuilelessBopomofoService) {
-        this.guilelessBopomofoService = guilelessBopomofoService
+        this.serviceInstance = guilelessBopomofoService
     }
 }

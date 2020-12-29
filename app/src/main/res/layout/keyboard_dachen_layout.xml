@@ -590,7 +590,7 @@
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:srcCompat="@drawable/ic_baseline_format_quote_24" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeSwitchKeyImageButton
             android:id="@+id/keyImageButtonImeSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

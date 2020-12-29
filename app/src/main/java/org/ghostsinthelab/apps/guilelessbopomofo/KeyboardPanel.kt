@@ -29,8 +29,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
 
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
-) : RelativeLayout(context, attrs),
-    GuilelessBopomofoServiceContext {
+) : RelativeLayout(context, attrs) {
     private val LOGTAG: String = "KeyboardPanel"
     var currentCandidatesList: Int = 0
     private var currentOffset: Int = 0
@@ -40,7 +39,6 @@ class KeyboardPanel(
     private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
     private lateinit var keyboardQwertyLayoutBinding: KeyboardQwertyLayoutBinding
-    override lateinit var guilelessBopomofoService: GuilelessBopomofoService
 
     enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY }
 
@@ -53,55 +51,54 @@ class KeyboardPanel(
     override fun onViewAdded(child: View?) {
         super.onViewAdded(child)
         Log.v(LOGTAG, "onViewAdded - ${child}")
-        v = guilelessBopomofoService.viewBinding
+        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
 
         when (currentKeyboardLayout) {
             KeyboardLayout.MAIN -> {
-                v.keyboardView.updateBuffers(guilelessBopomofoService)
+                v.keyboardView.updateBuffers()
 
                 child as Keyboard
-                guilelessBopomofoService.apply {
-                    child.setupImeSwitch(this)
-                    child.setupPuncSwitch(this)
-                    child.setupSymbolSwitch(this)
-                    child.setupModeSwitch(this)
-                    child.setupBackspace(this)
+                GuilelessBopomofoServiceContext.serviceInstance.apply {
+                    child.setupPuncSwitch()
+                    child.setupSymbolSwitch()
+                    child.setupModeSwitch()
+                    child.setupBackspace()
                 }
-          }
+            }
             KeyboardLayout.QWERTY -> {
-                v.keyboardView.updateBuffers(guilelessBopomofoService)
+                v.keyboardView.updateBuffers()
                 child as Keyboard
-                guilelessBopomofoService.apply {
-                    child.setupModeSwitch(this)
-                    child.setupBackspace(this)
+                GuilelessBopomofoServiceContext.serviceInstance.apply {
+                    child.setupModeSwitch()
+                    child.setupBackspace()
                 }
             }
             KeyboardLayout.CANDIDATES -> {
                 val keyButtonBackToMain = candidatesLayoutBinding.keyButtonBackToMain
-                keyButtonBackToMain.setBackMainLayoutOnClickListener(guilelessBopomofoService)
+                keyButtonBackToMain.setBackMainLayoutOnClickListener()
             }
             else -> {
             }
         }
     }
 
-    fun switchToMainLayout(guilelessBopomofoService: GuilelessBopomofoService) {
+    fun switchToMainLayout() {
         if (ChewingEngine.getChiEngMode() == CHINESE_MODE) {
-            switchToBopomofoLayout(guilelessBopomofoService)
+            switchToBopomofoLayout()
         } else {
-            switchToQwertyLayout(guilelessBopomofoService)
+            switchToQwertyLayout()
         }
     }
 
-    fun switchToBopomofoLayout(guilelessBopomofoService: GuilelessBopomofoService) {
+    fun switchToBopomofoLayout() {
         Log.v(LOGTAG, "switchToMainLayout")
         currentKeyboardLayout = KeyboardLayout.MAIN
 
-        v = guilelessBopomofoService.viewBinding
+        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
         v.keyboardPanel.removeAllViews()
 
         // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
-        val userKeyboardLayoutPreference = guilelessBopomofoService.sharedPreferences.getString(
+        val userKeyboardLayoutPreference = GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getString(
             "user_keyboard_layout",
             GuilelessBopomofoService.defaultKeyboardLayout
         )
@@ -110,40 +107,40 @@ class KeyboardPanel(
             "KB_HSU" -> {
                 val newKeyboardType = ChewingEngine.convKBStr2Num("KB_HSU")
                 ChewingEngine.setKBType(newKeyboardType)
-                keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
+                keyboardHsuLayoutBinding =
+                    KeyboardHsuLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
                 v.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
             }
             "KB_ET26" -> {
                 val newKeyboardType = ChewingEngine.convKBStr2Num("KB_ET26")
                 ChewingEngine.setKBType(newKeyboardType)
-                keyboardEt26LayoutBinding = KeyboardEt26LayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
+                keyboardEt26LayoutBinding =
+                    KeyboardEt26LayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
                 v.keyboardPanel.addView(keyboardEt26LayoutBinding.root)
             }
             "KB_DEFAULT" -> {
                 val newKeyboardType = ChewingEngine.convKBStr2Num("KB_DEFAULT")
                 ChewingEngine.setKBType(newKeyboardType)
-                keyboardDachenLayoutBinding = KeyboardDachenLayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
+                keyboardDachenLayoutBinding =
+                    KeyboardDachenLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
                 v.keyboardPanel.addView(keyboardDachenLayoutBinding.root)
             }
         }
     }
 
-    fun switchToQwertyLayout(guilelessBopomofoService: GuilelessBopomofoService) {
+    fun switchToQwertyLayout() {
         Log.v(LOGTAG, "switchToQwertyLayout")
         currentKeyboardLayout = KeyboardLayout.QWERTY
 
         keyboardQwertyLayoutBinding =
-            KeyboardQwertyLayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
-        v = guilelessBopomofoService.viewBinding
+            KeyboardQwertyLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(keyboardQwertyLayoutBinding.root)
     }
 
     // list current offset's candidates in the candidate window
-    fun switchToCandidatesLayout(
-        offset: Int,
-        guilelessBopomofoService: GuilelessBopomofoService
-    ) {
+    fun switchToCandidatesLayout(offset: Int) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
         // reset candidates list if offset has been changed
         if (currentOffset != offset) {
@@ -163,27 +160,27 @@ class KeyboardPanel(
             currentCandidatesList = 0
         }
 
-        renderCandidatesLayout(guilelessBopomofoService)
+        renderCandidatesLayout()
     }
 
     // just list current candidate window
-    fun switchToCandidatesLayout(guilelessBopomofoService: GuilelessBopomofoService) {
+    fun switchToCandidatesLayout() {
         Log.v(LOGTAG, "switchToCandidatesLayout")
-        renderCandidatesLayout(guilelessBopomofoService)
+        renderCandidatesLayout()
     }
 
-    private fun renderCandidatesLayout(guilelessBopomofoService: GuilelessBopomofoService) {
+    private fun renderCandidatesLayout() {
         Log.v(LOGTAG, "renderCandidatesLayout")
         currentKeyboardLayout = KeyboardLayout.CANDIDATES
 
         candidatesLayoutBinding =
-            CandidatesLayoutBinding.inflate(guilelessBopomofoService.layoutInflater)
-        v = guilelessBopomofoService.viewBinding
+            CandidatesLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
         v.keyboardPanel.removeAllViews()
         v.keyboardPanel.addView(candidatesLayoutBinding.root)
 
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
-        candidatesRecyclerView.adapter = CandidatesAdapter(guilelessBopomofoService)
+        candidatesRecyclerView.adapter = CandidatesAdapter()
         candidatesRecyclerView.layoutManager =
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
     }
