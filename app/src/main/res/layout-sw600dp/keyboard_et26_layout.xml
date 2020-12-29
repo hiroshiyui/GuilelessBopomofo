@@ -255,10 +255,10 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:scaleType="fitCenter"
+            android:theme="@style/KeyImageButton"
             app:keySymbolString="k"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_k"
-            android:theme="@style/KeyImageButton" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_et26_k" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
             android:id="@+id/keyImageButtonL"
@@ -404,7 +404,7 @@
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_mode_switch_eng" />
 
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.SymbolKeyImageButton
             android:id="@+id/keyImageButtonSymbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

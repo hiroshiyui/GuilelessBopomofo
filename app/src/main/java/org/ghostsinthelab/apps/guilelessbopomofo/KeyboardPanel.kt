@@ -50,7 +50,6 @@ class KeyboardPanel(
 
     override fun onViewAdded(child: View?) {
         super.onViewAdded(child)
-        Log.v(LOGTAG, "onViewAdded - ${child}")
         v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
 
         when (currentKeyboardLayout) {
@@ -59,7 +58,6 @@ class KeyboardPanel(
 
                 child as Keyboard
                 GuilelessBopomofoServiceContext.serviceInstance.apply {
-                    child.setupSymbolSwitch()
                     child.setupModeSwitch()
                     child.setupBackspace()
                 }

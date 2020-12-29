@@ -24,7 +24,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
-import android.widget.Button
 import android.widget.LinearLayout
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,50 +43,6 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         this.orientation = VERTICAL
         this.layoutParams =
             LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-    }
-
-    fun setupSymbolSwitch() {
-        Log.v(LOGTAG, "setupSymbolSwitch")
-        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
-        val keyImageButtonSymbol =
-            v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonSymbol)
-        symbolsPickerLayoutBinding =
-            SymbolsPickerLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-
-        keyImageButtonSymbol.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            ChewingEngine.openSymbolCandidates()
-
-            v.keyboardPanel.apply {
-                currentKeyboardLayout = KeyboardPanel.KeyboardLayout.SYMBOLS
-                removeAllViews()
-                addView(symbolsPickerLayoutBinding.root)
-            }
-
-            val totalCategories = ChewingEngine.candTotalChoice()
-
-            repeat(totalCategories) { category ->
-                val button: Button = Button(context)
-                button.text =
-                    ChewingEngine.candStringByIndexStatic(category)
-                button.id = View.generateViewId()
-
-                button.setOnClickListener {
-                    ChewingEngine.candChooseByIndex(category)
-
-                    if (ChewingEngine.hasCandidates()) {
-                        // 如果候選區還有資料，代表目前進入次分類
-                        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
-                    } else {
-                        ChewingEngine.endCandidateChoice()
-                        GuilelessBopomofoServiceContext.serviceInstance.doneCandidateChoice()
-                    }
-                }
-
-                symbolsPickerLayoutBinding.SymbolsConstraintLayout.addView(button)
-                symbolsPickerLayoutBinding.SymbolsFlow.addView(button)
-            }
-        }
     }
 
     fun setupModeSwitch() {
