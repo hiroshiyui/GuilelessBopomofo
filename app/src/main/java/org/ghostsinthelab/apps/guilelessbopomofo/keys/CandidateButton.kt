@@ -27,7 +27,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 
 class CandidateButton(context: Context, attrs: AttributeSet) :
-    AppCompatButton(context, attrs, R.attr.buttonStyle), BehaveLikeButton<CandidateButton> {
+    AppCompatButton(context, attrs, R.attr.buttonStyle) {
     var dataIndex: Int = 0
 
     init {
