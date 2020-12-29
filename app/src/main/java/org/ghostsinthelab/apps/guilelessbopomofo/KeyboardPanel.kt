@@ -58,7 +58,6 @@ class KeyboardPanel(
 
                 child as Keyboard
                 GuilelessBopomofoServiceContext.serviceInstance.apply {
-                    child.setupModeSwitch()
                     child.setupBackspace()
                 }
             }
@@ -66,7 +65,6 @@ class KeyboardPanel(
                 v.keyboardView.updateBuffers()
                 child as Keyboard
                 GuilelessBopomofoServiceContext.serviceInstance.apply {
-                    child.setupModeSwitch()
                     child.setupBackspace()
                 }
             }

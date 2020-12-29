@@ -28,7 +28,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.R
 
 open class KeyImageButton(context: Context, attrs: AttributeSet) :
     AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
-    BehaveLikeKey<KeyImageButton>, BehaveLikeButton<KeyImageButton>, DisplayMetricsComputable {
+    BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable {
     open val LOGTAG: String = "KeyImageButton"
     val sharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)

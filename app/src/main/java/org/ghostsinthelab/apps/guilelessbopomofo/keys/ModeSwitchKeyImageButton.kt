@@ -19,16 +19,16 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
+import android.content.Context
+import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
-import android.view.View
 import org.ghostsinthelab.apps.guilelessbopomofo.CHINESE_MODE
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.SYMBOL_MODE
 
-interface BehaveLikeButton<T : View> {
-    fun setModeSwitchButtonOnClickListener() {
-        this as KeyImageButton
+class ModeSwitchKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
+    init {
         this.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             val chewingChiEngMode = ChewingEngine.getChiEngMode()
