@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.CandidateButton
 
 class CandidateViewHolder(override var guilelessBopomofoService: GuilelessBopomofoService, itemView: View) :
     RecyclerView.ViewHolder(itemView), GuilelessBopomofoServiceContext {

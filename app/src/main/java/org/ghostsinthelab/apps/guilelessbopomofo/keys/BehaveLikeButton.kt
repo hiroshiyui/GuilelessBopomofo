@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.os.Build
@@ -25,6 +25,7 @@ import android.os.IBinder
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import org.ghostsinthelab.apps.guilelessbopomofo.*
 
 interface BehaveLikeButton<T : View> {
     fun setBackMainLayoutOnClickListener(guilelessBopomofoService: GuilelessBopomofoService) {

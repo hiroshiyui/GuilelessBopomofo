@@ -40,7 +40,7 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.KeyButton
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyButton
             android:id="@+id/keyButtonBackToMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

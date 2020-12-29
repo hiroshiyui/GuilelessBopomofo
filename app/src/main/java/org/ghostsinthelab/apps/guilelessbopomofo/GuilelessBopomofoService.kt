@@ -29,6 +29,8 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.BehaveLikeKey
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKeyImageButton
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.properties.Delegates

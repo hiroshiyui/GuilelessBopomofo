@@ -17,11 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
+import org.ghostsinthelab.apps.guilelessbopomofo.R
 
 class CandidateButton(context: Context, attrs: AttributeSet) :
     AppCompatButton(context, attrs, R.attr.buttonStyle), BehaveLikeButton<CandidateButton> {

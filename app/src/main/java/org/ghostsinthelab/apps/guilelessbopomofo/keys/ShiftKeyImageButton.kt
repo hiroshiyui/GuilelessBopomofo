@@ -17,12 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import androidx.core.content.ContextCompat
+import org.ghostsinthelab.apps.guilelessbopomofo.R
 
 class ShiftKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override val LOGTAG: String = "ShiftKeyImageButton"
