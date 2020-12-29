@@ -46,14 +46,6 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
             LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    fun setupPuncSwitch() {
-        Log.v(LOGTAG, "setupPuncSwitch")
-        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
-        val keyImageButtonPunc =
-            v.keyboardPanel.findViewById<KeyImageButton>(R.id.keyImageButtonPunc)
-        keyImageButtonPunc.setKeyImageButtonPuncOnLongClickListener()
-    }
-
     fun setupSymbolSwitch() {
         Log.v(LOGTAG, "setupSymbolSwitch")
         v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding

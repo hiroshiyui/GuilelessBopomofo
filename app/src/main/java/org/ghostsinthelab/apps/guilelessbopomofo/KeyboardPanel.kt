@@ -59,7 +59,6 @@ class KeyboardPanel(
 
                 child as Keyboard
                 GuilelessBopomofoServiceContext.serviceInstance.apply {
-                    child.setupPuncSwitch()
                     child.setupSymbolSwitch()
                     child.setupModeSwitch()
                     child.setupBackspace()

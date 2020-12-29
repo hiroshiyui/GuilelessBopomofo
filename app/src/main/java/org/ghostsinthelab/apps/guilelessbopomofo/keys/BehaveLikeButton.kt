@@ -21,7 +21,10 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.view.HapticFeedbackConstants
 import android.view.View
-import org.ghostsinthelab.apps.guilelessbopomofo.*
+import org.ghostsinthelab.apps.guilelessbopomofo.CHINESE_MODE
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.SYMBOL_MODE
 
 interface BehaveLikeButton<T : View> {
     fun setBackMainLayoutOnClickListener() {
@@ -29,16 +32,6 @@ interface BehaveLikeButton<T : View> {
         this.setOnClickListener {
             ChewingEngine.endCandidateChoice()
             GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToMainLayout()
-        }
-    }
-
-    fun setKeyImageButtonPuncOnLongClickListener() {
-        this as KeyImageButton
-        this.setOnLongClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            ChewingEngine.openPuncCandidates()
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
-            return@setOnLongClickListener true
         }
     }
 
