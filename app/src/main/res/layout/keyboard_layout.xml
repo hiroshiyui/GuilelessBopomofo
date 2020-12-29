@@ -22,7 +22,7 @@
         app:flexDirection="row"
         app:flexWrap="wrap">
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.PreEditBufferTextView
+        <org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
             android:id="@+id/textViewPreEditBuffer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:textColor="#FFFFFF"
             android:textSize="26sp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.BopomofoBufferTextView
+        <org.ghostsinthelab.apps.guilelessbopomofo.buffers.BopomofoBufferTextView
             android:id="@+id/textViewBopomofoBuffer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

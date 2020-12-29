@@ -23,8 +23,8 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import org.ghostsinthelab.apps.guilelessbopomofo.DisplayMetricsComputable
 import org.ghostsinthelab.apps.guilelessbopomofo.R
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
 
 open class KeyButton(context: Context, attrs: AttributeSet) :
     AppCompatButton(context, attrs, R.attr.buttonStyle), BehaveLikeKey<KeyButton>,

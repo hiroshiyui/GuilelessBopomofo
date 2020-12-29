@@ -17,20 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo
+package org.ghostsinthelab.apps.guilelessbopomofo.utils
 
-import android.content.Context
-import android.util.AttributeSet
+import android.content.res.Resources
+import android.util.TypedValue
 
-class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
-    BufferTextView(context, attrs) {
-    private val LOGTAG = "BopomofoBufferTextView"
+val resources: Resources = Resources.getSystem()
 
-    init {
-        // Purposes to this padding setting:
-        //   1. Acts as, and looks like a cursor
-        //   2. Set its height early
-        val px = convertDpToPx(2F).toInt()
-        this.setPadding(px, 0, px, 0)
+interface DisplayMetricsComputable {
+
+    fun convertDpToPx(dp: Float): Float {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics)
+    }
+
+    fun convertSpToPx(sp: Float): Float {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, resources.displayMetrics)
     }
 }

@@ -24,8 +24,8 @@ import android.content.SharedPreferences
 import android.util.AttributeSet
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
-import org.ghostsinthelab.apps.guilelessbopomofo.DisplayMetricsComputable
 import org.ghostsinthelab.apps.guilelessbopomofo.R
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
 
 open class KeyImageButton(context: Context, attrs: AttributeSet) :
     AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),

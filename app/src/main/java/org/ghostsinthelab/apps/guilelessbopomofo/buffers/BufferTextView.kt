@@ -17,10 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo
+package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
 import android.content.Context
 import android.util.AttributeSet
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
 
 abstract class BufferTextView(context: Context, attrs: AttributeSet) :
     androidx.appcompat.widget.AppCompatTextView(context, attrs), DisplayMetricsComputable {

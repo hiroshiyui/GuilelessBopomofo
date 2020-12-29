@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo
+package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -30,6 +30,8 @@ import android.view.MotionEvent
 import android.widget.TextView
 import androidx.core.text.toSpannable
 import androidx.core.view.setPadding
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 
 @SuppressLint("ClickableViewAccessibility")
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
