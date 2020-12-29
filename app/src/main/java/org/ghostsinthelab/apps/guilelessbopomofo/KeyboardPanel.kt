@@ -72,10 +72,6 @@ class KeyboardPanel(
                     child.setupBackspace()
                 }
             }
-            KeyboardLayout.CANDIDATES -> {
-                val keyButtonBackToMain = candidatesLayoutBinding.keyButtonBackToMain
-                keyButtonBackToMain.setBackMainLayoutOnClickListener()
-            }
             else -> {
             }
         }

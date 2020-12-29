@@ -19,26 +19,16 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
-import android.view.HapticFeedbackConstants
-import android.view.View
-import org.ghostsinthelab.apps.guilelessbopomofo.CHINESE_MODE
+import android.content.Context
+import android.util.AttributeSet
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.SYMBOL_MODE
 
-interface BehaveLikeButton<T : View> {
-    fun setModeSwitchButtonOnClickListener() {
-        this as KeyImageButton
+class BackToMainKeyButton(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
+    init {
         this.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            val chewingChiEngMode = ChewingEngine.getChiEngMode()
-            if (chewingChiEngMode == CHINESE_MODE) {
-                ChewingEngine.setChiEngMode(SYMBOL_MODE)
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToQwertyLayout()
-            } else {
-                ChewingEngine.setChiEngMode(CHINESE_MODE)
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToBopomofoLayout()
-            }
+            ChewingEngine.endCandidateChoice()
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToMainLayout()
         }
     }
 }

@@ -88,9 +88,6 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
                 symbolsPickerLayoutBinding.SymbolsFlow.addView(button)
             }
         }
-
-        val keyButtonBackToMain = symbolsPickerLayoutBinding.keyButtonBackToMain
-        keyButtonBackToMain.setBackMainLayoutOnClickListener()
     }
 
     fun setupModeSwitch() {

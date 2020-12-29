@@ -26,7 +26,7 @@ import androidx.appcompat.widget.AppCompatButton
 import org.ghostsinthelab.apps.guilelessbopomofo.DisplayMetricsComputable
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 
-class KeyButton(context: Context, attrs: AttributeSet) :
+open class KeyButton(context: Context, attrs: AttributeSet) :
     AppCompatButton(context, attrs, R.attr.buttonStyle), BehaveLikeKey<KeyButton>,
     BehaveLikeButton<KeyButton>, DisplayMetricsComputable {
     private val LOGTAG: String = "KeyButton"
