@@ -41,7 +41,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     var offset: Int = 0
 
     init {
-        setOnTouchListener { v, event ->
+        this.setOnTouchListener { v, event ->
             Log.v(LOGTAG, "setOnTouchListener action: ${event.action}")
             span = (v as TextView).text.toSpannable() as SpannableString
             val underlineSpans = span.getSpans(0, span.length, UnderlineSpan::class.java)
@@ -88,6 +88,13 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                     return@setOnTouchListener false
                 }
             }
+        }
+
+        this.setOnClickListener {
+            ChewingEngine.moveToPreEditBufferOffset(offset)
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout(
+                offset
+            )
         }
     }
 

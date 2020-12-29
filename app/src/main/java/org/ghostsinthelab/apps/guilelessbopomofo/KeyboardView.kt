@@ -52,13 +52,4 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
             ChewingEngine.handleEnd()
         }
     }
-
-    fun setOnClickPreEditCharListener() {
-        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
-        v.textViewPreEditBuffer.setOnClickListener {
-            val offset = v.textViewPreEditBuffer.offset
-            ChewingEngine.moveToPreEditBufferOffset(offset)
-            v.keyboardPanel.switchToCandidatesLayout(offset)
-        }
-    }
 }

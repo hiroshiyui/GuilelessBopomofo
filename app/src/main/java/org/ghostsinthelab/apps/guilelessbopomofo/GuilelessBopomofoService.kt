@@ -109,11 +109,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     override fun onCreateInputView(): View {
         Log.v(LOGTAG, "onCreateInputView()")
         viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
-
-        viewBinding.apply {
-            keyboardView.setOnClickPreEditCharListener()
-            keyboardPanel.switchToMainLayout()
-        }
+        viewBinding.keyboardPanel.switchToMainLayout()
 
         inputView = viewBinding.root
         return inputView
