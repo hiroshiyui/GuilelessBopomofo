@@ -1,0 +1,1 @@
+A simple Bopomofo software keyboard (input method editor) for typing Hanyu

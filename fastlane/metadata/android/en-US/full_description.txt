@@ -1,0 +1,9 @@
+Hello, it's me, Guileless Bopomofo Keyboard.
+
+I have implemented most features of libchewing (http://chewing.im/), to provide you a choice of Bopomofo software keyboard (aka input method editor).
+
+* Unlike other similar products, though I don't have fuzzy, error-tolerance design, I do still have ability to predict possible phrases by context, and I do remember phrases from your typing history automatically.
+
+* Besides the most common "DaChen", I also provide you "Hsu" & "E-Ten 26 keys" Bopomofo keyboard layouts.
+
+My source code repository: https://github.com/hiroshiyui/GuilelessBopomofo
