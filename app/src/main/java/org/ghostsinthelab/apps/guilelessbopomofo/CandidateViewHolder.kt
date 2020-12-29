@@ -29,6 +29,6 @@ class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun setData(data: Int) {
         candidateButton.text = ChewingEngine.candStringByIndexStatic(data)
-        candidateButton.setCandidateButtonOnClickListener(GuilelessBopomofoServiceContext.serviceInstance, data)
+        candidateButton.dataIndex = data
     }
 }

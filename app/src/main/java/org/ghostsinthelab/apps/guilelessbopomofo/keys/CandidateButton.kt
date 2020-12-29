@@ -22,10 +22,13 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 
 class CandidateButton(context: Context, attrs: AttributeSet) :
     AppCompatButton(context, attrs, R.attr.buttonStyle), BehaveLikeButton<CandidateButton> {
+    var dataIndex: Int = 0
 
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.MaterialButton, 0, 0).apply {
@@ -34,6 +37,14 @@ class CandidateButton(context: Context, attrs: AttributeSet) :
             } finally {
                 recycle()
             }
+        }
+
+        this.setOnClickListener {
+            ChewingEngine.apply {
+                candChooseByIndex(dataIndex)
+                endCandidateChoice()
+            }
+            GuilelessBopomofoServiceContext.serviceInstance.doneCandidateChoice()
         }
     }
 }

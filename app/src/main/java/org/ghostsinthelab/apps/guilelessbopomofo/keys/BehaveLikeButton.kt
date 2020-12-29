@@ -32,20 +32,6 @@ interface BehaveLikeButton<T : View> {
         }
     }
 
-    fun setCandidateButtonOnClickListener(
-        guilelessBopomofoService: GuilelessBopomofoService,
-        data: Int
-    ) {
-        this as View
-        this.setOnClickListener {
-            ChewingEngine.apply {
-                candChooseByIndex(data)
-                endCandidateChoice()
-            }
-            guilelessBopomofoService.doneCandidateChoice()
-        }
-    }
-
     fun setKeyImageButtonPuncOnLongClickListener() {
         this as KeyImageButton
         this.setOnLongClickListener {
