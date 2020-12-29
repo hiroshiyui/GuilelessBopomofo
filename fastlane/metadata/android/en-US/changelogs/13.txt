@@ -1,0 +1,1 @@
+This release fixes an issue, when user are using the English mode, the "Back to keyboard" button in candidates list shouldn't switch keyboard to Bopofomo mode.
