@@ -55,18 +55,9 @@ class KeyboardPanel(
         when (currentKeyboardLayout) {
             KeyboardLayout.MAIN -> {
                 v.keyboardView.updateBuffers()
-
-                child as Keyboard
-                GuilelessBopomofoServiceContext.serviceInstance.apply {
-                    child.setupBackspace()
-                }
             }
             KeyboardLayout.QWERTY -> {
                 v.keyboardView.updateBuffers()
-                child as Keyboard
-                GuilelessBopomofoServiceContext.serviceInstance.apply {
-                    child.setupBackspace()
-                }
             }
             else -> {
             }

@@ -631,7 +631,7 @@
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:srcCompat="@drawable/ic_baseline_space_bar_24" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKeyImageButton
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.BackspaceKeyImageButton
             android:id="@+id/keyImageButtonBackspace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

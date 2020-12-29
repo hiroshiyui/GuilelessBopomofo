@@ -627,7 +627,7 @@
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_punctuation" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.BackspaceKeyImageButton
             android:id="@+id/keyImageButtonBackspace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
