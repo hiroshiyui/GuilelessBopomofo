@@ -51,6 +51,11 @@ android {
     }
 
     task prepareChewing(type: Exec) {
+        onlyIf {
+            files("$rootDir/app/libs/libchewing/data/dictionary.dat", "$rootDir/app/libs/libchewing/data/index_tree.dat").any { file ->
+                !file.exists()
+            }
+        }
         workingDir("$rootDir/app/libs/libchewing")
         commandLine('./build-android.sh')
     }
