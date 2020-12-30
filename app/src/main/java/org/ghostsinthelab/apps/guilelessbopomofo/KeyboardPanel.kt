@@ -26,6 +26,7 @@ import android.view.View
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
+import org.ghostsinthelab.apps.guilelessbopomofo.events.TestEvent
 
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
@@ -46,6 +47,10 @@ class KeyboardPanel(
 
     init {
         Log.v(LOGTAG, "Building KeyboardLayout.")
+
+        TestEvent on {
+            Log.v(LOGTAG, "Event from ModeSwitchKeyImageButton")
+        }
     }
 
     override fun onViewAdded(child: View?) {
