@@ -141,6 +141,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.v(LOGTAG, "onStartInputView()")
+        EventBus.getDefault().post(BufferUpdatedEvent())
     }
 
     override fun onFinishInput() {
