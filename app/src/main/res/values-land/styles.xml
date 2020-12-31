@@ -25,8 +25,8 @@
     <style name="KeyImageButton" parent="Theme.AppCompat.Light">
         <item name="android:imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
         <item name="imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
-        <item name="android:minHeight">56dp</item>
-        <item name="minHeight">56dp</item>
+        <item name="android:minWidth">56dp</item>
+        <item name="minWidth">56dp</item>
         <item name="android:scaleType">centerCrop</item>
     </style>
 
