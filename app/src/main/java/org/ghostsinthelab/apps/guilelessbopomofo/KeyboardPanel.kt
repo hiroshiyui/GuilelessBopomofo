@@ -22,10 +22,13 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
-import android.view.View
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
+import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
@@ -46,21 +49,16 @@ class KeyboardPanel(
 
     init {
         Log.v(LOGTAG, "Building KeyboardLayout.")
+        EventBus.getDefault().register(this)
     }
 
-    override fun onViewAdded(child: View?) {
-        super.onViewAdded(child)
-        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
-
-        when (currentKeyboardLayout) {
-            KeyboardLayout.MAIN -> {
-                v.keyboardView.updateBuffers()
-            }
-            KeyboardLayout.QWERTY -> {
-                v.keyboardView.updateBuffers()
-            }
-            else -> {
-            }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMainLayoutChangedEvent(event: MainLayoutChangedEvent) {
+        when(ChewingEngine.getChiEngMode()) {
+            SYMBOL_MODE ->
+                switchToQwertyLayout()
+            CHINESE_MODE ->
+                switchToBopomofoLayout()
         }
     }
 

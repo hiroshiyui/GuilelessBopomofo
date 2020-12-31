@@ -24,8 +24,9 @@ import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
 import org.ghostsinthelab.apps.guilelessbopomofo.CHINESE_MODE
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.SYMBOL_MODE
+import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
+import org.greenrobot.eventbus.EventBus
 
 class ModeSwitchKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
@@ -34,11 +35,10 @@ class ModeSwitchKeyImageButton(context: Context, attrs: AttributeSet) : KeyImage
             val chewingChiEngMode = ChewingEngine.getChiEngMode()
             if (chewingChiEngMode == CHINESE_MODE) {
                 ChewingEngine.setChiEngMode(SYMBOL_MODE)
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToQwertyLayout()
             } else {
                 ChewingEngine.setChiEngMode(CHINESE_MODE)
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToBopomofoLayout()
             }
+            EventBus.getDefault().post(MainLayoutChangedEvent())
         }
     }
 }

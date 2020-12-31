@@ -29,11 +29,16 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.events.GuilelessBopomofoEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.BehaveLikeKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKeyImageButton
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.properties.Delegates
+
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     val LOGTAG = "GuilelessBopomofoSvc"
@@ -85,6 +90,8 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
 
         GuilelessBopomofoServiceContext.bindGuilelessBopomofoService(this)
+
+        EventBus.getDefault().register(this)
     }
 
     override fun onCreateCandidatesView(): View? {
@@ -149,6 +156,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         super.onDestroy()
         Log.v(LOGTAG, "onDestroy()")
         ChewingEngine.delete()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onClick(v: View?) {
@@ -165,6 +173,11 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         }
 
         inputView.updateBuffers()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onGuilelessBopomofoEvent(event: GuilelessBopomofoEvent) {
+        Log.v(LOGTAG, "onGuilelessBopomofoEvent: ${event.message}")
     }
 
     fun doneCandidateChoice() {
