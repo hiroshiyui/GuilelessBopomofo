@@ -29,7 +29,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.events.TestEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.BehaveLikeKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKeyImageButton
 import java.io.File
@@ -86,10 +85,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
 
         GuilelessBopomofoServiceContext.bindGuilelessBopomofoService(this)
-
-        TestEvent on {
-            Log.v(LOGTAG, "Event from ModeSwitchKeyImageButton")
-        }
     }
 
     override fun onCreateCandidatesView(): View? {

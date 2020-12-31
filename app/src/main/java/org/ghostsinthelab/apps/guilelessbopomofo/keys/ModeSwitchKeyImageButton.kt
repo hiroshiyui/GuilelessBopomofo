@@ -26,13 +26,11 @@ import org.ghostsinthelab.apps.guilelessbopomofo.CHINESE_MODE
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.SYMBOL_MODE
-import org.ghostsinthelab.apps.guilelessbopomofo.events.TestEvent
 
 class ModeSwitchKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            TestEvent().emit()
             val chewingChiEngMode = ChewingEngine.getChiEngMode()
             if (chewingChiEngMode == CHINESE_MODE) {
                 ChewingEngine.setChiEngMode(SYMBOL_MODE)
