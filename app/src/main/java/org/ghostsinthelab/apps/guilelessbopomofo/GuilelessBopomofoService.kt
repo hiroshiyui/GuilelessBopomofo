@@ -29,6 +29,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.GuilelessBopomofoEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.BehaveLikeKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKeyImageButton
@@ -172,7 +173,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
             }
         }
 
-        inputView.updateBuffers()
+        EventBus.getDefault().post(BufferUpdatedEvent())
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -183,9 +184,9 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     fun doneCandidateChoice() {
         viewBinding.apply {
             keyboardPanel.currentCandidatesList = 0
-            keyboardView.updateBuffers()
             keyboardPanel.switchToMainLayout()
         }
+        EventBus.getDefault().post(BufferUpdatedEvent())
     }
 
     private fun handleCharacterKey(v: BehaveLikeKey<*>) {

@@ -32,6 +32,10 @@ import androidx.core.text.toSpannable
 import androidx.core.view.setPadding
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @SuppressLint("ClickableViewAccessibility")
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
@@ -98,6 +102,13 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                 offset
             )
         }
+
+        EventBus.getDefault().register(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onBufferUpdatedEvent(event: BufferUpdatedEvent) {
+        this.text = ChewingEngine.bufferStringStatic()
     }
 
     override fun onTextChanged(

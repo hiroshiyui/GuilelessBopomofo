@@ -30,6 +30,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
+import org.greenrobot.eventbus.EventBus
 import kotlin.concurrent.fixedRateTimer
 
 @SuppressLint("ClickableViewAccessibility")
@@ -43,7 +45,7 @@ class BackspaceKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageB
                     performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
                     if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
                         ChewingEngine.handleBackspace()
-                        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardView.updateBuffers()
+                        EventBus.getDefault().post(BufferUpdatedEvent())
                     } else {
                         // acts as general and repeatable backspace key
                         runBlocking {

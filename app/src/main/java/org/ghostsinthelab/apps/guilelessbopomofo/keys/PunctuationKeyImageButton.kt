@@ -24,6 +24,8 @@ import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
+import org.greenrobot.eventbus.EventBus
 
 class PunctuationKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
@@ -31,7 +33,7 @@ class PunctuationKeyImageButton(context: Context, attrs: AttributeSet) : KeyImag
         // 短觸會輸出全形逗號
         this.setOnClickListener {
             ChewingEngine.handleShiftComma()
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardView.updateBuffers()
+            EventBus.getDefault().post(BufferUpdatedEvent())
         }
 
         this.setOnLongClickListener {
