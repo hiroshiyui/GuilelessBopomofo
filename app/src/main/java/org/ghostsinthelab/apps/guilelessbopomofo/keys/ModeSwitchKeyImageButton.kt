@@ -32,8 +32,8 @@ class ModeSwitchKeyImageButton(context: Context, attrs: AttributeSet) : KeyImage
     init {
         this.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            val chewingChiEngMode = ChewingEngine.getChiEngMode()
-            if (chewingChiEngMode == CHINESE_MODE) {
+            val currentChewingChiEngMode = ChewingEngine.getChiEngMode()
+            if (currentChewingChiEngMode == CHINESE_MODE) {
                 ChewingEngine.setChiEngMode(SYMBOL_MODE)
             } else {
                 ChewingEngine.setChiEngMode(CHINESE_MODE)

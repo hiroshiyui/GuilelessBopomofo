@@ -21,14 +21,13 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
+import org.greenrobot.eventbus.EventBus
 
 class BackToMainKeyButton(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
     init {
         this.setOnClickListener {
-            ChewingEngine.endCandidateChoice()
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToMainLayout()
+            EventBus.getDefault().post(CandidateSelectionDoneEvent())
         }
     }
 }
