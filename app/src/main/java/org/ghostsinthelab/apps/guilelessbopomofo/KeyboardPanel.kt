@@ -25,6 +25,7 @@ import android.util.Log
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
+import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -119,8 +120,18 @@ class KeyboardPanel(
         v.keyboardPanel.addView(keyboardQwertyLayoutBinding.root)
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDirectCandidatesWindowOpendEvent(event: CandidatesWindowOpendEvent.Direct) {
+        switchToCandidatesLayout()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onOffsetCandidatesWindowOpendEvent(event: CandidatesWindowOpendEvent.Offset) {
+        switchToCandidatesLayout(event.offset)
+    }
+
     // list current offset's candidates in the candidate window
-    fun switchToCandidatesLayout(offset: Int) {
+    private fun switchToCandidatesLayout(offset: Int) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
         // reset candidates list if offset has been changed
         if (currentOffset != offset) {
@@ -144,7 +155,7 @@ class KeyboardPanel(
     }
 
     // just list current candidate window
-    fun switchToCandidatesLayout() {
+    private fun switchToCandidatesLayout() {
         Log.v(LOGTAG, "switchToCandidatesLayout")
         renderCandidatesLayout()
     }

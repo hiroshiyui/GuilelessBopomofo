@@ -23,8 +23,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
 import org.greenrobot.eventbus.EventBus
 
 class PunctuationKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
@@ -39,7 +39,7 @@ class PunctuationKeyImageButton(context: Context, attrs: AttributeSet) : KeyImag
         this.setOnLongClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
             ChewingEngine.openPuncCandidates()
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
+            EventBus.getDefault().post(CandidatesWindowOpendEvent.Direct())
             return@setOnLongClickListener true
         }
     }

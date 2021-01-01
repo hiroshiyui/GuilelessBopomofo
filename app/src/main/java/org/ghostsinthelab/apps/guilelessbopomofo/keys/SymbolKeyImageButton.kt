@@ -29,6 +29,8 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.SymbolsPickerLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
+import org.greenrobot.eventbus.EventBus
 
 class SymbolKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     private var v: KeyboardLayoutBinding =
@@ -60,7 +62,7 @@ class SymbolKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButt
 
                     if (ChewingEngine.hasCandidates()) {
                         // 如果候選區還有資料，代表目前進入次分類
-                        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
+                        EventBus.getDefault().post(CandidatesWindowOpendEvent.Direct())
                     } else {
                         ChewingEngine.endCandidateChoice()
                         GuilelessBopomofoServiceContext.serviceInstance.doneCandidateChoice()
