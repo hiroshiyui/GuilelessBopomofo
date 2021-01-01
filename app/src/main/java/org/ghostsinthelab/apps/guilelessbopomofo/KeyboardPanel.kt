@@ -25,6 +25,7 @@ import android.util.Log
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
+import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
 import org.greenrobot.eventbus.EventBus
@@ -55,7 +56,7 @@ class KeyboardPanel(
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMainLayoutChangedEvent(event: MainLayoutChangedEvent) {
-        when(ChewingEngine.getChiEngMode()) {
+        when (ChewingEngine.getChiEngMode()) {
             SYMBOL_MODE ->
                 switchToQwertyLayout()
             CHINESE_MODE ->
@@ -79,10 +80,11 @@ class KeyboardPanel(
         v.keyboardPanel.removeAllViews()
 
         // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
-        val userKeyboardLayoutPreference = GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getString(
-            "user_keyboard_layout",
-            GuilelessBopomofoService.defaultKeyboardLayout
-        )
+        val userKeyboardLayoutPreference =
+            GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getString(
+                "user_keyboard_layout",
+                GuilelessBopomofoService.defaultKeyboardLayout
+            )
 
         when (userKeyboardLayoutPreference) {
             "KB_HSU" -> {
@@ -121,12 +123,24 @@ class KeyboardPanel(
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDirectCandidatesWindowOpendEvent(event: CandidatesWindowOpendEvent.Direct) {
+    fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent) {
+        currentCandidatesList = 0
+        switchToMainLayout()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent.Indexed) {
+        currentCandidatesList = 0
+        switchToMainLayout()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCandidatesWindowOpendEvent(event: CandidatesWindowOpendEvent) {
         switchToCandidatesLayout()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onOffsetCandidatesWindowOpendEvent(event: CandidatesWindowOpendEvent.Offset) {
+    fun onCandidatesWindowOpendEvent(event: CandidatesWindowOpendEvent.Offset) {
         switchToCandidatesLayout(event.offset)
     }
 

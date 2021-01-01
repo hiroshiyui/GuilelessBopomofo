@@ -39,7 +39,7 @@ class PunctuationKeyImageButton(context: Context, attrs: AttributeSet) : KeyImag
         this.setOnLongClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
             ChewingEngine.openPuncCandidates()
-            EventBus.getDefault().post(CandidatesWindowOpendEvent.Direct())
+            EventBus.getDefault().post(CandidatesWindowOpendEvent())
             return@setOnLongClickListener true
         }
     }

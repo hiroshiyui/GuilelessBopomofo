@@ -22,9 +22,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.R
+import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
+import org.greenrobot.eventbus.EventBus
 
 class CandidateButton(context: Context, attrs: AttributeSet) :
     AppCompatButton(context, attrs, R.attr.buttonStyle) {
@@ -40,11 +40,7 @@ class CandidateButton(context: Context, attrs: AttributeSet) :
         }
 
         this.setOnClickListener {
-            ChewingEngine.apply {
-                candChooseByIndex(dataIndex)
-                endCandidateChoice()
-            }
-            GuilelessBopomofoServiceContext.serviceInstance.doneCandidateChoice()
+            EventBus.getDefault().post(CandidateSelectionDoneEvent.Indexed(dataIndex))
         }
     }
 }
