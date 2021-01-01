@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
@@ -37,11 +38,18 @@ import kotlin.concurrent.fixedRateTimer
 @SuppressLint("ClickableViewAccessibility")
 class BackspaceKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     private var backspacePressed: Boolean = false
+    private var lastClickTime: Long = 0
 
     init {
         this.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
+                    // avoids too fast repeat clicks
+                    if (SystemClock.elapsedRealtime() - lastClickTime < 250) {
+                        return@setOnTouchListener true
+                    }
+                    lastClickTime = SystemClock.elapsedRealtime()
+
                     performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
                     if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
                         ChewingEngine.handleBackspace()
