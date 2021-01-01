@@ -22,12 +22,15 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SymbolPickerOpenedEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -76,8 +79,7 @@ class KeyboardPanel(
         Log.v(LOGTAG, "switchToMainLayout")
         currentKeyboardLayout = KeyboardLayout.MAIN
 
-        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
-        v.keyboardPanel.removeAllViews()
+        this.removeAllViews()
 
         // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
         val userKeyboardLayoutPreference =
@@ -92,21 +94,21 @@ class KeyboardPanel(
                 ChewingEngine.setKBType(newKeyboardType)
                 keyboardHsuLayoutBinding =
                     KeyboardHsuLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-                v.keyboardPanel.addView(keyboardHsuLayoutBinding.root)
+                this.addView(keyboardHsuLayoutBinding.root)
             }
             "KB_ET26" -> {
                 val newKeyboardType = ChewingEngine.convKBStr2Num("KB_ET26")
                 ChewingEngine.setKBType(newKeyboardType)
                 keyboardEt26LayoutBinding =
                     KeyboardEt26LayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-                v.keyboardPanel.addView(keyboardEt26LayoutBinding.root)
+                this.addView(keyboardEt26LayoutBinding.root)
             }
             "KB_DEFAULT" -> {
                 val newKeyboardType = ChewingEngine.convKBStr2Num("KB_DEFAULT")
                 ChewingEngine.setKBType(newKeyboardType)
                 keyboardDachenLayoutBinding =
                     KeyboardDachenLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-                v.keyboardPanel.addView(keyboardDachenLayoutBinding.root)
+                this.addView(keyboardDachenLayoutBinding.root)
             }
         }
     }
@@ -117,9 +119,41 @@ class KeyboardPanel(
 
         keyboardQwertyLayoutBinding =
             KeyboardQwertyLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
-        v.keyboardPanel.removeAllViews()
-        v.keyboardPanel.addView(keyboardQwertyLayoutBinding.root)
+
+        this.removeAllViews()
+        this.addView(keyboardQwertyLayoutBinding.root)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSymbolPickerOpenedEvent(event: SymbolPickerOpenedEvent) {
+        currentKeyboardLayout = KeyboardLayout.SYMBOLS
+        val symbolsPickerLayoutBinding =
+            SymbolsPickerLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+        removeAllViews()
+        this.addView(symbolsPickerLayoutBinding.root)
+
+        val totalCategories = ChewingEngine.candTotalChoice()
+
+        repeat(totalCategories) { category ->
+            val button: Button = Button(context)
+            button.text =
+                ChewingEngine.candStringByIndexStatic(category)
+            button.id = View.generateViewId()
+
+            button.setOnClickListener {
+                ChewingEngine.candChooseByIndex(category)
+
+                if (ChewingEngine.hasCandidates()) {
+                    // 如果候選區還有資料，代表目前進入次分類
+                    EventBus.getDefault().post(CandidatesWindowOpendEvent())
+                } else {
+                    EventBus.getDefault().post(CandidateSelectionDoneEvent())
+                }
+            }
+
+            symbolsPickerLayoutBinding.SymbolsConstraintLayout.addView(button)
+            symbolsPickerLayoutBinding.SymbolsFlow.addView(button)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -180,9 +214,8 @@ class KeyboardPanel(
 
         candidatesLayoutBinding =
             CandidatesLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-        v = GuilelessBopomofoServiceContext.serviceInstance.viewBinding
-        v.keyboardPanel.removeAllViews()
-        v.keyboardPanel.addView(candidatesLayoutBinding.root)
+        this.removeAllViews()
+        this.addView(candidatesLayoutBinding.root)
 
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
         candidatesRecyclerView.adapter = CandidatesAdapter()

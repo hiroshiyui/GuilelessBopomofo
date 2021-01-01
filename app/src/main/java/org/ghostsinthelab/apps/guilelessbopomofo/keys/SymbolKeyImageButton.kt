@@ -22,15 +22,11 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
-import android.view.View
-import android.widget.Button
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.SymbolsPickerLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SymbolPickerOpenedEvent
 import org.greenrobot.eventbus.EventBus
 
 class SymbolKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
@@ -43,35 +39,7 @@ class SymbolKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButt
         this.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             ChewingEngine.openSymbolCandidates()
-
-            v.keyboardPanel.apply {
-                currentKeyboardLayout = KeyboardPanel.KeyboardLayout.SYMBOLS
-                removeAllViews()
-                addView(symbolsPickerLayoutBinding.root)
-            }
-
-            val totalCategories = ChewingEngine.candTotalChoice()
-
-            repeat(totalCategories) { category ->
-                val button: Button = Button(context)
-                button.text =
-                    ChewingEngine.candStringByIndexStatic(category)
-                button.id = View.generateViewId()
-
-                button.setOnClickListener {
-                    ChewingEngine.candChooseByIndex(category)
-
-                    if (ChewingEngine.hasCandidates()) {
-                        // 如果候選區還有資料，代表目前進入次分類
-                        EventBus.getDefault().post(CandidatesWindowOpendEvent())
-                    } else {
-                        EventBus.getDefault().post(CandidateSelectionDoneEvent())
-                    }
-                }
-
-                symbolsPickerLayoutBinding.SymbolsConstraintLayout.addView(button)
-                symbolsPickerLayoutBinding.SymbolsFlow.addView(button)
-            }
+            EventBus.getDefault().post(SymbolPickerOpenedEvent())
         }
     }
 }
