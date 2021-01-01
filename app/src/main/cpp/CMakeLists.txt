@@ -5,44 +5,122 @@
 
 cmake_minimum_required(VERSION 3.4.1)
 
-# build libchewing in the early stage, ensure that we will build it on each ABI
-include( CMakeLists-libchewing.txt )
+set(CMAKE_C_FLAGS "-g -O2 -Wall -fPIC ${CMAKE_C_FLAGS}")
 
-# Creates and names a library, sets it as either STATIC
-# or SHARED, and provides the relative paths to its source code.
-# You can define multiple libraries, and CMake builds them for you.
-# Gradle automatically packages shared libraries with your APK.
+# locate libchewing
+set( libchewing_src_DIR     ../../../libs/libchewing )
 
-add_library( # Sets the name of the library.
-             native-lib
+# SQLITE
+set(WITH_SQLITE3 true)
+set(WITH_INTERNAL_SQLITE3 true)
+set(SQLITE3_SRC_DIR ${libchewing_src_DIR}/thirdparty/sqlite-amalgamation)
+include_directories(
+        ${SQLITE3_SRC_DIR}
+)
 
-             # Sets the library as a shared library.
-             SHARED
+# Essential configurations
+add_definitions(-DUNDER_POSIX -DPIC)
+add_definitions(-DHAVE_CONFIG_H=1)
+add_definitions(-DCHEWING_DATADIR="assets/chewing")
 
-             # Provides a relative path to your source file(s).
-             native-lib.cpp )
+include(CheckCCompilerFlag)
 
-# Searches for a specified prebuilt library and stores the path as a
-# variable. Because CMake includes system libraries in the search path by
-# default, you only need to specify the name of the public NDK library
-# you want to add. CMake verifies that the library exists before
-# completing its build.
+check_c_compiler_flag(-fvisibility=hidden FVISIBILITY_HIDDEN)
+if(${FVISIBILITY_HIDDEN})
+    set(CMAKE_C_FLAGS "-fvisibility=hidden ${CMAKE_C_FLAGS}")
+endif()
 
-find_library( # Sets the name of the path variable.
-              log-lib
+include(CheckTypeSize)
+check_type_size(uint16_t UINT16_T)
 
-              # Specifies the name of the NDK library that
-              # you want CMake to locate.
-              log )
+find_library(log-lib
+        log
+        )
 
-# Specifies libraries CMake should link to your target library. You
-# can link multiple libraries, such as libraries you define in this
-# build script, prebuilt third-party libraries, or system libraries.
+include_directories(
+        ${libchewing_src_DIR}/include/
+        ${libchewing_src_DIR}/include/internal/
+        ${libchewing_src_DIR}/src/porting_layer/include/
+        ${libchewing_src_DIR}/src/porting_layer/include/sys/
+        ${libchewing_src_DIR}/thirdparty/sqlite-amalgamation/
+)
 
-target_link_libraries( # Specifies the target library.
-                       native-lib
+# build chewing shared library
+add_library(chewing SHARED
+        ${libchewing_src_DIR}/include/internal/chewing-utf8-util.h
+        ${libchewing_src_DIR}/include/internal/key2pho-private.h
+        ${libchewing_src_DIR}/include/internal/memory-private.h
 
-                       # Links the target library to the log library
-                       # included in the NDK.
-                       ${log-lib})
+        ${libchewing_src_DIR}/src/common/chewing-utf8-util.c
+        ${libchewing_src_DIR}/src/common/key2pho.c
 
+        ${libchewing_src_DIR}/include/chewing.h
+        ${libchewing_src_DIR}/include/chewing-compat.h
+        ${libchewing_src_DIR}/include/chewingio.h
+        ${libchewing_src_DIR}/include/global.h
+        ${libchewing_src_DIR}/include/mod_aux.h
+
+        ${libchewing_src_DIR}/include/internal/chewing-private.h
+        ${libchewing_src_DIR}/include/internal/chewingutil.h
+        ${libchewing_src_DIR}/include/internal/choice-private.h
+        ${libchewing_src_DIR}/include/internal/dict-private.h
+        ${libchewing_src_DIR}/include/internal/global-private.h
+        ${libchewing_src_DIR}/include/internal/pinyin-private.h
+        ${libchewing_src_DIR}/include/internal/tree-private.h
+        ${libchewing_src_DIR}/include/internal/userphrase-private.h
+        ${libchewing_src_DIR}/include/internal/bopomofo-private.h
+
+        ${libchewing_src_DIR}/src/compat.c
+        ${libchewing_src_DIR}/src/chewingio.c
+        ${libchewing_src_DIR}/src/chewingutil.c
+        ${libchewing_src_DIR}/src/choice.c
+        ${libchewing_src_DIR}/src/dict.c
+        ${libchewing_src_DIR}/src/mod_aux.c
+        ${libchewing_src_DIR}/src/pinyin.c
+        ${libchewing_src_DIR}/src/porting_layer/include/plat_mmap.h
+        ${libchewing_src_DIR}/src/porting_layer/include/plat_path.h
+        ${libchewing_src_DIR}/src/porting_layer/include/plat_types.h
+        ${libchewing_src_DIR}/src/porting_layer/include/sys/plat_posix.h
+        ${libchewing_src_DIR}/src/porting_layer/include/sys/plat_windows.h
+        ${libchewing_src_DIR}/src/porting_layer/src/plat_mmap_posix.c
+        ${libchewing_src_DIR}/src/porting_layer/src/plat_mmap_windows.c
+        ${libchewing_src_DIR}/src/porting_layer/src/plat_path.c
+        ${libchewing_src_DIR}/src/porting_layer/src/rpl_malloc.c
+        ${libchewing_src_DIR}/src/private.h
+        ${libchewing_src_DIR}/src/tree.c
+        ${libchewing_src_DIR}/src/userphrase.c
+        ${libchewing_src_DIR}/src/bopomofo.c
+        chewing-jni.cpp
+        )
+
+# build userphrase (& sqlite) static library
+if (WITH_SQLITE3)
+    add_library(userphrase STATIC
+            ${libchewing_src_DIR}/include/internal/chewing-sql.h
+
+            ${libchewing_src_DIR}/src/chewing-sql.c
+            ${libchewing_src_DIR}/src/userphrase-sql.c
+            )
+
+    if (WITH_INTERNAL_SQLITE3)
+        find_package (Threads)
+        add_library(sqlite3_library STATIC
+                ${SQLITE3_SRC_DIR}/sqlite3.c
+                ${SQLITE3_SRC_DIR}/sqlite3.h
+                )
+        target_link_libraries(sqlite3_library ${CMAKE_DL_LIBS} ${CMAKE_THREAD_LIBS_INIT})
+        target_link_libraries(userphrase sqlite3_library)
+    else()
+        target_link_libraries(testhelper ${SQLITE3_LIBRARY})
+    endif()
+else()
+    add_library(userphrase STATIC
+            ${libchewing_src_DIR}/include/internal/hash-private.h
+
+            ${libchewing_src_DIR}/src/hash.c
+            ${libchewing_src_DIR}/src/userphrase-hash.c
+            )
+endif()
+
+# build target
+target_link_libraries(chewing userphrase ${log-lib})
