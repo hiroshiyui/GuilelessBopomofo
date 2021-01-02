@@ -1,0 +1,8 @@
+Hello! Happy New Year! In this release, Guileless Bopomofo brings you these enhancements & improvements:
+
+* More fluid user interface!
+* Reduce the storage usage, save more capacity for you!
+* Depends on your device orientation, the keys become higher or wider than before, make you easier to click them.
+* Fixed the Backspace key, if you click it rapidly, it won't "bouncing" to delete too many characters anymore.
+
+Thanks again for your utilizing!
