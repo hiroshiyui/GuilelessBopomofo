@@ -31,7 +31,6 @@ import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.BehaveLikeKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKeyImageButton
 import org.greenrobot.eventbus.EventBus
@@ -224,17 +223,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
 
     private fun handleControlKey(v: BehaveLikeKey<*>) {
         when (v.keyCode()) {
-            KeyEvent.KEYCODE_SPACE -> {
-                if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
-                    ChewingEngine.handleSpace()
-                    // 空白鍵是否為選字鍵？
-                    if (ChewingEngine.getSpaceAsSelection() == 1 && ChewingEngine.candTotalChoice() > 0) {
-                        EventBus.getDefault().post(CandidatesWindowOpendEvent())
-                    }
-                } else {
-                    sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
-                }
-            }
             KeyEvent.KEYCODE_ENTER -> {
                 if (ChewingEngine.anyPreeditBufferIsNotEmpty()) { // not committed yet
                     ChewingEngine.handleEnter()

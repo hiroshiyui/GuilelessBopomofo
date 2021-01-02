@@ -634,7 +634,7 @@
             app:keyTypeEnum="KEYTYPE_MODIFIER"
             app:srcCompat="@drawable/ic_baseline_keyboard_capslock_24" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.SpaceKeyImageButton
             android:id="@+id/keyImageButtonSpace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
