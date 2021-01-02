@@ -21,7 +21,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.LinearLayout
 
 class KeyboardRow(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
@@ -29,6 +28,5 @@ class KeyboardRow(context: Context, attrs: AttributeSet): LinearLayout(context, 
 
     init {
         this.orientation = HORIZONTAL
-        Log.v(LOGTAG, "Building KeyboardRow.")
     }
 }
