@@ -204,7 +204,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleDefault(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Handle default input '%c' from context ptr: %lld", key, (long long) ctx);
+                        "Handle default input from context ptr: %lld", (long long) ctx);
     chewing_handle_Default(ctx, (int) key);
 }
 
@@ -520,8 +520,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_bufferString(
     char *native_buffer_string = chewing_buffer_String(ctx);
     jstring ret_jstring = env->NewStringUTF(native_buffer_string);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "current pre-edit buffer (result: %s) from context ptr: %lld",
-                        native_buffer_string,
+                        "outputs current pre-edit buffer from context ptr: %lld",
                         (long long) ctx);
     chewing_free(native_buffer_string);
     return ret_jstring;
