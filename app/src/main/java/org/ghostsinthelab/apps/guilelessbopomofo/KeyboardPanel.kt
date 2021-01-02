@@ -54,7 +54,16 @@ class KeyboardPanel(
 
     init {
         Log.v(LOGTAG, "Building KeyboardLayout.")
+    }
+
+    override fun onAttachedToWindow() {
         EventBus.getDefault().register(this)
+        super.onAttachedToWindow()
+    }
+
+    override fun onDetachedFromWindow() {
+        EventBus.getDefault().unregister(this)
+        super.onDetachedFromWindow()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

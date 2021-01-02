@@ -37,8 +37,16 @@ class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
         //   2. Set its height early
         val px = convertDpToPx(2F).toInt()
         this.setPadding(px, 0, px, 0)
+    }
 
+    override fun onAttachedToWindow() {
         EventBus.getDefault().register(this)
+        super.onAttachedToWindow()
+    }
+
+    override fun onDetachedFromWindow() {
+        EventBus.getDefault().unregister(this)
+        super.onDetachedFromWindow()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

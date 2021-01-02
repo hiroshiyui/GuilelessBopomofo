@@ -100,8 +100,16 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
             ChewingEngine.moveToPreEditBufferOffset(offset)
             EventBus.getDefault().post(CandidatesWindowOpendEvent.Offset(offset))
         }
+    }
 
+    override fun onAttachedToWindow() {
         EventBus.getDefault().register(this)
+        super.onAttachedToWindow()
+    }
+
+    override fun onDetachedFromWindow() {
+        EventBus.getDefault().unregister(this)
+        super.onDetachedFromWindow()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

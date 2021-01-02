@@ -36,7 +36,16 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
     init {
         this.orientation = VERTICAL
         Log.v(LOGTAG, "Building KeyboardView.")
+    }
+
+    override fun onAttachedToWindow() {
         EventBus.getDefault().register(this)
+        super.onAttachedToWindow()
+    }
+
+    override fun onDetachedFromWindow() {
+        EventBus.getDefault().unregister(this)
+        super.onDetachedFromWindow()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
