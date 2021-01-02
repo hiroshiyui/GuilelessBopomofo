@@ -24,7 +24,6 @@ import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.util.Log
 import android.view.HapticFeedbackConstants
-import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -222,18 +221,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     }
 
     private fun handleControlKey(v: BehaveLikeKey<*>) {
-        when (v.keyCode()) {
-            KeyEvent.KEYCODE_ENTER -> {
-                if (ChewingEngine.anyPreeditBufferIsNotEmpty()) { // not committed yet
-                    ChewingEngine.handleEnter()
-                } else {
-                    sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
-                }
-            }
-            else -> {
-                Log.v(LOGTAG, "This key has not been implemented its handler")
-            }
-        }
+        Log.v(LOGTAG, "This key ${v.keyCode()} has not been implemented its handler")
     }
 
     private fun setupChewingData(dataPath: String) {
