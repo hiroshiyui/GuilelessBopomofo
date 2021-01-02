@@ -19,7 +19,6 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
-import android.view.KeyEvent
 import android.view.View
 
 interface BehaveLikeKey<T : View> {
@@ -34,28 +33,5 @@ interface BehaveLikeKey<T : View> {
         KEYTYPE_CONTROL(1),
         KEYTYPE_MODIFIER(2),
         KEYTYPE_FUNCTION(3)
-    }
-
-    fun keyCode(): Int? {
-        keyCodeString?.let {
-            return KeyEvent.keyCodeFromString(it)
-        }
-        return null
-    }
-
-    fun isCharacterKey(): Boolean {
-        return (keyType == KeyType.KEYTYPE_CHARACTER.value)
-    }
-
-    fun isControlKey(): Boolean {
-        return (keyType == KeyType.KEYTYPE_CONTROL.value)
-    }
-
-    fun isModifierKey(): Boolean {
-        return (keyType == KeyType.KEYTYPE_MODIFIER.value)
-    }
-
-    fun isFuntionKey(): Boolean {
-        return (keyType == KeyType.KEYTYPE_FUNCTION.value)
     }
 }

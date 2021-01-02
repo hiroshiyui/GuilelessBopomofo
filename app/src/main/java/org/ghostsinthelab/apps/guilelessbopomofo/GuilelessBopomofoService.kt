@@ -162,15 +162,10 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         Log.v(LOGTAG, "onClick")
 
         if (v is BehaveLikeKey<*>) {
-            if (v.isCharacterKey()) {
-                handleCharacterKey(v)
-            }
-            if (v.isControlKey()) {
-                handleControlKey(v)
+            v.keyCodeString?.let {
+                Log.v(LOGTAG, "This key ${it} has not been implemented its handler")
             }
         }
-
-        EventBus.getDefault().post(BufferUpdatedEvent())
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -186,14 +181,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent) {
         ChewingEngine.endCandidateChoice()
         EventBus.getDefault().post(BufferUpdatedEvent())
-    }
-
-    private fun handleCharacterKey(v: BehaveLikeKey<*>) {
-        Log.v(LOGTAG, "This key ${v.keyCode()} has not been implemented its handler")
-    }
-
-    private fun handleControlKey(v: BehaveLikeKey<*>) {
-        Log.v(LOGTAG, "This key ${v.keyCode()} has not been implemented its handler")
     }
 
     private fun setupChewingData(dataPath: String) {
