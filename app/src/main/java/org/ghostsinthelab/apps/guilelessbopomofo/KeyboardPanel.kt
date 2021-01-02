@@ -84,7 +84,7 @@ class KeyboardPanel(
         }
     }
 
-    fun switchToBopomofoLayout() {
+    private fun switchToBopomofoLayout() {
         Log.v(LOGTAG, "switchToMainLayout")
         currentKeyboardLayout = KeyboardLayout.MAIN
 
@@ -122,7 +122,7 @@ class KeyboardPanel(
         }
     }
 
-    fun switchToQwertyLayout() {
+    private fun switchToQwertyLayout() {
         Log.v(LOGTAG, "switchToQwertyLayout")
         currentKeyboardLayout = KeyboardLayout.QWERTY
 
