@@ -31,13 +31,11 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBindi
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.BehaveLikeKey
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKeyImageButton
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 import java.io.FileOutputStream
-import kotlin.properties.Delegates
 
 
 class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
@@ -191,33 +189,7 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
     }
 
     private fun handleCharacterKey(v: BehaveLikeKey<*>) {
-        var sendCharacter by Delegates.notNull<Char>()
-
-        v.keySymbol?.let {
-            sendCharacter = it.get(0)
-        }
-
-        val shiftKeyImageButton =
-            viewBinding.keyboardPanel.findViewById<ShiftKeyImageButton>(R.id.keyImageButtonShift)
-        shiftKeyImageButton?.let {
-            if (shiftKeyImageButton.isActive) {
-                Log.v(LOGTAG, "Shift is active")
-                if (v.keyShiftSymbol?.isNotEmpty() == true) {
-                    sendCharacter = v.keyShiftSymbol.toString().get(0)
-                } else {
-                    sendCharacter = v.keySymbol.toString().get(0).toUpperCase()
-                }
-            }
-        }
-
-        ChewingEngine.handleDefault(sendCharacter)
-
-        shiftKeyImageButton?.let {
-            if (shiftKeyImageButton.isLocked == false) {
-                Log.v(LOGTAG, "Release shift key")
-                shiftKeyImageButton.switchToState(ShiftKeyImageButton.ShiftKeyState.RELEASED)
-            }
-        }
+        Log.v(LOGTAG, "This key ${v.keyCode()} has not been implemented its handler")
     }
 
     private fun handleControlKey(v: BehaveLikeKey<*>) {

@@ -27,7 +27,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
 
-open class KeyImageButton(context: Context, attrs: AttributeSet) :
+abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
     AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
     BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable {
     open val LOGTAG: String = "KeyImageButton"
