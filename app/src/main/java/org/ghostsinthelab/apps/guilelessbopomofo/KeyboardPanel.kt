@@ -69,10 +69,14 @@ class KeyboardPanel(
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMainLayoutChangedEvent(event: MainLayoutChangedEvent) {
         when (ChewingEngine.getChiEngMode()) {
-            SYMBOL_MODE ->
-                switchToQwertyLayout()
-            CHINESE_MODE ->
+            SYMBOL_MODE -> {
+                ChewingEngine.setChiEngMode(CHINESE_MODE)
                 switchToBopomofoLayout()
+            }
+            CHINESE_MODE -> {
+                ChewingEngine.setChiEngMode(SYMBOL_MODE)
+                switchToQwertyLayout()
+            }
         }
     }
 

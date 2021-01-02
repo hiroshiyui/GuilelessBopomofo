@@ -22,9 +22,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
-import org.ghostsinthelab.apps.guilelessbopomofo.CHINESE_MODE
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
-import org.ghostsinthelab.apps.guilelessbopomofo.SYMBOL_MODE
 import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
 import org.greenrobot.eventbus.EventBus
 
@@ -32,12 +29,6 @@ class ModeSwitchKeyImageButton(context: Context, attrs: AttributeSet) : KeyImage
     init {
         this.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            val currentChewingChiEngMode = ChewingEngine.getChiEngMode()
-            if (currentChewingChiEngMode == CHINESE_MODE) {
-                ChewingEngine.setChiEngMode(SYMBOL_MODE)
-            } else {
-                ChewingEngine.setChiEngMode(CHINESE_MODE)
-            }
             EventBus.getDefault().post(MainLayoutChangedEvent())
         }
     }
