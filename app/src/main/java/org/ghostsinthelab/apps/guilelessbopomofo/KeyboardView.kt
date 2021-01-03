@@ -24,10 +24,6 @@ import android.util.AttributeSet
 import android.util.Log
 import android.widget.LinearLayout
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
     private val LOGTAG: String = "KeyboardView"
@@ -36,31 +32,5 @@ class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context
     init {
         this.orientation = VERTICAL
         Log.v(LOGTAG, "Building KeyboardView.")
-    }
-
-    override fun onAttachedToWindow() {
-        EventBus.getDefault().register(this)
-        super.onAttachedToWindow()
-    }
-
-    override fun onDetachedFromWindow() {
-        EventBus.getDefault().unregister(this)
-        super.onDetachedFromWindow()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBufferUpdatedEvent(event: BufferUpdatedEvent) {
-        // chewingEngine.setMaxChiSymbolLen() 到達閾值時，
-        // 會把 pre-edit buffer 開頭送到 commit buffer，
-        // 所以要先丟出來：
-        if (ChewingEngine.commitCheck() == 1) {
-            GuilelessBopomofoServiceContext.serviceInstance.currentInputConnection.commitText(
-                ChewingEngine.commitString(),
-                1
-            )
-            // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
-            // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
-            ChewingEngine.handleEnd()
-        }
     }
 }

@@ -183,6 +183,19 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         EventBus.getDefault().post(BufferUpdatedEvent())
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onBufferUpdatedEvent(event: BufferUpdatedEvent) {
+        // chewingEngine.setMaxChiSymbolLen() 到達閾值時，
+        // 會把 pre-edit buffer 開頭送到 commit buffer，
+        // 所以要先丟出來：
+        if (ChewingEngine.commitCheck() == 1) {
+            currentInputConnection.commitText(ChewingEngine.commitString(), 1)
+            // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
+            // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
+            ChewingEngine.handleEnd()
+        }
+    }
+
     private fun setupChewingData(dataPath: String) {
         // Get app data directory
         val chewingDataDir = File(dataPath)
