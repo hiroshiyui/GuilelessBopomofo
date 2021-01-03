@@ -30,7 +30,6 @@ import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.BehaveLikeKey
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -38,7 +37,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 
-class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
+class GuilelessBopomofoService : InputMethodService() {
     val LOGTAG = "GuilelessBopomofoSvc"
     var userHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
     lateinit var viewBinding: KeyboardLayoutBinding
@@ -155,17 +154,6 @@ class GuilelessBopomofoService : InputMethodService(), View.OnClickListener {
         Log.v(LOGTAG, "onDestroy()")
         ChewingEngine.delete()
         EventBus.getDefault().unregister(this)
-    }
-
-    override fun onClick(v: View?) {
-        v?.performHapticFeedback(userHapticFeedbackStrength)
-        Log.v(LOGTAG, "onClick")
-
-        if (v is BehaveLikeKey<*>) {
-            v.keyCodeString?.let {
-                Log.v(LOGTAG, "This key ${it} has not been implemented its handler")
-            }
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
