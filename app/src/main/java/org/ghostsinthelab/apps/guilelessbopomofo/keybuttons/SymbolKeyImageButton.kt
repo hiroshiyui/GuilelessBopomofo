@@ -17,18 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo
+package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
 
-import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-import org.ghostsinthelab.apps.guilelessbopomofo.keybuttons.CandidateButton
+import android.content.Context
+import android.util.AttributeSet
+import android.view.HapticFeedbackConstants
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SymbolPickerOpenedEvent
+import org.greenrobot.eventbus.EventBus
 
-class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val LOGTAG: String = "CandidateViewHolder"
-    private val candidateButton: CandidateButton = itemView.findViewById(R.id.buttonCandidateItem)
-
-    fun setData(data: Int) {
-        candidateButton.text = ChewingEngine.candStringByIndexStatic(data)
-        candidateButton.dataIndex = data
+class SymbolKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
+    init {
+        this.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            ChewingEngine.openSymbolCandidates()
+            EventBus.getDefault().post(SymbolPickerOpenedEvent())
+        }
     }
 }

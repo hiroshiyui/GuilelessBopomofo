@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2020 YOU, HUI-HONG
+ * Copyright (C) 2021 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,30 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatButton
-import org.ghostsinthelab.apps.guilelessbopomofo.R
-import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
+import android.util.Log
+import android.view.KeyEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.PrintingKeyDownEvent
 import org.greenrobot.eventbus.EventBus
 
-class CandidateButton(context: Context, attrs: AttributeSet) :
-    AppCompatButton(context, attrs, R.attr.buttonStyle) {
-    var dataIndex: Int = 0
-
+class CharacterKeyImageButton(context: Context, attrs: AttributeSet) :
+    KeyImageButton(context, attrs) {
     init {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.MaterialButton, 0, 0).apply {
-            try {
-                isHapticFeedbackEnabled = true
-            } finally {
-                recycle()
-            }
-        }
-
         this.setOnClickListener {
-            EventBus.getDefault().post(CandidateSelectionDoneEvent.Indexed(dataIndex))
+            this.keyCodeString?.let { keycodeString ->
+                Log.v(LOGTAG, "${keycodeString}")
+                val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.keyCodeFromString(keycodeString))
+                EventBus.getDefault().post(PrintingKeyDownEvent(keyEvent))
+            }
         }
     }
 }

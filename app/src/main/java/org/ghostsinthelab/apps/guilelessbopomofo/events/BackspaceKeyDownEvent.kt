@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2020 YOU, HUI-HONG
+ * Copyright (C) 2021 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,17 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.events
 
-import android.content.Context
-import android.util.AttributeSet
-import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
-import org.greenrobot.eventbus.EventBus
-
-class BackToMainKeyButton(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
-    init {
-        this.setOnClickListener {
-            EventBus.getDefault().post(CandidateSelectionDoneEvent())
-        }
-    }
+class BackspaceKeyDownEvent {
 }

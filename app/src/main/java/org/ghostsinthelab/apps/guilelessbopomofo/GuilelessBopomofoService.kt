@@ -24,12 +24,14 @@ import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.util.Log
 import android.view.HapticFeedbackConstants
+import android.view.KeyEvent
+import android.view.KeyEvent.META_SHIFT_ON
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.*
+import org.ghostsinthelab.apps.guilelessbopomofo.keybuttons.ShiftKeyImageButton
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -154,6 +156,91 @@ class GuilelessBopomofoService : InputMethodService() {
         Log.v(LOGTAG, "onDestroy()")
         ChewingEngine.delete()
         EventBus.getDefault().unregister(this)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        super.onKeyDown(keyCode, event)
+        Log.v(LOGTAG, "onKeyDown() (keyCode: ${keyCode}, event: ${event})")
+        event?.let {
+            it.startTracking()
+            if (it.isPrintingKey) {
+                EventBus.getDefault().post(PrintingKeyDownEvent(it))
+            } else {
+                EventBus.getDefault().post(NotPrintingKeyDownEvent(it))
+            }
+        }
+        return true
+    }
+
+    override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.v(LOGTAG, "onKeyLongPress() (keyCode: ${keyCode}, event: ${event})")
+        event?.let {
+            when (it.keyCode) {
+                KeyEvent.KEYCODE_SHIFT_RIGHT -> {
+                    ChewingEngine.openPuncCandidates()
+                    EventBus.getDefault().post(CandidatesWindowOpendEvent())
+                }
+            }
+        }
+        return super.onKeyLongPress(keyCode, event)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onPrintingKeyDown(event: PrintingKeyDownEvent) {
+        Log.v(LOGTAG, "onIsPrintingKeyDown: ${event.keyEvent.keyCode}")
+
+        if (event.keyEvent.repeatCount > 0) {
+            return
+        }
+
+        var keyPressed: Char = event.keyEvent.unicodeChar.toChar()
+
+        val shiftKeyImageButton =
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.findViewById<ShiftKeyImageButton>(
+                R.id.keyImageButtonShift
+            )
+
+        shiftKeyImageButton?.let {
+            if (shiftKeyImageButton.isActive) {
+                Log.v(LOGTAG, "Shift is active")
+                currentInputConnection.sendKeyEvent(
+                    KeyEvent(
+                        KeyEvent.ACTION_DOWN,
+                        KeyEvent.KEYCODE_SHIFT_LEFT
+                    )
+                )
+                keyPressed = event.keyEvent.getUnicodeChar(META_SHIFT_ON).toChar()
+            }
+        }
+
+        ChewingEngine.handleDefault(keyPressed)
+        EventBus.getDefault().post(BufferUpdatedEvent())
+
+        shiftKeyImageButton?.let {
+            if (shiftKeyImageButton.isActive && !shiftKeyImageButton.isLocked) {
+                Log.v(LOGTAG, "Release shift key")
+                shiftKeyImageButton.switchToState(ShiftKeyImageButton.ShiftKeyState.RELEASED)
+                currentInputConnection.sendKeyEvent(
+                    KeyEvent(
+                        KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_SHIFT_LEFT
+                    )
+                )
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onIsNotPrintingKeyDown(event: NotPrintingKeyDownEvent) {
+        Log.v(LOGTAG, "onIsNotPrintingKeyDown: ${event.keyEvent.keyCode}")
+        when (event.keyEvent.keyCode) {
+            KeyEvent.KEYCODE_SPACE -> {
+                EventBus.getDefault().post(SpaceKeyDownEvent())
+            }
+            KeyEvent.KEYCODE_DEL -> {
+                EventBus.getDefault().post(BackspaceKeyDownEvent())
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

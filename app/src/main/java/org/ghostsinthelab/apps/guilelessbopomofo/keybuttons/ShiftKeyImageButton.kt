@@ -17,13 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
 
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import androidx.core.content.ContextCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.R
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ShiftKeyDownEvent
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class ShiftKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override val LOGTAG: String = "ShiftKeyImageButton"
@@ -54,17 +58,7 @@ class ShiftKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButto
         }
 
         this.setOnClickListener {
-            when (currentShiftKeyState) {
-                ShiftKeyState.RELEASED -> {
-                    switchToState(ShiftKeyState.PRESSED)
-                }
-                ShiftKeyState.PRESSED -> {
-                    switchToState(ShiftKeyState.HOLD)
-                }
-                ShiftKeyState.HOLD -> {
-                    switchToState(ShiftKeyState.RELEASED)
-                }
-            }
+            EventBus.getDefault().post(ShiftKeyDownEvent())
         }
     }
 
@@ -101,6 +95,31 @@ class ShiftKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButto
                         R.color.colorKeyboardSpecialKeyBackgroundHold
                     )
                 )
+            }
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onShiftKeyDown(event: ShiftKeyDownEvent) {
+        when (currentShiftKeyState) {
+            ShiftKeyState.RELEASED -> {
+                switchToState(ShiftKeyState.PRESSED)
+            }
+            ShiftKeyState.PRESSED -> {
+                switchToState(ShiftKeyState.HOLD)
+            }
+            ShiftKeyState.HOLD -> {
+                switchToState(ShiftKeyState.RELEASED)
             }
         }
     }

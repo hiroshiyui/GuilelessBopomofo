@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2020 YOU, HUI-HONG
+ * Copyright (C) 2021 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,19 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.events
 
-import android.content.Context
-import android.util.AttributeSet
-import android.view.HapticFeedbackConstants
-import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
-import org.greenrobot.eventbus.EventBus
+import android.view.KeyEvent
 
-class ModeSwitchKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
-    init {
-        this.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            EventBus.getDefault().post(MainLayoutChangedEvent())
-        }
-    }
+class PrintingKeyDownEvent(val keyEvent: KeyEvent) {
 }

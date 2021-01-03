@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
 
 import android.content.Context
 import android.util.AttributeSet
@@ -26,21 +26,39 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SpaceKeyDownEvent
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class SpaceKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
-            if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
-                ChewingEngine.handleSpace()
-                EventBus.getDefault().post(BufferUpdatedEvent())
-                // 空白鍵是否為選字鍵？
-                if (ChewingEngine.getSpaceAsSelection() == 1 && ChewingEngine.candTotalChoice() > 0) {
-                    EventBus.getDefault().post(CandidatesWindowOpendEvent())
-                }
-            } else {
-                GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
+            EventBus.getDefault().post(SpaceKeyDownEvent())
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSpaceKeyDown(event: SpaceKeyDownEvent) {
+        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
+            ChewingEngine.handleSpace()
+            EventBus.getDefault().post(BufferUpdatedEvent())
+            // 空白鍵是否為選字鍵？
+            if (ChewingEngine.getSpaceAsSelection() == 1 && ChewingEngine.candTotalChoice() > 0) {
+                EventBus.getDefault().post(CandidatesWindowOpendEvent())
             }
+        } else {
+            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
         }
     }
 }

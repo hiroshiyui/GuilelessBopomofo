@@ -17,13 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.SystemClock
 import android.util.AttributeSet
-import android.view.HapticFeedbackConstants
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import kotlinx.coroutines.delay
@@ -31,44 +31,69 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.BackspaceKeyDownEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import kotlin.concurrent.fixedRateTimer
 
 @SuppressLint("ClickableViewAccessibility")
-class BackspaceKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
+class BackspaceKeyImageButton(context: Context, attrs: AttributeSet) :
+    KeyImageButton(context, attrs) {
     private var backspacePressed: Boolean = false
     private var lastClickTime: Long = 0
 
     init {
         this.setOnTouchListener { v, event ->
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    // avoids too fast repeat clicks
-                    if (SystemClock.elapsedRealtime() - lastClickTime < 400) {
-                        return@setOnTouchListener true
-                    }
-                    lastClickTime = SystemClock.elapsedRealtime()
-
-                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                    if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
-                        ChewingEngine.handleBackspace()
-                        EventBus.getDefault().post(BufferUpdatedEvent())
-                    } else {
-                        // acts as general and repeatable backspace key
-                        runBlocking {
-                            launch {
-                                backspacePressed = true
-                                repeatBackspace()
-                            }
-                        }
-                    }
-                }
                 MotionEvent.ACTION_UP -> {
                     backspacePressed = false
                 }
             }
-            return@setOnTouchListener true
+            return@setOnTouchListener false
+        }
+
+        this.setOnClickListener {
+            Log.v(LOGTAG, "setOnClickListener")
+            EventBus.getDefault().post(BackspaceKeyDownEvent())
+        }
+
+        this.setOnLongClickListener {
+            runBlocking {
+                launch {
+                    backspacePressed = true
+                    repeatBackspace()
+                }
+            }
+
+            return@setOnLongClickListener true
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onBackspaceKeyDown(event: BackspaceKeyDownEvent) {
+        // avoids too fast repeat clicks
+        if (SystemClock.elapsedRealtime() - lastClickTime < 400) {
+            Log.v(LOGTAG, "User repeats clicking too quick...")
+        }
+        lastClickTime = SystemClock.elapsedRealtime()
+
+        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
+            ChewingEngine.handleBackspace()
+            EventBus.getDefault().post(BufferUpdatedEvent())
+        } else {
+            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
         }
     }
 

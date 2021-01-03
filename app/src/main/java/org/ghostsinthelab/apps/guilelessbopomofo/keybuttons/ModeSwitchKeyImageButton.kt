@@ -17,29 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.SymbolsPickerLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.events.SymbolPickerOpenedEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
 import org.greenrobot.eventbus.EventBus
 
-class SymbolKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
-    private var v: KeyboardLayoutBinding =
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding
-    private var symbolsPickerLayoutBinding: SymbolsPickerLayoutBinding =
-        SymbolsPickerLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-
+class ModeSwitchKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            ChewingEngine.openSymbolCandidates()
-            EventBus.getDefault().post(SymbolPickerOpenedEvent())
+            EventBus.getDefault().post(MainLayoutChangedEvent())
         }
     }
 }

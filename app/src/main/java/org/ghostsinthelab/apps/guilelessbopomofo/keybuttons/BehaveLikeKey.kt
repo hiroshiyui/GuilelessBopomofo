@@ -17,18 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo
+package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
 
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-import org.ghostsinthelab.apps.guilelessbopomofo.keybuttons.CandidateButton
 
-class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val LOGTAG: String = "CandidateViewHolder"
-    private val candidateButton: CandidateButton = itemView.findViewById(R.id.buttonCandidateItem)
+interface BehaveLikeKey<T : View> {
+    var keyCodeString: String?
+    var keyType: Int?
+    var keySymbol: String?
+    var keyShiftSymbol: String?
 
-    fun setData(data: Int) {
-        candidateButton.text = ChewingEngine.candStringByIndexStatic(data)
-        candidateButton.dataIndex = data
+    // NOTICE: Should be in sync with attrs.xml
+    enum class KeyType(val value: Int) {
+        KEYTYPE_CHARACTER(0),
+        KEYTYPE_CONTROL(1),
+        KEYTYPE_MODIFIER(2),
+        KEYTYPE_FUNCTION(3)
     }
 }

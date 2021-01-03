@@ -17,21 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
 
-import android.view.View
+import android.content.Context
+import android.util.AttributeSet
+import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
+import org.greenrobot.eventbus.EventBus
 
-interface BehaveLikeKey<T : View> {
-    var keyCodeString: String?
-    var keyType: Int?
-    var keySymbol: String?
-    var keyShiftSymbol: String?
-
-    // NOTICE: Should be in sync with attrs.xml
-    enum class KeyType(val value: Int) {
-        KEYTYPE_CHARACTER(0),
-        KEYTYPE_CONTROL(1),
-        KEYTYPE_MODIFIER(2),
-        KEYTYPE_FUNCTION(3)
+class BackToMainKeyButton(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
+    init {
+        this.setOnClickListener {
+            EventBus.getDefault().post(CandidateSelectionDoneEvent())
+        }
     }
 }
