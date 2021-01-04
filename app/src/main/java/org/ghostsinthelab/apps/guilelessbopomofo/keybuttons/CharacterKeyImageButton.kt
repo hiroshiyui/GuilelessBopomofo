@@ -21,7 +21,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.PrintingKeyDownEvent
 import org.greenrobot.eventbus.EventBus
@@ -31,7 +30,6 @@ class CharacterKeyImageButton(context: Context, attrs: AttributeSet) :
     init {
         this.setOnClickListener {
             this.keyCodeString?.let { keycodeString ->
-                Log.v(LOGTAG, "${keycodeString}")
                 val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.keyCodeFromString(keycodeString))
                 EventBus.getDefault().post(PrintingKeyDownEvent(keyEvent))
             }

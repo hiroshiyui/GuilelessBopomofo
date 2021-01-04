@@ -25,6 +25,7 @@ import android.inputmethodservice.InputMethodService
 import android.util.Log
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
+import android.view.KeyEvent.KEYCODE_BACK
 import android.view.KeyEvent.META_SHIFT_ON
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -126,8 +127,9 @@ class GuilelessBopomofoService : InputMethodService() {
     }
 
     override fun onEvaluateInputViewShown(): Boolean {
+        super.onEvaluateInputViewShown()
         Log.v(LOGTAG, "onEvaluateInputViewShown()")
-        return super.onEvaluateInputViewShown()
+        return true
     }
 
     override fun onBindInput() {
@@ -159,10 +161,14 @@ class GuilelessBopomofoService : InputMethodService() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        super.onKeyDown(keyCode, event)
-        Log.v(LOGTAG, "onKeyDown() (keyCode: ${keyCode}, event: ${event})")
         event?.let {
+            // keep default behavior of Back key
+            if (it.keyCode == KEYCODE_BACK) {
+                return super.onKeyDown(keyCode, event)
+            }
+            // for onKeyLongPress()...
             it.startTracking()
+
             if (it.isPrintingKey) {
                 EventBus.getDefault().post(PrintingKeyDownEvent(it))
             } else {
@@ -173,7 +179,6 @@ class GuilelessBopomofoService : InputMethodService() {
     }
 
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
-        Log.v(LOGTAG, "onKeyLongPress() (keyCode: ${keyCode}, event: ${event})")
         event?.let {
             when (it.keyCode) {
                 KeyEvent.KEYCODE_SHIFT_RIGHT -> {
@@ -187,8 +192,8 @@ class GuilelessBopomofoService : InputMethodService() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onPrintingKeyDown(event: PrintingKeyDownEvent) {
-        Log.v(LOGTAG, "onIsPrintingKeyDown: ${event.keyEvent.keyCode}")
-
+        // don't repeat character keys if they are long-pressed by user,
+        // let onKeyLongPress() do it own responsibility.
         if (event.keyEvent.repeatCount > 0) {
             return
         }
@@ -196,7 +201,7 @@ class GuilelessBopomofoService : InputMethodService() {
         var keyPressed: Char = event.keyEvent.unicodeChar.toChar()
 
         val shiftKeyImageButton =
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.findViewById<ShiftKeyImageButton>(
+            viewBinding.keyboardPanel.findViewById<ShiftKeyImageButton>(
                 R.id.keyImageButtonShift
             )
 
@@ -232,7 +237,6 @@ class GuilelessBopomofoService : InputMethodService() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onIsNotPrintingKeyDown(event: NotPrintingKeyDownEvent) {
-        Log.v(LOGTAG, "onIsNotPrintingKeyDown: ${event.keyEvent.keyCode}")
         when (event.keyEvent.keyCode) {
             KeyEvent.KEYCODE_SPACE -> {
                 EventBus.getDefault().post(SpaceKeyDownEvent())

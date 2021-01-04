@@ -55,7 +55,6 @@ class BackspaceKeyImageButton(context: Context, attrs: AttributeSet) :
         }
 
         this.setOnClickListener {
-            Log.v(LOGTAG, "setOnClickListener")
             EventBus.getDefault().post(BackspaceKeyDownEvent())
         }
 
