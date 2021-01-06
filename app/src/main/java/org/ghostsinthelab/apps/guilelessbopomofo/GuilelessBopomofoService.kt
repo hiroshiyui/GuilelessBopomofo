@@ -162,6 +162,7 @@ class GuilelessBopomofoService : InputMethodService() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         event?.let {
+            Log.v(LOGTAG, "${it}")
             // keep default behavior of Back key
             if (it.keyCode == KEYCODE_BACK) {
                 return super.onKeyDown(keyCode, event)
@@ -180,6 +181,7 @@ class GuilelessBopomofoService : InputMethodService() {
 
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
         event?.let {
+            Log.v(LOGTAG, "${it}")
             when (it.keyCode) {
                 KeyEvent.KEYCODE_SHIFT_RIGHT -> {
                     ChewingEngine.openPuncCandidates()
@@ -243,6 +245,9 @@ class GuilelessBopomofoService : InputMethodService() {
             }
             KeyEvent.KEYCODE_DEL -> {
                 EventBus.getDefault().post(BackspaceKeyDownEvent())
+            }
+            KeyEvent.KEYCODE_ENTER -> {
+                EventBus.getDefault().post(EnterKeyDownEvent())
             }
         }
     }

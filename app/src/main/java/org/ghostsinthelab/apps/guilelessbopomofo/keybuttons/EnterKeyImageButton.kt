@@ -25,17 +25,35 @@ import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.EnterKeyDownEvent
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class EnterKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
-            if (ChewingEngine.anyPreeditBufferIsNotEmpty()) { // not committed yet
-                ChewingEngine.handleEnter()
-                EventBus.getDefault().post(BufferUpdatedEvent())
-            } else {
-                GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
-            }
+            EventBus.getDefault().post(EnterKeyDownEvent())
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEnterKeyDownEvent(event: EnterKeyDownEvent) {
+        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) { // not committed yet
+            ChewingEngine.handleEnter()
+            EventBus.getDefault().post(BufferUpdatedEvent())
+        } else {
+            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
         }
     }
 }
