@@ -140,6 +140,8 @@ class KeyboardPanel(
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSymbolPickerOpenedEvent(event: SymbolPickerOpenedEvent) {
         currentKeyboardLayout = KeyboardLayout.SYMBOLS
+        ChewingEngine.openSymbolCandidates()
+
         val symbolsPickerLayoutBinding =
             SymbolsPickerLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
         removeAllViews()

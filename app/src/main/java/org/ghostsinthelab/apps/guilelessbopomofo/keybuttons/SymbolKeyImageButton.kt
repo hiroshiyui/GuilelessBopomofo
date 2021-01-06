@@ -22,7 +22,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
 import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.events.SymbolPickerOpenedEvent
 import org.greenrobot.eventbus.EventBus
 
@@ -30,7 +29,6 @@ class SymbolKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButt
     init {
         this.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            ChewingEngine.openSymbolCandidates()
             EventBus.getDefault().post(SymbolPickerOpenedEvent())
         }
     }

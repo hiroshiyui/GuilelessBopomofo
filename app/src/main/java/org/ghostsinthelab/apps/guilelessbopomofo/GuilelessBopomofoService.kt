@@ -200,6 +200,11 @@ class GuilelessBopomofoService : InputMethodService() {
             return
         }
 
+        if (event.keyEvent.keyCode == KEYCODE_GRAVE && ChewingEngine.getChiEngMode() == CHINESE_MODE) {
+            EventBus.getDefault().post(SymbolPickerOpenedEvent())
+            return
+        }
+
         var keyPressed: Char = event.keyEvent.unicodeChar.toChar()
 
         val shiftKeyImageButton =
@@ -248,6 +253,16 @@ class GuilelessBopomofoService : InputMethodService() {
             }
             KeyEvent.KEYCODE_ENTER -> {
                 EventBus.getDefault().post(EnterKeyDownEvent())
+            }
+            KeyEvent.KEYCODE_ESCAPE -> {
+                Log.v(LOGTAG, "${viewBinding.keyboardPanel.currentKeyboardLayout}")
+                if (viewBinding.keyboardPanel.currentKeyboardLayout in listOf(
+                        KeyboardPanel.KeyboardLayout.SYMBOLS,
+                        KeyboardPanel.KeyboardLayout.CANDIDATES
+                    )
+                ) {
+                    EventBus.getDefault().post(CandidateSelectionDoneEvent())
+                }
             }
         }
     }
