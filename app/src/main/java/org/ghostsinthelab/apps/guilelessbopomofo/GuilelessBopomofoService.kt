@@ -25,8 +25,7 @@ import android.inputmethodservice.InputMethodService
 import android.util.Log
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
-import android.view.KeyEvent.KEYCODE_BACK
-import android.view.KeyEvent.META_SHIFT_ON
+import android.view.KeyEvent.*
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -246,7 +245,7 @@ class GuilelessBopomofoService : InputMethodService() {
     fun onIsNotPrintingKeyDown(event: NotPrintingKeyDownEvent) {
         when (event.keyEvent.keyCode) {
             KeyEvent.KEYCODE_SPACE -> {
-                EventBus.getDefault().post(SpaceKeyDownEvent())
+                EventBus.getDefault().post(SpaceKeyDownEvent.Physical(event.keyEvent))
             }
             KeyEvent.KEYCODE_DEL -> {
                 EventBus.getDefault().post(BackspaceKeyDownEvent())

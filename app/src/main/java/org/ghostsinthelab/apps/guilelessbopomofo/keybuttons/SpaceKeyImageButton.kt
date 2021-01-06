@@ -26,6 +26,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.SpaceKeyDownEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -50,6 +51,19 @@ class SpaceKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButto
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSpaceKeyDown(event: SpaceKeyDownEvent) {
+        spaceKeyDown()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSpaceKeyDown(event: SpaceKeyDownEvent.Physical) {
+        if (event.keyEvent.isShiftPressed) {
+            EventBus.getDefault().post(MainLayoutChangedEvent())
+            return
+        }
+        spaceKeyDown()
+    }
+
+    private fun spaceKeyDown() {
         if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
             ChewingEngine.handleSpace()
             EventBus.getDefault().post(BufferUpdatedEvent())
