@@ -21,5 +21,4 @@ package org.ghostsinthelab.apps.guilelessbopomofo.events
 
 import android.view.KeyEvent
 
-class NotPrintingKeyDownEvent(val keyEvent: KeyEvent) {
-}
+class NotPrintingKeyDownEvent(val keyEvent: KeyEvent)

@@ -19,5 +19,4 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.events
 
-class SymbolPickerOpenedEvent {
-}
+class SymbolPickerOpenedEvent

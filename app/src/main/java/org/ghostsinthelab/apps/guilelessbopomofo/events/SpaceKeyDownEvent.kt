@@ -22,5 +22,5 @@ package org.ghostsinthelab.apps.guilelessbopomofo.events
 import android.view.KeyEvent
 
 class SpaceKeyDownEvent {
-    class Physical(val keyEvent: KeyEvent) {}
+    class Physical(val keyEvent: KeyEvent)
 }

@@ -215,10 +215,7 @@ class GuilelessBopomofoService : InputMethodService() {
             if (shiftKeyImageButton.isActive) {
                 Log.v(LOGTAG, "Shift is active")
                 currentInputConnection.sendKeyEvent(
-                    KeyEvent(
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_SHIFT_LEFT
-                    )
+                    KeyEvent(ACTION_DOWN, KEYCODE_SHIFT_LEFT)
                 )
                 keyPressed = event.keyEvent.getUnicodeChar(META_SHIFT_ON).toChar()
             }
@@ -232,10 +229,7 @@ class GuilelessBopomofoService : InputMethodService() {
                 Log.v(LOGTAG, "Release shift key")
                 shiftKeyImageButton.switchToState(ShiftKeyImageButton.ShiftKeyState.RELEASED)
                 currentInputConnection.sendKeyEvent(
-                    KeyEvent(
-                        KeyEvent.ACTION_UP,
-                        KeyEvent.KEYCODE_SHIFT_LEFT
-                    )
+                    KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT)
                 )
             }
         }
@@ -244,17 +238,16 @@ class GuilelessBopomofoService : InputMethodService() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onIsNotPrintingKeyDown(event: NotPrintingKeyDownEvent) {
         when (event.keyEvent.keyCode) {
-            KeyEvent.KEYCODE_SPACE -> {
+            KEYCODE_SPACE -> {
                 EventBus.getDefault().post(SpaceKeyDownEvent.Physical(event.keyEvent))
             }
-            KeyEvent.KEYCODE_DEL -> {
+            KEYCODE_DEL -> {
                 EventBus.getDefault().post(BackspaceKeyDownEvent())
             }
-            KeyEvent.KEYCODE_ENTER -> {
+            KEYCODE_ENTER -> {
                 EventBus.getDefault().post(EnterKeyDownEvent())
             }
-            KeyEvent.KEYCODE_ESCAPE -> {
-                Log.v(LOGTAG, "${viewBinding.keyboardPanel.currentKeyboardLayout}")
+            KEYCODE_ESCAPE -> {
                 if (viewBinding.keyboardPanel.currentKeyboardLayout in listOf(
                         KeyboardPanel.KeyboardLayout.SYMBOLS,
                         KeyboardPanel.KeyboardLayout.CANDIDATES

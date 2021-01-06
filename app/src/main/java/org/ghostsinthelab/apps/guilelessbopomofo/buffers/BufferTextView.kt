@@ -24,5 +24,4 @@ import android.util.AttributeSet
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
 
 abstract class BufferTextView(context: Context, attrs: AttributeSet) :
-    androidx.appcompat.widget.AppCompatTextView(context, attrs), DisplayMetricsComputable {
-}
+    androidx.appcompat.widget.AppCompatTextView(context, attrs), DisplayMetricsComputable
