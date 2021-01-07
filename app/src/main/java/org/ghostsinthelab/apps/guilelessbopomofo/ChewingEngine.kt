@@ -112,9 +112,9 @@ object ChewingEngine {
 
     fun openPuncCandidates() {
         candClose()
-        // 「常用符號」
         handleDefault('`')
-        handleDefault('3')
+        // 「常用符號」
+        candChooseByIndex(2)
         candOpen()
     }
 

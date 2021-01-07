@@ -90,13 +90,25 @@ class ChewingEngineInstrumentedTest {
 
     @Test
     fun validSelKeys() {
-        val selKeys = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9').map { it.toInt() }
-        ChewingEngine.setSelKey(selKeys, 9)
+        ChewingEngine.setCandPerPage(10)
+        val selKeys = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+        ChewingEngine.setSelKey(selKeys, 10)
         val listKeys = ChewingEngine.getSelKey()
         // listKeys should be a pointer address, which should not be zero:
         assertNotEquals(listKeys, 0)
         ChewingEngine.free(listKeys)
         // TODO: 可能需要一個給 Android 這邊用的 listKeys
+    }
+
+    @Test
+    fun validOpenPuncCandidates() {
+        ChewingEngine.setCandPerPage(10)
+        val selKeys = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+        ChewingEngine.setSelKey(selKeys, 10)
+        ChewingEngine.openPuncCandidates()
+        assertEquals(ChewingEngine.hasCandidates(), true)
+        val candidateString: String = ChewingEngine.candStringByIndexStatic(0)
+        assertEquals(candidateString, "，")
     }
 
     @Test
