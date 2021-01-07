@@ -27,10 +27,7 @@ import android.widget.Button
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
-import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.SymbolPickerOpenedEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -135,6 +132,17 @@ class KeyboardPanel(
 
         this.removeAllViews()
         this.addView(keyboardQwertyLayoutBinding.root)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEscKeyDownEvent(event: EscKeyDownEvent) {
+        if (currentKeyboardLayout in listOf(
+                KeyboardLayout.SYMBOLS,
+                KeyboardLayout.CANDIDATES
+            )
+        ) {
+            EventBus.getDefault().post(CandidateSelectionDoneEvent())
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -248,13 +248,7 @@ class GuilelessBopomofoService : InputMethodService() {
                 EventBus.getDefault().post(EnterKeyDownEvent())
             }
             KEYCODE_ESCAPE -> {
-                if (viewBinding.keyboardPanel.currentKeyboardLayout in listOf(
-                        KeyboardPanel.KeyboardLayout.SYMBOLS,
-                        KeyboardPanel.KeyboardLayout.CANDIDATES
-                    )
-                ) {
-                    EventBus.getDefault().post(CandidateSelectionDoneEvent())
-                }
+                EventBus.getDefault().post(EscKeyDownEvent())
             }
         }
     }
