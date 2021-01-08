@@ -37,8 +37,12 @@ object ChewingEngine {
     external fun bufferLen(chewingCtx: Long = context): Int
     external fun bufferString(chewingCtx: Long = context): String
     external fun bufferStringStatic(chewingCtx: Long = context): String
+    external fun candChoicePerPage(chewingCtx: Long = context): Int
     external fun candChooseByIndex(index: Int, chewingCtx: Long = context): Int
     external fun candClose(chewingCtx: Long = context): Int
+    external fun candCurrentPage(chewingCtx: Long = context): Int
+    external fun candEnumerate(chewingCtx: Long = context)
+    external fun candHasNext(chewingCtx: Long = context): Int
     external fun candListFirst(chewingCtx: Long = context): Int
     external fun candListHasNext(chewingCtx: Long = context): Boolean
     external fun candListHasPrev(chewingCtx: Long = context): Boolean
@@ -46,8 +50,11 @@ object ChewingEngine {
     external fun candListNext(chewingCtx: Long = context): Int
     external fun candListPrev(chewingCtx: Long = context): Int
     external fun candOpen(chewingCtx: Long = context): Int
+    external fun candString(chewingCtx: Long = context): String
     external fun candStringByIndexStatic(index: Int, chewingCtx: Long = context): String
+    external fun candStringStatic(chewingCtx: Long = context): String
     external fun candTotalChoice(chewingCtx: Long = context): Int
+    external fun candTotalPage(chewingCtx: Long = context): Int
     external fun cleanBopomofoBuf(chewingCtx: Long = context): Int
     external fun cleanPreeditBuf(chewingCtx: Long = context): Int
     external fun commitCheck(chewingCtx: Long = context): Int
@@ -55,6 +62,7 @@ object ChewingEngine {
     external fun commitString(chewingCtx: Long = context): String
     external fun commitStringStatic(chewingCtx: Long = context): String
     external fun convKBStr2Num(keyboardString: String): Int
+    external fun cursorCurrent(chewingCtx: Long = context): Int
     external fun delete(chewingCtx: Long = context)
     external fun free(resourcePtr: Long)
     external fun getCandPerPage(chewingCtx: Long = context): Int
@@ -69,8 +77,11 @@ object ChewingEngine {
     external fun handleDefault(key: Char, chewingCtx: Long = context)
     external fun handleEnd(chewingCtx: Long = context)
     external fun handleEnter(chewingCtx: Long = context)
+    external fun handleEsc(chewingCtx: Long = context)
     external fun handleHome(chewingCtx: Long = context)
     external fun handleLeft(chewingCtx: Long = context)
+    external fun handlePageDown(chewingCtx: Long = context)
+    external fun handlePageUp(chewingCtx: Long = context)
     external fun handleRight(chewingCtx: Long = context)
     external fun handleSpace(chewingCtx: Long = context)
     external fun setCandPerPage(candidates: Int, chewingCtx: Long = context)

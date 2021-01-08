@@ -112,6 +112,95 @@ class ChewingEngineInstrumentedTest {
     }
 
     @Test
+    fun validPagedCandidates() {
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        ChewingEngine.setCandPerPage(10)
+        val selKeys = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+        ChewingEngine.setSelKey(selKeys, 10)
+        ChewingEngine.setPhraseChoiceRearward(false)
+
+        ChewingEngine.handleDefault('x')
+        ChewingEngine.handleDefault('u')
+        ChewingEngine.handleDefault('/')
+        ChewingEngine.handleDefault('6')
+
+        ChewingEngine.handleDefault('m')
+        ChewingEngine.handleDefault('/')
+        ChewingEngine.handleDefault('4')
+
+        ChewingEngine.handleDefault('r')
+        ChewingEngine.handleDefault('u')
+        ChewingEngine.handleDefault('p')
+        ChewingEngine.handleSpace()
+
+        ChewingEngine.handleHome()
+        assertEquals(ChewingEngine.cursorCurrent(), 0)
+        ChewingEngine.handleRight()
+        assertEquals(ChewingEngine.cursorCurrent(), 1)
+        ChewingEngine.handleRight()
+        assertEquals(ChewingEngine.cursorCurrent(), 2)
+        ChewingEngine.handleLeft()
+        assertEquals(ChewingEngine.cursorCurrent(), 1)
+        ChewingEngine.handleLeft()
+        assertEquals(ChewingEngine.cursorCurrent(), 0)
+
+        ChewingEngine.candOpen()
+        assertEquals(ChewingEngine.hasCandidates(), true)
+        assertEquals(ChewingEngine.candTotalPage(), 1)
+        assertEquals(ChewingEngine.candTotalChoice(), 1)
+        assertEquals(ChewingEngine.candCurrentPage(), 0)
+        assertEquals(ChewingEngine.candChoicePerPage(), 10)
+        assertEquals(ChewingEngine.candListHasNext(), true)
+
+        ChewingEngine.candEnumerate()
+        assertEquals(ChewingEngine.candStringStatic(), "零用金")
+        // ChewingEngine.candHasNext() will point to the next item in candidates enumerator
+        assertEquals(ChewingEngine.candHasNext(), 0)
+
+        ChewingEngine.candListNext()
+
+        assertEquals(ChewingEngine.hasCandidates(), true)
+        assertEquals(ChewingEngine.candTotalPage(), 1)
+        assertEquals(ChewingEngine.candTotalChoice(), 1)
+        assertEquals(ChewingEngine.candCurrentPage(), 0)
+        assertEquals(ChewingEngine.candChoicePerPage(), 10)
+        assertEquals(ChewingEngine.candListHasNext(), true)
+
+        ChewingEngine.candEnumerate()
+        assertEquals(ChewingEngine.candStringStatic(), "零用")
+        assertEquals(ChewingEngine.candHasNext(), 0)
+
+        ChewingEngine.candListNext()
+
+        assertEquals(ChewingEngine.hasCandidates(), true)
+        assertEquals(ChewingEngine.candTotalPage(), 9)
+        assertEquals(ChewingEngine.candTotalChoice(), 88)
+        assertEquals(ChewingEngine.candCurrentPage(), 0)
+        assertEquals(ChewingEngine.candChoicePerPage(), 10)
+        assertEquals(ChewingEngine.candListHasNext(), false)
+
+        // loop the candidates list
+        ChewingEngine.candEnumerate()
+        assertEquals(ChewingEngine.candStringStatic(), "零")
+        assertEquals(ChewingEngine.candHasNext(), 1)
+        assertEquals(ChewingEngine.candStringStatic(), "玲")
+        assertEquals(ChewingEngine.candHasNext(), 1)
+        assertEquals(ChewingEngine.candStringStatic(), "靈")
+
+        // switch to next page
+        ChewingEngine.handlePageDown()
+        assertEquals(ChewingEngine.candTotalPage(), 9)
+        assertEquals(ChewingEngine.candCurrentPage(), 1)
+        ChewingEngine.candEnumerate()
+        assertEquals(ChewingEngine.candStringStatic(), "苓")
+        assertEquals(ChewingEngine.candHasNext(), 1)
+        assertEquals(ChewingEngine.candStringStatic(), "伶")
+
+        ChewingEngine.handleEsc() // should have similar effect as ChewingEngine.candClose() does
+        assertEquals(ChewingEngine.hasCandidates(), false)
+    }
+
+    @Test
     fun validMaxChiSymbolLen() {
         ChewingEngine.setMaxChiSymbolLen(10)
         assertEquals(ChewingEngine.getMaxChiSymbolLen(), 10)

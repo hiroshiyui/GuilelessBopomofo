@@ -632,3 +632,111 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_getSpaceAsSelection
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     return chewing_get_spaceAsSelection(ctx);
 }
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candTotalPage(
+        JNIEnv *env,
+        jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    return chewing_cand_TotalPage(ctx);
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candCurrentPage(
+        JNIEnv *env,
+        jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    return chewing_cand_CurrentPage(ctx);
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candChoicePerPage(
+        JNIEnv *env,
+        jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    return chewing_cand_ChoicePerPage(ctx);
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candEnumerate(
+        JNIEnv *env,
+        jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    chewing_cand_Enumerate(ctx);
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candHasNext(
+        JNIEnv *env,
+        jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    return chewing_cand_hasNext(ctx);
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candString(
+        JNIEnv *env,
+        jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    char *cand_string = chewing_cand_String(ctx);
+    jstring ret_jstring = env->NewStringUTF(cand_string);
+    chewing_free(cand_string);
+    return ret_jstring;
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_candStringStatic(
+        JNIEnv *env,
+        jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    const char *cand_string_static = chewing_cand_String_static(ctx);
+    jstring ret_jstring = env->NewStringUTF(cand_string_static);
+    return ret_jstring;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_cursorCurrent(
+        JNIEnv *env,
+        jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    return chewing_cursor_Current(ctx);
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handleEsc(
+        JNIEnv *env, jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle Escape input from context ptr: %lld",
+                        (long long) ctx);
+    chewing_handle_Esc(ctx);
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handlePageUp(
+        JNIEnv *env, jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle PageUp input from context ptr: %lld",
+                        (long long) ctx);
+    chewing_handle_PageUp(ctx);
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_handlePageDown(
+        JNIEnv *env,
+        jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle PageDown input from context ptr: %lld",
+                        (long long) ctx);
+    chewing_handle_PageDown(ctx);
+}
