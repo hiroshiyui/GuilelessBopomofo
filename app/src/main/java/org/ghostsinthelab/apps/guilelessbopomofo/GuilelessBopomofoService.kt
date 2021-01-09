@@ -243,6 +243,7 @@ class GuilelessBopomofoService : InputMethodService() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onIsNotPrintingKeyDown(event: NotPrintingKeyDownEvent) {
+        Log.v(LOGTAG, keyCodeToString(event.keyEvent.keyCode))
         when (event.keyEvent.keyCode) {
             KEYCODE_SPACE -> {
                 EventBus.getDefault().post(SpaceKeyDownEvent.Physical(event.keyEvent))
@@ -255,6 +256,12 @@ class GuilelessBopomofoService : InputMethodService() {
             }
             KEYCODE_ESCAPE -> {
                 EventBus.getDefault().post(EscKeyDownEvent())
+            }
+            KEYCODE_DPAD_LEFT -> {
+                EventBus.getDefault().post(LeftKeyDownEvent())
+            }
+            KEYCODE_DPAD_RIGHT -> {
+                EventBus.getDefault().post(RightKeyDownEvent())
             }
         }
     }

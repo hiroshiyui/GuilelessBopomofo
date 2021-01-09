@@ -31,8 +31,7 @@ import android.widget.TextView
 import androidx.core.text.toSpannable
 import androidx.core.view.setPadding
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
-import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -44,13 +43,11 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     private lateinit var span: SpannableString
 
     // which character did I touched? (index value)
-    var offset: Int = 0
+    var offset: Int = ChewingEngine.cursorCurrent()
 
     init {
         this.setOnTouchListener { v, event ->
-            Log.v(LOGTAG, "setOnTouchListener action: ${event.action}")
-            span = (v as TextView).text.toSpannable() as SpannableString
-            val underlineSpans = span.getSpans(0, span.length, UnderlineSpan::class.java)
+            v as TextView
 
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -58,36 +55,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                     val y = event.y
                     offset = v.getOffsetForPosition(x, y)
 
-                    // 如果使用者點選最後一個字的時候很邊邊角角，
-                    // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來
-                    if (offset >= this.text.length) {
-                        offset -= 1
-                    }
 
-                    Log.v(LOGTAG, "offset: $offset")
-
-                    // clear the existent underlines first
-                    underlineSpans?.forEach {
-                        span.removeSpan(it)
-                    }
-
-                    try {
-                        Log.v(LOGTAG, "located char: ${this.text[offset]}")
-                        span.setSpan(
-                            UnderlineSpan(),
-                            offset,
-                            offset + 1,
-                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                    } catch (e: StringIndexOutOfBoundsException) {
-                        Log.e(LOGTAG, "StringIndexOutOfBoundsException")
-                    }
-                    return@setOnTouchListener false
-                }
-                MotionEvent.ACTION_UP -> {
-                    return@setOnTouchListener false
-                }
-                MotionEvent.ACTION_MOVE -> {
                     return@setOnTouchListener false
                 }
                 else -> {
@@ -97,7 +65,8 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
 
         this.setOnClickListener {
-            ChewingEngine.moveToPreEditBufferOffset(offset)
+            Log.v(LOGTAG, "offset: $offset")
+            EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnTouch())
             EventBus.getDefault().post(CandidatesWindowOpendEvent.Offset(offset))
         }
     }
@@ -110,6 +79,65 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     override fun onDetachedFromWindow() {
         EventBus.getDefault().unregister(this)
         super.onDetachedFromWindow()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLeftKeyDownEvent(event: LeftKeyDownEvent) {
+        ChewingEngine.handleLeft()
+        EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnKeyboard())
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onRightKeyDownEvent(event: RightKeyDownEvent) {
+        ChewingEngine.handleRight()
+        EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnKeyboard())
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onPreEditBufferCursorChangedEvent(event: PreEditBufferCursorChangedEvent.OnTouch) {
+        Log.v(LOGTAG, "Offset: ${offset}, Cursor: ${ChewingEngine.cursorCurrent()}")
+        ChewingEngine.moveToPreEditBufferOffset(offset)
+
+        // 如果使用者點選最後一個字的時候很邊邊角角，
+        // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來
+        if (offset >= this.text.length) {
+            offset -= 1
+        }
+
+        renderUnderlineSpan()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onPreEditBufferCursorChangedEvent(event: PreEditBufferCursorChangedEvent.OnKeyboard) {
+        Log.v(LOGTAG, "Offset: ${offset}, Cursor: ${ChewingEngine.cursorCurrent()}")
+
+        offset = ChewingEngine.cursorCurrent()
+        if (offset >= ChewingEngine.bufferLen()) {
+            offset -= 1
+        }
+
+        renderUnderlineSpan()
+    }
+
+    private fun renderUnderlineSpan() {
+        span = this.text.toSpannable() as SpannableString
+        val underlineSpans = span.getSpans(0, span.length, UnderlineSpan::class.java)
+
+        // clear the existent underlines first
+        underlineSpans?.forEach {
+            span.removeSpan(it)
+        }
+
+        try {
+            span.setSpan(
+                UnderlineSpan(),
+                offset,
+                offset + 1,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        } catch (e: StringIndexOutOfBoundsException) {
+            Log.e(LOGTAG, "StringIndexOutOfBoundsException")
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
