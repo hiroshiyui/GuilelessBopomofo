@@ -201,6 +201,40 @@ class ChewingEngineInstrumentedTest {
     }
 
     @Test
+    fun validPhysicalKeyboardCandidatesSelection() {
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        ChewingEngine.setCandPerPage(10)
+        val selKeys = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+        ChewingEngine.setSelKey(selKeys, 10)
+        ChewingEngine.setPhraseChoiceRearward(false)
+
+        ChewingEngine.handleDefault('x')
+        ChewingEngine.handleDefault('u')
+        ChewingEngine.handleDefault('/')
+        ChewingEngine.handleDefault('6')
+        ChewingEngine.handleLeft()
+        ChewingEngine.candOpen()
+        assertEquals(ChewingEngine.hasCandidates(), true)
+        assertEquals(ChewingEngine.candTotalPage(), 9)
+        assertEquals(ChewingEngine.candTotalChoice(), 88)
+        assertEquals(ChewingEngine.candCurrentPage(), 0)
+        assertEquals(ChewingEngine.candChoicePerPage(), 10)
+        assertEquals(ChewingEngine.candListHasNext(), false)
+
+        // switch to next page
+        ChewingEngine.handlePageDown()
+        assertEquals(ChewingEngine.candCurrentPage(), 1)
+
+        ChewingEngine.candEnumerate()
+        assertEquals(ChewingEngine.candStringStatic(), "苓")
+        assertEquals(ChewingEngine.candHasNext(), 1)
+        assertEquals(ChewingEngine.candStringStatic(), "伶")
+
+        ChewingEngine.candChooseByIndex(11)
+        assertEquals(ChewingEngine.bufferStringStatic(), "伶")
+    }
+
+    @Test
     fun validMaxChiSymbolLen() {
         ChewingEngine.setMaxChiSymbolLen(10)
         assertEquals(ChewingEngine.getMaxChiSymbolLen(), 10)
