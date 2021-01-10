@@ -90,7 +90,7 @@ class ChewingEngineInstrumentedTest {
 
     @Test
     fun validSelKeys() {
-        val selKeys = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9').map { it.toInt() }
+        val selKeys = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9').map { it.toInt() }.toIntArray()
         ChewingEngine.setSelKey(selKeys, 9)
         val listKeys = ChewingEngine.getSelKey()
         // listKeys should be a pointer address, which should not be zero:
