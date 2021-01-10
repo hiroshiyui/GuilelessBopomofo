@@ -37,7 +37,7 @@ class SymbolKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButt
 
     init {
         this.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             ChewingEngine.openSymbolCandidates()
             EventBus.getDefault().post(SymbolPickerOpenedEvent())
         }

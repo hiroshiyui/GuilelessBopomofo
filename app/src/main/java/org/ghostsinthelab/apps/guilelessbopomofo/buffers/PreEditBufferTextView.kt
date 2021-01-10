@@ -31,6 +31,7 @@ import android.widget.TextView
 import androidx.core.text.toSpannable
 import androidx.core.view.setPadding
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
 import org.greenrobot.eventbus.EventBus
@@ -97,6 +98,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
 
         this.setOnClickListener {
+            performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
             ChewingEngine.moveToPreEditBufferOffset(offset)
             EventBus.getDefault().post(CandidatesWindowOpendEvent.Offset(offset))
         }

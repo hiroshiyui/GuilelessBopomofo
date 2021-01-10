@@ -32,12 +32,13 @@ class PunctuationKeyImageButton(context: Context, attrs: AttributeSet) : KeyImag
         // 在大千鍵盤下，標準的逗號鍵會對映到「ㄝ」，這裡的逗號鍵要另外當成特別的「常用符號」功能鍵，
         // 短觸會輸出全形逗號
         this.setOnClickListener {
+            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             ChewingEngine.handleShiftComma()
             EventBus.getDefault().post(BufferUpdatedEvent())
         }
 
         this.setOnLongClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+            performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
             ChewingEngine.openPuncCandidates()
             EventBus.getDefault().post(CandidatesWindowOpendEvent())
             return@setOnLongClickListener true

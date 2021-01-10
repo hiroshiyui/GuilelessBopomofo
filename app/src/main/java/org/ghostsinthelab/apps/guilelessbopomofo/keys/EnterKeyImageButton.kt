@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
@@ -30,6 +31,8 @@ import org.greenrobot.eventbus.EventBus
 class EnterKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
+            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+
             if (ChewingEngine.anyPreeditBufferIsNotEmpty()) { // not committed yet
                 ChewingEngine.handleEnter()
                 EventBus.getDefault().post(BufferUpdatedEvent())

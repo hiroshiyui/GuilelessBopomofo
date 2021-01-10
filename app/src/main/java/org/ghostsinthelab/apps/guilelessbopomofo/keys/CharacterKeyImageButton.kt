@@ -22,6 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.view.HapticFeedbackConstants
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.R
@@ -35,6 +36,8 @@ class CharacterKeyImageButton(context: Context, attrs: AttributeSet) :
 
     init {
         this.setOnClickListener {
+            performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
+
             this.keySymbol?.let {
                 sendCharacter = it.get(0)
             }

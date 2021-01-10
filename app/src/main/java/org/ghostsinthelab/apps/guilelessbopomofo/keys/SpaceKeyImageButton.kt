@@ -31,6 +31,8 @@ import org.greenrobot.eventbus.EventBus
 class SpaceKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
+            performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
+
             if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
                 ChewingEngine.handleSpace()
                 EventBus.getDefault().post(BufferUpdatedEvent())

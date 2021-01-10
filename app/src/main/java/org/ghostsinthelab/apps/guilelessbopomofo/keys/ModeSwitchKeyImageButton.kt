@@ -28,7 +28,7 @@ import org.greenrobot.eventbus.EventBus
 class ModeSwitchKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             EventBus.getDefault().post(MainLayoutChangedEvent())
         }
     }
