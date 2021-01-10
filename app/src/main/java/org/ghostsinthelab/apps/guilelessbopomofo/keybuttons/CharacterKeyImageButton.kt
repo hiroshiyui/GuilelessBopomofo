@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.PrintingKeyDownEvent
 import org.greenrobot.eventbus.EventBus
@@ -29,6 +30,8 @@ class CharacterKeyImageButton(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
+            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+
             this.keyCodeString?.let { keycodeString ->
                 val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.keyCodeFromString(keycodeString))
                 EventBus.getDefault().post(PrintingKeyDownEvent(keyEvent))

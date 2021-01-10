@@ -86,6 +86,20 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            if (sharedPreferences.getBoolean("user_fullscreen_when_in_portrait", false)) {
+                switchSettingFullscreenWhenInPortrait.isChecked = true
+            }
+
+            switchSettingFullscreenWhenInPortrait.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    sharedPreferences.edit().putBoolean("user_fullscreen_when_in_portrait", true)
+                        .apply()
+                } else {
+                    sharedPreferences.edit().putBoolean("user_fullscreen_when_in_portrait", false)
+                        .apply()
+                }
+            }
+
             if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
                 switchSettingKeyButtonsElevation.isChecked = true
             }

@@ -24,6 +24,7 @@ import android.content.Context
 import android.os.SystemClock
 import android.util.AttributeSet
 import android.util.Log
+import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
 import kotlinx.coroutines.delay
@@ -55,6 +56,7 @@ class BackspaceKeyImageButton(context: Context, attrs: AttributeSet) :
         }
 
         this.setOnClickListener {
+            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             EventBus.getDefault().post(BackspaceKeyDownEvent())
         }
 
@@ -83,7 +85,7 @@ class BackspaceKeyImageButton(context: Context, attrs: AttributeSet) :
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onBackspaceKeyDown(event: BackspaceKeyDownEvent) {
         // avoids too fast repeat clicks
-        if (SystemClock.elapsedRealtime() - lastClickTime < 400) {
+        if (SystemClock.elapsedRealtime() - lastClickTime < 360) {
             Log.v(LOGTAG, "User repeats clicking too quick...")
         }
         lastClickTime = SystemClock.elapsedRealtime()

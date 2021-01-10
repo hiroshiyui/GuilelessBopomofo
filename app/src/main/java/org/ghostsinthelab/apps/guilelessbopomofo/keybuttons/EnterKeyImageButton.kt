@@ -33,6 +33,7 @@ import org.greenrobot.eventbus.ThreadMode
 class EnterKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
+            performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
             EventBus.getDefault().post(EnterKeyDownEvent())
         }
     }

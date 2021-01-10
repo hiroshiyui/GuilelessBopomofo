@@ -21,12 +21,14 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
 
 import android.content.Context
 import android.util.AttributeSet
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
 import org.greenrobot.eventbus.EventBus
 
 class BackToMainKeyButton(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
     init {
         this.setOnClickListener {
+            performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
             EventBus.getDefault().post(CandidateSelectionDoneEvent())
         }
     }

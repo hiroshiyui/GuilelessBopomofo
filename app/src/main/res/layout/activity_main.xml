@@ -289,25 +289,25 @@
         </RadioGroup>
 
         <TextView
-            android:id="@+id/textViewSettingFullscreenWhenInLandscape"
+            android:id="@+id/textViewSettingFullscreen"
             style="@style/SettingsLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@string/fullscreen_when_in_landscape_setting_title"
+            android:text="@string/fullscreen_mode_setting_title"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@id/radioGroupHapticFeedbackStrength" />
 
         <TextView
-            android:id="@+id/textViewSettingDescriptionFullscreenWhenInLandscape"
+            android:id="@+id/textViewSettingDescriptionFullscreenMode"
             style="@style/SettingsDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/fullscreen_when_in_landscape_setting_description"
+            android:text="@string/fullscreen_mode_setting_description"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSettingFullscreenWhenInLandscape" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingFullscreen" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchSettingFullscreenWhenInLandscape"
@@ -317,7 +317,17 @@
             android:text="@string/fullscreen_when_in_landscape_setting_switch"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionFullscreenWhenInLandscape" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionFullscreenMode" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchSettingFullscreenWhenInPortrait"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/fullscreen_when_in_portrait_setting_switch"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/switchSettingFullscreenWhenInLandscape" />
 
         <TextView
             android:id="@+id/textViewSettingKeyButtonsElevation"
@@ -328,7 +338,7 @@
             android:text="@string/switch_title_enrich_key_button_elevation"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/switchSettingFullscreenWhenInLandscape" />
+            app:layout_constraintTop_toBottomOf="@id/switchSettingFullscreenWhenInPortrait" />
 
         <TextView
             android:id="@+id/textViewSettingDescriptionKeyButtonsElevation"

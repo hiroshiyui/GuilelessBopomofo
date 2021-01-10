@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">樸實注音鍵盤</string>
     <string name="display_name_bopomofo_keyboard_ime">注音符號</string>
-    <string name="label_subtype_generic">%s</string>
     <string name="libchewing_init_fail">無法成功初始化新酷音程式庫</string>
     <string name="test_text_input_here">請在此測試文字輸入</string>
     <string name="chewing_data_files_status">新酷音程式庫資料檔狀態：</string>
@@ -20,9 +19,10 @@
     <string name="service_is_disabled">尚未啟用</string>
     <string name="launch_input_method_system_settings">開啟系統鍵盤管理設定</string>
     <string name="applcation_version_label">應用程式版本</string>
-    <string name="fullscreen_when_in_landscape_setting_title">當畫面橫置時，使用全螢幕編輯</string>
-    <string name="fullscreen_when_in_landscape_setting_description">當裝置螢幕橫置時，是否讓鍵盤以全螢幕方式運作</string>
+    <string name="fullscreen_mode_setting_title">使用全螢幕編輯</string>
+    <string name="fullscreen_mode_setting_description">是否讓鍵盤以全螢幕方式運作</string>
     <string name="fullscreen_when_in_landscape_setting_switch">當畫面橫置時，啟用全螢幕模式？</string>
+    <string name="fullscreen_when_in_portrait_setting_switch">當畫面直立時，啟用全螢幕模式？</string>
     <string name="switch_enable_keybutton_elevation">使按鍵看起來更立體？</string>
     <string name="switch_description_enable_keybutton_elevation">預設的按鍵平坦外觀看起來太無聊了嗎？改一下！</string>
     <string name="switch_title_enrich_key_button_elevation">使按鍵看起來更立體</string>
