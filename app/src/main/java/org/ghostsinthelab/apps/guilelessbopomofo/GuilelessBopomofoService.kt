@@ -79,9 +79,7 @@ class GuilelessBopomofoService : InputMethodService() {
             ChewingEngine.setChiEngMode(CHINESE_MODE)
             ChewingEngine.setCandPerPage(10)
 
-            @Suppress("RemoveExplicitTypeArguments")
-            val selKeys =
-                listOf<Char>('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+            val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
             ChewingEngine.setSelKey(selKeys, 10)
         } catch (e: Exception) {
             Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)

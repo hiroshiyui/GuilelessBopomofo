@@ -91,19 +91,18 @@ class ChewingEngineInstrumentedTest {
     @Test
     fun validSelKeys() {
         ChewingEngine.setCandPerPage(10)
-        val selKeys = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+        val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
         ChewingEngine.setSelKey(selKeys, 10)
-        val listKeys = ChewingEngine.getSelKey()
+        val getSelKey = ChewingEngine.getSelKey()
         // listKeys should be a pointer address, which should not be zero:
-        assertNotEquals(listKeys, 0)
-        ChewingEngine.free(listKeys)
-        // TODO: 可能需要一個給 Android 這邊用的 listKeys
+        assertNotEquals(getSelKey, 0)
+        ChewingEngine.free(getSelKey)
     }
 
     @Test
     fun validOpenPuncCandidates() {
         ChewingEngine.setCandPerPage(10)
-        val selKeys = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+        val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
         ChewingEngine.setSelKey(selKeys, 10)
         ChewingEngine.openPuncCandidates()
         assertEquals(ChewingEngine.hasCandidates(), true)
@@ -115,7 +114,7 @@ class ChewingEngineInstrumentedTest {
     fun validPagedCandidates() {
         ChewingEngine.setChiEngMode(CHINESE_MODE)
         ChewingEngine.setCandPerPage(10)
-        val selKeys = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+        val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
         ChewingEngine.setSelKey(selKeys, 10)
         ChewingEngine.setPhraseChoiceRearward(false)
 
@@ -204,16 +203,16 @@ class ChewingEngineInstrumentedTest {
     fun validPhysicalKeyboardCandidatesSelection() {
         ChewingEngine.setChiEngMode(CHINESE_MODE)
         ChewingEngine.setCandPerPage(10)
-        val selKeys = arrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+        val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
         ChewingEngine.setSelKey(selKeys, 10)
         ChewingEngine.setPhraseChoiceRearward(false)
+        ChewingEngine.setSpaceAsSelection(1)
 
         ChewingEngine.handleDefault('x')
         ChewingEngine.handleDefault('u')
         ChewingEngine.handleDefault('/')
         ChewingEngine.handleDefault('6')
-        ChewingEngine.handleLeft()
-        ChewingEngine.candOpen()
+        ChewingEngine.handleSpace()
         assertEquals(ChewingEngine.hasCandidates(), true)
         assertEquals(ChewingEngine.candTotalPage(), 9)
         assertEquals(ChewingEngine.candTotalChoice(), 88)
@@ -230,7 +229,7 @@ class ChewingEngineInstrumentedTest {
         assertEquals(ChewingEngine.candHasNext(), 1)
         assertEquals(ChewingEngine.candStringStatic(), "伶")
 
-        ChewingEngine.candChooseByIndex(11)
+        ChewingEngine.handleDefault('2')
         assertEquals(ChewingEngine.bufferStringStatic(), "伶")
     }
 
@@ -503,6 +502,25 @@ class ChewingEngineInstrumentedTest {
         ChewingEngine.commitPreeditBuf()
         ChewingEngine.candClose()
         assertEquals(ChewingEngine.commitString(), "╔")
+
+        val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
+        ChewingEngine.setSelKey(selKeys, 10)
+
+        ChewingEngine.handleDefault('`')
+        ChewingEngine.handleDefault('3')
+        ChewingEngine.handleDefault('1')
+        ChewingEngine.commitPreeditBuf()
+        assertEquals(ChewingEngine.commitString(), "，")
+
+        ChewingEngine.setSpaceAsSelection(1)
+        ChewingEngine.handleDefault('1')
+        ChewingEngine.handleDefault('l')
+        ChewingEngine.handleDefault('3')
+        ChewingEngine.handleHome()
+        ChewingEngine.handleSpace()
+        ChewingEngine.handleDefault('3')
+        ChewingEngine.commitPreeditBuf()
+        assertEquals(ChewingEngine.commitString(), "飽")
     }
 
     @Test
