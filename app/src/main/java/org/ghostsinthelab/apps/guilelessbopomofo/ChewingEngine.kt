@@ -90,7 +90,7 @@ object ChewingEngine {
     external fun setKBType(type: Int, chewingCtx: Long = context): Int
     external fun setMaxChiSymbolLen(length: Int, chewingCtx: Long = context)
     external fun setPhraseChoiceRearward(boolean: Boolean, chewingCtx: Long = context)
-    external fun setSelKey(selKeys: List<Int>, length: Int, chewingCtx: Long = context)
+    external fun setSelKey(selKeys: IntArray, length: Int, chewingCtx: Long = context)
     external fun setSpaceAsSelection(mode: Int, chewingCtx: Long = context)
 
     // derived methods

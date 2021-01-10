@@ -86,14 +86,16 @@ extern "C" JNIEXPORT void JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setSelKey(
         JNIEnv *env,
         jobject,
-        jobject selkeys,
+        jintArray selkeys,
         jint len,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    const int *keys = reinterpret_cast<const int *>(selkeys);
+    jint buf[len];
+    (*env).GetIntArrayRegion(selkeys, 0, len, buf);
+
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Set chewing selection keys from context ptr: %lld", (long long) ctx);
-    chewing_set_selKey(ctx, keys, len);
+    chewing_set_selKey(ctx, reinterpret_cast<const int *>(buf), len);
 }
 
 /* chewing_get_selKey() */
