@@ -45,7 +45,7 @@ class BackspaceKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageB
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     // avoids too fast repeat clicks
-                    if (SystemClock.elapsedRealtime() - lastClickTime < 400) {
+                    if (SystemClock.elapsedRealtime() - lastClickTime < 360) {
                         return@setOnTouchListener true
                     }
                     lastClickTime = SystemClock.elapsedRealtime()
