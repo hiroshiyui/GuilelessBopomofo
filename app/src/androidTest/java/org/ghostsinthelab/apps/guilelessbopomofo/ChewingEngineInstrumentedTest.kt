@@ -91,12 +91,11 @@ class ChewingEngineInstrumentedTest {
     @Test
     fun validSelKeys() {
         ChewingEngine.setCandPerPage(10)
-        val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
+        val selKeys : IntArray = charArrayOf('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';').map { it.toInt() }.toIntArray()
         ChewingEngine.setSelKey(selKeys, 10)
         val getSelKey = ChewingEngine.getSelKey()
-        // listKeys should be a pointer address, which should not be zero:
-        assertNotEquals(getSelKey, 0)
-        ChewingEngine.free(getSelKey)
+        assertNotEquals(getSelKey[0], '1'.toInt())
+        assertEquals(getSelKey[0], 'a'.toInt())
     }
 
     @Test

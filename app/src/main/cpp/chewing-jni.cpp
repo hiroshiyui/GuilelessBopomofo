@@ -99,7 +99,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_setSelKey(
 }
 
 /* chewing_get_selKey() */
-extern "C" JNIEXPORT jlong JNICALL
+extern "C" JNIEXPORT jintArray JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_getSelKey(
         JNIEnv *env,
         jobject,
@@ -107,7 +107,18 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingEngine_getSelKey(
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Get chewing selection keys from context ptr: %lld", (long long) ctx);
-    return (jlong) chewing_get_selKey(ctx);
+    int *get_selkey_ptr = chewing_get_selKey(ctx);
+    int len = chewing_get_candPerPage(ctx);
+
+    jint buf[len];
+    jintArray ret_jintArray = env->NewIntArray(len);
+
+    for (int i = 0; i < len; i++) {
+        buf[i] = get_selkey_ptr[i];
+    }
+    env->SetIntArrayRegion(ret_jintArray, 0, len, buf);
+    chewing_free(get_selkey_ptr);
+    return ret_jintArray;
 }
 
 /* chewing_free() */
