@@ -204,13 +204,8 @@ class KeyboardPanel(
     // list current offset's candidates in the candidate window
     private fun switchToCandidatesLayout(offset: Int) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
-        // reset candidates list if offset has been changed
-        if (currentOffset != offset) {
-            currentOffset = offset
-            currentCandidatesList = 0
-        }
 
-        // switch to next candidates list
+        // switch to the target candidates list
         repeat(currentCandidatesList) {
             ChewingEngine.candListNext()
         }

@@ -271,6 +271,9 @@ class GuilelessBopomofoService : InputMethodService() {
             KEYCODE_DPAD_RIGHT -> {
                 EventBus.getDefault().post(RightKeyDownEvent())
             }
+            KEYCODE_DPAD_DOWN -> {
+                EventBus.getDefault().post(DownKeyDownEvent.Physical())
+            }
         }
     }
 
