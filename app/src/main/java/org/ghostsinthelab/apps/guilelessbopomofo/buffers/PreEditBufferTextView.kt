@@ -84,25 +84,6 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onLeftKeyDownEvent(event: LeftKeyDownEvent) {
-        ChewingEngine.handleLeft()
-        EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnKeyboard())
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onRightKeyDownEvent(event: RightKeyDownEvent) {
-        ChewingEngine.handleRight()
-        EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnKeyboard())
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDownKeyDownEvent(event: DownKeyDownEvent.Physical) {
-        ChewingEngine.candClose()
-        ChewingEngine.candOpen()
-        EventBus.getDefault().post(CandidatesWindowOpendEvent.Offset(ChewingEngine.cursorCurrent()))
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onPreEditBufferCursorChangedEvent(event: PreEditBufferCursorChangedEvent.OnTouch) {
         Log.v(LOGTAG, "Offset: ${offset}, Cursor: ${ChewingEngine.cursorCurrent()}")
         ChewingEngine.moveToPreEditBufferOffset(offset)

@@ -22,6 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
@@ -142,6 +143,38 @@ class KeyboardPanel(
             )
         ) {
             EventBus.getDefault().post(CandidateSelectionDoneEvent())
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLeftKeyDownEvent(event: LeftKeyDownEvent) {
+        ChewingEngine.handleLeft()
+        if (ChewingEngine.bufferLen() > 0) {
+            EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnKeyboard())
+        } else {
+            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onRightKeyDownEvent(event: RightKeyDownEvent) {
+        ChewingEngine.handleRight()
+        if (ChewingEngine.bufferLen() > 0) {
+            EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnKeyboard())
+        } else {
+            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDownKeyDownEvent(event: DownKeyDownEvent) {
+        if (ChewingEngine.bufferLen() > 0) {
+            ChewingEngine.candClose()
+            ChewingEngine.candOpen()
+            EventBus.getDefault()
+                .post(CandidatesWindowOpendEvent.Offset(ChewingEngine.cursorCurrent()))
+        } else {
+            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN)
         }
     }
 
