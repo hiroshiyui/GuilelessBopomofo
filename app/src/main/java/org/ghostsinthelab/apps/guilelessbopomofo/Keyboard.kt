@@ -20,11 +20,10 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
+import android.os.SystemClock
 import android.util.AttributeSet
-import android.util.Log
 import android.view.KeyEvent
 import android.widget.LinearLayout
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.events.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -32,6 +31,8 @@ import org.greenrobot.eventbus.ThreadMode
 
 class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
     private val LOGTAG: String = "KeyboardView"
+    var backspacePressed: Boolean = false
+    var lastBackspaceClickTime: Long = 0
 
     init {
         this.orientation = VERTICAL
@@ -54,6 +55,22 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
             EventBus.getDefault().post(BufferUpdatedEvent())
         } else {
             GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onBackspaceKeyDown(event: BackspaceKeyDownEvent) {
+        // avoids too fast repeat clicks
+        if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 250) {
+            return
+        }
+        lastBackspaceClickTime = SystemClock.elapsedRealtime()
+
+        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
+            ChewingEngine.handleBackspace()
+            EventBus.getDefault().post(BufferUpdatedEvent())
+        } else {
+            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
         }
     }
 
