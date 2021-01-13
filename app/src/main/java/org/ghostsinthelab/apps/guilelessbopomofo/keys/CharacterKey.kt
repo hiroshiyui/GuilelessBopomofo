@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2020 YOU, HUI-HONG
+ * Copyright (C) 2021 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,31 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
-import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
+import android.view.KeyEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.PrintingKeyDownEvent
 import org.greenrobot.eventbus.EventBus
 
-class PunctuationKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
+class CharacterKey(context: Context, attrs: AttributeSet) :
+    KeyImageButton(context, attrs) {
     init {
-        // 在大千鍵盤下，標準的逗號鍵會對映到「ㄝ」，這裡的逗號鍵要另外當成特別的「常用符號」功能鍵，
-        // 短觸會輸出全形逗號
         this.setOnClickListener {
             performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            ChewingEngine.handleShiftComma()
-            EventBus.getDefault().post(BufferUpdatedEvent())
-        }
 
-        this.setOnLongClickListener {
-            performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            ChewingEngine.openPuncCandidates()
-            EventBus.getDefault().post(CandidatesWindowOpendEvent())
-            return@setOnLongClickListener true
+            this.keyCodeString?.let { keycodeString ->
+                val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.keyCodeFromString(keycodeString))
+                EventBus.getDefault().post(PrintingKeyDownEvent(keyEvent))
+            }
         }
     }
 }

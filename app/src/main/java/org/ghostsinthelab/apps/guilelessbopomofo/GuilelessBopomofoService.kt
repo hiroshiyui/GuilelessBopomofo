@@ -31,7 +31,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.events.*
-import org.ghostsinthelab.apps.guilelessbopomofo.keybuttons.ShiftKeyImageButton
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKey
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -221,7 +221,7 @@ class GuilelessBopomofoService : InputMethodService() {
         var keyPressed: Char = event.keyEvent.unicodeChar.toChar()
 
         val shiftKeyImageButton =
-            viewBinding.keyboardPanel.findViewById<ShiftKeyImageButton>(
+            viewBinding.keyboardPanel.findViewById<ShiftKey>(
                 R.id.keyImageButtonShift
             )
 
@@ -241,7 +241,7 @@ class GuilelessBopomofoService : InputMethodService() {
         shiftKeyImageButton?.let {
             if (shiftKeyImageButton.isActive && !shiftKeyImageButton.isLocked) {
                 Log.v(LOGTAG, "Release shift key")
-                shiftKeyImageButton.switchToState(ShiftKeyImageButton.ShiftKeyState.RELEASED)
+                shiftKeyImageButton.switchToState(ShiftKey.ShiftKeyState.RELEASED)
                 currentInputConnection.sendKeyEvent(
                     KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT)
                 )

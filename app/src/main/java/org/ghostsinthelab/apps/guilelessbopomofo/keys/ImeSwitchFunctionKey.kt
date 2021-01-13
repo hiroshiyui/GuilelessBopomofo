@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.os.Build
@@ -28,7 +28,7 @@ import android.view.HapticFeedbackConstants
 import android.view.inputmethod.InputMethodManager
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 
-class ImeSwitchKeyImageButton(context: Context, attrs: AttributeSet) :
+class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
 
     init {

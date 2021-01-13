@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -40,7 +40,7 @@ import org.greenrobot.eventbus.ThreadMode
 import kotlin.concurrent.fixedRateTimer
 
 @SuppressLint("ClickableViewAccessibility")
-class BackspaceKeyImageButton(context: Context, attrs: AttributeSet) :
+class BackspaceKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
     private var backspacePressed: Boolean = false
     private var lastClickTime: Long = 0

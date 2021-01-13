@@ -21,7 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import org.ghostsinthelab.apps.guilelessbopomofo.keybuttons.CandidateButton
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.CandidateButton
 
 class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val LOGTAG: String = "CandidateViewHolder"

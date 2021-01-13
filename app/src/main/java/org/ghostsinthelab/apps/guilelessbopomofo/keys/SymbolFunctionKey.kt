@@ -17,19 +17,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
-import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SymbolPickerOpenedEvent
 import org.greenrobot.eventbus.EventBus
 
-class ModeSwitchKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
+class SymbolFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
             performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            EventBus.getDefault().post(MainLayoutChangedEvent())
+            EventBus.getDefault().post(SymbolPickerOpenedEvent())
         }
     }
 }

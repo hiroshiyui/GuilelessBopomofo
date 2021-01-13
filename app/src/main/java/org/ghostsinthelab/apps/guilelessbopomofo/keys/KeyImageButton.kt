@@ -17,20 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.AttributeSet
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
 
-open class KeyButton(context: Context, attrs: AttributeSet) :
-    AppCompatButton(context, attrs, R.attr.buttonStyle), BehaveLikeKey<KeyButton>,
-    DisplayMetricsComputable {
-    private val LOGTAG: String = "KeyButton"
-    private val sharedPreferences =
+abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
+    AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
+    BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable {
+    open val LOGTAG: String = "KeyImageButton"
+    val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
     override var keyCodeString: String? = null
     override var keyType: Int? = null
@@ -38,12 +39,12 @@ open class KeyButton(context: Context, attrs: AttributeSet) :
     override var keyShiftSymbol: String? = null
 
     init {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.KeyButton, 0, 0).apply {
+        context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0, 0).apply {
             try {
-                keyCodeString = this.getString(R.styleable.KeyButton_keyCodeString)
-                keyType = this.getInt(R.styleable.KeyButton_keyTypeEnum, 0)
-                keySymbol = this.getString(R.styleable.KeyButton_keySymbolString)
-                keyShiftSymbol = this.getString(R.styleable.KeyButton_keyShiftSymbolString)
+                keyCodeString = this.getString(R.styleable.KeyImageButton_keyCodeString)
+                keyType = this.getInt(R.styleable.KeyImageButton_keyTypeEnum, -1)
+                keySymbol = this.getString(R.styleable.KeyImageButton_keySymbolString)
+                keyShiftSymbol = this.getString(R.styleable.KeyImageButton_keyShiftSymbolString)
             } finally {
                 recycle()
             }

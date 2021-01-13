@@ -17,19 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
-import android.content.Context
-import android.util.AttributeSet
-import android.view.HapticFeedbackConstants
-import org.ghostsinthelab.apps.guilelessbopomofo.events.SymbolPickerOpenedEvent
-import org.greenrobot.eventbus.EventBus
+import android.view.View
 
-class SymbolKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
-    init {
-        this.setOnClickListener {
-            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            EventBus.getDefault().post(SymbolPickerOpenedEvent())
-        }
+interface BehaveLikeKey<T : View> {
+    var keyCodeString: String?
+    var keyType: Int?
+    var keySymbol: String?
+    var keyShiftSymbol: String?
+
+    // NOTICE: Should be in sync with attrs.xml
+    enum class KeyType(val value: Int) {
+        KEYTYPE_CHARACTER(0),
+        KEYTYPE_CONTROL(1),
+        KEYTYPE_MODIFIER(2),
+        KEYTYPE_FUNCTION(3)
     }
 }

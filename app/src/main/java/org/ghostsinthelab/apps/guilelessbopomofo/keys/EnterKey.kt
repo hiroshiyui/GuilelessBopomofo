@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
@@ -25,17 +25,16 @@ import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.SpaceKeyDownEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.EnterKeyDownEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class SpaceKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
+class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
-            EventBus.getDefault().post(SpaceKeyDownEvent())
+            performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
+            EventBus.getDefault().post(EnterKeyDownEvent())
         }
     }
 
@@ -50,29 +49,12 @@ class SpaceKeyImageButton(context: Context, attrs: AttributeSet) : KeyImageButto
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSpaceKeyDown(event: SpaceKeyDownEvent) {
-        spaceKeyDown()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSpaceKeyDown(event: SpaceKeyDownEvent.Physical) {
-        if (event.keyEvent.isShiftPressed) {
-            EventBus.getDefault().post(MainLayoutChangedEvent())
-            return
-        }
-        spaceKeyDown()
-    }
-
-    private fun spaceKeyDown() {
-        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
-            ChewingEngine.handleSpace()
+    fun onEnterKeyDownEvent(event: EnterKeyDownEvent) {
+        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) { // not committed yet
+            ChewingEngine.handleEnter()
             EventBus.getDefault().post(BufferUpdatedEvent())
-            // 空白鍵是否為選字鍵？
-            if (ChewingEngine.getSpaceAsSelection() == 1 && ChewingEngine.candTotalChoice() > 0) {
-                EventBus.getDefault().post(CandidatesWindowOpendEvent())
-            }
         } else {
-            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
+            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
         }
     }
 }

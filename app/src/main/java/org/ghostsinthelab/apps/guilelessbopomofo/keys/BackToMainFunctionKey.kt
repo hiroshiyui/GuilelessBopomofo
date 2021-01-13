@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keybuttons
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
@@ -25,7 +25,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
 import org.greenrobot.eventbus.EventBus
 
-class BackToMainKeyButton(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
+class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
     init {
         this.setOnClickListener {
             performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
