@@ -30,7 +30,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class KeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
+class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
     private val LOGTAG: String = "KeyboardView"
     private lateinit var v: KeyboardLayoutBinding
 

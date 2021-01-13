@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.ghostsinthelab.apps.guilelessbopomofo.KeyboardView xmlns:android="http://schemas.android.com/apk/res/android"
+<org.ghostsinthelab.apps.guilelessbopomofo.Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/keyboardView"
     android:layout_width="match_parent"
@@ -61,4 +61,4 @@
         android:theme="@style/KeyboardTheme" />
 
 
-</org.ghostsinthelab.apps.guilelessbopomofo.KeyboardView>
+</org.ghostsinthelab.apps.guilelessbopomofo.Keyboard>

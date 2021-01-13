@@ -44,7 +44,7 @@ class GuilelessBopomofoService : InputMethodService() {
     var userHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
     lateinit var viewBinding: KeyboardLayoutBinding
     lateinit var sharedPreferences: SharedPreferences
-    private lateinit var inputView: KeyboardView
+    private lateinit var inputView: Keyboard
     private val chewingDataFiles =
         listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
 
