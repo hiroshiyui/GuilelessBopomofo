@@ -83,6 +83,11 @@ class KeyboardPanel(
         }
     }
 
+    private fun switchToCompactLayout() {
+        Log.v(LOGTAG, "switchToCompactLayout")
+        this.removeAllViews()
+    }
+
     private fun switchToBopomofoLayout() {
         Log.v(LOGTAG, "switchToMainLayout")
         currentKeyboardLayout = KeyboardLayout.MAIN
@@ -99,6 +104,11 @@ class KeyboardPanel(
         userKeyboardLayoutPreference?.let {
             val newKeyboardType = ChewingEngine.convKBStr2Num(it)
             ChewingEngine.setKBType(newKeyboardType)
+        }
+
+        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
+            switchToCompactLayout()
+            return
         }
 
         when (userKeyboardLayoutPreference) {
@@ -123,6 +133,11 @@ class KeyboardPanel(
     private fun switchToQwertyLayout() {
         Log.v(LOGTAG, "switchToQwertyLayout")
         currentKeyboardLayout = KeyboardLayout.QWERTY
+
+        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
+            switchToCompactLayout()
+            return
+        }
 
         keyboardQwertyLayoutBinding =
             KeyboardQwertyLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)

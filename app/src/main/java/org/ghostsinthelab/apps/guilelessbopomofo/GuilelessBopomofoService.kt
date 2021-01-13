@@ -41,7 +41,7 @@ import java.io.FileOutputStream
 class GuilelessBopomofoService : InputMethodService() {
     val LOGTAG = "GuilelessBopomofoSvc"
     var userHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
-    var hardwareKeyboardPresent: Boolean = false
+    var physicalKeyboardPresent: Boolean = false
     lateinit var viewBinding: KeyboardLayoutBinding
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var inputView: Keyboard
@@ -144,7 +144,7 @@ class GuilelessBopomofoService : InputMethodService() {
     override fun onEvaluateInputViewShown(): Boolean {
         super.onEvaluateInputViewShown()
         Log.v(LOGTAG, "onEvaluateInputViewShown()")
-        hardwareKeyboardPresent =
+        physicalKeyboardPresent =
             (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY)
         return true
     }
