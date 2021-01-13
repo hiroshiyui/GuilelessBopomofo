@@ -21,16 +21,8 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.KeyEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.SpaceKeyDownEvent
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
