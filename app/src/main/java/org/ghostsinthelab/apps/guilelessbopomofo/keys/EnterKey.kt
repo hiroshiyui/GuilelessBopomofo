@@ -37,24 +37,4 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
             EventBus.getDefault().post(EnterKeyDownEvent())
         }
     }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        EventBus.getDefault().unregister(this)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEnterKeyDownEvent(event: EnterKeyDownEvent) {
-        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) { // not committed yet
-            ChewingEngine.handleEnter()
-            EventBus.getDefault().post(BufferUpdatedEvent())
-        } else {
-            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
-        }
-    }
 }

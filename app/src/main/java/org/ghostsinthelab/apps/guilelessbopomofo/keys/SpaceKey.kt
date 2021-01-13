@@ -38,41 +38,4 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
             EventBus.getDefault().post(SpaceKeyDownEvent())
         }
     }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        EventBus.getDefault().unregister(this)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSpaceKeyDown(event: SpaceKeyDownEvent) {
-        spaceKeyDown()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSpaceKeyDown(event: SpaceKeyDownEvent.Physical) {
-        if (event.keyEvent.isShiftPressed) {
-            EventBus.getDefault().post(MainLayoutChangedEvent())
-            return
-        }
-        spaceKeyDown()
-    }
-
-    private fun spaceKeyDown() {
-        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
-            ChewingEngine.handleSpace()
-            EventBus.getDefault().post(BufferUpdatedEvent())
-            // 空白鍵是否為選字鍵？
-            if (ChewingEngine.getSpaceAsSelection() == 1 && ChewingEngine.candTotalChoice() > 0) {
-                EventBus.getDefault().post(CandidatesWindowOpendEvent())
-            }
-        } else {
-            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
-        }
-    }
 }

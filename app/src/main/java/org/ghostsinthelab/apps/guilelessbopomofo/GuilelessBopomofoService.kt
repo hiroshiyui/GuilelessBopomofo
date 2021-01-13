@@ -198,7 +198,7 @@ class GuilelessBopomofoService : InputMethodService() {
         event?.let {
             Log.v(LOGTAG, "${it}")
             when (it.keyCode) {
-                KeyEvent.KEYCODE_SHIFT_RIGHT -> {
+                KEYCODE_SHIFT_RIGHT -> {
                     ChewingEngine.openPuncCandidates()
                     EventBus.getDefault().post(CandidatesWindowOpendEvent())
                 }

@@ -32,11 +32,9 @@ import org.greenrobot.eventbus.ThreadMode
 
 class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
     private val LOGTAG: String = "KeyboardView"
-    private lateinit var v: KeyboardLayoutBinding
 
     init {
         this.orientation = VERTICAL
-        Log.v(LOGTAG, "Building KeyboardView.")
     }
 
     override fun onAttachedToWindow() {
@@ -47,6 +45,16 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
     override fun onDetachedFromWindow() {
         EventBus.getDefault().unregister(this)
         super.onDetachedFromWindow()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEnterKeyDownEvent(event: EnterKeyDownEvent) {
+        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) { // not committed yet
+            ChewingEngine.handleEnter()
+            EventBus.getDefault().post(BufferUpdatedEvent())
+        } else {
+            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -78,6 +86,33 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
                 .post(CandidatesWindowOpendEvent.Offset(ChewingEngine.cursorCurrent()))
         } else {
             GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSpaceKeyDown(event: SpaceKeyDownEvent) {
+        spaceKeyDown()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSpaceKeyDown(event: SpaceKeyDownEvent.Physical) {
+        if (event.keyEvent.isShiftPressed) {
+            EventBus.getDefault().post(MainLayoutChangedEvent())
+            return
+        }
+        spaceKeyDown()
+    }
+
+    private fun spaceKeyDown() {
+        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
+            ChewingEngine.handleSpace()
+            EventBus.getDefault().post(BufferUpdatedEvent())
+            // 空白鍵是否為選字鍵？
+            if (ChewingEngine.getSpaceAsSelection() == 1 && ChewingEngine.candTotalChoice() > 0) {
+                EventBus.getDefault().post(CandidatesWindowOpendEvent())
+            }
+        } else {
+            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
         }
     }
 }
