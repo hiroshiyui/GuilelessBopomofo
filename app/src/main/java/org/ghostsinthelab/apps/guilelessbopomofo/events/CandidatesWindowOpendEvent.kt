@@ -20,7 +20,6 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.events
 
 class CandidatesWindowOpendEvent {
-    class Offset(offset: Int) {
-        val offset: Int = offset
+    class Offset(val offset: Int) {
     }
 }
