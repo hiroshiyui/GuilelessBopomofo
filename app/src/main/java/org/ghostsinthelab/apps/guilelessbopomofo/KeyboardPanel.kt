@@ -147,38 +147,6 @@ class KeyboardPanel(
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onLeftKeyDownEvent(event: LeftKeyDownEvent) {
-        ChewingEngine.handleLeft()
-        if (ChewingEngine.bufferLen() > 0) {
-            EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnKeyboard())
-        } else {
-            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onRightKeyDownEvent(event: RightKeyDownEvent) {
-        ChewingEngine.handleRight()
-        if (ChewingEngine.bufferLen() > 0) {
-            EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnKeyboard())
-        } else {
-            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDownKeyDownEvent(event: DownKeyDownEvent) {
-        if (ChewingEngine.bufferLen() > 0) {
-            ChewingEngine.candClose()
-            ChewingEngine.candOpen()
-            EventBus.getDefault()
-                .post(CandidatesWindowOpendEvent.Offset(ChewingEngine.cursorCurrent()))
-        } else {
-            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN)
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSymbolPickerOpenedEvent(event: SymbolPickerOpenedEvent) {
         currentKeyboardLayout = KeyboardLayout.SYMBOLS
         ChewingEngine.openSymbolCandidates()
