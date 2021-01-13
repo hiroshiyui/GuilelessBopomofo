@@ -22,7 +22,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
@@ -38,8 +37,6 @@ class KeyboardPanel(
 ) : RelativeLayout(context, attrs) {
     private val LOGTAG: String = "KeyboardPanel"
     var currentCandidatesList: Int = 0
-    private var currentOffset: Int = 0
-    private lateinit var v: KeyboardLayoutBinding
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     private lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
     private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
@@ -99,24 +96,23 @@ class KeyboardPanel(
                 GuilelessBopomofoService.defaultKeyboardLayout
             )
 
+        userKeyboardLayoutPreference?.let {
+            val newKeyboardType = ChewingEngine.convKBStr2Num(it)
+            ChewingEngine.setKBType(newKeyboardType)
+        }
+
         when (userKeyboardLayoutPreference) {
             "KB_HSU" -> {
-                val newKeyboardType = ChewingEngine.convKBStr2Num("KB_HSU")
-                ChewingEngine.setKBType(newKeyboardType)
                 keyboardHsuLayoutBinding =
                     KeyboardHsuLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
                 this.addView(keyboardHsuLayoutBinding.root)
             }
             "KB_ET26" -> {
-                val newKeyboardType = ChewingEngine.convKBStr2Num("KB_ET26")
-                ChewingEngine.setKBType(newKeyboardType)
                 keyboardEt26LayoutBinding =
                     KeyboardEt26LayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
                 this.addView(keyboardEt26LayoutBinding.root)
             }
             "KB_DEFAULT" -> {
-                val newKeyboardType = ChewingEngine.convKBStr2Num("KB_DEFAULT")
-                ChewingEngine.setKBType(newKeyboardType)
                 keyboardDachenLayoutBinding =
                     KeyboardDachenLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
                 this.addView(keyboardDachenLayoutBinding.root)
