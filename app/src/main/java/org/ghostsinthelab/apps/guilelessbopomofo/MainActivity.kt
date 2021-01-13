@@ -72,72 +72,59 @@ class MainActivity : AppCompatActivity() {
 
             textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
 
-            if (sharedPreferences.getBoolean("user_fullscreen_when_in_landscape", true)) {
-                switchSettingFullscreenWhenInLandscape.isChecked = true
+            switchSettingFullscreenWhenInLandscape.let {
+                if (sharedPreferences.getBoolean("user_fullscreen_when_in_landscape", true)) {
+                    it.isChecked = true
+                }
+
+                it.setOnCheckedChangeListener { _, isChecked ->
+                    sharedPreferences.edit()
+                        .putBoolean("user_fullscreen_when_in_landscape", isChecked).apply()
+                }
+
             }
 
-            switchSettingFullscreenWhenInLandscape.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    sharedPreferences.edit().putBoolean("user_fullscreen_when_in_landscape", true)
-                        .apply()
-                } else {
-                    sharedPreferences.edit().putBoolean("user_fullscreen_when_in_landscape", false)
-                        .apply()
+            switchSettingFullscreenWhenInPortrait.let {
+                if (sharedPreferences.getBoolean("user_fullscreen_when_in_portrait", false)) {
+                    it.isChecked = true
+                }
+
+                it.setOnCheckedChangeListener { _, isChecked ->
+                    sharedPreferences.edit()
+                        .putBoolean("user_fullscreen_when_in_portrait", isChecked).apply()
                 }
             }
 
-            if (sharedPreferences.getBoolean("user_fullscreen_when_in_portrait", false)) {
-                switchSettingFullscreenWhenInPortrait.isChecked = true
-            }
+            switchSettingKeyButtonsElevation.let {
+                if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
+                    it.isChecked = true
+                }
 
-            switchSettingFullscreenWhenInPortrait.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    sharedPreferences.edit().putBoolean("user_fullscreen_when_in_portrait", true)
-                        .apply()
-                } else {
-                    sharedPreferences.edit().putBoolean("user_fullscreen_when_in_portrait", false)
-                        .apply()
+                it.setOnCheckedChangeListener { _, isChecked ->
+                    sharedPreferences.edit()
+                        .putBoolean("user_enable_button_elevation", isChecked).apply()
                 }
             }
 
-            if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
-                switchSettingKeyButtonsElevation.isChecked = true
-            }
+            switchSettingSpaceAsSelection.let {
+                if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
+                    it.isChecked = true
+                }
 
-            switchSettingKeyButtonsElevation.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    sharedPreferences.edit().putBoolean("user_enable_button_elevation", true)
-                        .apply()
-                } else {
-                    sharedPreferences.edit().putBoolean("user_enable_button_elevation", false)
-                        .apply()
+                it.setOnCheckedChangeListener { _, isChecked ->
+                    sharedPreferences.edit()
+                        .putBoolean("user_enable_space_as_selection", isChecked).apply()
                 }
             }
 
-            if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
-                switchSettingSpaceAsSelection.isChecked = true
-            }
-
-            switchSettingSpaceAsSelection.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    sharedPreferences.edit().putBoolean("user_enable_space_as_selection", true)
-                        .apply()
-                } else {
-                    sharedPreferences.edit().putBoolean("user_enable_space_as_selection", false)
-                        .apply()
+            switchRearwardPhraseChoice.let {
+                if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
+                    it.isChecked = true
                 }
-            }
 
-            if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
-                switchRearwardPhraseChoice.isChecked = true
-            }
-
-            switchRearwardPhraseChoice.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    sharedPreferences.edit().putBoolean("user_phrase_choice_rearward", true).apply()
-                } else {
-                    sharedPreferences.edit().putBoolean("user_phrase_choice_rearward", false)
-                        .apply()
+                it.setOnCheckedChangeListener { _, isChecked ->
+                    sharedPreferences.edit()
+                        .putBoolean("user_phrase_choice_rearward", isChecked).apply()
                 }
             }
         }
