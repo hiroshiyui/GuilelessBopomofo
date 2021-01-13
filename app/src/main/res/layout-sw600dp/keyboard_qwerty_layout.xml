@@ -18,7 +18,7 @@
   -->
 
 
-<org.ghostsinthelab.apps.guilelessbopomofo.Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+<org.ghostsinthelab.apps.guilelessbopomofo.KeyboardLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/keyboard"
     android:layout_width="match_parent"
@@ -660,4 +660,4 @@
 
     </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
 
-</org.ghostsinthelab.apps.guilelessbopomofo.Keyboard>
+</org.ghostsinthelab.apps.guilelessbopomofo.KeyboardLayout>

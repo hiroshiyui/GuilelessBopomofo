@@ -24,7 +24,7 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.LinearLayout
 
-class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
+class KeyboardLayout(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
     private val LOGTAG: String = "Keyboard"
 
     init {
