@@ -109,6 +109,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
             EventBus.getDefault().post(BufferUpdatedEvent())
             // 空白鍵是否為選字鍵？
             if (ChewingEngine.getSpaceAsSelection() == 1 && ChewingEngine.candTotalChoice() > 0) {
+                EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnKeyboard())
                 EventBus.getDefault().post(CandidatesWindowOpendEvent())
             }
         } else {
