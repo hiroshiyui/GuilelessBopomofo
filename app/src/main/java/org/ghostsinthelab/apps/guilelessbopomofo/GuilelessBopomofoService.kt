@@ -217,7 +217,7 @@ class GuilelessBopomofoService : InputMethodService() {
             return
         }
 
-        if (event.keyEvent.keyCode == KEYCODE_GRAVE && ChewingEngine.getChiEngMode() == CHINESE_MODE) {
+        if (event.keyEvent.keyCode == KEYCODE_GRAVE && ChewingEngine.getChiEngMode() == CHINESE_MODE && !event.keyEvent.isShiftPressed) {
             EventBus.getDefault().post(SymbolPickerOpenedEvent())
             return
         }
