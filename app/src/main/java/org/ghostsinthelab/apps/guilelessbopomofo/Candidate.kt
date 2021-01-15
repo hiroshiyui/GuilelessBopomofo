@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2020 YOU, HUI-HONG
+ * Copyright (C) 2021 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,16 +19,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.CandidateButton
-
-class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val LOGTAG: String = "CandidateViewHolder"
-    private val candidateButton: CandidateButton = itemView.findViewById(R.id.buttonCandidateItem)
-
-    fun setData(position: Int) {
-        candidateButton.text = ChewingEngine.candStringByIndexStatic(position)
-        candidateButton.dataIndex = position
-    }
+data class Candidate(var index: Int) {
+    lateinit var candidateString: String
+    var selectionKey: Char = '\u0000'
 }

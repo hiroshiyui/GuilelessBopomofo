@@ -301,6 +301,78 @@ class ChewingEngineInstrumentedTest {
     }
 
     @Test
+    fun validGetCandidatesByPage() {
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        ChewingEngine.setCandPerPage(10)
+        val selKeys : IntArray = charArrayOf('a', 's', 'd', 'f', 'g', 'q', 'w', 'e', 'r', 't').map { it.toInt() }.toIntArray()
+        ChewingEngine.setSelKey(selKeys, 10)
+        ChewingEngine.setPhraseChoiceRearward(false)
+        ChewingEngine.setSpaceAsSelection(1)
+
+        ChewingEngine.handleDefault('x')
+        ChewingEngine.handleDefault('u')
+        ChewingEngine.handleDefault('/')
+        ChewingEngine.handleDefault('6')
+        ChewingEngine.handleSpace()
+
+        assertEquals(ChewingEngine.hasCandidates(), true)
+        assertEquals(ChewingEngine.candTotalPage(), 9)
+        assertEquals(ChewingEngine.candTotalChoice(), 88)
+        assertEquals(ChewingEngine.candCurrentPage(), 0)
+        assertEquals(ChewingEngine.candChoicePerPage(), 10)
+        assertEquals(ChewingEngine.candListHasNext(), false)
+
+        var candidates = ChewingEngine.getCandidatesByPage(0)
+        assertEquals(candidates[0].index, 0)
+        assertEquals(candidates[0].candidateString, "零")
+        assertEquals(candidates[0].selectionKey, 'a')
+
+        candidates = ChewingEngine.getCandidatesByPage(1)
+        assertEquals(candidates[0].index, 10)
+        assertEquals(candidates[0].candidateString, "苓")
+        assertEquals(candidates[0].selectionKey, 'a')
+        assertEquals(candidates[1].index, 11)
+        assertEquals(candidates[1].candidateString, "伶")
+        assertEquals(candidates[1].selectionKey, 's')
+
+        // last page
+        candidates = ChewingEngine.getCandidatesByPage(8)
+        assertEquals(candidates[0].index, 80)
+        assertEquals(candidates[0].candidateString, "衑")
+        assertEquals(candidates[0].selectionKey, 'a')
+
+        assertEquals(candidates[1].index, 81)
+        assertEquals(candidates[1].candidateString, "閝")
+        assertEquals(candidates[1].selectionKey, 's')
+        // bounding
+        assertEquals(candidates.lastIndex, 7)
+        assertEquals(candidates[7].selectionKey, 'e')
+
+    }
+
+    @Test(expected = IndexOutOfBoundsException::class)
+    fun validIndexOutOfBoundsExceptionGetCandidatesByPage() {
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        ChewingEngine.setCandPerPage(10)
+        val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
+        ChewingEngine.setSelKey(selKeys, 10)
+        ChewingEngine.setPhraseChoiceRearward(false)
+        ChewingEngine.setSpaceAsSelection(1)
+
+        ChewingEngine.handleDefault('x')
+        ChewingEngine.handleDefault('u')
+        ChewingEngine.handleDefault('/')
+        ChewingEngine.handleDefault('6')
+        ChewingEngine.handleSpace()
+
+        // last page
+        val candidates = ChewingEngine.getCandidatesByPage(8)
+        assertNotNull(candidates[7])
+        // over bounding, should throws IndexOutOfBoundsException here:
+        assertNull(candidates[8])
+    }
+
+    @Test
     fun validCommitPreeditBuf() { // 測試 commitPreeditBuf() 回傳值
         ChewingEngine.setChiEngMode(CHINESE_MODE)
         ChewingEngine.setMaxChiSymbolLen(10)
