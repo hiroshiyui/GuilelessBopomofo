@@ -134,6 +134,29 @@ object ChewingEngine {
         handleEnd()
     }
 
+    fun getCandidatesByPage(page: Int = 0): List<Candidate> {
+        val fromOffset = page * candChoicePerPage()
+        val toOffset = fromOffset + candChoicePerPage() - 1
+        val candidatesThisPage: MutableList<Candidate> = mutableListOf()
+        val selKeys = getSelKey()
+
+        for (i in fromOffset..toOffset) {
+            val candidate: Candidate = Candidate()
+            if (candStringByIndexStatic(i).isNotBlank()) {
+                candidate.index = i
+                candidate.candidateString = candStringByIndexStatic(i)
+                candidatesThisPage.add(candidate)
+            }
+        }
+
+        // binding selection key
+        candidatesThisPage.mapIndexed { index, candidate ->
+            candidate.selectionKey = selKeys[index].toChar()
+        }
+
+        return candidatesThisPage.toList()
+    }
+
     fun moveToPreEditBufferOffset(offset: Int) {
         // close if any been opened candidate window first
         candClose()
