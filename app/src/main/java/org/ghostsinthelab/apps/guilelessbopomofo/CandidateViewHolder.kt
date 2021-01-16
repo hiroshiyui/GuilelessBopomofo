@@ -29,6 +29,6 @@ class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun setData(position: Int) {
         candidateButton.text = ChewingEngine.candStringByIndexStatic(position)
-        candidateButton.dataIndex = position
+        candidateButton.candidate = Candidate(position)
     }
 }

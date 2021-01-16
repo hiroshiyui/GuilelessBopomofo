@@ -22,6 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
+import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidateSelectionDoneEvent
@@ -29,7 +30,7 @@ import org.greenrobot.eventbus.EventBus
 
 class CandidateButton(context: Context, attrs: AttributeSet) :
     AppCompatButton(context, attrs, R.attr.buttonStyle) {
-    var dataIndex: Int = 0
+    lateinit var candidate: Candidate
 
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.MaterialButton, 0, 0).apply {
@@ -42,7 +43,7 @@ class CandidateButton(context: Context, attrs: AttributeSet) :
 
         this.setOnClickListener {
             performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
-            EventBus.getDefault().post(CandidateSelectionDoneEvent.Indexed(dataIndex))
+            EventBus.getDefault().post(CandidateSelectionDoneEvent.Indexed(candidate.index))
         }
     }
 }
