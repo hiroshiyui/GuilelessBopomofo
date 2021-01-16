@@ -24,8 +24,9 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.GridView
 import android.widget.RelativeLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
 import org.ghostsinthelab.apps.guilelessbopomofo.events.*
@@ -261,10 +262,10 @@ class KeyboardPanel(
             this.removeAllViews()
             this.addView(candidatesPagedLayoutBinding.root)
 
-            val candidateListView: GridView = candidatesPagedLayoutBinding.CandidatesGridView
-            candidateListView.adapter = PagedCandidatesAdapter(ChewingEngine.candCurrentPage())
-            candidateListView.numColumns = 5
+            val candidatePagedRecyclerView: RecyclerView = candidatesPagedLayoutBinding.CandidatesPagedRecyclerViewView
+            candidatePagedRecyclerView.adapter = PagedCandidatesAdapter(ChewingEngine.candCurrentPage())
+            candidatePagedRecyclerView.layoutManager = GridLayoutManager(context, 5)
+            candidatePagedRecyclerView.addItemDecoration()
         }
-
     }
 }

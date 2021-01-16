@@ -20,39 +20,35 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
+import androidx.recyclerview.widget.RecyclerView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesItemPagedLayoutBinding
 
-class PagedCandidatesAdapter(page: Int) : BaseAdapter() {
-    private var candidatesInPage: List<Candidate> = ChewingEngine.getCandidatesByPage(ChewingEngine.candCurrentPage())
-
-    override fun getCount(): Int {
-        return candidatesInPage.size
-    }
-
-    override fun getItem(position: Int): Candidate {
-        return candidatesInPage[position]
-    }
+class PagedCandidatesAdapter(candCurrentPage: Int) :
+    RecyclerView.Adapter<PagedCandidateViewHolder>() {
+    private var candidatesInPage: List<Candidate> =
+        ChewingEngine.getCandidatesByPage(candCurrentPage)
 
     override fun getItemId(position: Int): Long {
         return candidatesInPage[position].index.toLong()
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val candidatesItemPagedLayoutBinding: CandidatesItemPagedLayoutBinding =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagedCandidateViewHolder {
+        val itemView =
             CandidatesItemPagedLayoutBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
+        return PagedCandidateViewHolder(itemView.root)
+    }
 
-        candidatesItemPagedLayoutBinding.textViewSelectionKey.text =
-            candidatesInPage.get(position).selectionKey.toString()
-        candidatesItemPagedLayoutBinding.textViewCandidate.text =
-            candidatesInPage.get(position).candidateString
+    override fun onBindViewHolder(holder: PagedCandidateViewHolder, position: Int) {
+        val candidate: Candidate = candidatesInPage[position]
+        holder.setData(candidate)
+    }
 
-        return candidatesItemPagedLayoutBinding.root
+    override fun getItemCount(): Int {
+        return candidatesInPage.size
     }
 }
