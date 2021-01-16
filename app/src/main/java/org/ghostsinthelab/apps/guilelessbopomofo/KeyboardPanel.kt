@@ -25,9 +25,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.flexbox.FlexboxLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
 import org.ghostsinthelab.apps.guilelessbopomofo.events.*
 import org.greenrobot.eventbus.EventBus
@@ -45,7 +44,6 @@ class KeyboardPanel(
     private lateinit var keyboardQwertyLayoutBinding: KeyboardQwertyLayoutBinding
 
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
-    private lateinit var candidatesPagedLayoutBinding: CandidatesPagedLayoutBinding
 
     enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY }
 
@@ -246,26 +244,21 @@ class KeyboardPanel(
         Log.v(LOGTAG, "renderCandidatesLayout")
         currentKeyboardLayout = KeyboardLayout.CANDIDATES
 
-        if (!GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
-            candidatesLayoutBinding =
-                CandidatesLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-            this.removeAllViews()
-            this.addView(candidatesLayoutBinding.root)
+        candidatesLayoutBinding =
+            CandidatesLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+        this.removeAllViews()
+        this.addView(candidatesLayoutBinding.root)
 
-            val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
+        val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
+
+        if (!GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
             candidatesRecyclerView.adapter = CandidatesAdapter()
             candidatesRecyclerView.layoutManager =
                 StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
         } else {
-            candidatesPagedLayoutBinding =
-                CandidatesPagedLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-            this.removeAllViews()
-            this.addView(candidatesPagedLayoutBinding.root)
-
-            val candidatePagedRecyclerView: RecyclerView = candidatesPagedLayoutBinding.CandidatesPagedRecyclerViewView
-            candidatePagedRecyclerView.adapter = PagedCandidatesAdapter(ChewingEngine.candCurrentPage())
-            candidatePagedRecyclerView.layoutManager = GridLayoutManager(context, 5)
-            candidatePagedRecyclerView.addItemDecoration()
+            val layoutManager = FlexboxLayoutManager(context)
+            candidatesRecyclerView.adapter = PagedCandidatesAdapter(ChewingEngine.candCurrentPage())
+            candidatesRecyclerView.layoutManager = layoutManager
         }
     }
 }
