@@ -107,8 +107,8 @@ class ChewingBridgeInstrumentedTest {
             charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
                 .toIntArray()
         ChewingBridge.setSelKey(selKeys, 10)
-        ChewingBridge.openPuncCandidates()
-        assertEquals(ChewingBridge.hasCandidates(), true)
+        ChewingUtil.openPuncCandidates()
+        assertEquals(ChewingUtil.hasCandidates(), true)
         val candidateString: String = ChewingBridge.candStringByIndexStatic(0)
         assertEquals(candidateString, "，")
     }
@@ -149,7 +149,7 @@ class ChewingBridgeInstrumentedTest {
         assertEquals(ChewingBridge.cursorCurrent(), 0)
 
         ChewingBridge.candOpen()
-        assertEquals(ChewingBridge.hasCandidates(), true)
+        assertEquals(ChewingUtil.hasCandidates(), true)
         assertEquals(ChewingBridge.candTotalPage(), 1)
         assertEquals(ChewingBridge.candTotalChoice(), 1)
         assertEquals(ChewingBridge.candCurrentPage(), 0)
@@ -163,7 +163,7 @@ class ChewingBridgeInstrumentedTest {
 
         ChewingBridge.candListNext()
 
-        assertEquals(ChewingBridge.hasCandidates(), true)
+        assertEquals(ChewingUtil.hasCandidates(), true)
         assertEquals(ChewingBridge.candTotalPage(), 1)
         assertEquals(ChewingBridge.candTotalChoice(), 1)
         assertEquals(ChewingBridge.candCurrentPage(), 0)
@@ -176,7 +176,7 @@ class ChewingBridgeInstrumentedTest {
 
         ChewingBridge.candListNext()
 
-        assertEquals(ChewingBridge.hasCandidates(), true)
+        assertEquals(ChewingUtil.hasCandidates(), true)
         assertEquals(ChewingBridge.candTotalPage(), 9)
         assertEquals(ChewingBridge.candTotalChoice(), 88)
         assertEquals(ChewingBridge.candCurrentPage(), 0)
@@ -201,7 +201,7 @@ class ChewingBridgeInstrumentedTest {
         assertEquals(ChewingBridge.candStringStatic(), "伶")
 
         ChewingBridge.handleEsc() // should have similar effect as ChewingEngine.candClose() does
-        assertEquals(ChewingBridge.hasCandidates(), false)
+        assertEquals(ChewingUtil.hasCandidates(), false)
     }
 
     @Test
@@ -220,7 +220,7 @@ class ChewingBridgeInstrumentedTest {
         ChewingBridge.handleDefault('/')
         ChewingBridge.handleDefault('6')
         ChewingBridge.handleSpace()
-        assertEquals(ChewingBridge.hasCandidates(), true)
+        assertEquals(ChewingUtil.hasCandidates(), true)
         assertEquals(ChewingBridge.candTotalPage(), 9)
         assertEquals(ChewingBridge.candTotalChoice(), 88)
         assertEquals(ChewingBridge.candCurrentPage(), 0)
@@ -325,19 +325,19 @@ class ChewingBridgeInstrumentedTest {
         ChewingBridge.handleDefault('6')
         ChewingBridge.handleSpace()
 
-        assertEquals(ChewingBridge.hasCandidates(), true)
+        assertEquals(ChewingUtil.hasCandidates(), true)
         assertEquals(ChewingBridge.candTotalPage(), 9)
         assertEquals(ChewingBridge.candTotalChoice(), 88)
         assertEquals(ChewingBridge.candCurrentPage(), 0)
         assertEquals(ChewingBridge.candChoicePerPage(), 10)
         assertEquals(ChewingBridge.candListHasNext(), false)
 
-        var candidates = ChewingBridge.getCandidatesByPage(0)
+        var candidates = ChewingUtil.getCandidatesByPage(0)
         assertEquals(candidates[0].index, 0)
         assertEquals(candidates[0].candidateString, "零")
         assertEquals(candidates[0].selectionKey, 'a')
 
-        candidates = ChewingBridge.getCandidatesByPage(1)
+        candidates = ChewingUtil.getCandidatesByPage(1)
         assertEquals(candidates[0].index, 10)
         assertEquals(candidates[0].candidateString, "苓")
         assertEquals(candidates[0].selectionKey, 'a')
@@ -346,7 +346,7 @@ class ChewingBridgeInstrumentedTest {
         assertEquals(candidates[1].selectionKey, 's')
 
         // last page
-        candidates = ChewingBridge.getCandidatesByPage(8)
+        candidates = ChewingUtil.getCandidatesByPage(8)
         assertEquals(candidates[0].index, 80)
         assertEquals(candidates[0].candidateString, "衑")
         assertEquals(candidates[0].selectionKey, 'a')
@@ -378,7 +378,7 @@ class ChewingBridgeInstrumentedTest {
         ChewingBridge.handleSpace()
 
         // last page
-        val candidates = ChewingBridge.getCandidatesByPage(8)
+        val candidates = ChewingUtil.getCandidatesByPage(8)
         assertNotNull(candidates[7])
         // over bounding, should throws IndexOutOfBoundsException here:
         assertNull(candidates[8])

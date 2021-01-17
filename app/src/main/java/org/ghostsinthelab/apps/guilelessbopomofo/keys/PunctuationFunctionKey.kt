@@ -22,7 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CandidatesWindowOpendEvent
 import org.greenrobot.eventbus.EventBus
@@ -33,13 +33,13 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBu
         // 短觸會輸出全形逗號
         this.setOnClickListener {
             performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            ChewingBridge.handleShiftComma()
+            ChewingUtil.handleShiftComma()
             EventBus.getDefault().post(BufferUpdatedEvent())
         }
 
         this.setOnLongClickListener {
             performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            ChewingBridge.openPuncCandidates()
+            ChewingUtil.openPuncCandidates()
             EventBus.getDefault().post(CandidatesWindowOpendEvent())
             return@setOnLongClickListener true
         }

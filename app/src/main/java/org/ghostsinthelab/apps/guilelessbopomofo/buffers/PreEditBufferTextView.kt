@@ -31,6 +31,7 @@ import android.widget.TextView
 import androidx.core.text.toSpannable
 import androidx.core.view.setPadding
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.events.*
 import org.greenrobot.eventbus.EventBus
@@ -86,7 +87,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onPreEditBufferCursorChangedEvent(event: PreEditBufferCursorChangedEvent.OnTouch) {
         Log.v(LOGTAG, "Offset: ${offset}, Cursor: ${ChewingBridge.cursorCurrent()}")
-        ChewingBridge.moveToPreEditBufferOffset(offset)
+        ChewingUtil.moveToPreEditBufferOffset(offset)
 
         // 如果使用者點選最後一個字的時候很邊邊角角，
         // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來

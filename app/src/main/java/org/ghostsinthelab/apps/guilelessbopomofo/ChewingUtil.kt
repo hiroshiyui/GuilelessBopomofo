@@ -1,0 +1,109 @@
+/*
+ * Guileless Bopomofo
+ * Copyright (C) 2021 YOU, HUI-HONG
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+package org.ghostsinthelab.apps.guilelessbopomofo
+
+class ChewingUtil {
+    companion object {
+        fun hasCandidates(): Boolean {
+            if (ChewingBridge.candStringByIndexStatic(0).isEmpty()) {
+                return false
+            }
+            return true
+        }
+
+        fun anyPreeditBufferIsNotEmpty(): Boolean {
+            if (ChewingBridge.bufferStringStatic()
+                    .isNotEmpty() || ChewingBridge.bopomofoStringStatic().isNotEmpty()
+            ) {
+                return true
+            }
+            return false
+        }
+
+        fun openSymbolCandidates() {
+            ChewingBridge.candClose()
+            ChewingBridge.handleDefault('`')
+            ChewingBridge.candOpen()
+        }
+
+        fun openPuncCandidates() {
+            ChewingBridge.candClose()
+            ChewingBridge.handleDefault('`')
+            // 「常用符號」
+            ChewingBridge.candChooseByIndex(2)
+            ChewingBridge.candOpen()
+        }
+
+        fun endCandidateChoice() {
+            ChewingBridge.candClose()
+            ChewingBridge.handleEnd()
+        }
+
+        fun getCandidatesByPage(page: Int = 0): List<Candidate> {
+            val fromOffset = page * ChewingBridge.candChoicePerPage()
+            val toOffset = fromOffset + ChewingBridge.candChoicePerPage() - 1
+            val candidatesInThisPage: MutableList<Candidate> = mutableListOf()
+            val selKeys = ChewingBridge.getSelKey()
+
+            for (i in fromOffset..toOffset) {
+                if (ChewingBridge.candStringByIndexStatic(i).isNotBlank()) {
+                    val candidate = getCandidate(index = i)
+                    candidatesInThisPage.add(candidate)
+                }
+            }
+
+            // binding selection key
+            candidatesInThisPage.mapIndexed { index, candidate ->
+                candidate.selectionKey = selKeys[index].toChar()
+            }
+
+            return candidatesInThisPage.toList()
+        }
+
+        fun getCandidate(index: Int): Candidate {
+            val candidate = Candidate(index)
+            candidate.candidateString = ChewingBridge.candStringByIndexStatic(index)
+
+            return candidate
+        }
+
+        fun moveToPreEditBufferOffset(offset: Int) {
+            // close if any been opened candidate window first
+            ChewingBridge.candClose()
+            // move to first character
+            ChewingBridge.handleHome()
+            // move to clicked character
+            repeat(offset) { ChewingBridge.handleRight() }
+            // open candidates window
+            ChewingBridge.candOpen()
+        }
+
+        // simulates [Shift] + [,]
+        fun handleShiftComma() {
+            if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
+                ChewingBridge.setEasySymbolInput(1)
+                ChewingBridge.handleDefault(',')
+                ChewingBridge.setEasySymbolInput(0)
+            } else {
+                ChewingBridge.handleDefault(',')
+            }
+        }
+    }
+}

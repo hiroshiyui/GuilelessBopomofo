@@ -50,7 +50,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEnterKeyDownEvent(event: EnterKeyDownEvent) {
-        if (ChewingBridge.anyPreeditBufferIsNotEmpty()) { // not committed yet
+        if (ChewingUtil.anyPreeditBufferIsNotEmpty()) { // not committed yet
             ChewingBridge.handleEnter()
             EventBus.getDefault().post(BufferUpdatedEvent())
         } else {
@@ -66,7 +66,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         }
         lastBackspaceClickTime = SystemClock.elapsedRealtime()
 
-        if (ChewingBridge.anyPreeditBufferIsNotEmpty()) {
+        if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
             ChewingBridge.handleBackspace()
             EventBus.getDefault().post(BufferUpdatedEvent())
         } else {
@@ -121,7 +121,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
     }
 
     private fun spaceKeyDown() {
-        if (ChewingBridge.anyPreeditBufferIsNotEmpty()) {
+        if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
             ChewingBridge.handleSpace()
             EventBus.getDefault().post(BufferUpdatedEvent())
             // 空白鍵是否為選字鍵？

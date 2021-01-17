@@ -201,7 +201,7 @@ class GuilelessBopomofoService : InputMethodService() {
             Log.v(LOGTAG, "${it}")
             when (it.keyCode) {
                 KEYCODE_SHIFT_RIGHT -> {
-                    ChewingBridge.openPuncCandidates()
+                    ChewingUtil.openPuncCandidates()
                     EventBus.getDefault().post(CandidatesWindowOpendEvent())
                 }
             }
@@ -283,16 +283,14 @@ class GuilelessBopomofoService : InputMethodService() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent.Indexed) {
-        ChewingBridge.apply {
-            candChooseByIndex(event.index)
-            endCandidateChoice()
-        }
+        ChewingBridge.candChooseByIndex(event.index)
+        ChewingUtil.endCandidateChoice()
         EventBus.getDefault().post(BufferUpdatedEvent())
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent) {
-        ChewingBridge.endCandidateChoice()
+        ChewingUtil.endCandidateChoice()
         EventBus.getDefault().post(BufferUpdatedEvent())
     }
 
