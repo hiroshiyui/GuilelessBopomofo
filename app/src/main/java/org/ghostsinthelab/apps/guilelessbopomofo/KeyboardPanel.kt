@@ -162,7 +162,7 @@ class KeyboardPanel(
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSymbolPickerOpenedEvent(event: SymbolPickerOpenedEvent) {
         currentKeyboardLayout = KeyboardLayout.SYMBOLS
-        ChewingBridge.openSymbolCandidates()
+        ChewingUtil.openSymbolCandidates()
 
         val symbolsPickerLayoutBinding =
             SymbolsPickerLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
@@ -180,7 +180,7 @@ class KeyboardPanel(
             button.setOnClickListener {
                 ChewingBridge.candChooseByIndex(category)
 
-                if (ChewingBridge.hasCandidates()) {
+                if (ChewingUtil.hasCandidates()) {
                     // 如果候選區還有資料，代表目前進入次分類
                     EventBus.getDefault().post(CandidatesWindowOpendEvent())
                 } else {
