@@ -257,7 +257,7 @@ class KeyboardPanel(
                 StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
         } else {
             val layoutManager = FlexboxLayoutManager(context)
-             candidatesRecyclerView.adapter = PagedCandidatesAdapter(ChewingBridge.candCurrentPage())
+            candidatesRecyclerView.adapter = PagedCandidatesAdapter(ChewingBridge.candCurrentPage())
             candidatesRecyclerView.layoutManager = layoutManager
         }
     }
