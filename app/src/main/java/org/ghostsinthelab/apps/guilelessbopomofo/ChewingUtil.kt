@@ -47,6 +47,7 @@ class ChewingUtil {
             ChewingBridge.candClose()
             ChewingBridge.handleDefault('`')
             // 「常用符號」
+            // 選字鍵不能保證一定是 0-9，用 candChooseByIndex() 相對妥當
             ChewingBridge.candChooseByIndex(2)
             ChewingBridge.candOpen()
         }
