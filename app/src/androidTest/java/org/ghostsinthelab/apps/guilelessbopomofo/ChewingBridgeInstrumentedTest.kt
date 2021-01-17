@@ -91,7 +91,9 @@ class ChewingEngineInstrumentedTest {
     @Test
     fun validSelKeys() {
         ChewingEngine.setCandPerPage(10)
-        val selKeys : IntArray = charArrayOf('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';').map { it.toInt() }.toIntArray()
+        val selKeys: IntArray =
+            charArrayOf('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';').map { it.toInt() }
+                .toIntArray()
         ChewingEngine.setSelKey(selKeys, 10)
         val getSelKey = ChewingEngine.getSelKey()
         assertNotEquals(getSelKey[0], '1'.toInt())
@@ -101,7 +103,9 @@ class ChewingEngineInstrumentedTest {
     @Test
     fun validOpenPuncCandidates() {
         ChewingEngine.setCandPerPage(10)
-        val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
+        val selKeys: IntArray =
+            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+                .toIntArray()
         ChewingEngine.setSelKey(selKeys, 10)
         ChewingEngine.openPuncCandidates()
         assertEquals(ChewingEngine.hasCandidates(), true)
@@ -113,7 +117,9 @@ class ChewingEngineInstrumentedTest {
     fun validPagedCandidates() {
         ChewingEngine.setChiEngMode(CHINESE_MODE)
         ChewingEngine.setCandPerPage(10)
-        val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
+        val selKeys: IntArray =
+            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+                .toIntArray()
         ChewingEngine.setSelKey(selKeys, 10)
         ChewingEngine.setPhraseChoiceRearward(false)
 
@@ -202,7 +208,9 @@ class ChewingEngineInstrumentedTest {
     fun validPhysicalKeyboardCandidatesSelection() {
         ChewingEngine.setChiEngMode(CHINESE_MODE)
         ChewingEngine.setCandPerPage(10)
-        val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
+        val selKeys: IntArray =
+            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+                .toIntArray()
         ChewingEngine.setSelKey(selKeys, 10)
         ChewingEngine.setPhraseChoiceRearward(false)
         ChewingEngine.setSpaceAsSelection(1)
@@ -304,7 +312,9 @@ class ChewingEngineInstrumentedTest {
     fun validGetCandidatesByPage() {
         ChewingEngine.setChiEngMode(CHINESE_MODE)
         ChewingEngine.setCandPerPage(10)
-        val selKeys : IntArray = charArrayOf('a', 's', 'd', 'f', 'g', 'q', 'w', 'e', 'r', 't').map { it.toInt() }.toIntArray()
+        val selKeys: IntArray =
+            charArrayOf('a', 's', 'd', 'f', 'g', 'q', 'w', 'e', 'r', 't').map { it.toInt() }
+                .toIntArray()
         ChewingEngine.setSelKey(selKeys, 10)
         ChewingEngine.setPhraseChoiceRearward(false)
         ChewingEngine.setSpaceAsSelection(1)
@@ -354,7 +364,9 @@ class ChewingEngineInstrumentedTest {
     fun validIndexOutOfBoundsExceptionGetCandidatesByPage() {
         ChewingEngine.setChiEngMode(CHINESE_MODE)
         ChewingEngine.setCandPerPage(10)
-        val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
+        val selKeys: IntArray =
+            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+                .toIntArray()
         ChewingEngine.setSelKey(selKeys, 10)
         ChewingEngine.setPhraseChoiceRearward(false)
         ChewingEngine.setSpaceAsSelection(1)
@@ -493,6 +505,29 @@ class ChewingEngineInstrumentedTest {
     }
 
     @Test
+    fun validCandidateWindowOpenClose() {
+        ChewingEngine.setChiEngMode(CHINESE_MODE)
+        ChewingEngine.setMaxChiSymbolLen(10)
+        ChewingEngine.setCandPerPage(10)
+        ChewingEngine.setPhraseChoiceRearward(false)
+        ChewingEngine.setSpaceAsSelection(1)
+
+        // 零
+        ChewingEngine.handleDefault('x')
+        ChewingEngine.handleDefault('u')
+        ChewingEngine.handleDefault('/')
+        ChewingEngine.handleDefault('6')
+
+        ChewingEngine.handleHome()
+        // candidate window opened here
+        ChewingEngine.handleSpace()
+        assertTrue(ChewingEngine.candTotalChoice() > 0)
+        // candidate window closed here (after I picker the first candidate)
+        ChewingEngine.handleDefault('1')
+        assertEquals(ChewingEngine.candTotalChoice(), 0)
+    }
+
+    @Test
     fun switchToEten26Layout() {
         val newKeyboardType = ChewingEngine.convKBStr2Num("KB_ET26")
         ChewingEngine.setKBType(newKeyboardType)
@@ -574,7 +609,9 @@ class ChewingEngineInstrumentedTest {
         ChewingEngine.candClose()
         assertEquals(ChewingEngine.commitString(), "╔")
 
-        val selKeys : IntArray = charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }.toIntArray()
+        val selKeys: IntArray =
+            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+                .toIntArray()
         ChewingEngine.setSelKey(selKeys, 10)
 
         ChewingEngine.handleDefault('`')
