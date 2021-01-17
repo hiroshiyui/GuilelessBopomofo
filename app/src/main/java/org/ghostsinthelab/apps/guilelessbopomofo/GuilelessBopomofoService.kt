@@ -63,26 +63,26 @@ class GuilelessBopomofoService : InputMethodService() {
             val dataPath =
                 packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
             setupChewingData(dataPath)
-            ChewingEngine.start(dataPath)
-            ChewingEngine.context.let {
+            ChewingBridge.connect(dataPath)
+            ChewingBridge.context.let {
                 Log.v(LOGTAG, "Chewing context ptr: $it")
             }
 
             if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
-                ChewingEngine.setSpaceAsSelection(1)
+                ChewingBridge.setSpaceAsSelection(1)
             }
 
             if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
-                ChewingEngine.setPhraseChoiceRearward(true)
+                ChewingBridge.setPhraseChoiceRearward(true)
             }
 
-            ChewingEngine.setChiEngMode(CHINESE_MODE)
-            ChewingEngine.setCandPerPage(10)
+            ChewingBridge.setChiEngMode(CHINESE_MODE)
+            ChewingBridge.setCandPerPage(10)
 
             val selKeys: IntArray =
                 charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
                     .toIntArray()
-            ChewingEngine.setSelKey(selKeys, 10)
+            ChewingBridge.setSelKey(selKeys, 10)
         } catch (e: Exception) {
             Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
                 .show()
@@ -173,7 +173,7 @@ class GuilelessBopomofoService : InputMethodService() {
     override fun onDestroy() {
         super.onDestroy()
         Log.v(LOGTAG, "onDestroy()")
-        ChewingEngine.delete()
+        ChewingBridge.delete()
         EventBus.getDefault().unregister(this)
     }
 
@@ -201,7 +201,7 @@ class GuilelessBopomofoService : InputMethodService() {
             Log.v(LOGTAG, "${it}")
             when (it.keyCode) {
                 KEYCODE_SHIFT_RIGHT -> {
-                    ChewingEngine.openPuncCandidates()
+                    ChewingBridge.openPuncCandidates()
                     EventBus.getDefault().post(CandidatesWindowOpendEvent())
                 }
             }
@@ -217,7 +217,7 @@ class GuilelessBopomofoService : InputMethodService() {
             return
         }
 
-        if (event.keyEvent.keyCode == KEYCODE_GRAVE && ChewingEngine.getChiEngMode() == CHINESE_MODE && !event.keyEvent.isShiftPressed) {
+        if (event.keyEvent.keyCode == KEYCODE_GRAVE && ChewingBridge.getChiEngMode() == CHINESE_MODE && !event.keyEvent.isShiftPressed) {
             EventBus.getDefault().post(SymbolPickerOpenedEvent())
             return
         }
@@ -239,7 +239,7 @@ class GuilelessBopomofoService : InputMethodService() {
             }
         }
 
-        ChewingEngine.handleDefault(keyPressed)
+        ChewingBridge.handleDefault(keyPressed)
         EventBus.getDefault().post(BufferUpdatedEvent())
 
         shiftKeyImageButton?.let {
@@ -283,7 +283,7 @@ class GuilelessBopomofoService : InputMethodService() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent.Indexed) {
-        ChewingEngine.apply {
+        ChewingBridge.apply {
             candChooseByIndex(event.index)
             endCandidateChoice()
         }
@@ -292,7 +292,7 @@ class GuilelessBopomofoService : InputMethodService() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent) {
-        ChewingEngine.endCandidateChoice()
+        ChewingBridge.endCandidateChoice()
         EventBus.getDefault().post(BufferUpdatedEvent())
     }
 
@@ -301,11 +301,11 @@ class GuilelessBopomofoService : InputMethodService() {
         // chewingEngine.setMaxChiSymbolLen() 到達閾值時，
         // 會把 pre-edit buffer 開頭送到 commit buffer，
         // 所以要先丟出來：
-        if (ChewingEngine.commitCheck() == 1) {
-            currentInputConnection.commitText(ChewingEngine.commitString(), 1)
+        if (ChewingBridge.commitCheck() == 1) {
+            currentInputConnection.commitText(ChewingBridge.commitString(), 1)
             // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
             // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
-            ChewingEngine.handleEnd()
+            ChewingBridge.handleEnd()
         }
     }
 

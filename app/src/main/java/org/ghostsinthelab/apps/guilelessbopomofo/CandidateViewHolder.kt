@@ -28,7 +28,7 @@ class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val candidateButton: CandidateButton = itemView.findViewById(R.id.buttonCandidateItem)
 
     fun setData(position: Int) {
-        candidateButton.text = ChewingEngine.candStringByIndexStatic(position)
+        candidateButton.text = ChewingBridge.candStringByIndexStatic(position)
         candidateButton.candidate = Candidate(position)
     }
 }

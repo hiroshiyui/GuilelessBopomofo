@@ -38,7 +38,7 @@ class CandidatesAdapter : RecyclerView.Adapter<CandidateViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return ChewingEngine.candTotalChoice()
+        return ChewingBridge.candTotalChoice()
     }
 
 }

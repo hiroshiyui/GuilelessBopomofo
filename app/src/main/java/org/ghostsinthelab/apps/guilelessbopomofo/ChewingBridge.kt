@@ -22,7 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 const val SYMBOL_MODE: Int = 0
 const val CHINESE_MODE: Int = 1
 
-object ChewingEngine {
+object ChewingBridge {
     // Chewing context pointer, represent its address as a Long
     var context: Long = 0
 
@@ -95,7 +95,7 @@ object ChewingEngine {
 
     // derived methods
 
-    fun start(dataPath: String): Long {
+    fun connect(dataPath: String): Long {
         context = chewingNew(dataPath)
         return context
     }
@@ -117,6 +117,7 @@ object ChewingEngine {
     }
 
     fun openSymbolCandidates() {
+        candClose()
         handleDefault('`')
         candOpen()
     }

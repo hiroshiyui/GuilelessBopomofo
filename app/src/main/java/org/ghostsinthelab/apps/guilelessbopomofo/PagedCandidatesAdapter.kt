@@ -27,7 +27,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesItemPaged
 class PagedCandidatesAdapter(candCurrentPage: Int) :
     RecyclerView.Adapter<PagedCandidateViewHolder>() {
     private var candidatesInPage: List<Candidate> =
-        ChewingEngine.getCandidatesByPage(candCurrentPage)
+        ChewingBridge.getCandidatesByPage(candCurrentPage)
 
     override fun getItemId(position: Int): Long {
         return candidatesInPage[position].index.toLong()
