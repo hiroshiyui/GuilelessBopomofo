@@ -21,7 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
 import android.content.Context
 import android.util.AttributeSet
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -51,6 +51,6 @@ class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onBufferUpdatedEvent(event: BufferUpdatedEvent) {
-        this.text = ChewingEngine.bopomofoStringStatic()
+        this.text = ChewingBridge.bopomofoStringStatic()
     }
 }

@@ -26,6 +26,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.flexbox.FlexboxLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
 import org.ghostsinthelab.apps.guilelessbopomofo.events.*
 import org.greenrobot.eventbus.EventBus
@@ -40,8 +41,9 @@ class KeyboardPanel(
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     private lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
     private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
-    private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
     private lateinit var keyboardQwertyLayoutBinding: KeyboardQwertyLayoutBinding
+
+    private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
 
     enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY }
 
@@ -63,20 +65,20 @@ class KeyboardPanel(
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMainLayoutChangedEvent(event: MainLayoutChangedEvent) {
-        when (ChewingEngine.getChiEngMode()) {
+        when (ChewingBridge.getChiEngMode()) {
             SYMBOL_MODE -> {
-                ChewingEngine.setChiEngMode(CHINESE_MODE)
+                ChewingBridge.setChiEngMode(CHINESE_MODE)
                 switchToBopomofoLayout()
             }
             CHINESE_MODE -> {
-                ChewingEngine.setChiEngMode(SYMBOL_MODE)
+                ChewingBridge.setChiEngMode(SYMBOL_MODE)
                 switchToQwertyLayout()
             }
         }
     }
 
     fun switchToMainLayout() {
-        if (ChewingEngine.getChiEngMode() == CHINESE_MODE) {
+        if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
             switchToBopomofoLayout()
         } else {
             switchToQwertyLayout()
@@ -102,8 +104,8 @@ class KeyboardPanel(
             )
 
         userKeyboardLayoutPreference?.let {
-            val newKeyboardType = ChewingEngine.convKBStr2Num(it)
-            ChewingEngine.setKBType(newKeyboardType)
+            val newKeyboardType = ChewingBridge.convKBStr2Num(it)
+            ChewingBridge.setKBType(newKeyboardType)
         }
 
         if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
@@ -160,25 +162,25 @@ class KeyboardPanel(
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSymbolPickerOpenedEvent(event: SymbolPickerOpenedEvent) {
         currentKeyboardLayout = KeyboardLayout.SYMBOLS
-        ChewingEngine.openSymbolCandidates()
+        ChewingBridge.openSymbolCandidates()
 
         val symbolsPickerLayoutBinding =
             SymbolsPickerLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
         removeAllViews()
         this.addView(symbolsPickerLayoutBinding.root)
 
-        val totalCategories = ChewingEngine.candTotalChoice()
+        val totalCategories = ChewingBridge.candTotalChoice()
 
         repeat(totalCategories) { category ->
             val button: Button = Button(context)
             button.text =
-                ChewingEngine.candStringByIndexStatic(category)
+                ChewingBridge.candStringByIndexStatic(category)
             button.id = View.generateViewId()
 
             button.setOnClickListener {
-                ChewingEngine.candChooseByIndex(category)
+                ChewingBridge.candChooseByIndex(category)
 
-                if (ChewingEngine.hasCandidates()) {
+                if (ChewingBridge.hasCandidates()) {
                     // 如果候選區還有資料，代表目前進入次分類
                     EventBus.getDefault().post(CandidatesWindowOpendEvent())
                 } else {
@@ -219,11 +221,11 @@ class KeyboardPanel(
 
         // switch to the target candidates list
         repeat(currentCandidatesList) {
-            ChewingEngine.candListNext()
+            ChewingBridge.candListNext()
         }
 
         // circulate candidates list cursor
-        if (ChewingEngine.candListHasNext()) {
+        if (ChewingBridge.candListHasNext()) {
             currentCandidatesList += 1
         } else {
             currentCandidatesList = 0
@@ -248,8 +250,15 @@ class KeyboardPanel(
         this.addView(candidatesLayoutBinding.root)
 
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
-        candidatesRecyclerView.adapter = CandidatesAdapter()
-        candidatesRecyclerView.layoutManager =
-            StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
+
+        if (!GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
+            candidatesRecyclerView.adapter = CandidatesAdapter()
+            candidatesRecyclerView.layoutManager =
+                StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
+        } else {
+            val layoutManager = FlexboxLayoutManager(context)
+             candidatesRecyclerView.adapter = PagedCandidatesAdapter(ChewingBridge.candCurrentPage())
+            candidatesRecyclerView.layoutManager = layoutManager
+        }
     }
 }

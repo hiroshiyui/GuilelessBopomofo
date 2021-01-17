@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2020 YOU, HUI-HONG
+ * Copyright (C) 2021 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,23 +22,33 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidateItemLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesItemPagedLayoutBinding
 
-class CandidatesAdapter : RecyclerView.Adapter<CandidateViewHolder>() {
-    private val LOGTAG: String = "CandidatesAdapter"
+class PagedCandidatesAdapter(candCurrentPage: Int) :
+    RecyclerView.Adapter<PagedCandidateViewHolder>() {
+    private var candidatesInPage: List<Candidate> =
+        ChewingBridge.getCandidatesByPage(candCurrentPage)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CandidateViewHolder {
-        val itemView =
-            CandidateItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CandidateViewHolder(itemView.root)
+    override fun getItemId(position: Int): Long {
+        return candidatesInPage[position].index.toLong()
     }
 
-    override fun onBindViewHolder(holder: CandidateViewHolder, position: Int) {
-        holder.setData(position)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagedCandidateViewHolder {
+        val itemView =
+            CandidatesItemPagedLayoutBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        return PagedCandidateViewHolder(itemView.root)
+    }
+
+    override fun onBindViewHolder(holder: PagedCandidateViewHolder, position: Int) {
+        val candidate: Candidate = candidatesInPage[position]
+        holder.setData(candidate)
     }
 
     override fun getItemCount(): Int {
-        return ChewingBridge.candTotalChoice()
+        return candidatesInPage.size
     }
-
 }

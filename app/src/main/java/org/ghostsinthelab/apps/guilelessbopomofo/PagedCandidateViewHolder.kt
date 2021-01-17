@@ -19,7 +19,17 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-data class Candidate(var index: Int) {
-    lateinit var candidateString: String
-    var selectionKey: Char = '\u0000'
+import android.view.View
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+
+class PagedCandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val LOGTAG: String = "PagedCandidateViewHolder"
+
+    fun setData(candidate: Candidate) {
+        val textViewCandidate = itemView.findViewById<TextView>(R.id.textViewCandidate)
+        val textViewSelectionKey = itemView.findViewById<TextView>(R.id.textViewSelectionKey)
+        textViewCandidate.text = candidate.candidateString
+        textViewSelectionKey.text = candidate.selectionKey.toString()
+    }
 }

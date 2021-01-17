@@ -22,7 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 const val SYMBOL_MODE: Int = 0
 const val CHINESE_MODE: Int = 1
 
-object ChewingEngine {
+object ChewingBridge {
     // Chewing context pointer, represent its address as a Long
     var context: Long = 0
 
@@ -95,7 +95,7 @@ object ChewingEngine {
 
     // derived methods
 
-    fun start(dataPath: String): Long {
+    fun connect(dataPath: String): Long {
         context = chewingNew(dataPath)
         return context
     }
@@ -117,6 +117,7 @@ object ChewingEngine {
     }
 
     fun openSymbolCandidates() {
+        candClose()
         handleDefault('`')
         candOpen()
     }
@@ -137,24 +138,29 @@ object ChewingEngine {
     fun getCandidatesByPage(page: Int = 0): List<Candidate> {
         val fromOffset = page * candChoicePerPage()
         val toOffset = fromOffset + candChoicePerPage() - 1
-        val candidatesThisPage: MutableList<Candidate> = mutableListOf()
+        val candidatesInThisPage: MutableList<Candidate> = mutableListOf()
         val selKeys = getSelKey()
 
         for (i in fromOffset..toOffset) {
-            val candidate: Candidate = Candidate()
             if (candStringByIndexStatic(i).isNotBlank()) {
-                candidate.index = i
-                candidate.candidateString = candStringByIndexStatic(i)
-                candidatesThisPage.add(candidate)
+                val candidate = getCandidate(index = i)
+                candidatesInThisPage.add(candidate)
             }
         }
 
         // binding selection key
-        candidatesThisPage.mapIndexed { index, candidate ->
+        candidatesInThisPage.mapIndexed { index, candidate ->
             candidate.selectionKey = selKeys[index].toChar()
         }
 
-        return candidatesThisPage.toList()
+        return candidatesInThisPage.toList()
+    }
+
+    fun getCandidate(index: Int): Candidate {
+        val candidate = Candidate(index)
+        candidate.candidateString = candStringByIndexStatic(index)
+
+        return candidate
     }
 
     fun moveToPreEditBufferOffset(offset: Int) {

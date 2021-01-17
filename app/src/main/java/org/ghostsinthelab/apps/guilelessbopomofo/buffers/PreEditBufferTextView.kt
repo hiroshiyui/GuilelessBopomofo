@@ -30,7 +30,7 @@ import android.view.MotionEvent
 import android.widget.TextView
 import androidx.core.text.toSpannable
 import androidx.core.view.setPadding
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingEngine
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.events.*
 import org.greenrobot.eventbus.EventBus
@@ -44,7 +44,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     private lateinit var span: SpannableString
 
     // which character did I touched? (index value)
-    var offset: Int = ChewingEngine.cursorCurrent()
+    var offset: Int = ChewingBridge.cursorCurrent()
 
     init {
         this.setOnTouchListener { v, event ->
@@ -85,8 +85,8 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onPreEditBufferCursorChangedEvent(event: PreEditBufferCursorChangedEvent.OnTouch) {
-        Log.v(LOGTAG, "Offset: ${offset}, Cursor: ${ChewingEngine.cursorCurrent()}")
-        ChewingEngine.moveToPreEditBufferOffset(offset)
+        Log.v(LOGTAG, "Offset: ${offset}, Cursor: ${ChewingBridge.cursorCurrent()}")
+        ChewingBridge.moveToPreEditBufferOffset(offset)
 
         // 如果使用者點選最後一個字的時候很邊邊角角，
         // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來
@@ -99,10 +99,10 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onPreEditBufferCursorChangedEvent(event: PreEditBufferCursorChangedEvent.OnKeyboard) {
-        Log.v(LOGTAG, "Offset: ${offset}, Cursor: ${ChewingEngine.cursorCurrent()}")
+        Log.v(LOGTAG, "Offset: ${offset}, Cursor: ${ChewingBridge.cursorCurrent()}")
 
-        offset = ChewingEngine.cursorCurrent()
-        if (offset >= ChewingEngine.bufferLen()) {
+        offset = ChewingBridge.cursorCurrent()
+        if (offset >= ChewingBridge.bufferLen()) {
             offset -= 1
         }
 
@@ -132,7 +132,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onBufferUpdatedEvent(event: BufferUpdatedEvent) {
-        this.text = ChewingEngine.bufferStringStatic()
+        this.text = ChewingBridge.bufferStringStatic()
     }
 
     override fun onTextChanged(

@@ -50,8 +50,8 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEnterKeyDownEvent(event: EnterKeyDownEvent) {
-        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) { // not committed yet
-            ChewingEngine.handleEnter()
+        if (ChewingBridge.anyPreeditBufferIsNotEmpty()) { // not committed yet
+            ChewingBridge.handleEnter()
             EventBus.getDefault().post(BufferUpdatedEvent())
         } else {
             GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
@@ -66,8 +66,8 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         }
         lastBackspaceClickTime = SystemClock.elapsedRealtime()
 
-        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
-            ChewingEngine.handleBackspace()
+        if (ChewingBridge.anyPreeditBufferIsNotEmpty()) {
+            ChewingBridge.handleBackspace()
             EventBus.getDefault().post(BufferUpdatedEvent())
         } else {
             GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
@@ -76,8 +76,8 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLeftKeyDownEvent(event: LeftKeyDownEvent) {
-        ChewingEngine.handleLeft()
-        if (ChewingEngine.bufferLen() > 0) {
+        ChewingBridge.handleLeft()
+        if (ChewingBridge.bufferLen() > 0) {
             EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnKeyboard())
         } else {
             GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
@@ -86,8 +86,8 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onRightKeyDownEvent(event: RightKeyDownEvent) {
-        ChewingEngine.handleRight()
-        if (ChewingEngine.bufferLen() > 0) {
+        ChewingBridge.handleRight()
+        if (ChewingBridge.bufferLen() > 0) {
             EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnKeyboard())
         } else {
             GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
@@ -96,11 +96,11 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onDownKeyDownEvent(event: DownKeyDownEvent) {
-        if (ChewingEngine.bufferLen() > 0) {
-            ChewingEngine.candClose()
-            ChewingEngine.candOpen()
+        if (ChewingBridge.bufferLen() > 0) {
+            ChewingBridge.candClose()
+            ChewingBridge.candOpen()
             EventBus.getDefault()
-                .post(CandidatesWindowOpendEvent.Offset(ChewingEngine.cursorCurrent()))
+                .post(CandidatesWindowOpendEvent.Offset(ChewingBridge.cursorCurrent()))
         } else {
             GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN)
         }
@@ -121,11 +121,11 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
     }
 
     private fun spaceKeyDown() {
-        if (ChewingEngine.anyPreeditBufferIsNotEmpty()) {
-            ChewingEngine.handleSpace()
+        if (ChewingBridge.anyPreeditBufferIsNotEmpty()) {
+            ChewingBridge.handleSpace()
             EventBus.getDefault().post(BufferUpdatedEvent())
             // 空白鍵是否為選字鍵？
-            if (ChewingEngine.getSpaceAsSelection() == 1 && ChewingEngine.candTotalChoice() > 0) {
+            if (ChewingBridge.getSpaceAsSelection() == 1 && ChewingBridge.candTotalChoice() > 0) {
                 EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnKeyboard())
                 EventBus.getDefault().post(CandidatesWindowOpendEvent())
             }
