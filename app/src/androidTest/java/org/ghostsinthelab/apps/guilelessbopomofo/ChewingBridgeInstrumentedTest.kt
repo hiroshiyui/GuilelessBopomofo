@@ -108,7 +108,7 @@ class ChewingBridgeInstrumentedTest {
                 .toIntArray()
         ChewingBridge.setSelKey(selKeys, 10)
         ChewingUtil.openPuncCandidates()
-        assertEquals(ChewingUtil.hasCandidates(), true)
+        assertEquals(ChewingUtil.candWindowOpened(), true)
         val candidateString: String = ChewingBridge.candStringByIndexStatic(0)
         assertEquals(candidateString, "，")
     }
@@ -149,7 +149,7 @@ class ChewingBridgeInstrumentedTest {
         assertEquals(ChewingBridge.cursorCurrent(), 0)
 
         ChewingBridge.candOpen()
-        assertEquals(ChewingUtil.hasCandidates(), true)
+        assertEquals(ChewingUtil.candWindowOpened(), true)
         assertEquals(ChewingBridge.candTotalPage(), 1)
         assertEquals(ChewingBridge.candTotalChoice(), 1)
         assertEquals(ChewingBridge.candCurrentPage(), 0)
@@ -163,7 +163,7 @@ class ChewingBridgeInstrumentedTest {
 
         ChewingBridge.candListNext()
 
-        assertEquals(ChewingUtil.hasCandidates(), true)
+        assertEquals(ChewingUtil.candWindowOpened(), true)
         assertEquals(ChewingBridge.candTotalPage(), 1)
         assertEquals(ChewingBridge.candTotalChoice(), 1)
         assertEquals(ChewingBridge.candCurrentPage(), 0)
@@ -176,7 +176,7 @@ class ChewingBridgeInstrumentedTest {
 
         ChewingBridge.candListNext()
 
-        assertEquals(ChewingUtil.hasCandidates(), true)
+        assertEquals(ChewingUtil.candWindowOpened(), true)
         assertEquals(ChewingBridge.candTotalPage(), 9)
         assertEquals(ChewingBridge.candTotalChoice(), 88)
         assertEquals(ChewingBridge.candCurrentPage(), 0)
@@ -201,7 +201,7 @@ class ChewingBridgeInstrumentedTest {
         assertEquals(ChewingBridge.candStringStatic(), "伶")
 
         ChewingBridge.handleEsc() // should have similar effect as ChewingEngine.candClose() does
-        assertEquals(ChewingUtil.hasCandidates(), false)
+        assertEquals(ChewingUtil.candWindowClosed(), true)
     }
 
     @Test
@@ -220,7 +220,7 @@ class ChewingBridgeInstrumentedTest {
         ChewingBridge.handleDefault('/')
         ChewingBridge.handleDefault('6')
         ChewingBridge.handleSpace()
-        assertEquals(ChewingUtil.hasCandidates(), true)
+        assertEquals(ChewingUtil.candWindowOpened(), true)
         assertEquals(ChewingBridge.candTotalPage(), 9)
         assertEquals(ChewingBridge.candTotalChoice(), 88)
         assertEquals(ChewingBridge.candCurrentPage(), 0)
@@ -325,7 +325,7 @@ class ChewingBridgeInstrumentedTest {
         ChewingBridge.handleDefault('6')
         ChewingBridge.handleSpace()
 
-        assertEquals(ChewingUtil.hasCandidates(), true)
+        assertEquals(ChewingUtil.candWindowOpened(), true)
         assertEquals(ChewingBridge.candTotalPage(), 9)
         assertEquals(ChewingBridge.candTotalChoice(), 88)
         assertEquals(ChewingBridge.candCurrentPage(), 0)
@@ -522,9 +522,11 @@ class ChewingBridgeInstrumentedTest {
         // candidate window opened here
         ChewingBridge.handleSpace()
         assertTrue(ChewingBridge.candTotalChoice() > 0)
+        assertEquals(ChewingUtil.candWindowOpened(), true)
         // candidate window closed here (after I picker the first candidate)
         ChewingBridge.handleDefault('1')
         assertEquals(ChewingBridge.candTotalChoice(), 0)
+        assertEquals(ChewingUtil.candWindowClosed(), true)
     }
 
     @Test

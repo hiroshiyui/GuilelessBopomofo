@@ -196,6 +196,15 @@ class GuilelessBopomofoService : InputMethodService() {
         return true
     }
 
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        event?.let {
+            if (it.isPrintingKey) {
+                EventBus.getDefault().post(PrintingKeyUpEvent(it))
+            }
+        }
+        return super.onKeyUp(keyCode, event)
+    }
+
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
         event?.let {
             Log.v(LOGTAG, "${it}")

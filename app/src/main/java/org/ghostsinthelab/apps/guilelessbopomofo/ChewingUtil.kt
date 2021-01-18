@@ -21,8 +21,15 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 class ChewingUtil {
     companion object {
-        fun hasCandidates(): Boolean {
-            if (ChewingBridge.candStringByIndexStatic(0).isEmpty()) {
+        fun candWindowOpened(): Boolean {
+            if (ChewingBridge.candTotalChoice() > 0) {
+                return true
+            }
+            return false
+        }
+
+        fun candWindowClosed(): Boolean {
+            if (ChewingBridge.candTotalChoice() > 0) {
                 return false
             }
             return true
