@@ -191,6 +191,7 @@ class KeyboardPanel(
         // force back to main layout whatever a candidate has been chosen or not
         if (currentKeyboardLayout == KeyboardLayout.CANDIDATES) {
             ChewingBridge.candClose()
+            ChewingBridge.handleEnd()
             switchToMainLayout()
         }
     }
