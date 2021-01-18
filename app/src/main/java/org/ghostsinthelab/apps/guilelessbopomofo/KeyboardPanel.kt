@@ -23,7 +23,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.RelativeLayout
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
 import org.ghostsinthelab.apps.guilelessbopomofo.events.*
@@ -190,6 +191,7 @@ class KeyboardPanel(
         // force back to main layout whatever a candidate has been chosen or not
         if (currentKeyboardLayout == KeyboardLayout.CANDIDATES) {
             ChewingBridge.candClose()
+            ChewingBridge.handleEnd()
             switchToMainLayout()
         }
     }
@@ -275,7 +277,7 @@ class KeyboardPanel(
         if (!GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
             candidatesRecyclerView.adapter = CandidatesAdapter()
             candidatesRecyclerView.layoutManager =
-                StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
+                GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)
         } else {
             val layoutManager = FlexboxLayoutManager(context)
             candidatesRecyclerView.adapter = PagedCandidatesAdapter(ChewingBridge.candCurrentPage())
