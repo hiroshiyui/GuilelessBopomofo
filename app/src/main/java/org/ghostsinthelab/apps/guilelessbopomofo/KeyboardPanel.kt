@@ -160,6 +160,30 @@ class KeyboardPanel(
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onPrintingKeyUpEvent(event: PrintingKeyUpEvent) {
+        // Detect if a candidate had been chosen by user
+        if (currentKeyboardLayout == KeyboardLayout.CANDIDATES && ChewingUtil.candWindowClosed()) {
+            EventBus.getDefault().post(CandidateSelectionDoneEvent())
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLeftKeyDownEvent(event: LeftKeyDownEvent) {
+        // toggle to previous page of candidates
+        if (currentKeyboardLayout == KeyboardLayout.CANDIDATES && ChewingUtil.candWindowOpened()) {
+            renderCandidatesLayout()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onRightKeyDownEvent(event: RightKeyDownEvent) {
+        // toggle to next page of candidates
+        if (currentKeyboardLayout == KeyboardLayout.CANDIDATES && ChewingUtil.candWindowOpened()) {
+            renderCandidatesLayout()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSymbolPickerOpenedEvent(event: SymbolPickerOpenedEvent) {
         currentKeyboardLayout = KeyboardLayout.SYMBOLS
         ChewingUtil.openSymbolCandidates()
@@ -180,7 +204,7 @@ class KeyboardPanel(
             button.setOnClickListener {
                 ChewingBridge.candChooseByIndex(category)
 
-                if (ChewingUtil.hasCandidates()) {
+                if (ChewingUtil.candWindowOpened()) {
                     // 如果候選區還有資料，代表目前進入次分類
                     EventBus.getDefault().post(CandidatesWindowOpendEvent())
                 } else {
@@ -257,7 +281,7 @@ class KeyboardPanel(
                 StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL)
         } else {
             val layoutManager = FlexboxLayoutManager(context)
-             candidatesRecyclerView.adapter = PagedCandidatesAdapter(ChewingBridge.candCurrentPage())
+            candidatesRecyclerView.adapter = PagedCandidatesAdapter(ChewingBridge.candCurrentPage())
             candidatesRecyclerView.layoutManager = layoutManager
         }
     }

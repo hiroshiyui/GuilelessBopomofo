@@ -21,8 +21,15 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 class ChewingUtil {
     companion object {
-        fun hasCandidates(): Boolean {
-            if (ChewingBridge.candStringByIndexStatic(0).isEmpty()) {
+        fun candWindowOpened(): Boolean {
+            if (ChewingBridge.candTotalChoice() > 0) {
+                return true
+            }
+            return false
+        }
+
+        fun candWindowClosed(): Boolean {
+            if (ChewingBridge.candTotalChoice() > 0) {
                 return false
             }
             return true
@@ -47,6 +54,7 @@ class ChewingUtil {
             ChewingBridge.candClose()
             ChewingBridge.handleDefault('`')
             // 「常用符號」
+            // 選字鍵不能保證一定是 0-9，用 candChooseByIndex() 相對妥當
             ChewingBridge.candChooseByIndex(2)
             ChewingBridge.candOpen()
         }
