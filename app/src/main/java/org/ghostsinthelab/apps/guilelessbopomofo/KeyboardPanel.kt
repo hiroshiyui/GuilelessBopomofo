@@ -22,8 +22,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
-import android.view.View
-import android.widget.Button
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -155,15 +153,19 @@ class KeyboardPanel(
                 KeyboardLayout.CANDIDATES
             )
         ) {
-            EventBus.getDefault().post(CandidateSelectionDoneEvent())
+            EventBus.getDefault().post(BackToMainLayoutEvent())
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onPrintingKeyUpEvent(event: PrintingKeyUpEvent) {
         // Detect if a candidate had been chosen by user
-        if (currentKeyboardLayout == KeyboardLayout.CANDIDATES && ChewingUtil.candWindowClosed()) {
-            EventBus.getDefault().post(CandidateSelectionDoneEvent())
+        if (currentKeyboardLayout == KeyboardLayout.CANDIDATES) {
+            if (ChewingUtil.candWindowClosed()) {
+                EventBus.getDefault().post(CandidateSelectionDoneEvent())
+            } else {
+                renderCandidatesLayout()
+            }
         }
     }
 
@@ -184,49 +186,44 @@ class KeyboardPanel(
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSymbolPickerOpenedEvent(event: SymbolPickerOpenedEvent) {
-        currentKeyboardLayout = KeyboardLayout.SYMBOLS
-        ChewingUtil.openSymbolCandidates()
-
-        val symbolsPickerLayoutBinding =
-            SymbolsPickerLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-        removeAllViews()
-        this.addView(symbolsPickerLayoutBinding.root)
-
-        val totalCategories = ChewingBridge.candTotalChoice()
-
-        repeat(totalCategories) { category ->
-            val button: Button = Button(context)
-            button.text =
-                ChewingBridge.candStringByIndexStatic(category)
-            button.id = View.generateViewId()
-
-            button.setOnClickListener {
-                ChewingBridge.candChooseByIndex(category)
-
-                if (ChewingUtil.candWindowOpened()) {
-                    // 如果候選區還有資料，代表目前進入次分類
-                    EventBus.getDefault().post(CandidatesWindowOpendEvent())
-                } else {
-                    EventBus.getDefault().post(CandidateSelectionDoneEvent())
-                }
-            }
-
-            symbolsPickerLayoutBinding.SymbolsConstraintLayout.addView(button)
-            symbolsPickerLayoutBinding.SymbolsFlow.addView(button)
+    fun onBackToMainLayoutEvent(event: BackToMainLayoutEvent) {
+        // force back to main layout whatever a candidate has been chosen or not
+        if (currentKeyboardLayout == KeyboardLayout.CANDIDATES) {
+            ChewingBridge.candClose()
+            switchToMainLayout()
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSymbolPickerOpenedEvent(event: SymbolPickerOpenedEvent) {
+        currentKeyboardLayout = KeyboardLayout.SYMBOLS
+        ChewingUtil.openSymbolCandidates()
+        renderCandidatesLayout()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent) {
-        currentCandidatesList = 0
-        switchToMainLayout()
+        if (ChewingUtil.candWindowClosed()) {
+            ChewingBridge.handleEnd()
+            EventBus.getDefault().post(BufferUpdatedEvent())
+            currentCandidatesList = 0
+            switchToMainLayout()
+        } else {
+            renderCandidatesLayout()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent.Indexed) {
-        currentCandidatesList = 0
-        switchToMainLayout()
+        ChewingBridge.candChooseByIndex(event.index)
+        if (ChewingUtil.candWindowClosed()) {
+            ChewingBridge.handleEnd()
+            EventBus.getDefault().post(BufferUpdatedEvent())
+            currentCandidatesList = 0
+            switchToMainLayout()
+        } else {
+            renderCandidatesLayout()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

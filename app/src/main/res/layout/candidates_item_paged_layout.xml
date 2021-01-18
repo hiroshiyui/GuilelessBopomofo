@@ -48,6 +48,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="serif"
+        android:paddingStart="0dp"
+        android:paddingEnd="4dp"
         android:text="TextView"
         android:textSize="20sp"
         tools:layout_conversion_absoluteHeight="39dp"

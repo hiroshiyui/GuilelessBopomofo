@@ -59,11 +59,6 @@ class ChewingUtil {
             ChewingBridge.candOpen()
         }
 
-        fun endCandidateChoice() {
-            ChewingBridge.candClose()
-            ChewingBridge.handleEnd()
-        }
-
         fun getCandidatesByPage(page: Int = 0): List<Candidate> {
             val fromOffset = page * ChewingBridge.candChoicePerPage()
             val toOffset = fromOffset + ChewingBridge.candChoicePerPage() - 1
