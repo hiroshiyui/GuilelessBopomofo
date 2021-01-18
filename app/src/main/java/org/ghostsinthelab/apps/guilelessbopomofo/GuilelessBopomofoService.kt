@@ -291,19 +291,6 @@ class GuilelessBopomofoService : InputMethodService() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent.Indexed) {
-        ChewingBridge.candChooseByIndex(event.index)
-        ChewingUtil.endCandidateChoice()
-        EventBus.getDefault().post(BufferUpdatedEvent())
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent) {
-        ChewingUtil.endCandidateChoice()
-        EventBus.getDefault().post(BufferUpdatedEvent())
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onBufferUpdatedEvent(event: BufferUpdatedEvent) {
         // chewingEngine.setMaxChiSymbolLen() 到達閾值時，
         // 會把 pre-edit buffer 開頭送到 commit buffer，
