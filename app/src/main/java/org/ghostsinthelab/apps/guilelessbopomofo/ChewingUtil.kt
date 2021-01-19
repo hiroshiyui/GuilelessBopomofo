@@ -20,6 +20,17 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 class ChewingUtil {
+    enum class SelectionKeysOption(val keys: IntArray) {
+        NUMBER_ROW(charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+            .toIntArray()),
+        HOME_ROW(charArrayOf('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';').map { it.toInt() }
+            .toIntArray()),
+        HOME_TAB_MIXED_MODE1(charArrayOf('a', 's', 'd', 'f', 'g', 'q', 'w', 'e', 'r', 't').map { it.toInt() }
+            .toIntArray()),
+        HOME_TAB_MIXED_MODE2(charArrayOf('h', 'j', 'k', 'l', ';', 'y', 'u', 'i', 'o', 'p').map { it.toInt() }
+            .toIntArray())
+    }
+
     companion object {
         fun candWindowOpened(): Boolean {
             if (ChewingBridge.candTotalChoice() > 0) {
