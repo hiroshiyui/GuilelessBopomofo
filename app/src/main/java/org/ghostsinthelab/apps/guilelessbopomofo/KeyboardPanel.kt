@@ -115,7 +115,7 @@ class KeyboardPanel(
             ChewingBridge.setKBType(newKeyboardType)
         }
 
-        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
+        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
             switchToCompactLayout()
             return
         }
@@ -143,7 +143,7 @@ class KeyboardPanel(
         Log.v(LOGTAG, "switchToQwertyLayout")
         currentKeyboardLayout = KeyboardLayout.QWERTY
 
-        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
+        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
             switchToCompactLayout()
             return
         }
@@ -282,7 +282,7 @@ class KeyboardPanel(
 
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
 
-        if (!GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
+        if (!GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
             candidatesRecyclerView.adapter = CandidatesAdapter()
             candidatesRecyclerView.layoutManager =
                 GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)

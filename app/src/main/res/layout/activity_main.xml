@@ -355,12 +355,72 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="32dp"
             android:text="@string/switch_enable_keybutton_elevation"
-            app:layout_constraintBottom_toBottomOf="@id/guidelineBottom"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionKeyButtonsElevation" />
+
+        <TextView
+            android:id="@+id/textViewHeadingPhysicalKeyboardSettings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/physical_keyboard_settings"
+            android:theme="@style/SettingsPrimaryHeader"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/switchSettingKeyButtonsElevation" />
+
+        <TextView
+            android:id="@+id/textViewSettingEnablePhysicalKeyboard"
+            style="@style/SettingsLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/enable_physical_keyboard"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/textViewHeadingPhysicalKeyboardSettings" />
+
+        <TextView
+            android:id="@+id/textViewSettingDescriptionEnablePhysicalKeyboard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/enable_physical_keyboard_description"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingEnablePhysicalKeyboard" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchSettingEnablePhysicalKeyboard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/switch_setting_description_enable_physical_keyboard"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionEnablePhysicalKeyboard" />
+
+        <ImageView
+            android:id="@+id/imageViewInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/switchSettingEnablePhysicalKeyboard"
+            app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+        <TextView
+            android:id="@+id/textViewPhysicalKeyboardTips"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="@string/tips_using_physical_keyboard"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@id/guidelineBottom"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@id/imageViewInfo"
+            app:layout_constraintTop_toTopOf="@id/imageViewInfo" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineBottom"
