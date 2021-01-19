@@ -82,9 +82,7 @@ class GuilelessBopomofoService : InputMethodService() {
             ChewingBridge.setChiEngMode(CHINESE_MODE)
             ChewingBridge.setCandPerPage(10)
 
-            val selKeys: IntArray =
-                charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
-                    .toIntArray()
+            val selKeys: IntArray = ChewingUtil.SelectionKeysOption.NUMBER_ROW.keys
             ChewingBridge.setSelKey(selKeys, 10)
         } catch (e: Exception) {
             Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
