@@ -127,6 +127,17 @@ class MainActivity : AppCompatActivity() {
                         .putBoolean("user_phrase_choice_rearward", isChecked).apply()
                 }
             }
+
+            switchSettingEnablePhysicalKeyboard.let {
+                if (sharedPreferences.getBoolean("user_enable_physical_keyboard", false)) {
+                    it.isChecked = true
+                }
+
+                it.setOnCheckedChangeListener { _, isChecked ->
+                    sharedPreferences.edit()
+                        .putBoolean("user_enable_physical_keyboard", isChecked).apply()
+                }
+            }
         }
 
         for ((button, layout) in

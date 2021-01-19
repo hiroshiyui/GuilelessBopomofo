@@ -37,4 +37,12 @@
     <string name="haptic_feedback_strength_light">Light</string>
     <string name="haptic_feedback_strength_medium">Medium</string>
     <string name="haptic_feedback_strength_heavy">Heavy</string>
+    <string name="current_mode">Current mode:</string>
+    <string name="mode_bopomofo">Bopomofo</string>
+    <string name="mode_english">English</string>
+    <string name="physical_keyboard_settings">Physical keyboard settings</string>
+    <string name="enable_physical_keyboard">Use physical keyboard</string>
+    <string name="enable_physical_keyboard_description">Use physical (Bluetooth, USB or on-device) keyboard, if enabled, the layout will switch from software keyboard to a compact look</string>
+    <string name="switch_setting_description_enable_physical_keyboard">Use physical keyboard?</string>
+    <string name="tips_using_physical_keyboard">While using physical keyboard, toggle modes between Bopomofo &amp; English by pressing <b>Left Shift</b> + <b>Space</b>; switch to other input methods by long-pressing <b>Left Alt</b>.</string>
 </resources>

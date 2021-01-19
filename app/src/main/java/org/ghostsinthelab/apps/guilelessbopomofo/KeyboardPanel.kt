@@ -41,6 +41,7 @@ class KeyboardPanel(
     private lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
     private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
     private lateinit var keyboardQwertyLayoutBinding: KeyboardQwertyLayoutBinding
+    private lateinit var compactLayoutBinding: CompactLayoutBinding
 
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
 
@@ -87,6 +88,13 @@ class KeyboardPanel(
     private fun switchToCompactLayout() {
         Log.v(LOGTAG, "switchToCompactLayout")
         this.removeAllViews()
+        compactLayoutBinding = CompactLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+        if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
+            compactLayoutBinding.textViewCurrentModeValue.text = resources.getString(R.string.mode_bopomofo)
+        } else {
+            compactLayoutBinding.textViewCurrentModeValue.text = resources.getString(R.string.mode_english)
+        }
+        this.addView(compactLayoutBinding.root)
     }
 
     private fun switchToBopomofoLayout() {
@@ -107,7 +115,7 @@ class KeyboardPanel(
             ChewingBridge.setKBType(newKeyboardType)
         }
 
-        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
+        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
             switchToCompactLayout()
             return
         }
@@ -135,7 +143,7 @@ class KeyboardPanel(
         Log.v(LOGTAG, "switchToQwertyLayout")
         currentKeyboardLayout = KeyboardLayout.QWERTY
 
-        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
+        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
             switchToCompactLayout()
             return
         }
@@ -274,7 +282,7 @@ class KeyboardPanel(
 
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
 
-        if (!GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardPresent) {
+        if (!GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
             candidatesRecyclerView.adapter = CandidatesAdapter()
             candidatesRecyclerView.layoutManager =
                 GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)

@@ -19,6 +19,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
@@ -28,6 +29,7 @@ import android.view.KeyEvent
 import android.view.KeyEvent.*
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.events.*
@@ -42,6 +44,7 @@ class GuilelessBopomofoService : InputMethodService() {
     val LOGTAG = "GuilelessBopomofoSvc"
     var userHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
     var physicalKeyboardPresent: Boolean = false
+    var physicalKeyboardEnabled: Boolean = false
     lateinit var viewBinding: KeyboardLayoutBinding
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var inputView: Keyboard
@@ -146,6 +149,7 @@ class GuilelessBopomofoService : InputMethodService() {
         Log.v(LOGTAG, "onEvaluateInputViewShown()")
         physicalKeyboardPresent =
             (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY)
+        physicalKeyboardEnabled = physicalKeyboardEnabled()
         return true
     }
 
@@ -212,6 +216,10 @@ class GuilelessBopomofoService : InputMethodService() {
                 KEYCODE_SHIFT_RIGHT -> {
                     ChewingUtil.openPuncCandidates()
                     EventBus.getDefault().post(CandidatesWindowOpendEvent())
+                }
+                KEYCODE_ALT_LEFT -> {
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.showInputMethodPicker()
                 }
             }
         }
@@ -301,6 +309,18 @@ class GuilelessBopomofoService : InputMethodService() {
             // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
             ChewingBridge.handleEnd()
         }
+    }
+
+    private fun physicalKeyboardEnabled(): Boolean {
+        if (physicalKeyboardPresent
+            && sharedPreferences.getBoolean(
+                "user_enable_physical_keyboard",
+                false
+            )
+        ) {
+            return true
+        }
+        return false
     }
 
     private fun setupChewingData(dataPath: String) {

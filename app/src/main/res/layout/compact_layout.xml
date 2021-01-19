@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Guileless Bopomofo
-  ~ Copyright (C) 2020 YOU, HUI-HONG
+  ~ Copyright (C) 2021 YOU, HUI-HONG
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -20,20 +20,38 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/CandidateItemLayout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/CompactLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <org.ghostsinthelab.apps.guilelessbopomofo.keys.CandidateButton
-        android:id="@+id/buttonCandidateItem"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textViewAppName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="serif"
-        android:text="Button"
+        android:text="@string/app_name"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewCurrentMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/current_mode"
+        app:layout_constraintStart_toEndOf="@+id/textViewAppName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewCurrentModeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="TextView"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/textViewCurrentMode"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
