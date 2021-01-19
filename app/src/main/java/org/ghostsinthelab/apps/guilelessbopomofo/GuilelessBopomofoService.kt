@@ -293,6 +293,10 @@ class GuilelessBopomofoService : InputMethodService() {
             KEYCODE_DPAD_DOWN -> {
                 EventBus.getDefault().post(DownKeyDownEvent())
             }
+            else -> {
+                // passthru other keyevents, or we will make some physical keys like volume keys invalid
+                currentInputConnection.sendKeyEvent(event.keyEvent)
+            }
         }
     }
 
