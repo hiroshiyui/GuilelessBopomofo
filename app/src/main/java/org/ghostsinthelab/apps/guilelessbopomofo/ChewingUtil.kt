@@ -20,6 +20,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 class ChewingUtil {
+    @Suppress("unused")
     enum class SelectionKeysOption(val keys: IntArray) {
         NUMBER_ROW(charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
             .toIntArray()),

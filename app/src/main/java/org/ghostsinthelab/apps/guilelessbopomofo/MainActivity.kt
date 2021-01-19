@@ -178,6 +178,27 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        for ((button, keys) in
+        mapOf<RadioButton, String>(
+            binding.radioButtonNumberRow to "NUMBER_ROW",
+            binding.radioButtonHomeRow to "HOME_ROW",
+            binding.radioButtonHomeTabMixedMode1 to "HOME_TAB_MIXED_MODE1",
+            binding.radioButtonHomeTabMixedMode2 to "HOME_TAB_MIXED_MODE2"
+        )) {
+            button.setOnClickListener {
+                sharedPreferences.edit().putString("user_candidate_selection_keys_option", keys)
+                    .apply()
+            }
+
+            if (sharedPreferences.getString(
+                    "user_candidate_selection_keys_option",
+                    "NUMBER_ROW"
+                ) == keys
+            ) {
+                button.isChecked = true
+            }
+        }
+
         val view = binding.root
         setContentView(view)
     }

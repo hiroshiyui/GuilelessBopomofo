@@ -45,4 +45,5 @@
     <string name="enable_physical_keyboard_description">Use physical (Bluetooth, USB or on-device) keyboard, if enabled, the layout will switch from software keyboard to a compact look</string>
     <string name="switch_setting_description_enable_physical_keyboard">Use physical keyboard?</string>
     <string name="tips_using_physical_keyboard">While using physical keyboard, toggle modes between Bopomofo &amp; English by pressing <b>Left Shift</b> + <b>Space</b>; switch to other input methods by long-pressing <b>Left Alt</b>.</string>
+    <string name="physical_selection_keys">Physical candidate selection keys</string>
 </resources>

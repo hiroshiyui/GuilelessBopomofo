@@ -376,7 +376,7 @@
             style="@style/SettingsLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:text="@string/enable_physical_keyboard"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
@@ -407,7 +407,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@+id/switchSettingEnablePhysicalKeyboard"
+            app:layout_constraintTop_toBottomOf="@id/radioGroupSelectionKeysOption"
             app:srcCompat="@android:drawable/ic_menu_info_details" />
 
         <TextView
@@ -421,6 +421,55 @@
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toEndOf="@id/imageViewInfo"
             app:layout_constraintTop_toTopOf="@id/imageViewInfo" />
+
+        <TextView
+            android:id="@+id/textViewSelectionKeysOption"
+            style="@style/SettingsLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/physical_selection_keys"
+            app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/switchSettingEnablePhysicalKeyboard" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupSelectionKeysOption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/textViewSelectionKeysOption">
+
+            <RadioButton
+                android:id="@+id/radioButtonNumberRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="1 2 3 4 5 6 7 8 9 0" />
+
+            <RadioButton
+                android:id="@+id/radioButtonHomeRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="a s d f g h j k l ;" />
+
+            <RadioButton
+                android:id="@+id/radioButtonHomeTabMixedMode1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="a s d f g q w e r t" />
+
+            <RadioButton
+                android:id="@+id/radioButtonHomeTabMixedMode2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="h j k l ; y u i o p" />
+        </RadioGroup>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineBottom"
