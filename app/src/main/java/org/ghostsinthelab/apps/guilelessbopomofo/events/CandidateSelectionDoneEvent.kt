@@ -20,6 +20,5 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.events
 
 class CandidateSelectionDoneEvent {
-    class Indexed(val index: Int) {
-    }
+    class Indexed(val index: Int)
 }

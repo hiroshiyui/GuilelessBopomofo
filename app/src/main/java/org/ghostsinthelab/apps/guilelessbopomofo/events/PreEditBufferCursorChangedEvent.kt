@@ -20,6 +20,6 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.events
 
 class PreEditBufferCursorChangedEvent {
-    class OnTouch {}
-    class OnKeyboard {}
+    class OnTouch
+    class OnKeyboard
 }
