@@ -37,4 +37,7 @@
     <string name="haptic_feedback_strength_light">Light</string>
     <string name="haptic_feedback_strength_medium">Medium</string>
     <string name="haptic_feedback_strength_heavy">Heavy</string>
+    <string name="current_mode">Current mode:</string>
+    <string name="mode_bopomofo">Bopomofo</string>
+    <string name="mode_english">English</string>
 </resources>

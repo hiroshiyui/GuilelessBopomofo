@@ -38,4 +38,7 @@
     <string name="haptic_feedback_strength_light">輕柔</string>
     <string name="haptic_feedback_strength_medium">適中</string>
     <string name="haptic_feedback_strength_heavy">強勁</string>
+    <string name="current_mode">目前模式：</string>
+    <string name="mode_bopomofo">注音</string>
+    <string name="mode_english">英數</string>
 </resources>
