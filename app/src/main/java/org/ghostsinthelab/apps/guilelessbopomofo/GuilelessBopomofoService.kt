@@ -182,8 +182,6 @@ class GuilelessBopomofoService : InputMethodService() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         event?.let {
-            Log.v(LOGTAG, "${it}")
-
             if (it.isPrintingKey) {
                 EventBus.getDefault().post(PrintingKeyDownEvent(it))
             } else {
@@ -239,7 +237,6 @@ class GuilelessBopomofoService : InputMethodService() {
 
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
         event?.let {
-            Log.v(LOGTAG, "${it}")
             when (it.keyCode) {
                 KEYCODE_SHIFT_RIGHT -> {
                     ChewingUtil.openPuncCandidates()
