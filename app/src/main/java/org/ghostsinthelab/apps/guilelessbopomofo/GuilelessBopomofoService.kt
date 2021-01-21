@@ -82,13 +82,8 @@ class GuilelessBopomofoService : InputMethodService() {
             ChewingBridge.setChiEngMode(CHINESE_MODE)
             ChewingBridge.setCandPerPage(10)
 
-            val userCandidateSelectionKeysOption = sharedPreferences.getString(
-                "user_candidate_selection_keys_option",
-                "NUMBER_ROW"
-            )
-            userCandidateSelectionKeysOption?.let {
-                val selKeys: IntArray = ChewingUtil.SelectionKeysOption.valueOf(it).keys
-                ChewingBridge.setSelKey(selKeys, 10)
+            sharedPreferences.getString("user_candidate_selection_keys_option", "NUMBER_ROW")?.let {
+                ChewingBridge.setSelKey(ChewingUtil.SelectionKeysOption.valueOf(it).keys, 10)
             }
         } catch (e: Exception) {
             Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
