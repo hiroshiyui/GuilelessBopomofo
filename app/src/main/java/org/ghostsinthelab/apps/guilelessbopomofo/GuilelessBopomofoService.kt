@@ -183,19 +183,48 @@ class GuilelessBopomofoService : InputMethodService() {
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         event?.let {
             Log.v(LOGTAG, "${it}")
-            // keep default behavior of Back key
-            if (it.keyCode == KEYCODE_BACK) {
-                return super.onKeyDown(keyCode, event)
-            }
-            // for onKeyLongPress()...
-            it.startTracking()
 
             if (it.isPrintingKey) {
                 EventBus.getDefault().post(PrintingKeyDownEvent(it))
             } else {
-                EventBus.getDefault().post(NotPrintingKeyDownEvent(it))
+                when (it.keyCode) {
+                    KEYCODE_BACK -> {
+                        // keep default behavior of Back key
+                        return super.onKeyDown(keyCode, event)
+                    }
+                    KEYCODE_ALT_LEFT, KEYCODE_SHIFT_RIGHT -> {
+                        // for onKeyLongPress()...
+                        it.startTracking()
+                        return true
+                    }
+                    KEYCODE_SPACE -> {
+                        EventBus.getDefault().post(SpaceKeyDownEvent.Physical(it))
+                    }
+                    KEYCODE_DEL -> {
+                        EventBus.getDefault().post(BackspaceKeyDownEvent())
+                    }
+                    KEYCODE_ENTER -> {
+                        EventBus.getDefault().post(EnterKeyDownEvent())
+                    }
+                    KEYCODE_ESCAPE -> {
+                        EventBus.getDefault().post(EscKeyDownEvent())
+                    }
+                    KEYCODE_DPAD_LEFT -> {
+                        EventBus.getDefault().post(LeftKeyDownEvent())
+                    }
+                    KEYCODE_DPAD_RIGHT -> {
+                        EventBus.getDefault().post(RightKeyDownEvent())
+                    }
+                    KEYCODE_DPAD_DOWN -> {
+                        EventBus.getDefault().post(DownKeyDownEvent())
+                    }
+                    else -> {
+                        return super.onKeyDown(keyCode, event)
+                    }
+                }
             }
         }
+
         return true
     }
 
@@ -265,38 +294,6 @@ class GuilelessBopomofoService : InputMethodService() {
                 currentInputConnection.sendKeyEvent(
                     KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT)
                 )
-            }
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onIsNotPrintingKeyDown(event: NotPrintingKeyDownEvent) {
-        Log.v(LOGTAG, keyCodeToString(event.keyEvent.keyCode))
-        when (event.keyEvent.keyCode) {
-            KEYCODE_SPACE -> {
-                EventBus.getDefault().post(SpaceKeyDownEvent.Physical(event.keyEvent))
-            }
-            KEYCODE_DEL -> {
-                EventBus.getDefault().post(BackspaceKeyDownEvent())
-            }
-            KEYCODE_ENTER -> {
-                EventBus.getDefault().post(EnterKeyDownEvent())
-            }
-            KEYCODE_ESCAPE -> {
-                EventBus.getDefault().post(EscKeyDownEvent())
-            }
-            KEYCODE_DPAD_LEFT -> {
-                EventBus.getDefault().post(LeftKeyDownEvent())
-            }
-            KEYCODE_DPAD_RIGHT -> {
-                EventBus.getDefault().post(RightKeyDownEvent())
-            }
-            KEYCODE_DPAD_DOWN -> {
-                EventBus.getDefault().post(DownKeyDownEvent())
-            }
-            else -> {
-                // passthru other keyevents, or we will make some physical keys like volume keys invalid
-                currentInputConnection.sendKeyEvent(event.keyEvent)
             }
         }
     }
