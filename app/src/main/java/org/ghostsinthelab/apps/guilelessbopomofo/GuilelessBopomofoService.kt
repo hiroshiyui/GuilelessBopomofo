@@ -256,12 +256,6 @@ class GuilelessBopomofoService : InputMethodService() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onPrintingKeyDown(event: PrintingKeyDownEvent) {
-        // don't repeat character keys if they are long-pressed by user,
-        // let onKeyLongPress() do it own responsibility.
-        if (event.keyEvent.repeatCount > 0) {
-            return
-        }
-
         if (event.keyEvent.keyCode == KEYCODE_GRAVE && ChewingBridge.getChiEngMode() == CHINESE_MODE && !event.keyEvent.isShiftPressed) {
             EventBus.getDefault().post(SymbolPickerOpenedEvent())
             return
