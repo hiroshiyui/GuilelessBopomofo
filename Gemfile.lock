@@ -160,6 +160,9 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     unicode-display_width (1.7.0)
+    unicode-emoji (2.7.1)
+      unicode-version (~> 1.0)
+    unicode-version (1.1.0)
     word_wrap (1.0.0)
     xcodeproj (1.19.0)
       CFPropertyList (>= 2.3.3, < 4.0)
@@ -177,6 +180,7 @@ PLATFORMS
 
 DEPENDENCIES
   fastlane
+  unicode-emoji
 
 BUNDLED WITH
    2.1.4
