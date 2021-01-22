@@ -35,3 +35,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
     - https://greenrobot.org/eventbus/license/
     - https://github.com/greenrobot/EventBus/blob/master/LICENSE
     - http://www.apache.org/licenses/LICENSE-2.0
+
+* LeakCanary: Apache License Version 2.0
+    - https://github.com/square/leakcanary/blob/main/LICENSE.txt
+    - https://github.com/square/leakcanary
+    - https://square.github.io/leakcanary/
+
+* Machine-readable version of the emoji ordering for v13.1: UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
+    - https://unicode.org/emoji/charts/emoji-ordering.txt
+    - https://www.unicode.org/license.html
+    - https://www.unicode.org/copyright.html
