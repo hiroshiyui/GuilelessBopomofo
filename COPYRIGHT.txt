@@ -45,3 +45,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
     - https://unicode.org/emoji/charts/emoji-ordering.txt
     - https://www.unicode.org/license.html
     - https://www.unicode.org/copyright.html
+
+* Emoji Default Style Values, v13.1: UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
+    - https://unicode.org/emoji/charts/emoji-style.txt
+    - https://www.unicode.org/license.html
+    - https://www.unicode.org/copyright.html
