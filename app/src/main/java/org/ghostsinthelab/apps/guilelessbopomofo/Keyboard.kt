@@ -22,6 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.content.Context
 import android.os.SystemClock
 import android.util.AttributeSet
+import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.widget.LinearLayout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.*
@@ -66,6 +67,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         }
         lastBackspaceClickTime = SystemClock.elapsedRealtime()
 
+        performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
             ChewingBridge.handleBackspace()
             EventBus.getDefault().post(BufferUpdatedEvent())

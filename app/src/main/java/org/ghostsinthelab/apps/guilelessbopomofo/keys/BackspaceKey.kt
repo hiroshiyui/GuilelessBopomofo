@@ -22,7 +22,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
 import kotlinx.coroutines.delay
@@ -49,7 +48,6 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         }
 
         this.setOnClickListener {
-            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             EventBus.getDefault().post(BackspaceKeyDownEvent())
         }
 
