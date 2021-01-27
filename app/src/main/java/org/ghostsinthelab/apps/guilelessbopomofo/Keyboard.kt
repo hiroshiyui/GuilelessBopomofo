@@ -62,7 +62,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onBackspaceKeyDown(event: BackspaceKeyDownEvent) {
         // avoids too fast repeat clicks
-        if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 250) {
+        if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 100) {
             return
         }
         lastBackspaceClickTime = SystemClock.elapsedRealtime()
