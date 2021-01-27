@@ -65,13 +65,13 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     }
 
     private suspend fun repeatBackspace() {
-        fixedRateTimer("repeatBackspace", true, 50L, 200L) {
+        fixedRateTimer("repeatBackspace", true, 25L, 50L) {
             if (GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardView.backspacePressed) {
                 GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
             } else {
                 this.cancel()
             }
         }
-        delay(50L)
+        delay(25L)
     }
 }
