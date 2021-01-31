@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.4.1)
 set(CMAKE_C_FLAGS "-g -O2 -Wall -fPIC ${CMAKE_C_FLAGS}")
 
 # locate libchewing
-set( libchewing_src_DIR     ../../../libs/libchewing )
+set(libchewing_src_DIR ../../../libs/libchewing)
 
 # SQLITE
 set(WITH_SQLITE3 true)
@@ -26,9 +26,9 @@ add_definitions(-DCHEWING_DATADIR="assets/chewing")
 include(CheckCCompilerFlag)
 
 check_c_compiler_flag(-fvisibility=hidden FVISIBILITY_HIDDEN)
-if(${FVISIBILITY_HIDDEN})
+if (${FVISIBILITY_HIDDEN})
     set(CMAKE_C_FLAGS "-fvisibility=hidden ${CMAKE_C_FLAGS}")
-endif()
+endif ()
 
 include(CheckTypeSize)
 check_type_size(uint16_t UINT16_T)
@@ -45,31 +45,20 @@ include_directories(
         ${libchewing_src_DIR}/thirdparty/sqlite-amalgamation/
 )
 
-# build chewing shared library
-add_library(chewing SHARED
-        ${libchewing_src_DIR}/include/internal/chewing-utf8-util.h
-        ${libchewing_src_DIR}/include/internal/key2pho-private.h
-        ${libchewing_src_DIR}/include/internal/memory-private.h
-
+add_library(common STATIC
         ${libchewing_src_DIR}/src/common/chewing-utf8-util.c
         ${libchewing_src_DIR}/src/common/key2pho.c
+        )
 
-        ${libchewing_src_DIR}/include/chewing.h
-        ${libchewing_src_DIR}/include/chewing-compat.h
-        ${libchewing_src_DIR}/include/chewingio.h
-        ${libchewing_src_DIR}/include/global.h
-        ${libchewing_src_DIR}/include/mod_aux.h
+add_library(porting_layer STATIC
+        ${libchewing_src_DIR}/src/porting_layer/src/plat_mmap_posix.c
+        ${libchewing_src_DIR}/src/porting_layer/src/plat_mmap_windows.c
+        ${libchewing_src_DIR}/src/porting_layer/src/plat_path.c
+        ${libchewing_src_DIR}/src/porting_layer/src/rpl_malloc.c
+        )
 
-        ${libchewing_src_DIR}/include/internal/chewing-private.h
-        ${libchewing_src_DIR}/include/internal/chewingutil.h
-        ${libchewing_src_DIR}/include/internal/choice-private.h
-        ${libchewing_src_DIR}/include/internal/dict-private.h
-        ${libchewing_src_DIR}/include/internal/global-private.h
-        ${libchewing_src_DIR}/include/internal/pinyin-private.h
-        ${libchewing_src_DIR}/include/internal/tree-private.h
-        ${libchewing_src_DIR}/include/internal/userphrase-private.h
-        ${libchewing_src_DIR}/include/internal/bopomofo-private.h
-
+# build main JNI library
+add_library(chewing SHARED
         ${libchewing_src_DIR}/src/compat.c
         ${libchewing_src_DIR}/src/chewingio.c
         ${libchewing_src_DIR}/src/chewingutil.c
@@ -77,15 +66,6 @@ add_library(chewing SHARED
         ${libchewing_src_DIR}/src/dict.c
         ${libchewing_src_DIR}/src/mod_aux.c
         ${libchewing_src_DIR}/src/pinyin.c
-        ${libchewing_src_DIR}/src/porting_layer/include/plat_mmap.h
-        ${libchewing_src_DIR}/src/porting_layer/include/plat_path.h
-        ${libchewing_src_DIR}/src/porting_layer/include/plat_types.h
-        ${libchewing_src_DIR}/src/porting_layer/include/sys/plat_posix.h
-        ${libchewing_src_DIR}/src/porting_layer/include/sys/plat_windows.h
-        ${libchewing_src_DIR}/src/porting_layer/src/plat_mmap_posix.c
-        ${libchewing_src_DIR}/src/porting_layer/src/plat_mmap_windows.c
-        ${libchewing_src_DIR}/src/porting_layer/src/plat_path.c
-        ${libchewing_src_DIR}/src/porting_layer/src/rpl_malloc.c
         ${libchewing_src_DIR}/src/private.h
         ${libchewing_src_DIR}/src/tree.c
         ${libchewing_src_DIR}/src/userphrase.c
@@ -103,24 +83,24 @@ if (WITH_SQLITE3)
             )
 
     if (WITH_INTERNAL_SQLITE3)
-        find_package (Threads)
+        find_package(Threads)
         add_library(sqlite3_library STATIC
                 ${SQLITE3_SRC_DIR}/sqlite3.c
                 ${SQLITE3_SRC_DIR}/sqlite3.h
                 )
         target_link_libraries(sqlite3_library ${CMAKE_DL_LIBS} ${CMAKE_THREAD_LIBS_INIT})
         target_link_libraries(userphrase sqlite3_library)
-    else()
+    else ()
         target_link_libraries(testhelper ${SQLITE3_LIBRARY})
-    endif()
-else()
+    endif ()
+else ()
     add_library(userphrase STATIC
             ${libchewing_src_DIR}/include/internal/hash-private.h
 
             ${libchewing_src_DIR}/src/hash.c
             ${libchewing_src_DIR}/src/userphrase-hash.c
             )
-endif()
+endif ()
 
 # build target
-target_link_libraries(chewing userphrase ${log-lib})
+target_link_libraries(chewing common porting_layer userphrase ${log-lib})
