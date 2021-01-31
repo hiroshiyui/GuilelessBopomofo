@@ -76,8 +76,6 @@ add_library(chewing SHARED
 # build userphrase (& sqlite) static library
 if (WITH_SQLITE3)
     add_library(userphrase STATIC
-            ${libchewing_src_DIR}/include/internal/chewing-sql.h
-
             ${libchewing_src_DIR}/src/chewing-sql.c
             ${libchewing_src_DIR}/src/userphrase-sql.c
             )
@@ -95,8 +93,6 @@ if (WITH_SQLITE3)
     endif ()
 else ()
     add_library(userphrase STATIC
-            ${libchewing_src_DIR}/include/internal/hash-private.h
-
             ${libchewing_src_DIR}/src/hash.c
             ${libchewing_src_DIR}/src/userphrase-hash.c
             )
