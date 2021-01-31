@@ -100,3 +100,11 @@ endif ()
 
 # build target
 target_link_libraries(chewing common porting_layer userphrase ${log-lib})
+
+###
+# Although the built & output file is "libchewing.so" here,
+# you should be aware of the file is different with the one from the "original" libchewing building process.
+#
+# This copy should be treated as "Chewing JNI", and that contrast one is "standalone libchewing",
+# don't ever get them confused.
+###
