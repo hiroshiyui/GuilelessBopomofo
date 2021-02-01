@@ -57,8 +57,7 @@ add_library(porting_layer STATIC
         ${libchewing_src_DIR}/src/porting_layer/src/rpl_malloc.c
         )
 
-# build main JNI library
-add_library(chewing SHARED
+add_library(chewing STATIC
         ${libchewing_src_DIR}/src/compat.c
         ${libchewing_src_DIR}/src/chewingio.c
         ${libchewing_src_DIR}/src/chewingutil.c
@@ -70,6 +69,10 @@ add_library(chewing SHARED
         ${libchewing_src_DIR}/src/tree.c
         ${libchewing_src_DIR}/src/userphrase.c
         ${libchewing_src_DIR}/src/bopomofo.c
+        )
+
+# build main JNI library
+add_library(chewing-jni SHARED
         chewing-jni.cpp
         )
 
@@ -99,12 +102,4 @@ else ()
 endif ()
 
 # build target
-target_link_libraries(chewing common porting_layer userphrase ${log-lib})
-
-###
-# Although the built & output file is "libchewing.so" here,
-# you should be aware of the file is different with the one from the "original" libchewing building process.
-#
-# This copy should be treated as "Chewing JNI", and that contrast one is "standalone libchewing",
-# don't ever get them confused.
-###
+target_link_libraries(chewing-jni chewing common porting_layer userphrase ${log-lib})
