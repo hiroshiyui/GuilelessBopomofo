@@ -40,9 +40,9 @@ find_library(log-lib
 include_directories(
         ${libchewing_src_DIR}/include/
         ${libchewing_src_DIR}/include/internal/
+        ${libchewing_src_DIR}/src/
         ${libchewing_src_DIR}/src/porting_layer/include/
         ${libchewing_src_DIR}/src/porting_layer/include/sys/
-        ${libchewing_src_DIR}/thirdparty/sqlite-amalgamation/
 )
 
 add_library(common STATIC
@@ -65,7 +65,6 @@ add_library(chewing STATIC
         ${libchewing_src_DIR}/src/dict.c
         ${libchewing_src_DIR}/src/mod_aux.c
         ${libchewing_src_DIR}/src/pinyin.c
-        ${libchewing_src_DIR}/src/private.h
         ${libchewing_src_DIR}/src/tree.c
         ${libchewing_src_DIR}/src/userphrase.c
         ${libchewing_src_DIR}/src/bopomofo.c
@@ -87,7 +86,6 @@ if (WITH_SQLITE3)
         find_package(Threads)
         add_library(sqlite3_library STATIC
                 ${SQLITE3_SRC_DIR}/sqlite3.c
-                ${SQLITE3_SRC_DIR}/sqlite3.h
                 )
         target_link_libraries(sqlite3_library ${CMAKE_DL_LIBS} ${CMAKE_THREAD_LIBS_INIT})
         target_link_libraries(userphrase sqlite3_library)
