@@ -27,7 +27,7 @@ object ChewingBridge {
     var context: Long = 0
 
     init {
-        System.loadLibrary("chewing")
+        System.loadLibrary("chewing-jni")
     }
 
     // Chewing API JNIs

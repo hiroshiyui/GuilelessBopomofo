@@ -581,7 +581,7 @@ class ChewingBridgeInstrumentedTest {
         ChewingBridge.setPhraseChoiceRearward(false)
         ChewingBridge.handleDefault('`')
         ChewingBridge.candOpen()
-        assertEquals(ChewingBridge.candTotalChoice(), 13)
+        assertEquals(ChewingBridge.candTotalChoice(), 22)
         assertEquals(ChewingBridge.candStringByIndexStatic(0), "…")
         assertEquals(ChewingBridge.candStringByIndexStatic(1), "※")
         assertEquals(ChewingBridge.candStringByIndexStatic(2), "常用符號")
