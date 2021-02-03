@@ -26,6 +26,7 @@ import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.widget.LinearLayout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.*
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.BackspaceKey
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -68,12 +69,7 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
         lastBackspaceClickTime = SystemClock.elapsedRealtime()
 
         performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
-            ChewingBridge.handleBackspace()
-            EventBus.getDefault().post(BufferUpdatedEvent())
-        } else {
-            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
-        }
+        BackspaceKey.action()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
