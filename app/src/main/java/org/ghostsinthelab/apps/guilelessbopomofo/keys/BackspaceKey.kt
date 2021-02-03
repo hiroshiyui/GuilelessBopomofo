@@ -27,8 +27,11 @@ import android.view.MotionEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BackspaceKeyDownEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
 import org.greenrobot.eventbus.EventBus
 import kotlin.concurrent.fixedRateTimer
 
@@ -67,11 +70,22 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     private suspend fun repeatBackspace() {
         fixedRateTimer("repeatBackspace", true, 50L, 125L) {
             if (GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardView.backspacePressed) {
-                GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
+                action()
             } else {
                 this.cancel()
             }
         }
         delay(50L)
+    }
+
+    companion object {
+        fun action() {
+            if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
+                ChewingBridge.handleBackspace()
+                EventBus.getDefault().post(BufferUpdatedEvent())
+            } else {
+                GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
+            }
+        }
     }
 }
