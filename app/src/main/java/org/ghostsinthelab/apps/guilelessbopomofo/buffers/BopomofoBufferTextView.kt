@@ -40,8 +40,8 @@ class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
     }
 
     override fun onAttachedToWindow() {
-        EventBus.getDefault().register(this)
         super.onAttachedToWindow()
+        EventBus.getDefault().register(this)
     }
 
     override fun onDetachedFromWindow() {

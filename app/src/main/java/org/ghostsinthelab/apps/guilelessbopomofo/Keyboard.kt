@@ -41,8 +41,8 @@ class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, at
     }
 
     override fun onAttachedToWindow() {
-        EventBus.getDefault().register(this)
         super.onAttachedToWindow()
+        EventBus.getDefault().register(this)
     }
 
     override fun onDetachedFromWindow() {

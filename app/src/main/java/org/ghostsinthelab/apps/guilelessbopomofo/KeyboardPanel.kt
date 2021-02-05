@@ -54,8 +54,8 @@ class KeyboardPanel(
     }
 
     override fun onAttachedToWindow() {
-        EventBus.getDefault().register(this)
         super.onAttachedToWindow()
+        EventBus.getDefault().register(this)
     }
 
     override fun onDetachedFromWindow() {
