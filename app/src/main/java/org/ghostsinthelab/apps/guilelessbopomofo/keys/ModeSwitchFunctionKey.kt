@@ -22,14 +22,13 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
-import org.ghostsinthelab.apps.guilelessbopomofo.events.MainLayoutChangedEvent
-import org.greenrobot.eventbus.EventBus
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 
 class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
             performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            EventBus.getDefault().post(MainLayoutChangedEvent())
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.toggleMainLayoutMode()
         }
     }
 }

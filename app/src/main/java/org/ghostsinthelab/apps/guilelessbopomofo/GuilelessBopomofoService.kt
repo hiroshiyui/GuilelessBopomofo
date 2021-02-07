@@ -32,11 +32,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.events.*
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKey
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.*
 import java.io.File
 import java.io.FileOutputStream
 
@@ -97,7 +93,6 @@ class GuilelessBopomofoService : InputMethodService() {
             sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
 
         GuilelessBopomofoServiceContext.bindGuilelessBopomofoService(this)
-        EventBus.getDefault().register(this)
     }
 
     override fun onCreateCandidatesView(): View? {
@@ -165,7 +160,10 @@ class GuilelessBopomofoService : InputMethodService() {
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.v(LOGTAG, "onStartInputView()")
-        EventBus.getDefault().post(BufferUpdatedEvent())
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
+            it.textViewPreEditBuffer.update()
+            it.textViewBopomofoBuffer.update()
+        }
     }
 
     override fun onFinishInput() {
@@ -177,13 +175,12 @@ class GuilelessBopomofoService : InputMethodService() {
         super.onDestroy()
         Log.v(LOGTAG, "onDestroy()")
         ChewingBridge.delete()
-        EventBus.getDefault().unregister(this)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         event?.let {
             if (it.isPrintingKey) {
-                EventBus.getDefault().post(PrintingKeyDownEvent(it))
+                onPrintingKeyDown(it)
             } else {
                 when (it.keyCode) {
                     KEYCODE_BACK -> {
@@ -196,25 +193,25 @@ class GuilelessBopomofoService : InputMethodService() {
                         return true
                     }
                     KEYCODE_SPACE -> {
-                        EventBus.getDefault().post(SpaceKeyDownEvent.Physical(it))
+                        SpaceKey.action(it)
                     }
                     KEYCODE_DEL -> {
-                        EventBus.getDefault().post(BackspaceKeyDownEvent())
+                        BackspaceKey.action()
                     }
                     KEYCODE_ENTER -> {
-                        EventBus.getDefault().post(EnterKeyDownEvent())
+                        EnterKey.action()
                     }
                     KEYCODE_ESCAPE -> {
-                        EventBus.getDefault().post(EscKeyDownEvent())
+                        EscapeKey.action()
                     }
                     KEYCODE_DPAD_LEFT -> {
-                        EventBus.getDefault().post(LeftKeyDownEvent())
+                        LeftKey.action()
                     }
                     KEYCODE_DPAD_RIGHT -> {
-                        EventBus.getDefault().post(RightKeyDownEvent())
+                        RightKey.action()
                     }
                     KEYCODE_DPAD_DOWN -> {
-                        EventBus.getDefault().post(DownKeyDownEvent())
+                        DownKey.action()
                     }
                     else -> {
                         return super.onKeyDown(keyCode, event)
@@ -229,7 +226,7 @@ class GuilelessBopomofoService : InputMethodService() {
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         event?.let {
             if (it.isPrintingKey) {
-                EventBus.getDefault().post(PrintingKeyUpEvent(it))
+                onPrintingKeyUp(it)
             }
         }
         return super.onKeyUp(keyCode, event)
@@ -240,7 +237,7 @@ class GuilelessBopomofoService : InputMethodService() {
             when (it.keyCode) {
                 KEYCODE_SHIFT_RIGHT -> {
                     ChewingUtil.openPuncCandidates()
-                    EventBus.getDefault().post(CandidatesWindowOpendEvent())
+                    GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
                 }
                 KEYCODE_ALT_LEFT -> {
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -251,14 +248,13 @@ class GuilelessBopomofoService : InputMethodService() {
         return super.onKeyLongPress(keyCode, event)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onPrintingKeyDown(event: PrintingKeyDownEvent) {
-        if (event.keyEvent.keyCode == KEYCODE_GRAVE && ChewingBridge.getChiEngMode() == CHINESE_MODE && !event.keyEvent.isShiftPressed) {
-            EventBus.getDefault().post(SymbolPickerOpenedEvent())
+    fun onPrintingKeyDown(event: KeyEvent) {
+        if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.getChiEngMode() == CHINESE_MODE && !event.isShiftPressed) {
+            viewBinding.keyboardPanel.switchToSymbolPicker()
             return
         }
 
-        var keyPressed: Char = event.keyEvent.unicodeChar.toChar()
+        var keyPressed: Char = event.unicodeChar.toChar()
 
         val shiftKeyImageButton =
             viewBinding.keyboardPanel.findViewById<ShiftKey>(
@@ -271,12 +267,16 @@ class GuilelessBopomofoService : InputMethodService() {
                 currentInputConnection.sendKeyEvent(
                     KeyEvent(ACTION_DOWN, KEYCODE_SHIFT_LEFT)
                 )
-                keyPressed = event.keyEvent.getUnicodeChar(META_SHIFT_ON).toChar()
+                keyPressed = event.getUnicodeChar(META_SHIFT_ON).toChar()
             }
         }
 
         ChewingBridge.handleDefault(keyPressed)
-        EventBus.getDefault().post(BufferUpdatedEvent())
+
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
+            it.textViewPreEditBuffer.update()
+            it.textViewBopomofoBuffer.update()
+        }
 
         shiftKeyImageButton?.let {
             if (shiftKeyImageButton.isActive && !shiftKeyImageButton.isLocked) {
@@ -289,16 +289,16 @@ class GuilelessBopomofoService : InputMethodService() {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBufferUpdatedEvent(event: BufferUpdatedEvent) {
-        // chewingEngine.setMaxChiSymbolLen() 到達閾值時，
-        // 會把 pre-edit buffer 開頭送到 commit buffer，
-        // 所以要先丟出來：
-        if (ChewingBridge.commitCheck() == 1) {
-            currentInputConnection.commitText(ChewingBridge.commitString(), 1)
-            // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
-            // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
-            ChewingBridge.handleEnd()
+    private fun onPrintingKeyUp(event: KeyEvent) {
+        // Detect if a candidate had been chosen by user
+        val keyboardPanel =
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel
+        if (keyboardPanel.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES) {
+            if (ChewingUtil.candWindowClosed()) {
+                keyboardPanel.candidateSelectionDone()
+            } else {
+                keyboardPanel.renderCandidatesLayout()
+            }
         }
     }
 

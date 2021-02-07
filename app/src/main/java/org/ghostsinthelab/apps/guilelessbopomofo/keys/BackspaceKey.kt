@@ -21,7 +21,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.SystemClock
 import android.util.AttributeSet
+import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
 import kotlinx.coroutines.delay
@@ -30,35 +32,39 @@ import kotlinx.coroutines.runBlocking
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.events.BackspaceKeyDownEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
-import org.greenrobot.eventbus.EventBus
 import kotlin.concurrent.fixedRateTimer
 
 @SuppressLint("ClickableViewAccessibility")
 class BackspaceKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
+    var backspacePressed: Boolean = false
+    var lastBackspaceClickTime: Long = 0
 
     init {
         this.setOnTouchListener { v, event ->
             when (event.action) {
                 MotionEvent.ACTION_UP -> {
-                    GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardView.backspacePressed =
-                        false
+                    backspacePressed = false
                 }
             }
             return@setOnTouchListener false
         }
 
         this.setOnClickListener {
-            EventBus.getDefault().post(BackspaceKeyDownEvent())
+            // avoids too fast repeat clicks
+            if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 100) {
+                return@setOnClickListener
+            }
+            lastBackspaceClickTime = SystemClock.elapsedRealtime()
+
+            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            action()
         }
 
         this.setOnLongClickListener {
             runBlocking {
                 launch {
-                    GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardView.backspacePressed =
-                        true
+                    backspacePressed = true
                     repeatBackspace()
                 }
             }
@@ -69,7 +75,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
 
     private suspend fun repeatBackspace() {
         fixedRateTimer("repeatBackspace", true, 50L, 125L) {
-            if (GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardView.backspacePressed) {
+            if (backspacePressed) {
                 action()
             } else {
                 this.cancel()
@@ -82,7 +88,10 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         fun action() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.handleBackspace()
-                EventBus.getDefault().post(BufferUpdatedEvent())
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
+                    it.textViewPreEditBuffer.update()
+                    it.textViewBopomofoBuffer.update()
+                }
             } else {
                 GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
             }

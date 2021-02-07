@@ -22,10 +22,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 import android.content.Context
 import android.util.AttributeSet
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
-import org.ghostsinthelab.apps.guilelessbopomofo.events.BufferUpdatedEvent
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
     BufferTextView(context, attrs) {
@@ -39,18 +35,7 @@ class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
         this.setPadding(px, 0, px, 0)
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onDetachedFromWindow() {
-        EventBus.getDefault().unregister(this)
-        super.onDetachedFromWindow()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBufferUpdatedEvent(event: BufferUpdatedEvent) {
+    override fun update() {
         this.text = ChewingBridge.bopomofoStringStatic()
     }
 }

@@ -27,10 +27,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
-import org.ghostsinthelab.apps.guilelessbopomofo.events.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
@@ -53,18 +49,7 @@ class KeyboardPanel(
         Log.v(LOGTAG, "Building KeyboardLayout.")
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onDetachedFromWindow() {
-        EventBus.getDefault().unregister(this)
-        super.onDetachedFromWindow()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMainLayoutChangedEvent(event: MainLayoutChangedEvent) {
+    fun toggleMainLayoutMode() {
         when (ChewingBridge.getChiEngMode()) {
             SYMBOL_MODE -> {
                 ChewingBridge.setChiEngMode(CHINESE_MODE)
@@ -88,11 +73,14 @@ class KeyboardPanel(
     private fun switchToCompactLayout() {
         Log.v(LOGTAG, "switchToCompactLayout")
         this.removeAllViews()
-        compactLayoutBinding = CompactLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+        compactLayoutBinding =
+            CompactLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
         if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
-            compactLayoutBinding.textViewCurrentModeValue.text = resources.getString(R.string.mode_bopomofo)
+            compactLayoutBinding.textViewCurrentModeValue.text =
+                resources.getString(R.string.mode_bopomofo)
         } else {
-            compactLayoutBinding.textViewCurrentModeValue.text = resources.getString(R.string.mode_english)
+            compactLayoutBinding.textViewCurrentModeValue.text =
+                resources.getString(R.string.mode_english)
         }
         this.addView(compactLayoutBinding.root)
     }
@@ -155,47 +143,7 @@ class KeyboardPanel(
         this.addView(keyboardQwertyLayoutBinding.root)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEscKeyDownEvent(event: EscKeyDownEvent) {
-        if (currentKeyboardLayout in listOf(
-                KeyboardLayout.SYMBOLS,
-                KeyboardLayout.CANDIDATES
-            )
-        ) {
-            EventBus.getDefault().post(BackToMainLayoutEvent())
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onPrintingKeyUpEvent(event: PrintingKeyUpEvent) {
-        // Detect if a candidate had been chosen by user
-        if (currentKeyboardLayout == KeyboardLayout.CANDIDATES) {
-            if (ChewingUtil.candWindowClosed()) {
-                EventBus.getDefault().post(CandidateSelectionDoneEvent())
-            } else {
-                renderCandidatesLayout()
-            }
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onLeftKeyDownEvent(event: LeftKeyDownEvent) {
-        // toggle to previous page of candidates
-        if (currentKeyboardLayout == KeyboardLayout.CANDIDATES && ChewingUtil.candWindowOpened()) {
-            renderCandidatesLayout()
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onRightKeyDownEvent(event: RightKeyDownEvent) {
-        // toggle to next page of candidates
-        if (currentKeyboardLayout == KeyboardLayout.CANDIDATES && ChewingUtil.candWindowOpened()) {
-            renderCandidatesLayout()
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBackToMainLayoutEvent(event: BackToMainLayoutEvent) {
+    fun backToMainLayout() {
         // force back to main layout whatever a candidate has been chosen or not
         if (currentKeyboardLayout == KeyboardLayout.CANDIDATES) {
             ChewingBridge.candClose()
@@ -204,50 +152,37 @@ class KeyboardPanel(
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSymbolPickerOpenedEvent(event: SymbolPickerOpenedEvent) {
+    fun switchToSymbolPicker() {
         currentKeyboardLayout = KeyboardLayout.SYMBOLS
         ChewingUtil.openSymbolCandidates()
         renderCandidatesLayout()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent) {
+    fun candidateSelectionDone() {
+        finishCandidateSelection()
+    }
+
+    fun candidateSelectionDone(index: Int) {
+        ChewingBridge.candChooseByIndex(index)
+        finishCandidateSelection()
+    }
+
+    private fun finishCandidateSelection() {
         if (ChewingUtil.candWindowClosed()) {
             ChewingBridge.handleEnd()
-            EventBus.getDefault().post(BufferUpdatedEvent())
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
+                it.textViewPreEditBuffer.update()
+                it.textViewBopomofoBuffer.update()
+            }
             currentCandidatesList = 0
             switchToMainLayout()
         } else {
             renderCandidatesLayout()
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onCandidateSelectionDoneEvent(event: CandidateSelectionDoneEvent.Indexed) {
-        ChewingBridge.candChooseByIndex(event.index)
-        if (ChewingUtil.candWindowClosed()) {
-            ChewingBridge.handleEnd()
-            EventBus.getDefault().post(BufferUpdatedEvent())
-            currentCandidatesList = 0
-            switchToMainLayout()
-        } else {
-            renderCandidatesLayout()
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onCandidatesWindowOpendEvent(event: CandidatesWindowOpendEvent) {
-        switchToCandidatesLayout()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onCandidatesWindowOpendEvent(event: CandidatesWindowOpendEvent.Offset) {
-        switchToCandidatesLayout(event.offset)
     }
 
     // list current offset's candidates in the candidate window
-    private fun switchToCandidatesLayout(offset: Int) {
+    fun switchToCandidatesLayout(offset: Int) {
         Log.v(LOGTAG, "switchToCandidatesLayout")
 
         // switch to the target candidates list
@@ -266,12 +201,12 @@ class KeyboardPanel(
     }
 
     // just list current candidate window
-    private fun switchToCandidatesLayout() {
+    fun switchToCandidatesLayout() {
         Log.v(LOGTAG, "switchToCandidatesLayout")
         renderCandidatesLayout()
     }
 
-    private fun renderCandidatesLayout() {
+    fun renderCandidatesLayout() {
         Log.v(LOGTAG, "renderCandidatesLayout")
         currentKeyboardLayout = KeyboardLayout.CANDIDATES
 

@@ -19,31 +19,30 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
-import android.content.Context
-import android.util.AttributeSet
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
+import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
 
-class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
-    init {
-        this.setOnClickListener {
-            performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
-            action()
-        }
-    }
-
+class LeftKey {
     companion object {
         fun action() {
-            if (ChewingUtil.anyPreeditBufferIsNotEmpty()) { // not committed yet
-                ChewingBridge.handleEnter()
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
-                    it.textViewPreEditBuffer.update()
-                    it.textViewBopomofoBuffer.update()
-                }
+            ChewingBridge.handleLeft()
+            if (ChewingBridge.bufferLen() > 0) {
+                val preEditBuffer =
+                    GuilelessBopomofoServiceContext.serviceInstance.viewBinding.textViewPreEditBuffer
+                preEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedBy.PHYSICAL_KEYBOARD)
             } else {
-                GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+                GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
+            }
+
+            // toggle to previous page of candidates
+            val keyboardPanel =
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel
+            if (keyboardPanel.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES && ChewingUtil.candWindowOpened()) {
+                keyboardPanel.renderCandidatesLayout()
             }
         }
     }

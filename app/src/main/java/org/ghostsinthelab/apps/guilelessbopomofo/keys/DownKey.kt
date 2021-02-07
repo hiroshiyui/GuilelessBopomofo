@@ -17,8 +17,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.events
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.view.KeyEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 
-class PrintingKeyDownEvent(val keyEvent: KeyEvent)
+class DownKey {
+    companion object {
+        fun action() {
+            if (ChewingBridge.bufferLen() > 0) {
+                ChewingBridge.candClose()
+                ChewingBridge.candOpen()
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout(ChewingBridge.cursorCurrent())
+            } else {
+                GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN)
+            }
+        }
+    }
+}

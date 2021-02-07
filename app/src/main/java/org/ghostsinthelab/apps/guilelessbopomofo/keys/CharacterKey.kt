@@ -23,8 +23,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.PrintingKeyDownEvent
-import org.greenrobot.eventbus.EventBus
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 
 class CharacterKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
@@ -34,7 +33,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
 
             this.keyCodeString?.let { keycodeString ->
                 val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.keyCodeFromString(keycodeString))
-                EventBus.getDefault().post(PrintingKeyDownEvent(keyEvent))
+                GuilelessBopomofoServiceContext.serviceInstance.onPrintingKeyDown(keyEvent)
             }
         }
     }

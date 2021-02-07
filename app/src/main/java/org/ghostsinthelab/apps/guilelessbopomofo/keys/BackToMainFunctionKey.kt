@@ -22,14 +22,12 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.events.BackToMainLayoutEvent
-import org.greenrobot.eventbus.EventBus
 
 class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
     init {
         this.setOnClickListener {
             performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
-            EventBus.getDefault().post(BackToMainLayoutEvent())
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.backToMainLayout()
         }
     }
 }

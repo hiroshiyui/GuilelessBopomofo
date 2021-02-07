@@ -22,14 +22,13 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
-import org.ghostsinthelab.apps.guilelessbopomofo.events.SymbolPickerOpenedEvent
-import org.greenrobot.eventbus.EventBus
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 
 class SymbolFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
             performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            EventBus.getDefault().post(SymbolPickerOpenedEvent())
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToSymbolPicker()
         }
     }
 }
