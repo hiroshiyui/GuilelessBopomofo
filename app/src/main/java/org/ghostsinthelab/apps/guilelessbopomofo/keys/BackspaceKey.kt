@@ -26,9 +26,7 @@ import android.util.AttributeSet
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
@@ -62,11 +60,9 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         }
 
         this.setOnLongClickListener {
-            runBlocking {
-                launch {
-                    backspacePressed = true
-                    repeatBackspace()
-                }
+            GlobalScope.launch(Dispatchers.Main) {
+                backspacePressed = true
+                repeatBackspace()
             }
 
             return@setOnLongClickListener true

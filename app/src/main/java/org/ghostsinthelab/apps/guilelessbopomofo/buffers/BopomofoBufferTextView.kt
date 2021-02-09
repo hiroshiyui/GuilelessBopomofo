@@ -21,6 +21,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
 import android.content.Context
 import android.util.AttributeSet
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 
 class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
@@ -36,6 +39,8 @@ class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
     }
 
     override fun update() {
-        this.text = ChewingBridge.bopomofoStringStatic()
+        GlobalScope.launch(Dispatchers.Main) {
+            this@BopomofoBufferTextView.text = ChewingBridge.bopomofoStringStatic()
+        }
     }
 }
