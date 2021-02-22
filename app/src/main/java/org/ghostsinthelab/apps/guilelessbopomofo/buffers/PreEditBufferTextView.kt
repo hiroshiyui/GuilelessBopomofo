@@ -101,7 +101,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         renderUnderlineSpan()
     }
 
-    private fun renderUnderlineSpan() {
+    fun renderUnderlineSpan() {
         span = this.text.toSpannable() as SpannableString
         val underlineSpans = span.getSpans(0, span.length, UnderlineSpan::class.java)
 

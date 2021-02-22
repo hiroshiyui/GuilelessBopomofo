@@ -45,10 +45,11 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                 }
                 // 空白鍵是否為選字鍵？
                 if (ChewingBridge.getSpaceAsSelection() == 1 && ChewingBridge.candTotalChoice() > 0) {
-                    GuilelessBopomofoServiceContext.serviceInstance.viewBinding.textViewPreEditBuffer.cursorMovedBy(
-                        PreEditBufferTextView.CursorMovedBy.PHYSICAL_KEYBOARD
-                    )
-                    GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
+                    GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
+                        it.textViewPreEditBuffer.offset = ChewingBridge.cursorCurrent()
+                        it.textViewPreEditBuffer.renderUnderlineSpan()
+                        it.keyboardPanel.switchToCandidatesLayout()
+                    }
                 }
             } else {
                 GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
