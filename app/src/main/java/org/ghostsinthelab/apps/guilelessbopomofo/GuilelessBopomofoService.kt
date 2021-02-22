@@ -24,7 +24,6 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.util.Log
-import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.KeyEvent.*
 import android.view.View
@@ -33,12 +32,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.*
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import java.io.File
 import java.io.FileOutputStream
 
 class GuilelessBopomofoService : InputMethodService() {
     val LOGTAG = "GuilelessBopomofoSvc"
-    var userHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
+    var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
     var physicalKeyboardPresent: Boolean = false
     var physicalKeyboardEnabled: Boolean = false
     lateinit var viewBinding: KeyboardLayoutBinding
@@ -48,7 +48,7 @@ class GuilelessBopomofoService : InputMethodService() {
         listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
 
     companion object {
-        const val defaultHapticFeedbackStrength: Int = HapticFeedbackConstants.KEYBOARD_TAP
+        val defaultHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
         const val defaultKeyboardLayout: String = "KB_DEFAULT"
     }
 

@@ -21,17 +21,16 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
-            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            performVibrate(Vibratable.VibrationStrength.LIGHT)
             action()
         }
     }

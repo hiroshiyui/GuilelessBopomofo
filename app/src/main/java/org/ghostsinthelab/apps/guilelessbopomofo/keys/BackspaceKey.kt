@@ -23,13 +23,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.SystemClock
 import android.util.AttributeSet
-import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.MotionEvent
 import kotlinx.coroutines.*
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import kotlin.concurrent.fixedRateTimer
 
 @SuppressLint("ClickableViewAccessibility")
@@ -55,7 +55,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
             }
             lastBackspaceClickTime = SystemClock.elapsedRealtime()
 
-            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            performVibrate(Vibratable.VibrationStrength.NORMAL)
             action()
         }
 

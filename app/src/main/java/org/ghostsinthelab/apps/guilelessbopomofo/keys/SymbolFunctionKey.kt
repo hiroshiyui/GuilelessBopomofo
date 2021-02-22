@@ -21,13 +21,13 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.HapticFeedbackConstants
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class SymbolFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
-            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            performVibrate(Vibratable.VibrationStrength.NORMAL)
             GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToSymbolPicker()
         }
     }

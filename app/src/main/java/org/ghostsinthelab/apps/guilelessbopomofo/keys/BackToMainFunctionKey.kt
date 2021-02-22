@@ -22,11 +22,12 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
     init {
         this.setOnClickListener {
-            performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
+            performVibrate(Vibratable.VibrationStrength.NORMAL)
             GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.backToMainLayout()
         }
     }

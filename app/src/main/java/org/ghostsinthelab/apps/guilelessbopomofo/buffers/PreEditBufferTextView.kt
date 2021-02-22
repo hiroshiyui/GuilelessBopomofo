@@ -36,10 +36,11 @@ import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 @SuppressLint("ClickableViewAccessibility")
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
-    BufferTextView(context, attrs) {
+    BufferTextView(context, attrs), Vibratable {
     private val LOGTAG = "PreEditBufferTextView"
     private lateinit var span: SpannableString
 
@@ -71,7 +72,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
 
         this.setOnClickListener {
             Log.v(LOGTAG, "offset: $offset")
-            performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
+            performVibrate(Vibratable.VibrationStrength.LIGHT)
             GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
                 it.textViewPreEditBuffer.cursorMovedBy(CursorMovedBy.TOUCH)
                 it.keyboardPanel.switchToCandidatesLayout(offset)

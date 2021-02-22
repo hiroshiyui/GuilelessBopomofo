@@ -21,7 +21,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 
@@ -29,7 +28,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
     init {
         this.setOnClickListener {
-            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            performVibrate(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength.toLong())
 
             this.keyCodeString?.let { keycodeString ->
                 val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.keyCodeFromString(keycodeString))

@@ -25,10 +25,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 open class KeyButton(context: Context, attrs: AttributeSet) :
     AppCompatButton(context, attrs, R.attr.buttonStyle), BehaveLikeKey<KeyButton>,
-    DisplayMetricsComputable {
+    DisplayMetricsComputable, Vibratable {
     private val LOGTAG: String = "KeyButton"
     private val sharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)

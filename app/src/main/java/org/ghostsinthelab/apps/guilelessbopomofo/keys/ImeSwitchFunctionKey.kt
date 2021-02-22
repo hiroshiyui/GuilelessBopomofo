@@ -24,9 +24,9 @@ import android.os.Build
 import android.os.IBinder
 import android.util.AttributeSet
 import android.util.Log
-import android.view.HapticFeedbackConstants
 import android.view.inputmethod.InputMethodManager
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
@@ -35,7 +35,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
         this.setOnClickListener {
             Log.v(LOGTAG, "KeyImageButtonImeSwitch")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                performVibrate(Vibratable.VibrationStrength.NORMAL)
                 GuilelessBopomofoServiceContext.serviceInstance.switchToNextInputMethod(false)
             } else {
                 // backward compatibility, support IME switch on legacy devices
@@ -45,14 +45,14 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
                     GuilelessBopomofoServiceContext.serviceInstance.window?.let {
                         it.window?.attributes?.token
                     }
-                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                performVibrate(Vibratable.VibrationStrength.NORMAL)
                 imm.switchToNextInputMethod(imeToken, false)
             }
         }
 
         this.setOnLongClickListener {
             Log.v(LOGTAG, "KeyImageButtonImeSwitch")
-            performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+            performVibrate(Vibratable.VibrationStrength.STRONG)
             val imm =
                 GuilelessBopomofoServiceContext.serviceInstance.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()

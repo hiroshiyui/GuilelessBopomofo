@@ -24,11 +24,11 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.HapticFeedbackConstants
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class MainActivity : AppCompatActivity() {
     private val LOGTAG: String = "MainActivity"
@@ -160,19 +160,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         for ((button, strength) in
-        mapOf<RadioButton, Int>(
-            binding.radioButtonHapticFeedbackStrengthLight to HapticFeedbackConstants.CONTEXT_CLICK,
-            binding.radioButtonHapticFeedbackStrengthMedium to HapticFeedbackConstants.KEYBOARD_TAP,
-            binding.radioButtonHapticFeedbackStrengthHeavy to HapticFeedbackConstants.VIRTUAL_KEY
+        mapOf<RadioButton, Long>(
+            binding.radioButtonHapticFeedbackStrengthLight to Vibratable.VibrationStrength.LIGHT.strength,
+            binding.radioButtonHapticFeedbackStrengthMedium to Vibratable.VibrationStrength.NORMAL.strength,
+            binding.radioButtonHapticFeedbackStrengthHeavy to Vibratable.VibrationStrength.STRONG.strength
         )) {
             button.setOnClickListener {
-                sharedPreferences.edit().putInt("user_haptic_feedback_strength", strength).apply()
+                sharedPreferences.edit().putInt("user_haptic_feedback_strength", strength.toInt()).apply()
             }
 
             if (sharedPreferences.getInt(
                     "user_haptic_feedback_strength",
                     GuilelessBopomofoService.defaultHapticFeedbackStrength
-                ) == strength
+                ) == strength.toInt()
             ) {
                 button.isChecked = true
             }

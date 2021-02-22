@@ -22,9 +22,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
-import android.view.HapticFeedbackConstants
 import androidx.core.content.ContextCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.R
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override val LOGTAG: String = "ShiftKeyImageButton"
@@ -55,7 +55,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
 
         this.setOnClickListener {
-            performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            performVibrate(Vibratable.VibrationStrength.NORMAL)
 
             when (currentShiftKeyState) {
                 ShiftKeyState.RELEASED -> {

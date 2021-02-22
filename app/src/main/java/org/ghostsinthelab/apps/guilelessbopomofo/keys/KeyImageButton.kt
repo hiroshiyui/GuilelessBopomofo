@@ -26,10 +26,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
     AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
-    BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable {
+    BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable, Vibratable {
     open val LOGTAG: String = "KeyImageButton"
     val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
