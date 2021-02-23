@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2020 YOU, HUI-HONG
+ * Copyright (C) 2021 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,13 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.events
+package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
-class GuilelessBopomofoEvent(message: String) {
-    private val LOGTAG: String = "GuilelessBopomofoEvent"
-    val message: String
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
 
-    init {
-        this.message = message
+class EscapeKey {
+    companion object {
+        fun action() {
+            val keyboardPanel =
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel
+            if (keyboardPanel.currentKeyboardLayout in listOf(
+                    KeyboardPanel.KeyboardLayout.SYMBOLS,
+                    KeyboardPanel.KeyboardLayout.CANDIDATES
+                )
+            ) {
+                keyboardPanel.backToMainLayout()
+            }
+        }
     }
 }

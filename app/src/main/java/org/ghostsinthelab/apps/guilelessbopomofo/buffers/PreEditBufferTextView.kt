@@ -30,19 +30,24 @@ import android.view.MotionEvent
 import android.widget.TextView
 import androidx.core.text.toSpannable
 import androidx.core.view.setPadding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.events.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 @SuppressLint("ClickableViewAccessibility")
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
-    BufferTextView(context, attrs) {
+    BufferTextView(context, attrs), Vibratable {
     private val LOGTAG = "PreEditBufferTextView"
     private lateinit var span: SpannableString
+
+    enum class CursorMovedBy {
+        TOUCH,
+        PHYSICAL_KEYBOARD
+    }
 
     // which character did I touched? (index value)
     var offset: Int = ChewingBridge.cursorCurrent()
@@ -57,7 +62,6 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                     val y = event.y
                     offset = v.getOffsetForPosition(x, y)
 
-
                     return@setOnTouchListener false
                 }
                 else -> {
@@ -68,49 +72,36 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
 
         this.setOnClickListener {
             Log.v(LOGTAG, "offset: $offset")
-            performHapticFeedback(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength)
-            EventBus.getDefault().post(PreEditBufferCursorChangedEvent.OnTouch())
-            EventBus.getDefault().post(CandidatesWindowOpendEvent.Offset(offset))
+            performVibrate(Vibratable.VibrationStrength.LIGHT)
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
+                it.textViewPreEditBuffer.cursorMovedBy(CursorMovedBy.TOUCH)
+                it.keyboardPanel.switchToCandidatesLayout(offset)
+            }
         }
     }
 
-    override fun onAttachedToWindow() {
-        EventBus.getDefault().register(this)
-        super.onAttachedToWindow()
-    }
+    fun cursorMovedBy(source: CursorMovedBy) {
+        when (source) {
+            CursorMovedBy.TOUCH -> {
+                ChewingUtil.moveToPreEditBufferOffset(offset)
 
-    override fun onDetachedFromWindow() {
-        EventBus.getDefault().unregister(this)
-        super.onDetachedFromWindow()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onPreEditBufferCursorChangedEvent(event: PreEditBufferCursorChangedEvent.OnTouch) {
-        Log.v(LOGTAG, "Offset: ${offset}, Cursor: ${ChewingBridge.cursorCurrent()}")
-        ChewingUtil.moveToPreEditBufferOffset(offset)
-
-        // 如果使用者點選最後一個字的時候很邊邊角角，
-        // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來
-        if (offset >= this.text.length) {
-            offset -= 1
+                // 如果使用者點選最後一個字的時候很邊邊角角，
+                // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來
+                if (offset >= this.text.length) {
+                    offset -= 1
+                }
+            }
+            CursorMovedBy.PHYSICAL_KEYBOARD -> {
+                offset = ChewingBridge.cursorCurrent()
+                if (offset >= ChewingBridge.bufferLen()) {
+                    offset -= 1
+                }
+            }
         }
-
         renderUnderlineSpan()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onPreEditBufferCursorChangedEvent(event: PreEditBufferCursorChangedEvent.OnKeyboard) {
-        Log.v(LOGTAG, "Offset: ${offset}, Cursor: ${ChewingBridge.cursorCurrent()}")
-
-        offset = ChewingBridge.cursorCurrent()
-        if (offset >= ChewingBridge.bufferLen()) {
-            offset -= 1
-        }
-
-        renderUnderlineSpan()
-    }
-
-    private fun renderUnderlineSpan() {
+    fun renderUnderlineSpan() {
         span = this.text.toSpannable() as SpannableString
         val underlineSpans = span.getSpans(0, span.length, UnderlineSpan::class.java)
 
@@ -131,9 +122,23 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onBufferUpdatedEvent(event: BufferUpdatedEvent) {
-        this.text = ChewingBridge.bufferStringStatic()
+    override fun update() {
+        // chewingEngine.setMaxChiSymbolLen() 到達閾值時，
+        // 會把 pre-edit buffer 開頭送到 commit buffer，
+        // 所以要先丟出來：
+        if (ChewingBridge.commitCheck() == 1) {
+            GuilelessBopomofoServiceContext.serviceInstance.currentInputConnection.commitText(
+                ChewingBridge.commitString(),
+                1
+            )
+            // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
+            // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
+            ChewingBridge.handleEnd()
+        }
+
+        GlobalScope.launch(Dispatchers.Main) {
+            this@PreEditBufferTextView.text = ChewingBridge.bufferStringStatic()
+        }
     }
 
     override fun onTextChanged(
