@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/app/libs/libchewing" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/libs/libchewing/thirdparty/json-parser" vcs="Git" />
   </component>
 </project>
