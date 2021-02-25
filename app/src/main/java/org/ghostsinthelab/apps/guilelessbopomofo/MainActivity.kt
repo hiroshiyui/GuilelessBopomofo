@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
+            textViewServiceStatus.setTextColor(getColor(R.color.colorAccent))
 
             switchSettingFullscreenWhenInLandscape.let {
                 if (sharedPreferences.getBoolean("user_fullscreen_when_in_landscape", true)) {
