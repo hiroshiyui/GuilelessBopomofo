@@ -70,7 +70,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     }
 
     private suspend fun repeatBackspace() {
-        fixedRateTimer("repeatBackspace", true, 50L, 125L) {
+        fixedRateTimer("repeatBackspace", true, 50L, 100L) {
             if (backspacePressed) {
                 action()
             } else {
