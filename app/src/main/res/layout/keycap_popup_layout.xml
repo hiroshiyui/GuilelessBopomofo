@@ -25,7 +25,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/round_border"
-    android:backgroundTint="@color/colorKeyboardSpecialKeyBackground"
+    android:backgroundTint="@color/colorKeycapPopupWindow"
     android:backgroundTintMode="src_atop"
     android:padding="4dp">
 
