@@ -22,6 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,6 +41,8 @@ class KeyboardPanel(
     private lateinit var compactLayoutBinding: CompactLayoutBinding
 
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
+    val keycapPopupLayoutBinding: KeycapPopupLayoutBinding = KeycapPopupLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+    val keycapPopup = PopupWindow(keycapPopupLayoutBinding.root, 0, 0, false)
 
     enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY }
 

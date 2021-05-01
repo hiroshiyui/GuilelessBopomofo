@@ -19,9 +19,12 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.KeyEvent
+import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 
 class CharacterKey(context: Context, attrs: AttributeSet) :
@@ -31,9 +34,38 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
             performVibrate(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength.toLong())
 
             this.keyCodeString?.let { keycodeString ->
-                val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.keyCodeFromString(keycodeString))
+                val keyEvent =
+                    KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.keyCodeFromString(keycodeString))
                 GuilelessBopomofoServiceContext.serviceInstance.onPrintingKeyDown(keyEvent)
             }
         }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                val keycapLocation = IntArray(2)
+                this.getLocationInWindow(keycapLocation)
+
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.let {
+                    it.keycapPopupLayoutBinding.keycapImageView.setImageDrawable(this.drawable)
+                    it.keycapPopup.let {
+                        it.elevation = 8F
+                        it.showAtLocation(
+                            rootView,
+                            Gravity.NO_GRAVITY,
+                            keycapLocation.get(0),
+                            keycapLocation.get(1) - this.height
+                        )
+                        it.update(this.width, this.height)
+                    }
+                }
+            }
+            MotionEvent.ACTION_UP -> {
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.keycapPopup.dismiss()
+            }
+        }
+        return super.onTouchEvent(event)
     }
 }
