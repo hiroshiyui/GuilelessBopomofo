@@ -27,7 +27,7 @@
     android:background="@drawable/round_border"
     android:backgroundTint="@color/colorKeycapPopupWindow"
     android:backgroundTintMode="src_atop"
-    android:padding="4dp">
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/keycapImageView"

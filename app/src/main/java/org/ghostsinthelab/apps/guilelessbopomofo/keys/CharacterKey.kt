@@ -26,6 +26,7 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.R
 
 class CharacterKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
@@ -51,6 +52,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
                 GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.let {
                     it.keycapPopupLayoutBinding.keycapImageView.setImageDrawable(this.drawable)
                     it.keycapPopup.let {
+                        it.animationStyle = R.style.KeycapPopupAnimation
                         it.elevation = 8F
                         it.showAtLocation(
                             rootView,
