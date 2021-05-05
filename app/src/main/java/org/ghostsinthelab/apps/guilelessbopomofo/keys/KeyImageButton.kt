@@ -55,6 +55,9 @@ abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
             if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
                 elevation = convertDpToPx(2F)
             }
+
+            val keyButtonPreferenceHeight = sharedPreferences.getInt("user_key_button_height", 52)
+            minimumHeight = convertDpToPx(keyButtonPreferenceHeight.toFloat()).toInt()
         }
     }
 }

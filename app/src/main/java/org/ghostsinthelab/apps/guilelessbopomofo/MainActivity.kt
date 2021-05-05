@@ -26,6 +26,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
+import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -139,6 +140,31 @@ class MainActivity : AppCompatActivity() {
                         .putBoolean("user_enable_physical_keyboard", isChecked).apply()
                 }
             }
+
+            val seekBarShiftValue = 40
+            var keyButtonPreferenceHeight = sharedPreferences.getInt("user_key_button_height", 52)
+            seekBarKeyButtonHeight.progress = keyButtonPreferenceHeight - seekBarShiftValue
+            textViewSettingKeyButtonCurrentHeight.text = "${keyButtonPreferenceHeight}dp"
+
+            seekBarKeyButtonHeight.setOnSeekBarChangeListener(object :
+                SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    keyButtonPreferenceHeight = progress + seekBarShiftValue
+                    sharedPreferences.edit().putInt("user_key_button_height", keyButtonPreferenceHeight).apply()
+                    textViewSettingKeyButtonCurrentHeight.text = "${keyButtonPreferenceHeight}dp"
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                }
+
+            })
         }
 
         for ((button, layout) in
@@ -167,7 +193,8 @@ class MainActivity : AppCompatActivity() {
             binding.radioButtonHapticFeedbackStrengthHeavy to Vibratable.VibrationStrength.STRONG.strength
         )) {
             button.setOnClickListener {
-                sharedPreferences.edit().putInt("user_haptic_feedback_strength", strength.toInt()).apply()
+                sharedPreferences.edit().putInt("user_haptic_feedback_strength", strength.toInt())
+                    .apply()
             }
 
             if (sharedPreferences.getInt(

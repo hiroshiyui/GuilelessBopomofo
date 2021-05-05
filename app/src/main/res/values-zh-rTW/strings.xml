@@ -48,4 +48,6 @@
     <string name="tips_using_physical_keyboard">使用實體鍵盤時，按下 <b>左 Shift</b> + <b>空白鍵</b> 可切換注音與英數字輸入模式；長按 <b>左 Alt</b> 可選擇切換其他輸入法。</string>
     <string name="physical_selection_keys">實體候選字詞選擇鍵</string>
     <string name="keybutton_popup_image">現在按下的按鍵</string>
+    <string name="key_button_height_label">調整按鍵高度</string>
+    <string name="key_button_height_description">調整按鍵高度（預設高度：52dp）</string>
 </resources>

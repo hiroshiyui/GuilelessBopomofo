@@ -47,4 +47,6 @@
     <string name="tips_using_physical_keyboard">While using physical keyboard, toggle modes between Bopomofo &amp; English by pressing <b>Left Shift</b> + <b>Space</b>; switch to other input methods by long-pressing <b>Left Alt</b>.</string>
     <string name="physical_selection_keys">Physical candidate selection keys</string>
     <string name="keybutton_popup_image">Current touched key button</string>
+    <string name="key_button_height_label">Adjust height of key buttons</string>
+    <string name="key_button_height_description">Adjust height of key buttons. (Default value: 52dp)</string>
 </resources>

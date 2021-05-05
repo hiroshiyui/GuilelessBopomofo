@@ -369,7 +369,7 @@
             android:theme="@style/SettingsPrimaryHeader"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@+id/switchSettingKeyButtonsElevation" />
+            app:layout_constraintTop_toBottomOf="@id/seekBarKeyButtonHeight" />
 
         <TextView
             android:id="@+id/textViewSettingEnablePhysicalKeyboard"
@@ -477,6 +477,49 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_end="32dp" />
+
+        <TextView
+            android:id="@+id/textViewSettingKeyButtonHeight"
+            style="@style/SettingsLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/key_button_height_label"
+            app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/switchSettingKeyButtonsElevation" />
+
+        <TextView
+            android:id="@+id/textViewSettingDescriptionKeyButtonHeight"
+            style="@style/SettingsDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/key_button_height_description"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/textViewSettingKeyButtonHeight" />
+
+        <SeekBar
+            android:id="@+id/seekBarKeyButtonHeight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:max="40"
+            android:progress="10"
+            app:layout_constraintEnd_toStartOf="@+id/textViewSettingKeyButtonCurrentHeight"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/textViewSettingDescriptionKeyButtonHeight" />
+
+        <TextView
+            android:id="@+id/textViewSettingKeyButtonCurrentHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="TextView"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@+id/seekBarKeyButtonHeight"
+            app:layout_constraintTop_toTopOf="@id/seekBarKeyButtonHeight" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
