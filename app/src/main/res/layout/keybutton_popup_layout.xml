@@ -21,19 +21,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/keycapPopupWindowLayout"
+    android:id="@+id/keyButtonPopupWindowLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/round_border"
-    android:backgroundTint="@color/colorKeycapPopupWindow"
+    android:backgroundTint="@color/colorKeyButtonPopupWindow"
     android:backgroundTintMode="src_atop"
     android:padding="8dp">
 
     <ImageView
-        android:id="@+id/keycapImageView"
+        android:id="@+id/keyButtonPopupImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/keycap_image_view"
+        android:contentDescription="@string/keybutton_popup_image"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_baseline_keyboard_24"
         app:srcCompat="@drawable/ic_baseline_keyboard_24" />

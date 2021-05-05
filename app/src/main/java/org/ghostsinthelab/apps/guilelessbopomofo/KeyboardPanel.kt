@@ -41,8 +41,8 @@ class KeyboardPanel(
     private lateinit var compactLayoutBinding: CompactLayoutBinding
 
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
-    val keycapPopupLayoutBinding: KeycapPopupLayoutBinding = KeycapPopupLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-    val keycapPopup = PopupWindow(keycapPopupLayoutBinding.root, 0, 0, false)
+    val keyButtonPopupLayoutBinding: KeybuttonPopupLayoutBinding = KeybuttonPopupLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+    val keyButtonPopup = PopupWindow(keyButtonPopupLayoutBinding.root, 0, 0, false)
 
     enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY }
 

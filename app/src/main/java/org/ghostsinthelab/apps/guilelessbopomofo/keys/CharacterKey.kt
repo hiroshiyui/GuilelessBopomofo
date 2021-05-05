@@ -46,26 +46,26 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                val keycapLocation = IntArray(2)
-                this.getLocationInWindow(keycapLocation)
+                val keyButtonLocation = IntArray(2)
+                this.getLocationInWindow(keyButtonLocation)
 
                 GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.let {
-                    it.keycapPopupLayoutBinding.keycapImageView.setImageDrawable(this.drawable)
-                    it.keycapPopup.let {
-                        it.animationStyle = R.style.KeycapPopupAnimation
+                    it.keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(this.drawable)
+                    it.keyButtonPopup.let {
+                        it.animationStyle = R.style.KeyButtonPopupAnimation
                         it.elevation = 8F
                         it.showAtLocation(
                             rootView,
                             Gravity.NO_GRAVITY,
-                            keycapLocation.get(0),
-                            keycapLocation.get(1) - this.height
+                            keyButtonLocation.get(0),
+                            keyButtonLocation.get(1) - this.height
                         )
                         it.update(this.width, this.height)
                     }
                 }
             }
             MotionEvent.ACTION_UP -> {
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.keycapPopup.dismiss()
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.keyButtonPopup.dismiss()
             }
         }
         return super.onTouchEvent(event)
