@@ -177,6 +177,17 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
+
+            switchDisplayEten26QwertyLayout.let {
+                if (sharedPreferences.getBoolean("user_display_eten26_qwerty_layout", false)) {
+                    it.isChecked = true
+                }
+
+                it.setOnCheckedChangeListener { _, isChecked ->
+                    sharedPreferences.edit().putBoolean("user_display_eten26_qwerty_layout", isChecked).apply()
+
+                }
+            }
         }
 
         for ((button, layout) in

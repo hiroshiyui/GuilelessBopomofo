@@ -37,6 +37,7 @@ class KeyboardPanel(
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     private lateinit var keyboardHsuQwertyLayoutBinding: KeyboardHsuQwertyLayoutBinding
     private lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
+    private lateinit var keyboardEt26QwertyLayoutBinding: KeyboardEt26QwertyLayoutBinding
     private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
     private lateinit var keyboardQwertyLayoutBinding: KeyboardQwertyLayoutBinding
     private lateinit var compactLayoutBinding: CompactLayoutBinding
@@ -130,9 +131,19 @@ class KeyboardPanel(
                 }
             }
             "KB_ET26" -> {
-                keyboardEt26LayoutBinding =
-                    KeyboardEt26LayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-                this.addView(keyboardEt26LayoutBinding.root)
+                if (GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getBoolean(
+                        "user_display_eten26_qwerty_layout",
+                        false
+                    )
+                ) {
+                    keyboardEt26QwertyLayoutBinding =
+                        KeyboardEt26QwertyLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                    this.addView(keyboardEt26QwertyLayoutBinding.root)
+                } else {
+                    keyboardEt26LayoutBinding =
+                        KeyboardEt26LayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                    this.addView(keyboardEt26LayoutBinding.root)
+                }
             }
             "KB_DEFAULT" -> {
                 keyboardDachenLayoutBinding =

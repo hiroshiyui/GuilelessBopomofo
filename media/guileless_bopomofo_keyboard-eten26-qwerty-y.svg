@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24.000004mm"
+   height="24.000002mm"
+   viewBox="0 0 24.000004 24.000002"
+   version="1.1"
+   id="svg6842"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)"
+   sodipodi:docname="guileless_bopomofo_keyboard-eten26-qwerty-y.svg">
+  <defs
+     id="defs6836" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-34.645671"
+     inkscape:cy="-277.50281"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1049"
+     inkscape:window-x="1"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata6839">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-115,-221.58928)">
+    <g
+       id="g2626"
+       transform="translate(-424.44305,35.080177)">
+      <g
+         id="g3996-3-9"
+         transform="matrix(0.27369699,0,0,0.27369699,525.72025,144.82204)">
+        <rect
+           style="fill:none;fill-opacity:0.6;stroke-width:0.0833395"
+           id="rect233-6-7-8-0"
+           width="29.229391"
+           height="29.229391"
+           x="50.13866"
+           y="152.31102" />
+        <path
+           d="m 59.663646,164.84636 -0.45041,0.15013 q -0.25521,0.0901 -0.39033,0.10508 -0.15008,0.015 -0.15008,-0.13512 0,-0.13513 0.16506,-0.27025 l 0.5705,-0.46541 q 3.4831,-2.83753 6.47076,-6.89114 1.71154,-2.32708 1.99679,-3.24289 0.0602,-0.16514 0.16506,-0.82574 0.0602,-0.34531 0.36034,-0.34531 0.58551,0 1.59139,0.88579 0.87079,0.76569 0.87079,1.24611 0,0.30027 -0.78069,0.75067 -0.36031,0.21019 -1.41127,1.57641 -2.22198,2.89758 -4.63912,4.78927 -1.17105,0.93083 -2.73245,1.81661 -1.23108,0.70563 -1.63645,0.85577 z m 6.36566,3.57318 q -1.92169,1.71153 -3.03269,2.4622 -2.5973,1.77158 -4.78927,2.62734 l -0.64557,0.25523 q -0.13509,0.0601 -0.27018,0.0601 -0.16506,0 -0.16506,-0.10508 0,-0.18017 0.22525,-0.36032 l 0.45039,-0.33029 q 4.20376,-3.15281 7.41662,-6.726 1.48631,-1.66648 3.01768,-3.84342 0.85575,-1.2311 1.06596,-1.83163 0.30026,-0.85577 0.84075,-0.85577 0.69062,0 1.41125,0.52547 0.82574,0.61555 0.82574,1.17105 0,0.16513 -0.37535,0.46541 -0.31527,0.25524 -1.99676,2.34209 -0.6606,0.82573 -2.4472,2.70241 1.33621,0.94584 1.33621,1.53136 0,0.12012 -0.21027,0.5555 -0.0752,0.18017 -0.0752,0.60053 l 0.03,1.36622 0.0602,1.32118 0.0449,1.14101 0.03,0.87078 q 0.0449,1.42627 0.15008,2.76246 0.0752,1.02091 0.0752,1.60643 0,2.19196 -1.03593,2.19196 -0.45038,0 -1.00588,-0.57051 -0.60055,-0.63056 -0.60055,-1.20107 0,-0.13512 0.03,-0.36032 0.3453,-1.98177 0.3453,-4.87935 0,-3.97855 -0.70565,-5.4949 z"
+           style="font-weight:bold;font-size:11.2889px;line-height:1.25;font-family:MOESongUN;-inkscape-font-specification:'MOESongUN Bold';letter-spacing:0px;word-spacing:0px;fill:#6a5753;fill-opacity:1;stroke-width:0.720641"
+           id="path584-6-6-5" />
+      </g>
+      <rect
+         style="fill:none;fill-opacity:0.6;stroke-width:0.0684293"
+         id="rect233-7-6-9-8-1-0-8"
+         width="24"
+         height="24"
+         x="539.44305"
+         y="186.50911" />
+      <g
+         id="g2446-5-9"
+         transform="matrix(0.83333333,0,0,0.83333333,388.48472,169.26991)">
+        <rect
+           style="fill:none;stroke:none;stroke-width:0.1"
+           id="rect10-35-1-7"
+           width="24"
+           height="24"
+           x="185.95"
+           y="25.487036" />
+        <g
+           id="g1025-6-9-3"
+           style="font-weight:bold;font-size:11.2889px;line-height:1.25;font-family:MOESongUN;-inkscape-font-specification:'MOESongUN Bold';letter-spacing:0px;word-spacing:0px;fill:#6c5a57;fill-opacity:0.952941;stroke-width:0.264583"
+           transform="matrix(1.6818395,0,0,1.6818395,117.41386,70.828189)">
+          <path
+             style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#6c5a57;fill-opacity:0.952941;fill-rule:nonzero;stroke:none;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+             d="m 47.884421,-19.891605 2.099736,-3.962404 h 1.095023 l -2.686758,4.933249 v 3.127025 h -1.016001 v -3.081869 l -2.686759,-4.978405 h 1.106313 z"
+             id="path1027-7-7-6" />
+          <path
+             style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#6c5a57;fill-opacity:0.952941;fill-rule:nonzero;stroke:none;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+             d="m 44.46875,-23.986328 2.775391,5.144531 v 3.179688 h 1.28125 v -3.22461 l 2.777343,-5.099609 h -1.398437 l -2.019531,3.810547 -2.009766,-3.810547 z m 0.441406,0.263672 h 0.806641 l 2.167969,4.113281 0.117187,-0.220703 2.0625,-3.892578 h 0.792969 l -2.597656,4.767578 v 3.029297 h -0.751954 v -2.982422 z"
+             id="path1029-7-1-1" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
