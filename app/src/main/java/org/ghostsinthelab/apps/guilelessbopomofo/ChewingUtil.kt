@@ -22,13 +22,13 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 class ChewingUtil {
     @Suppress("unused")
     enum class SelectionKeysOption(val keys: IntArray) {
-        NUMBER_ROW(charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+        NUMBER_ROW(charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
             .toIntArray()),
-        HOME_ROW(charArrayOf('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';').map { it.toInt() }
+        HOME_ROW(charArrayOf('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';').map { it.code }
             .toIntArray()),
-        HOME_TAB_MIXED_MODE1(charArrayOf('a', 's', 'd', 'f', 'g', 'q', 'w', 'e', 'r', 't').map { it.toInt() }
+        HOME_TAB_MIXED_MODE1(charArrayOf('a', 's', 'd', 'f', 'g', 'q', 'w', 'e', 'r', 't').map { it.code }
             .toIntArray()),
-        HOME_TAB_MIXED_MODE2(charArrayOf('h', 'j', 'k', 'l', ';', 'y', 'u', 'i', 'o', 'p').map { it.toInt() }
+        HOME_TAB_MIXED_MODE2(charArrayOf('h', 'j', 'k', 'l', ';', 'y', 'u', 'i', 'o', 'p').map { it.code }
             .toIntArray())
     }
 

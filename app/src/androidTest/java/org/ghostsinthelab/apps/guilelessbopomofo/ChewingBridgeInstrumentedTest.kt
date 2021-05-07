@@ -92,19 +92,19 @@ class ChewingBridgeInstrumentedTest {
     fun validSelKeys() {
         ChewingBridge.setCandPerPage(10)
         val selKeys: IntArray =
-            charArrayOf('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';').map { it.toInt() }
+            charArrayOf('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';').map { it.code }
                 .toIntArray()
         ChewingBridge.setSelKey(selKeys, 10)
         val getSelKey = ChewingBridge.getSelKey()
-        assertNotEquals(getSelKey[0], '1'.toInt())
-        assertEquals(getSelKey[0], 'a'.toInt())
+        assertNotEquals(getSelKey[0], '1'.code)
+        assertEquals(getSelKey[0], 'a'.code)
     }
 
     @Test
     fun validOpenPuncCandidates() {
         ChewingBridge.setCandPerPage(10)
         val selKeys: IntArray =
-            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
                 .toIntArray()
         ChewingBridge.setSelKey(selKeys, 10)
         ChewingUtil.openPuncCandidates()
@@ -118,7 +118,7 @@ class ChewingBridgeInstrumentedTest {
         ChewingBridge.setChiEngMode(CHINESE_MODE)
         ChewingBridge.setCandPerPage(10)
         val selKeys: IntArray =
-            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
                 .toIntArray()
         ChewingBridge.setSelKey(selKeys, 10)
         ChewingBridge.setPhraseChoiceRearward(false)
@@ -209,7 +209,7 @@ class ChewingBridgeInstrumentedTest {
         ChewingBridge.setChiEngMode(CHINESE_MODE)
         ChewingBridge.setCandPerPage(10)
         val selKeys: IntArray =
-            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
                 .toIntArray()
         ChewingBridge.setSelKey(selKeys, 10)
         ChewingBridge.setPhraseChoiceRearward(false)
@@ -313,7 +313,7 @@ class ChewingBridgeInstrumentedTest {
         ChewingBridge.setChiEngMode(CHINESE_MODE)
         ChewingBridge.setCandPerPage(10)
         val selKeys: IntArray =
-            charArrayOf('a', 's', 'd', 'f', 'g', 'q', 'w', 'e', 'r', 't').map { it.toInt() }
+            charArrayOf('a', 's', 'd', 'f', 'g', 'q', 'w', 'e', 'r', 't').map { it.code }
                 .toIntArray()
         ChewingBridge.setSelKey(selKeys, 10)
         ChewingBridge.setPhraseChoiceRearward(false)
@@ -365,7 +365,7 @@ class ChewingBridgeInstrumentedTest {
         ChewingBridge.setChiEngMode(CHINESE_MODE)
         ChewingBridge.setCandPerPage(10)
         val selKeys: IntArray =
-            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
                 .toIntArray()
         ChewingBridge.setSelKey(selKeys, 10)
         ChewingBridge.setPhraseChoiceRearward(false)
@@ -612,7 +612,7 @@ class ChewingBridgeInstrumentedTest {
         assertEquals(ChewingBridge.commitString(), "╔")
 
         val selKeys: IntArray =
-            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.toInt() }
+            charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
                 .toIntArray()
         ChewingBridge.setSelKey(selKeys, 10)
 
