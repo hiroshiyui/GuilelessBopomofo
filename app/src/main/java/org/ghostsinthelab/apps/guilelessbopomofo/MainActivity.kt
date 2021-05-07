@@ -154,7 +154,8 @@ class MainActivity : AppCompatActivity() {
                     fromUser: Boolean
                 ) {
                     keyButtonPreferenceHeight = progress + seekBarShiftValue
-                    sharedPreferences.edit().putInt("user_key_button_height", keyButtonPreferenceHeight).apply()
+                    sharedPreferences.edit()
+                        .putInt("user_key_button_height", keyButtonPreferenceHeight).apply()
                     textViewSettingKeyButtonCurrentHeight.text = "${keyButtonPreferenceHeight}dp"
                 }
 
@@ -165,6 +166,17 @@ class MainActivity : AppCompatActivity() {
                 }
 
             })
+
+            switchDisplayHsuQwertyLayout.let {
+                if (sharedPreferences.getBoolean("user_display_hsu_qwerty_layout", false)) {
+                    it.isChecked = true
+                }
+
+                it.setOnCheckedChangeListener { _, isChecked ->
+                    sharedPreferences.edit().putBoolean("user_display_hsu_qwerty_layout", isChecked).apply()
+
+                }
+            }
         }
 
         for ((button, layout) in

@@ -50,4 +50,6 @@
     <string name="keybutton_popup_image">現在按下的按鍵</string>
     <string name="key_button_height_label">調整按鍵高度</string>
     <string name="key_button_height_description">調整按鍵高度（預設高度：52dp）</string>
+    <string name="switch_display_hsu_qwerty_layout">使用許氏注音鍵盤排列時，顯示 QWERTY 鍵帽？</string>
+    <string name="switch_display_eten26_qwerty_layout">使用倚天26鍵盤排列時，顯示 QWERTY 鍵帽？</string>
 </resources>

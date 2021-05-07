@@ -35,13 +35,15 @@ class KeyboardPanel(
     private val LOGTAG: String = "KeyboardPanel"
     var currentCandidatesList: Int = 0
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
+    private lateinit var keyboardHsuQwertyLayoutBinding: KeyboardHsuQwertyLayoutBinding
     private lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
     private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
     private lateinit var keyboardQwertyLayoutBinding: KeyboardQwertyLayoutBinding
     private lateinit var compactLayoutBinding: CompactLayoutBinding
 
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
-    val keyButtonPopupLayoutBinding: KeybuttonPopupLayoutBinding = KeybuttonPopupLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+    val keyButtonPopupLayoutBinding: KeybuttonPopupLayoutBinding =
+        KeybuttonPopupLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
     val keyButtonPopup = PopupWindow(keyButtonPopupLayoutBinding.root, 0, 0, false)
 
     enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY }
@@ -113,9 +115,19 @@ class KeyboardPanel(
 
         when (userKeyboardLayoutPreference) {
             "KB_HSU" -> {
-                keyboardHsuLayoutBinding =
-                    KeyboardHsuLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-                this.addView(keyboardHsuLayoutBinding.root)
+                if (GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getBoolean(
+                        "user_display_hsu_qwerty_layout",
+                        false
+                    )
+                ) {
+                    keyboardHsuQwertyLayoutBinding =
+                        KeyboardHsuQwertyLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                    this.addView(keyboardHsuQwertyLayoutBinding.root)
+                } else {
+                    keyboardHsuLayoutBinding =
+                        KeyboardHsuLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                    this.addView(keyboardHsuLayoutBinding.root)
+                }
             }
             "KB_ET26" -> {
                 keyboardEt26LayoutBinding =
