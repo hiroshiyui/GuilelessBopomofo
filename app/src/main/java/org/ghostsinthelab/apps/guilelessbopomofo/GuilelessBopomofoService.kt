@@ -48,7 +48,8 @@ class GuilelessBopomofoService : InputMethodService() {
         listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
 
     companion object {
-        val defaultHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
+        val defaultHapticFeedbackStrength: Int =
+            Vibratable.VibrationStrength.NORMAL.strength.toInt()
         const val defaultKeyboardLayout: String = "KB_DEFAULT"
     }
 
@@ -271,7 +272,26 @@ class GuilelessBopomofoService : InputMethodService() {
             }
         }
 
-        ChewingBridge.handleDefault(keyPressed)
+        if (event.isCtrlPressed) {
+            currentInputConnection.apply {
+                when (event.keyCode) {
+                    KEYCODE_A -> {
+                        performContextMenuAction(android.R.id.selectAll)
+                    }
+                    KEYCODE_X -> {
+                        performContextMenuAction(android.R.id.cut)
+                    }
+                    KEYCODE_C -> {
+                        performContextMenuAction(android.R.id.copy)
+                    }
+                    KEYCODE_V -> {
+                        performContextMenuAction(android.R.id.paste)
+                    }
+                }
+            }
+        } else {
+            ChewingBridge.handleDefault(keyPressed)
+        }
 
         GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
             it.textViewPreEditBuffer.update()
