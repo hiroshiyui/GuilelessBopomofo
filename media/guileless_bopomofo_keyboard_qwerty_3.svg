@@ -7,15 +7,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="24.000002mm"
-   height="24mm"
-   viewBox="0 0 24.000002 24"
+   width="24.000006mm"
+   height="24.000004mm"
+   viewBox="0 0 24.000006 24.000004"
    version="1.1"
-   id="svg5195"
+   id="svg4375"
    inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)"
    sodipodi:docname="guileless_bopomofo_keyboard_qwerty_3.svg">
   <defs
-     id="defs5189" />
+     id="defs4369" />
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -24,19 +24,19 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="-1194.6457"
-     inkscape:cy="1171.0686"
+     inkscape:cx="-1271.7885"
+     inkscape:cy="196.7829"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1049"
-     inkscape:window-x="1"
+     inkscape:window-height="1017"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
-     id="metadata5192">
+     id="metadata4372">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -51,10 +51,10 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-421.91666,161.67857)">
+     transform="translate(-442.32737,-96.10119)">
     <g
-       id="g8948"
-       transform="translate(339.58552,-493.58717)">
+       id="g2205"
+       transform="translate(359.99623,-235.80741)">
       <rect
          style="fill:none;stroke:none;stroke-width:0.1"
          id="rect10-6-68"
@@ -64,7 +64,7 @@
          y="331.9086" />
       <g
          id="g3194"
-         transform="matrix(0.66666667,0,0,0.66666667,188.10211,184.4831)">
+         transform="matrix(0.625,0,0,0.625,182.99143,195.1972)">
         <rect
            style="fill:none;stroke:none;stroke-width:0.1"
            id="rect10-6-68-6"

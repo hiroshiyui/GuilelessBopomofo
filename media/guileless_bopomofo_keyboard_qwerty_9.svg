@@ -7,15 +7,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="24.000006mm"
-   height="24.000002mm"
-   viewBox="0 0 24.000006 24.000002"
+   width="24.000002mm"
+   height="24mm"
+   viewBox="0 0 24.000002 24"
    version="1.1"
-   id="svg10050"
+   id="svg8485"
    inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)"
    sodipodi:docname="guileless_bopomofo_keyboard_qwerty_9.svg">
   <defs
-     id="defs10044" />
+     id="defs8479" />
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -24,19 +24,19 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="-163.21708"
-     inkscape:cy="-134.64567"
+     inkscape:cx="-508.93138"
+     inkscape:cy="-108.93139"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1049"
-     inkscape:window-x="1"
+     inkscape:window-height="1017"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
-     id="metadata10047">
+     id="metadata8482">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -51,10 +51,10 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-149.01785,-183.79167)">
+     transform="translate(-240.4881,-176.9881)">
     <g
-       id="g9000"
-       transform="translate(32.147098,-182.71169)">
+       id="g2283"
+       transform="translate(123.61734,-189.51526)">
       <rect
          style="fill:none;stroke:none;stroke-width:0.1"
          id="rect10-7-66"
@@ -64,7 +64,7 @@
          y="366.50336" />
       <g
          id="g3230"
-         transform="matrix(0.66666667,0,0,0.66666667,199.61532,196.01469)">
+         transform="matrix(0.625,0,0,0.625,195.94378,208.17023)">
         <rect
            style="fill:none;stroke:none;stroke-width:0.1"
            id="rect10-7-66-7"
