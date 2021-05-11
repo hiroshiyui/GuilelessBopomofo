@@ -51,4 +51,5 @@
     <string name="key_button_height_description">Adjust height of key buttons. (Default value: 52dp)</string>
     <string name="switch_display_hsu_qwerty_layout">Enable QWERTY keycaps for Hsu layout?</string>
     <string name="switch_display_eten26_qwerty_layout">Enable QWERTY keycaps for E-TEN 26 keys layout?</string>
+    <string name="label_subtype_generic">%s</string>
 </resources>
