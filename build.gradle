@@ -18,9 +18,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url "https://google.bintray.com/flexbox-layout"
-        }
+        maven { url 'https://jitpack.io' }
     }
 }
 
