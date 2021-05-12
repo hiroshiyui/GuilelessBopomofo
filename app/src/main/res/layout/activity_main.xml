@@ -24,7 +24,7 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="24dp" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewAppIcon"
             android:layout_width="72dp"
             android:layout_height="wrap_content"
@@ -465,7 +465,7 @@
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionEnablePhysicalKeyboard" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageViewInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -29,12 +29,11 @@
     android:backgroundTintMode="src_atop"
     android:padding="8dp">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/keyButtonPopupImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/keybutton_popup_image"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_baseline_keyboard_24"
         app:srcCompat="@drawable/ic_baseline_keyboard_24" />
 </RelativeLayout>
