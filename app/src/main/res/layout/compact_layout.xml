@@ -25,23 +25,23 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textViewAppName"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="serif"
-        android:text="@string/app_name"
-        android:textColor="@color/colorPrimaryDark"
+        android:contentDescription="@string/app_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_guileless_bopomofo_statusbar_icon"
+        app:srcCompat="@drawable/ic_guileless_bopomofo_statusbar_icon" />
 
     <TextView
         android:id="@+id/textViewCurrentMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:text="@string/current_mode"
-        app:layout_constraintStart_toEndOf="@+id/textViewAppName"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -54,4 +54,5 @@
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textViewCurrentMode"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
