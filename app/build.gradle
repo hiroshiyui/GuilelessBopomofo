@@ -39,10 +39,10 @@ android {
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
-            version "3.10.2"
+            version "3.18.1"
         }
     }
-    ndkVersion '21.4.7075529'
+    ndkVersion '22.1.7171670'
 
     testOptions {
         unitTests {
