@@ -95,7 +95,7 @@ class GuilelessBopomofoService : InputMethodService() {
         userHapticFeedbackStrength =
             sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
 
-        GuilelessBopomofoServiceContext.bindGuilelessBopomofoService(this)
+        GuilelessBopomofoServiceContext.bindServiceInstance(this)
     }
 
     override fun onCreateCandidatesView(): View? {

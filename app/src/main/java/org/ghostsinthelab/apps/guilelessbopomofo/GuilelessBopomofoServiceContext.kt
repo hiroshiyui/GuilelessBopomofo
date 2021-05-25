@@ -22,7 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 object GuilelessBopomofoServiceContext {
     lateinit var serviceInstance: GuilelessBopomofoService
 
-    fun bindGuilelessBopomofoService(guilelessBopomofoService: GuilelessBopomofoService) {
+    fun bindServiceInstance(guilelessBopomofoService: GuilelessBopomofoService) {
         this.serviceInstance = guilelessBopomofoService
     }
 }
