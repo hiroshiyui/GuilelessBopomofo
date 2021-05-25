@@ -27,7 +27,16 @@ object ChewingBridge {
     var context: Long = 0
 
     init {
-        System.loadLibrary("chewing-jni")
+        try {
+            System.loadLibrary("chewing-jni")
+        } catch (exception: Throwable) {
+            exception.printStackTrace()
+            throw ChewingBridgeInitException
+        }
+    }
+
+    object ChewingBridgeInitException : Throwable() {
+        override val message: String = "Unable to initialize ChewingBridge"
     }
 
     // Chewing API JNIs

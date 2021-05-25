@@ -87,8 +87,11 @@ class GuilelessBopomofoService : InputMethodService() {
                 getString(R.string.libchewing_init_fail, exception.message)
             Toast.makeText(applicationContext, exceptionDescription, Toast.LENGTH_LONG)
                 .show()
-            exception.message?.let {
-                Log.e(LOGTAG, it)
+            exception.let {
+                it.printStackTrace()
+                it.message?.let {
+                    Log.e(LOGTAG, it)
+                }
             }
         }
 
