@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">樸實注音鍵盤</string>
     <string name="display_name_bopomofo_keyboard_ime">注音符號</string>
-    <string name="libchewing_init_fail">無法成功初始化新酷音程式庫</string>
+    <string name="libchewing_init_fail">無法成功初始化新酷音程式庫： %1$s</string>
     <string name="test_text_input_here">請在此測試文字輸入</string>
     <string name="chewing_data_files_status">新酷音程式庫資料檔狀態：</string>
     <string name="engineering_mode_label">工程模式</string>

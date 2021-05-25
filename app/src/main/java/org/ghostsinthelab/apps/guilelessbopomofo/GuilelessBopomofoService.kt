@@ -82,10 +82,12 @@ class GuilelessBopomofoService : InputMethodService() {
             sharedPreferences.getString("user_candidate_selection_keys_option", "NUMBER_ROW")?.let {
                 ChewingBridge.setSelKey(ChewingUtil.SelectionKeysOption.valueOf(it).keys, 10)
             }
-        } catch (e: Exception) {
-            Toast.makeText(applicationContext, R.string.libchewing_init_fail, Toast.LENGTH_LONG)
+        } catch (exception: Exception) {
+            val exceptionDescription: String =
+                getString(R.string.libchewing_init_fail, exception.message)
+            Toast.makeText(applicationContext, exceptionDescription, Toast.LENGTH_LONG)
                 .show()
-            e.message?.let {
+            exception.message?.let {
                 Log.e(LOGTAG, it)
             }
         }
