@@ -26,46 +26,43 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.R
 
 class CharacterKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
-    init {
-        this.setOnClickListener {
-            performVibrate(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength.toLong())
-
-            this.keyCodeString?.let { keycodeString ->
-                val keyEvent =
-                    KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.keyCodeFromString(keycodeString))
-                GuilelessBopomofoServiceContext.serviceInstance.onPrintingKeyDown(keyEvent)
-            }
-        }
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
+                performVibrate(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength.toLong())
+
                 val keyButtonLocation = IntArray(2)
                 this.getLocationInWindow(keyButtonLocation)
 
                 GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.let {
                     it.keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(this.drawable)
-                    it.keyButtonPopup.let {
-                        it.animationStyle = R.style.KeyButtonPopupAnimation
-                        it.elevation = 8F
-                        it.showAtLocation(
+                    it.keyButtonPopup.let { popup ->
+                        popup.height = this@CharacterKey.height
+                        popup.width = this@CharacterKey.width
+                        popup.showAtLocation(
                             rootView,
                             Gravity.NO_GRAVITY,
                             keyButtonLocation.get(0),
-                            keyButtonLocation.get(1) - this.height
+                            keyButtonLocation.get(1) - this@CharacterKey.height
                         )
-                        it.update(this.width, this.height)
                     }
                 }
             }
             MotionEvent.ACTION_UP -> {
                 GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.keyButtonPopup.dismiss()
+
+                this.keyCodeString?.let { keycodeString ->
+                    val keyEvent =
+                        KeyEvent(
+                            KeyEvent.ACTION_DOWN,
+                            KeyEvent.keyCodeFromString(keycodeString)
+                        )
+                    GuilelessBopomofoServiceContext.serviceInstance.onPrintingKeyDown(keyEvent)
+                }
             }
         }
         return super.onTouchEvent(event)

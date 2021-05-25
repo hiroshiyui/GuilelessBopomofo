@@ -53,6 +53,12 @@ class KeyboardPanel(
 
     init {
         Log.v(LOGTAG, "Building KeyboardLayout.")
+
+        keyButtonPopup.apply {
+            isFocusable = false
+            animationStyle = R.style.KeyButtonPopupAnimation
+            elevation = 8F
+        }
     }
 
     fun toggleMainLayoutMode() {
