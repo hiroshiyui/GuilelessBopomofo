@@ -234,7 +234,9 @@ class MainActivity : AppCompatActivity() {
             binding.radioButtonNumberRow to "NUMBER_ROW",
             binding.radioButtonHomeRow to "HOME_ROW",
             binding.radioButtonHomeTabMixedMode1 to "HOME_TAB_MIXED_MODE1",
-            binding.radioButtonHomeTabMixedMode2 to "HOME_TAB_MIXED_MODE2"
+            binding.radioButtonHomeTabMixedMode2 to "HOME_TAB_MIXED_MODE2",
+            binding.radioButtonDvorakHomeRow to "DVORAK_HOME_ROW",
+            binding.radioButtonDvorakMixedMode to "DVORAK_MIXED_MODE"
         )) {
             button.setOnClickListener {
                 sharedPreferences.edit().putString("user_candidate_selection_keys_option", keys)

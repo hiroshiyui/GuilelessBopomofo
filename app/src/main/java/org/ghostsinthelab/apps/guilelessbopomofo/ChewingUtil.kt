@@ -22,38 +22,18 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 class ChewingUtil {
     @Suppress("unused")
     enum class SelectionKeysOption(val keys: IntArray) {
-        NUMBER_ROW(charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
-            .toIntArray()),
-        HOME_ROW(charArrayOf('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';').map { it.code }
-            .toIntArray()),
+        NUMBER_ROW(
+                charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }.toIntArray()),
+        HOME_ROW(
+                charArrayOf('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';').map { it.code }.toIntArray()),
         HOME_TAB_MIXED_MODE1(
-            charArrayOf(
-                'a',
-                's',
-                'd',
-                'f',
-                'g',
-                'q',
-                'w',
-                'e',
-                'r',
-                't'
-            ).map { it.code }
-                .toIntArray()),
+                charArrayOf('a', 's', 'd', 'f', 'g', 'q', 'w', 'e', 'r', 't').map { it.code }.toIntArray()),
         HOME_TAB_MIXED_MODE2(
-            charArrayOf(
-                'h',
-                'j',
-                'k',
-                'l',
-                ';',
-                'y',
-                'u',
-                'i',
-                'o',
-                'p'
-            ).map { it.code }
-                .toIntArray())
+                charArrayOf('h', 'j', 'k', 'l', ';', 'y', 'u', 'i', 'o', 'p').map { it.code }.toIntArray()),
+        DVORAK_HOME_ROW(
+                charArrayOf('a', 'o', 'e', 'u', 'i', 'd', 'h', 't', 'n', 's').map { it.code }.toIntArray()),
+        DVORAK_MIXED_MODE(
+                charArrayOf('a', 'o', 'e', 'u', 'i', ';', 'q', 'j', 'k', 'x').map { it.code }.toIntArray())
     }
 
     companion object {
@@ -73,7 +53,7 @@ class ChewingUtil {
 
         fun anyPreeditBufferIsNotEmpty(): Boolean {
             if (ChewingBridge.bufferStringStatic()
-                    .isNotEmpty() || ChewingBridge.bopomofoStringStatic().isNotEmpty()
+                            .isNotEmpty() || ChewingBridge.bopomofoStringStatic().isNotEmpty()
             ) {
                 return true
             }
@@ -147,21 +127,21 @@ class ChewingUtil {
 
         fun dvorakToQwertyKeyMapping(key: Char): Char {
             val dvorakKeysList: List<Char> = listOf(
-                '\'', '\"', ',', '<', '.', '>', 'p', 'P', 'y', 'Y', 'f', 'F', 'g', 'G',
-                'c', 'C', 'r', 'R', 'l', 'L', '/', '?', '=', '+', '\\', '|',
-                'a', 'A', 'o', 'O', 'e', 'E', 'u', 'U', 'i', 'I', 'd', 'D', 'h', 'H',
-                't', 'T', 'n', 'N', 's', 'S', '-', '_',
-                ';', ':', 'q', 'Q', 'j', 'J', 'k', 'K', 'x', 'X', 'b', 'B', 'm', 'M',
-                'w', 'W', 'v', 'V', 'z', 'Z'
+                    '\'', '\"', ',', '<', '.', '>', 'p', 'P', 'y', 'Y', 'f', 'F', 'g', 'G',
+                    'c', 'C', 'r', 'R', 'l', 'L', '/', '?', '=', '+', '\\', '|',
+                    'a', 'A', 'o', 'O', 'e', 'E', 'u', 'U', 'i', 'I', 'd', 'D', 'h', 'H',
+                    't', 'T', 'n', 'N', 's', 'S', '-', '_',
+                    ';', ':', 'q', 'Q', 'j', 'J', 'k', 'K', 'x', 'X', 'b', 'B', 'm', 'M',
+                    'w', 'W', 'v', 'V', 'z', 'Z'
             )
 
             val qwertyKeysList: List<Char> = listOf(
-                'q', 'Q', 'w', 'W', 'e', 'E', 'r', 'R', 't', 'T', 'y', 'Y', 'u', 'U',
-                'i', 'I', 'o', 'O', 'p', 'P', '[', '{', ']', '}', '\\', '|',
-                'a', 'A', 's', 'S', 'd', 'D', 'f', 'F', 'g', 'G', 'h', 'H', 'j', 'J',
-                'k', 'K', 'l', 'L', ';', ':', '\'', '\"',
-                'z', 'Z', 'x', 'X', 'c', 'C', 'v', 'V', 'b', 'B', 'n', 'N', 'm', 'M',
-                ',', '<', '.', '>', '/', '?'
+                    'q', 'Q', 'w', 'W', 'e', 'E', 'r', 'R', 't', 'T', 'y', 'Y', 'u', 'U',
+                    'i', 'I', 'o', 'O', 'p', 'P', '[', '{', ']', '}', '\\', '|',
+                    'a', 'A', 's', 'S', 'd', 'D', 'f', 'F', 'g', 'G', 'h', 'H', 'j', 'J',
+                    'k', 'K', 'l', 'L', ';', ':', '\'', '\"',
+                    'z', 'Z', 'x', 'X', 'c', 'C', 'v', 'V', 'b', 'B', 'n', 'N', 'm', 'M',
+                    ',', '<', '.', '>', '/', '?'
             )
 
             return qwertyKeysList[dvorakKeysList.indexOf(key)]
