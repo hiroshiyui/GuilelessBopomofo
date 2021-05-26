@@ -505,6 +505,29 @@ class ChewingBridgeInstrumentedTest {
     }
 
     @Test
+    fun switchToDvorakHsuLayout() {
+        val newKeyboardType = ChewingBridge.convKBStr2Num("KB_DVORAK_HSU")
+        ChewingBridge.setKBType(newKeyboardType)
+        val currentKeyboardType = ChewingBridge.getKBType()
+        val currentKeyboardTypeString = ChewingBridge.getKBString()
+        assertEquals(currentKeyboardType, 7)
+        assertEquals(currentKeyboardTypeString, "KB_DVORAK_HSU")
+
+        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
+        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
+        assertEquals(ChewingBridge.bopomofoStringStatic(), "ㄌㄥ")
+        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('f'))
+        assertEquals(ChewingBridge.bufferString(), "冷")
+        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('d'))
+        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('x'))
+        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
+        assertEquals(ChewingBridge.bopomofoStringStatic(), "ㄉㄨㄥ")
+        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('j'))
+        ChewingBridge.commitPreeditBuf()
+        assertEquals(ChewingBridge.commitString(), "冷凍")
+    }
+
+    @Test
     fun validCandidateWindowOpenClose() {
         ChewingBridge.setChiEngMode(CHINESE_MODE)
         ChewingBridge.setMaxChiSymbolLen(10)
