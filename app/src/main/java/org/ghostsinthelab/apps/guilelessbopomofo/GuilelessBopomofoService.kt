@@ -283,6 +283,9 @@ class GuilelessBopomofoService : InputMethodService() {
                     KEYCODE_A -> {
                         performContextMenuAction(android.R.id.selectAll)
                     }
+                    KEYCODE_Z -> {
+                        performContextMenuAction(android.R.id.undo)
+                    }
                     KEYCODE_X -> {
                         performContextMenuAction(android.R.id.cut)
                     }
@@ -291,6 +294,9 @@ class GuilelessBopomofoService : InputMethodService() {
                     }
                     KEYCODE_V -> {
                         performContextMenuAction(android.R.id.paste)
+                    }
+                    KEYCODE_R -> {
+                        performContextMenuAction(android.R.id.redo)
                     }
                 }
             }
