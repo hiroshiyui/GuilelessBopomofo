@@ -53,7 +53,9 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
                 }
             }
             MotionEvent.ACTION_UP -> {
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.keyButtonPopup.dismiss()
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.keyButtonPopup.let { popup ->
+                    popup.dismiss()
+                }
 
                 this.keyCodeString?.let { keycodeString ->
                     val keyEvent =

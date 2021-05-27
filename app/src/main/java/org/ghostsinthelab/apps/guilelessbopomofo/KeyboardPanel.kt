@@ -45,7 +45,7 @@ class KeyboardPanel(
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
     val keyButtonPopupLayoutBinding: KeybuttonPopupLayoutBinding =
         KeybuttonPopupLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
-    val keyButtonPopup = PopupWindow(keyButtonPopupLayoutBinding.root, 0, 0, false)
+    val keyButtonPopup = PopupWindow(keyButtonPopupLayoutBinding.root, 1, 1, false)
 
     enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY }
 
@@ -55,7 +55,6 @@ class KeyboardPanel(
         Log.v(LOGTAG, "Building KeyboardLayout.")
 
         keyButtonPopup.apply {
-            isFocusable = false
             animationStyle = R.style.KeyButtonPopupAnimation
             elevation = 8F
         }
