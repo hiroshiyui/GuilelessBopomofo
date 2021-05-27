@@ -513,15 +513,21 @@ class ChewingBridgeInstrumentedTest {
         assertEquals(currentKeyboardType, 7)
         assertEquals(currentKeyboardTypeString, "KB_DVORAK_HSU")
 
+        // test ChewingUtil.dvorakToQwertyKeyMapping()
+        assertEquals(ChewingUtil.dvorakToQwertyKeyMapping('j'), 'c')
+        assertEquals(ChewingUtil.dvorakToQwertyKeyMapping('l'), 'p')
+
         ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
         ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
         assertEquals(ChewingBridge.bopomofoStringStatic(), "ㄌㄥ")
+        // ˇ
         ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('f'))
         assertEquals(ChewingBridge.bufferString(), "冷")
         ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('d'))
         ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('x'))
         ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
         assertEquals(ChewingBridge.bopomofoStringStatic(), "ㄉㄨㄥ")
+        // ˋ
         ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('j'))
         ChewingBridge.commitPreeditBuf()
         assertEquals(ChewingBridge.commitString(), "冷凍")
