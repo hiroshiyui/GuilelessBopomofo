@@ -54,12 +54,6 @@ class KeyboardPanel(
 
     lateinit var currentKeyboardLayout: KeyboardLayout
 
-    private val userKeyboardLayoutPreference =
-        GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getString(
-            "user_keyboard_layout",
-            GuilelessBopomofoService.defaultKeyboardLayout
-        )
-
     init {
         Log.v(LOGTAG, "Building KeyboardLayout.")
 
@@ -112,14 +106,20 @@ class KeyboardPanel(
         this.removeAllViews()
 
         // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
-        userKeyboardLayoutPreference?.let {
-            val newKeyboardType = ChewingBridge.convKBStr2Num(it)
-            ChewingBridge.setKBType(newKeyboardType)
-        }
+        val userKeyboardLayoutPreference =
+            GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getString(
+                "user_keyboard_layout",
+                GuilelessBopomofoService.defaultKeyboardLayout
+            )
 
         if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
             switchToCompactLayout()
             return
+        }
+
+        userKeyboardLayoutPreference?.let {
+            val newKeyboardType = ChewingBridge.convKBStr2Num(it)
+            ChewingBridge.setKBType(newKeyboardType)
         }
 
         when (userKeyboardLayoutPreference) {
@@ -177,7 +177,7 @@ class KeyboardPanel(
     }
 
     private fun switchToAlphabeticalLayout() {
-        if (user_is_using_dvorak_hsu()) {
+        if (userIsUsingDvorakHsu()) {
             switchToDvorakLayout()
         } else {
             switchToQwertyLayout()
@@ -216,8 +216,11 @@ class KeyboardPanel(
         this.addView(keyboardDvorakLayoutBinding.root)
     }
 
-    private fun user_is_using_dvorak_hsu(): Boolean {
-        return (userKeyboardLayoutPreference == "KB_DVORAK_HSU")
+    private fun userIsUsingDvorakHsu(): Boolean {
+        return (GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getString(
+            "user_keyboard_layout",
+            GuilelessBopomofoService.defaultKeyboardLayout
+        ) == "KB_DVORAK_HSU")
     }
 
     fun backToMainLayout() {
