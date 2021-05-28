@@ -188,13 +188,25 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
+
+            switchDisplayDvorakHsuBothLayout.let {
+                if (sharedPreferences.getBoolean("user_display_dvorak_hsu_both_layout", false)) {
+                    it.isChecked = true
+                }
+
+                it.setOnCheckedChangeListener { _, isChecked ->
+                    sharedPreferences.edit().putBoolean("user_display_dvorak_hsu_both_layout", isChecked).apply()
+
+                }
+            }
         }
 
         for ((button, layout) in
         mapOf<RadioButton, String>(
             binding.radioButtonLayoutDaChen to "KB_DEFAULT",
             binding.radioButtonLayoutETen26 to "KB_ET26",
-            binding.radioButtonLayoutHsu to "KB_HSU"
+            binding.radioButtonLayoutHsu to "KB_HSU",
+            binding.radioButtonLayoutDvorakHsu to "KB_DVORAK_HSU"
         )) {
             button.setOnClickListener {
                 sharedPreferences.edit().putString("user_keyboard_layout", layout).apply()
@@ -247,6 +259,25 @@ class MainActivity : AppCompatActivity() {
                     "user_candidate_selection_keys_option",
                     "NUMBER_ROW"
                 ) == keys
+            ) {
+                button.isChecked = true
+            }
+        }
+
+        for ((button, keymap) in
+        mapOf<RadioButton, String>(
+            binding.radioButtonPhysicalKeyboardKeymapQwerty to "KEYMAP_QWERTY",
+            binding.radioButtonPhysicalKeyboardKeymapDvorak to "KEYMAP_DVORAK"
+        )) {
+            button.setOnClickListener {
+                sharedPreferences.edit().putString("user_physical_keyboard_keymap_option", keymap)
+                    .apply()
+            }
+
+            if (sharedPreferences.getString(
+                    "user_physical_keyboard_keymap_option",
+                    "KEYMAP_QWERTY"
+                ) == keymap
             ) {
                 button.isChecked = true
             }

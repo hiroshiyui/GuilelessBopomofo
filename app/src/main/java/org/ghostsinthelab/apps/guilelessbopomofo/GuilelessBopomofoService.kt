@@ -262,6 +262,12 @@ class GuilelessBopomofoService : InputMethodService() {
 
         var keyPressed: Char = event.unicodeChar.toChar()
 
+        // QWERTY-Dvorak conversion
+        if (sharedPreferences.getString("user_physical_keyboard_keymap_option",
+                "KEYMAP_QWERTY") == "KEYMAP_DVORAK") {
+            keyPressed = ChewingUtil.dvorakToQwertyKeyMapping(keyPressed)
+        }
+
         val shiftKeyImageButton =
             viewBinding.keyboardPanel.findViewById<ShiftKey>(
                 R.id.keyImageButtonShift

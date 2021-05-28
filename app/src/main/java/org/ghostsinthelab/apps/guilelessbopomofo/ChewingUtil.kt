@@ -131,7 +131,7 @@ class ChewingUtil {
             }
         }
 
-        fun dvorakToQwertyKeyMapping(dvorakKey: Char): Char {
+        fun dvorakToQwertyKeyMapping(key: Char): Char {
             val dvorakKeysList: List<Char> = listOf(
                 '\'', '\"', ',', '<', '.', '>', 'p', 'P', 'y', 'Y', 'f', 'F', 'g', 'G',
                 'c', 'C', 'r', 'R', 'l', 'L', '/', '?', '=', '+', '\\', '|',
@@ -152,7 +152,11 @@ class ChewingUtil {
 
             val qwertyKeyMapping: Map<Char, Char> = dvorakKeysList.zip(qwertyKeysList).toMap()
 
-            return qwertyKeyMapping.getValue(dvorakKey)
+            qwertyKeyMapping.get(key)?.let {
+                return it
+            }
+            // if we can't find a mapping, then return the original key as-is
+            return key
         }
     }
 }

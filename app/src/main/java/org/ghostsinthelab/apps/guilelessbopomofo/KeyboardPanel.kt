@@ -40,6 +40,9 @@ class KeyboardPanel(
     private lateinit var keyboardEt26QwertyLayoutBinding: KeyboardEt26QwertyLayoutBinding
     private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
     private lateinit var keyboardQwertyLayoutBinding: KeyboardQwertyLayoutBinding
+    private lateinit var keyboardHsuDvorakLayoutBinding: KeyboardHsuDvorakLayoutBinding
+    private lateinit var keyboardHsuDvorakBothLayoutBinding: KeyboardHsuDvorakBothLayoutBinding
+    private lateinit var keyboardDvorakLayoutBinding: KeyboardDvorakLayoutBinding
     private lateinit var compactLayoutBinding: CompactLayoutBinding
 
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
@@ -47,9 +50,15 @@ class KeyboardPanel(
         KeybuttonPopupLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
     val keyButtonPopup = PopupWindow(keyButtonPopupLayoutBinding.root, 1, 1, false)
 
-    enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY }
+    enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY, DVORAK }
 
     lateinit var currentKeyboardLayout: KeyboardLayout
+
+    private val userKeyboardLayoutPreference =
+        GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getString(
+            "user_keyboard_layout",
+            GuilelessBopomofoService.defaultKeyboardLayout
+        )
 
     init {
         Log.v(LOGTAG, "Building KeyboardLayout.")
@@ -68,7 +77,7 @@ class KeyboardPanel(
             }
             CHINESE_MODE -> {
                 ChewingBridge.setChiEngMode(SYMBOL_MODE)
-                switchToQwertyLayout()
+                switchToAlphabeticalLayout()
             }
         }
     }
@@ -77,7 +86,7 @@ class KeyboardPanel(
         if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
             switchToBopomofoLayout()
         } else {
-            switchToQwertyLayout()
+            switchToAlphabeticalLayout()
         }
     }
 
@@ -103,12 +112,6 @@ class KeyboardPanel(
         this.removeAllViews()
 
         // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
-        val userKeyboardLayoutPreference =
-            GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getString(
-                "user_keyboard_layout",
-                GuilelessBopomofoService.defaultKeyboardLayout
-            )
-
         userKeyboardLayoutPreference?.let {
             val newKeyboardType = ChewingBridge.convKBStr2Num(it)
             ChewingBridge.setKBType(newKeyboardType)
@@ -135,6 +138,21 @@ class KeyboardPanel(
                     this.addView(keyboardHsuLayoutBinding.root)
                 }
             }
+            "KB_DVORAK_HSU" -> {
+                if (GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getBoolean(
+                        "user_display_dvorak_hsu_both_layout",
+                        false
+                    )
+                ) {
+                    keyboardHsuDvorakBothLayoutBinding =
+                        KeyboardHsuDvorakBothLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                    this.addView(keyboardHsuDvorakBothLayoutBinding.root)
+                } else {
+                    keyboardHsuDvorakLayoutBinding =
+                        KeyboardHsuDvorakLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                    this.addView(keyboardHsuDvorakLayoutBinding.root)
+                }
+            }
             "KB_ET26" -> {
                 if (GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getBoolean(
                         "user_display_eten26_qwerty_layout",
@@ -158,6 +176,14 @@ class KeyboardPanel(
         }
     }
 
+    private fun switchToAlphabeticalLayout() {
+        if (user_is_using_dvorak_hsu()) {
+            switchToDvorakLayout()
+        } else {
+            switchToQwertyLayout()
+        }
+    }
+
     private fun switchToQwertyLayout() {
         Log.v(LOGTAG, "switchToQwertyLayout")
         currentKeyboardLayout = KeyboardLayout.QWERTY
@@ -172,6 +198,26 @@ class KeyboardPanel(
 
         this.removeAllViews()
         this.addView(keyboardQwertyLayoutBinding.root)
+    }
+
+    private fun switchToDvorakLayout() {
+        Log.v(LOGTAG, "switchToDvorakLayout")
+        currentKeyboardLayout = KeyboardLayout.DVORAK
+
+        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
+            switchToCompactLayout()
+            return
+        }
+
+        keyboardDvorakLayoutBinding =
+            KeyboardDvorakLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+
+        this.removeAllViews()
+        this.addView(keyboardDvorakLayoutBinding.root)
+    }
+
+    private fun user_is_using_dvorak_hsu(): Boolean {
+        return (userKeyboardLayoutPreference == "KB_DVORAK_HSU")
     }
 
     fun backToMainLayout() {

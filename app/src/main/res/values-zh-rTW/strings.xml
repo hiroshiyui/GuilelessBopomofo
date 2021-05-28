@@ -50,7 +50,13 @@
     <string name="keybutton_popup_image">現在按下的按鍵</string>
     <string name="key_button_height_label">調整按鍵高度</string>
     <string name="key_button_height_description">調整按鍵高度（預設高度：52dp）</string>
-    <string name="switch_display_hsu_qwerty_layout">使用許氏注音鍵盤排列時，顯示 QWERTY 鍵帽？</string>
+    <string name="switch_display_hsu_qwerty_layout">使用許氏鍵盤排列時，顯示 QWERTY 鍵帽？</string>
     <string name="switch_display_eten26_qwerty_layout">使用倚天26鍵盤排列時，顯示 QWERTY 鍵帽？</string>
     <string name="label_subtype_generic">%s</string>
+    <string name="bopomofo_keyboard_layout_dvorak_hsu">許氏鍵盤 - Dvorak 鍵盤對映</string>
+    <string name="switch_display_hsu_dvorak_both_layout">使用許氏鍵盤 - Dvorak 鍵盤對映排列時，顯示 Dvorak 鍵帽？</string>
+    <string name="setting_label_physical_keyboard_keymap">實體鍵盤按鍵對映</string>
+    <string name="setting_description_physical_keyboard_keymap">請設定您正在使用、正確的實體鍵盤按鍵對映。</string>
+    <string name="keymap_qwerty">QWERTY</string>
+    <string name="keymap_dvorak">Dvorak</string>
 </resources>

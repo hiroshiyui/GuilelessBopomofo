@@ -172,6 +172,12 @@
                 android:text="@string/bopomofo_keyboard_layout_hsu" />
 
             <RadioButton
+                android:id="@+id/radioButtonLayoutDvorakHsu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bopomofo_keyboard_layout_dvorak_hsu" />
+
+            <RadioButton
                 android:id="@+id/radioButtonLayoutETen26"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -199,6 +205,16 @@
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@id/switchDisplayHsuQwertyLayout" />
 
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchDisplayDvorakHsuBothLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/switch_display_hsu_dvorak_both_layout"
+            app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/switchDisplayEten26QwertyLayout" />
+
         <TextView
             android:id="@+id/textViewSettingSpaceAsSelection"
             style="@style/SettingsLabel"
@@ -208,7 +224,7 @@
             android:text="@string/space_as_selection_key"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/switchDisplayEten26QwertyLayout" />
+            app:layout_constraintTop_toBottomOf="@id/switchDisplayDvorakHsuBothLayout" />
 
         <TextView
             android:id="@+id/textViewSettingDescriptionSpaceAsSelection"
@@ -465,26 +481,47 @@
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionEnablePhysicalKeyboard" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageViewInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/radioGroupSelectionKeysOption"
-            app:srcCompat="@android:drawable/ic_menu_info_details" />
-
         <TextView
-            android:id="@+id/textViewPhysicalKeyboardTips"
+            android:id="@+id/textViewSettingPhysicalKeyboardKeymap"
+            style="@style/SettingsLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:text="@string/tips_using_physical_keyboard"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="@id/guidelineBottom"
+            android:layout_marginTop="32dp"
+            android:text="@string/setting_label_physical_keyboard_keymap"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toEndOf="@id/imageViewInfo"
-            app:layout_constraintTop_toTopOf="@id/imageViewInfo" />
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/switchSettingEnablePhysicalKeyboard" />
+
+        <TextView
+            android:id="@+id/textViewSettingDescriptionPhysicalKeyboardKeymap"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_description_physical_keyboard_keymap"
+            app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/textViewSettingPhysicalKeyboardKeymap" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupPhysicalKeyboardKeymapOption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/textViewSettingDescriptionPhysicalKeyboardKeymap">
+
+            <RadioButton
+                android:id="@+id/radioButtonPhysicalKeyboardKeymapQwerty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/keymap_qwerty" />
+
+            <RadioButton
+                android:id="@+id/radioButtonPhysicalKeyboardKeymapDvorak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/keymap_dvorak" />
+        </RadioGroup>
 
         <TextView
             android:id="@+id/textViewSelectionKeysOption"
@@ -495,7 +532,7 @@
             android:text="@string/physical_selection_keys"
             app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/switchSettingEnablePhysicalKeyboard" />
+            app:layout_constraintTop_toBottomOf="@id/radioGroupPhysicalKeyboardKeymapOption" />
 
         <RadioGroup
             android:id="@+id/radioGroupSelectionKeysOption"
@@ -548,6 +585,27 @@
                 android:fontFamily="monospace"
                 android:text="aoeui;qjkx" />
         </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/radioGroupSelectionKeysOption"
+            app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+        <TextView
+            android:id="@+id/textViewPhysicalKeyboardTips"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="@string/tips_using_physical_keyboard"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@id/guidelineBottom"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@id/imageViewInfo"
+            app:layout_constraintTop_toTopOf="@id/imageViewInfo" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineBottom"

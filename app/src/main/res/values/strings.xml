@@ -52,4 +52,10 @@
     <string name="switch_display_hsu_qwerty_layout">Enable QWERTY keycaps for Hsu layout?</string>
     <string name="switch_display_eten26_qwerty_layout">Enable QWERTY keycaps for E-TEN 26 keys layout?</string>
     <string name="label_subtype_generic">%s</string>
+    <string name="bopomofo_keyboard_layout_dvorak_hsu">Hsu - Dvorak Keymap</string>
+    <string name="switch_display_hsu_dvorak_both_layout">Enable Dvorak keycaps for Hsu - Dvorak Keymap layout?</string>
+    <string name="setting_label_physical_keyboard_keymap">Physical keyboard keymap</string>
+    <string name="setting_description_physical_keyboard_keymap">Choose the correct physical keyboard keymap you are using.</string>
+    <string name="keymap_qwerty">QWERTY</string>
+    <string name="keymap_dvorak">Dvorak</string>
 </resources>
