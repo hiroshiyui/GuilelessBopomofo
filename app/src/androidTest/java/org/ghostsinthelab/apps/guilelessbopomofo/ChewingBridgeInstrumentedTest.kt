@@ -516,6 +516,8 @@ class ChewingBridgeInstrumentedTest {
         // test ChewingUtil.dvorakToQwertyKeyMapping()
         assertEquals(ChewingUtil.dvorakToQwertyKeyMapping('j'), 'c')
         assertEquals(ChewingUtil.dvorakToQwertyKeyMapping('l'), 'p')
+        assertEquals(ChewingUtil.dvorakToQwertyKeyMapping('1'), '1')
+        assertEquals(ChewingUtil.dvorakToQwertyKeyMapping('!'), '!')
 
         ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
         ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
