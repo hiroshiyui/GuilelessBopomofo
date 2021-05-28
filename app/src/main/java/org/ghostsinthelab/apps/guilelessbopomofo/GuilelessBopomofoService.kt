@@ -263,7 +263,7 @@ class GuilelessBopomofoService : InputMethodService() {
 
         var keyPressed: Char = event.unicodeChar.toChar()
 
-        // QWERTY-Dvorak conversion
+        // Dvorak->QWERTY conversion
         if (sharedPreferences.getString("user_physical_keyboard_keymap_option",
                 "KEYMAP_QWERTY") == "KEYMAP_DVORAK" && event.source == SOURCE_KEYBOARD) {
             keyPressed = ChewingUtil.dvorakToQwertyKeyMapping(keyPressed)
