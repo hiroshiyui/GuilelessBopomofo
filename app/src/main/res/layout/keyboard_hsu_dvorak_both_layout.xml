@@ -42,7 +42,7 @@
             app:keyCodeString="KEYCODE_W"
             app:keySymbolString="w"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ao" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_w" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonE"
@@ -53,7 +53,7 @@
             app:keyCodeString="KEYCODE_E"
             app:keySymbolString="e"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_yi_ie" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_e" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonR"
@@ -64,7 +64,7 @@
             app:keyCodeString="KEYCODE_R"
             app:keySymbolString="r"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ri" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_r" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonT"
@@ -75,7 +75,7 @@
             app:keyCodeString="KEYCODE_T"
             app:keySymbolString="t"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_t" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_t" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonY"
@@ -86,7 +86,7 @@
             app:keyCodeString="KEYCODE_Y"
             app:keySymbolString="y"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_a" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_y" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonU"
@@ -97,7 +97,7 @@
             app:keyCodeString="KEYCODE_U"
             app:keySymbolString="u"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_yu" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_u" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonI"
@@ -108,7 +108,7 @@
             app:keyCodeString="KEYCODE_I"
             app:keySymbolString="i"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ai" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_i" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonO"
@@ -119,7 +119,7 @@
             app:keyCodeString="KEYCODE_O"
             app:keySymbolString="o"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ou" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_o" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonP"
@@ -130,7 +130,7 @@
             app:keyCodeString="KEYCODE_P"
             app:keySymbolString="p"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_p" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_p" />
 
     </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
 
@@ -150,7 +150,7 @@
             app:keyCodeString="KEYCODE_A"
             app:keySymbolString="a"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_ci_ei" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_a" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonS"
@@ -161,7 +161,7 @@
             app:keyCodeString="KEYCODE_S"
             app:keySymbolString="s"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_si" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_s" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonD"
@@ -172,7 +172,7 @@
             app:keyCodeString="KEYCODE_D"
             app:keySymbolString="d"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_d" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_d" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonF"
@@ -183,7 +183,7 @@
             app:keyCodeString="KEYCODE_F"
             app:keySymbolString="f"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_f" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_f" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonG"
@@ -194,7 +194,7 @@
             app:keyCodeString="KEYCODE_G"
             app:keySymbolString="g"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_g_e" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_g" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonH"
@@ -205,7 +205,7 @@
             app:keyCodeString="KEYCODE_H"
             app:keySymbolString="h"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_h_o" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_h" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonJ"
@@ -216,7 +216,7 @@
             app:keyCodeString="KEYCODE_J"
             app:keySymbolString="j"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_j_zhi" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_j" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonK"
@@ -227,7 +227,7 @@
             app:keyCodeString="KEYCODE_K"
             app:keySymbolString="k"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_k_ang" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_k" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonL"
@@ -238,7 +238,7 @@
             app:keyCodeString="KEYCODE_L"
             app:keySymbolString="l"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_l_eng_er" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_l" />
 
     </org.ghostsinthelab.apps.guilelessbopomofo.KeyboardRow>
 
@@ -258,7 +258,7 @@
             app:keyCodeString="KEYCODE_Z"
             app:keySymbolString="z"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_zi" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_z" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonX"
@@ -269,7 +269,7 @@
             app:keyCodeString="KEYCODE_X"
             app:keySymbolString="x"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_wu" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_x" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonC"
@@ -280,7 +280,7 @@
             app:keyCodeString="KEYCODE_C"
             app:keySymbolString="c"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_x_shi" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_c" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonV"
@@ -291,7 +291,7 @@
             app:keyCodeString="KEYCODE_V"
             app:keySymbolString="v"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_q_chi" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_v" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonB"
@@ -302,7 +302,7 @@
             app:keyCodeString="KEYCODE_B"
             app:keySymbolString="b"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_b" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_b" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonN"
@@ -313,7 +313,7 @@
             app:keyCodeString="KEYCODE_N"
             app:keySymbolString="n"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_n_en" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_n" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonM"
@@ -324,7 +324,7 @@
             app:keyCodeString="KEYCODE_M"
             app:keySymbolString="m"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_m_an" />
+            app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_qwerty_m" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.PunctuationFunctionKey
             android:id="@+id/keyImageButtonPunc"
