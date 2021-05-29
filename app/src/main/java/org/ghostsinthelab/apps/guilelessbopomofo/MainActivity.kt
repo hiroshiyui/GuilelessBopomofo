@@ -264,25 +264,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        for ((button, keymap) in
-        mapOf<RadioButton, String>(
-            binding.radioButtonPhysicalKeyboardKeymapQwerty to "KEYMAP_QWERTY",
-            binding.radioButtonPhysicalKeyboardKeymapDvorak to "KEYMAP_DVORAK"
-        )) {
-            button.setOnClickListener {
-                sharedPreferences.edit().putString("user_physical_keyboard_keymap_option", keymap)
-                    .apply()
-            }
-
-            if (sharedPreferences.getString(
-                    "user_physical_keyboard_keymap_option",
-                    "KEYMAP_QWERTY"
-                ) == keymap
-            ) {
-                button.isChecked = true
-            }
-        }
-
         val view = binding.root
         setContentView(view)
     }

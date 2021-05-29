@@ -482,48 +482,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionEnablePhysicalKeyboard" />
 
         <TextView
-            android:id="@+id/textViewSettingPhysicalKeyboardKeymap"
-            style="@style/SettingsLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/setting_label_physical_keyboard_keymap"
-            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/switchSettingEnablePhysicalKeyboard" />
-
-        <TextView
-            android:id="@+id/textViewSettingDescriptionPhysicalKeyboardKeymap"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/setting_description_physical_keyboard_keymap"
-            app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/textViewSettingPhysicalKeyboardKeymap" />
-
-        <RadioGroup
-            android:id="@+id/radioGroupPhysicalKeyboardKeymapOption"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/textViewSettingDescriptionPhysicalKeyboardKeymap">
-
-            <RadioButton
-                android:id="@+id/radioButtonPhysicalKeyboardKeymapQwerty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/keymap_qwerty" />
-
-            <RadioButton
-                android:id="@+id/radioButtonPhysicalKeyboardKeymapDvorak"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/keymap_dvorak" />
-        </RadioGroup>
-
-        <TextView
             android:id="@+id/textViewSelectionKeysOption"
             style="@style/SettingsLabel"
             android:layout_width="0dp"
@@ -532,7 +490,7 @@
             android:text="@string/physical_selection_keys"
             app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
-            app:layout_constraintTop_toBottomOf="@id/radioGroupPhysicalKeyboardKeymapOption" />
+            app:layout_constraintTop_toBottomOf="@+id/switchSettingEnablePhysicalKeyboard" />
 
         <RadioGroup
             android:id="@+id/radioGroupSelectionKeysOption"

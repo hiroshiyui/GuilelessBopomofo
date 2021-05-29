@@ -30,7 +30,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.view.InputDeviceCompat.SOURCE_KEYBOARD
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.*
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -262,12 +261,6 @@ class GuilelessBopomofoService : InputMethodService() {
         }
 
         var keyPressed: Char = event.unicodeChar.toChar()
-
-        // Dvorak->QWERTY conversion
-        if (sharedPreferences.getString("user_physical_keyboard_keymap_option",
-                "KEYMAP_QWERTY") == "KEYMAP_DVORAK" && event.source == SOURCE_KEYBOARD) {
-            keyPressed = ChewingUtil.dvorakToQwertyKeyMapping(keyPressed)
-        }
 
         val shiftKeyImageButton =
             viewBinding.keyboardPanel.findViewById<ShiftKey>(
