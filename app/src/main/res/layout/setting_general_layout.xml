@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Guileless Bopomofo
+  ~ Copyright (C) 2021 YOU, HUI-HONG
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settingSectionGeneralLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textViewHeadingGenericSettings"
+        style="@style/SettingsPrimaryHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/general_settings_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewSettingServiceStatus"
+        style="@style/SettingsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/guileless_bopomofo_inputservice_status"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHeadingGenericSettings" />
+
+    <TextView
+        android:id="@+id/textViewSettingDescriptionServiceStatus"
+        style="@style/SettingsDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/guileless_bopomofo_service_status_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingServiceStatus" />
+
+    <TextView
+        android:id="@+id/textViewSettingLabelServiceStatus"
+        style="@style/SettingsWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="2dp"
+        android:text="@string/guileless_bopomofo_service_status"
+        app:layout_constraintEnd_toStartOf="@+id/textViewServiceStatus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionServiceStatus" />
+
+    <TextView
+        android:id="@+id/textViewServiceStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="sans-serif-black"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewSettingLabelServiceStatus"
+        app:layout_constraintTop_toTopOf="@+id/textViewSettingLabelServiceStatus" />
+
+    <Button
+        android:id="@+id/buttonLaunchImeSystemSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/launch_input_method_system_settings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingLabelServiceStatus" />
+
+    <TextView
+        android:id="@+id/textViewSettingBopomofoKeyboardLayout"
+        style="@style/SettingsLabel"
+        android:layout_width="0dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/bopomofo_keyboard_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLaunchImeSystemSettings" />
+
+    <TextView
+        android:id="@+id/textViewSettingDescriptionBopomofoKeyboardLayout"
+        style="@style/SettingsDescription"
+        android:layout_width="0dp"
+        android:text="@string/bopomofo_keyboard_layout_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingBopomofoKeyboardLayout" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupSettingBopomofoKeyboardLayout"
+        style="@style/SettingsWidget"
+        android:layout_width="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionBopomofoKeyboardLayout">
+
+        <RadioButton
+            android:id="@+id/radioButtonLayoutDaChen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bopomofo_keyboard_layout_dachen" />
+
+        <RadioButton
+            android:id="@+id/radioButtonLayoutHsu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bopomofo_keyboard_layout_hsu" />
+
+        <RadioButton
+            android:id="@+id/radioButtonLayoutDvorakHsu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bopomofo_keyboard_layout_dvorak_hsu" />
+
+        <RadioButton
+            android:id="@+id/radioButtonLayoutETen26"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bopomofo_keyboard_layout_eten26" />
+
+    </RadioGroup>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchDisplayHsuQwertyLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/switch_display_hsu_qwerty_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/radioGroupSettingBopomofoKeyboardLayout" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchDisplayEten26QwertyLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/switch_display_eten26_qwerty_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switchDisplayHsuQwertyLayout" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchDisplayDvorakHsuBothLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/switch_display_hsu_dvorak_both_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switchDisplayEten26QwertyLayout" />
+
+    <TextView
+        android:id="@+id/textViewSettingSpaceAsSelection"
+        style="@style/SettingsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/space_as_selection_key"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switchDisplayDvorakHsuBothLayout" />
+
+    <TextView
+        android:id="@+id/textViewSettingDescriptionSpaceAsSelection"
+        style="@style/SettingsDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/space_as_selection_key_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSettingSpaceAsSelection" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchSettingSpaceAsSelection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/space_as_selection_key_switch_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSettingDescriptionSpaceAsSelection" />
+
+    <TextView
+        android:id="@+id/textViewRearwardPhraseChoice"
+        style="@style/SettingsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/rearward_phrase_choice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switchSettingSpaceAsSelection" />
+
+    <TextView
+        android:id="@+id/textViewRearwardPhraseChoiceDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/rearward_phrase_choice_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewRearwardPhraseChoice" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchRearwardPhraseChoice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/rearward_phrase_choice_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewRearwardPhraseChoiceDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

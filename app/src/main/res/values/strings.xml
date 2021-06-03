@@ -54,4 +54,5 @@
     <string name="label_subtype_generic">%s</string>
     <string name="bopomofo_keyboard_layout_dvorak_hsu">Hsu - Dvorak Keymap</string>
     <string name="switch_display_hsu_dvorak_both_layout">Enable Dvorak keycaps for Hsu - Dvorak Keymap layout?</string>
+    <string name="user_interface_settings">User interface settings</string>
 </resources>

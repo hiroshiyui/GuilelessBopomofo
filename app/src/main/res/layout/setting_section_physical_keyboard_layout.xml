@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Guileless Bopomofo
+  ~ Copyright (C) 2021 YOU, HUI-HONG
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settingSectionPhysicalKeyboardLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textViewHeadingPhysicalKeyboardSettings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/physical_keyboard_settings"
+        android:theme="@style/SettingsPrimaryHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewSettingEnablePhysicalKeyboard"
+        style="@style/SettingsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/enable_physical_keyboard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHeadingPhysicalKeyboardSettings" />
+
+    <TextView
+        android:id="@+id/textViewSettingDescriptionEnablePhysicalKeyboard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/enable_physical_keyboard_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingEnablePhysicalKeyboard" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchSettingEnablePhysicalKeyboard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/switch_setting_description_enable_physical_keyboard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionEnablePhysicalKeyboard" />
+
+    <TextView
+        android:id="@+id/textViewSelectionKeysOption"
+        style="@style/SettingsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/physical_selection_keys"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchSettingEnablePhysicalKeyboard" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupSelectionKeysOption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSelectionKeysOption">
+
+        <RadioButton
+            android:id="@+id/radioButtonNumberRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="1234567890" />
+
+        <RadioButton
+            android:id="@+id/radioButtonHomeRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="asdfghjkl;" />
+
+        <RadioButton
+            android:id="@+id/radioButtonHomeTabMixedMode1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="asdfgqwert" />
+
+        <RadioButton
+            android:id="@+id/radioButtonHomeTabMixedMode2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="hjkl;yuiop" />
+
+        <RadioButton
+            android:id="@+id/radioButtonDvorakHomeRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="aoeuidhtns" />
+
+        <RadioButton
+            android:id="@+id/radioButtonDvorakMixedMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="aoeui;qjkx" />
+    </RadioGroup>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/radioGroupSelectionKeysOption"
+        app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+    <TextView
+        android:id="@+id/textViewPhysicalKeyboardTips"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/tips_using_physical_keyboard"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageViewInfo"
+        app:layout_constraintTop_toTopOf="@id/imageViewInfo" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

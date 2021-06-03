@@ -55,4 +55,5 @@
     <string name="label_subtype_generic">%s</string>
     <string name="bopomofo_keyboard_layout_dvorak_hsu">許氏鍵盤 - Dvorak 鍵盤對映</string>
     <string name="switch_display_hsu_dvorak_both_layout">使用許氏鍵盤 - Dvorak 鍵盤對映排列時，顯示 Dvorak 鍵帽？</string>
+    <string name="user_interface_settings">操作介面設定</string>
 </resources>

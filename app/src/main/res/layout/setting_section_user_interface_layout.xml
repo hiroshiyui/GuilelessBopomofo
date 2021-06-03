@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Guileless Bopomofo
+  ~ Copyright (C) 2021 YOU, HUI-HONG
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settingSectionUserInterfacelayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textViewHeadingUserInterfaceSettings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/user_interface_settings"
+        android:theme="@style/SettingsPrimaryHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewHapticFeedbackStrength"
+        style="@style/SettingsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/haptic_feedback_strength"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewHeadingUserInterfaceSettings" />
+
+    <TextView
+        android:id="@+id/textViewtextViewHapticFeedbackStrengthDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/haptic_feedback_strength_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHapticFeedbackStrength" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupHapticFeedbackStrength"
+        style="@style/SettingsWidget"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewtextViewHapticFeedbackStrengthDescription">
+
+        <RadioButton
+            android:id="@+id/radioButtonHapticFeedbackStrengthLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/haptic_feedback_strength_light" />
+
+        <RadioButton
+            android:id="@+id/radioButtonHapticFeedbackStrengthMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/haptic_feedback_strength_medium" />
+
+        <RadioButton
+            android:id="@+id/radioButtonHapticFeedbackStrengthHeavy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/haptic_feedback_strength_heavy" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textViewSettingFullscreen"
+        style="@style/SettingsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/fullscreen_mode_setting_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/radioGroupHapticFeedbackStrength" />
+
+    <TextView
+        android:id="@+id/textViewSettingDescriptionFullscreenMode"
+        style="@style/SettingsDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/fullscreen_mode_setting_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingFullscreen" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchSettingFullscreenWhenInLandscape"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/fullscreen_when_in_landscape_setting_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionFullscreenMode" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchSettingFullscreenWhenInPortrait"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/fullscreen_when_in_portrait_setting_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switchSettingFullscreenWhenInLandscape" />
+
+    <TextView
+        android:id="@+id/textViewSettingKeyButtonsElevation"
+        style="@style/SettingsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/switch_title_enrich_key_button_elevation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switchSettingFullscreenWhenInPortrait" />
+
+    <TextView
+        android:id="@+id/textViewSettingDescriptionKeyButtonsElevation"
+        style="@style/SettingsDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/switch_description_enable_keybutton_elevation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingKeyButtonsElevation" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchSettingKeyButtonsElevation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/switch_enable_keybutton_elevation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionKeyButtonsElevation" />
+
+    <TextView
+        android:id="@+id/textViewSettingKeyButtonHeight"
+        style="@style/SettingsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/key_button_height_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchSettingKeyButtonsElevation" />
+
+    <TextView
+        android:id="@+id/textViewSettingDescriptionKeyButtonHeight"
+        style="@style/SettingsDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/key_button_height_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSettingKeyButtonHeight" />
+
+    <SeekBar
+        android:id="@+id/seekBarKeyButtonHeight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:max="40"
+        android:progress="10"
+        app:layout_constraintEnd_toStartOf="@+id/textViewSettingKeyButtonCurrentHeight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewSettingDescriptionKeyButtonHeight" />
+
+    <TextView
+        android:id="@+id/textViewSettingKeyButtonCurrentHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="TextView"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/seekBarKeyButtonHeight"
+        app:layout_constraintTop_toTopOf="@id/seekBarKeyButtonHeight" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

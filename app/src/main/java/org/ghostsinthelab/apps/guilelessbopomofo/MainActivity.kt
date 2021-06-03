@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+
         binding.apply {
             textViewAppVersion.text =
                 applicationContext.packageManager.getPackageInfo(
@@ -66,201 +67,208 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            buttonLaunchImeSystemSettings.setOnClickListener {
-                val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
-                startActivityForResult(intent, imeSettingsRequestCode)
-            }
-
-            textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
-            textViewServiceStatus.setTextColor(getColor(R.color.colorAccent))
-
-            switchSettingFullscreenWhenInLandscape.let {
-                if (sharedPreferences.getBoolean("user_fullscreen_when_in_landscape", true)) {
-                    it.isChecked = true
+            sectionGeneral.apply {
+                buttonLaunchImeSystemSettings.setOnClickListener {
+                    val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
+                    startActivityForResult(intent, imeSettingsRequestCode)
                 }
 
-                it.setOnCheckedChangeListener { _, isChecked ->
-                    sharedPreferences.edit()
-                        .putBoolean("user_fullscreen_when_in_landscape", isChecked).apply()
+                textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
+                textViewServiceStatus.setTextColor(getColor(R.color.colorAccent))
+
+                for ((button, layout) in
+                mapOf<RadioButton, String>(
+                    radioButtonLayoutDaChen to "KB_DEFAULT",
+                    radioButtonLayoutETen26 to "KB_ET26",
+                    radioButtonLayoutHsu to "KB_HSU",
+                    radioButtonLayoutDvorakHsu to "KB_DVORAK_HSU"
+                )) {
+                    button.setOnClickListener {
+                        sharedPreferences.edit().putString("user_keyboard_layout", layout).apply()
+                    }
+
+                    if (sharedPreferences.getString(
+                            "user_keyboard_layout",
+                            GuilelessBopomofoService.defaultKeyboardLayout
+                        ) == layout
+                    ) {
+                        button.isChecked = true
+                    }
                 }
 
-            }
+                switchDisplayHsuQwertyLayout.let {
+                    if (sharedPreferences.getBoolean("user_display_hsu_qwerty_layout", false)) {
+                        it.isChecked = true
+                    }
 
-            switchSettingFullscreenWhenInPortrait.let {
-                if (sharedPreferences.getBoolean("user_fullscreen_when_in_portrait", false)) {
-                    it.isChecked = true
+                    it.setOnCheckedChangeListener { _, isChecked ->
+                        sharedPreferences.edit().putBoolean("user_display_hsu_qwerty_layout", isChecked).apply()
+
+                    }
                 }
 
-                it.setOnCheckedChangeListener { _, isChecked ->
-                    sharedPreferences.edit()
-                        .putBoolean("user_fullscreen_when_in_portrait", isChecked).apply()
-                }
-            }
+                switchDisplayEten26QwertyLayout.let {
+                    if (sharedPreferences.getBoolean("user_display_eten26_qwerty_layout", false)) {
+                        it.isChecked = true
+                    }
 
-            switchSettingKeyButtonsElevation.let {
-                if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
-                    it.isChecked = true
-                }
+                    it.setOnCheckedChangeListener { _, isChecked ->
+                        sharedPreferences.edit().putBoolean("user_display_eten26_qwerty_layout", isChecked).apply()
 
-                it.setOnCheckedChangeListener { _, isChecked ->
-                    sharedPreferences.edit()
-                        .putBoolean("user_enable_button_elevation", isChecked).apply()
-                }
-            }
-
-            switchSettingSpaceAsSelection.let {
-                if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
-                    it.isChecked = true
+                    }
                 }
 
-                it.setOnCheckedChangeListener { _, isChecked ->
-                    sharedPreferences.edit()
-                        .putBoolean("user_enable_space_as_selection", isChecked).apply()
-                }
-            }
+                switchDisplayDvorakHsuBothLayout.let {
+                    if (sharedPreferences.getBoolean("user_display_dvorak_hsu_both_layout", false)) {
+                        it.isChecked = true
+                    }
 
-            switchRearwardPhraseChoice.let {
-                if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
-                    it.isChecked = true
-                }
+                    it.setOnCheckedChangeListener { _, isChecked ->
+                        sharedPreferences.edit().putBoolean("user_display_dvorak_hsu_both_layout", isChecked).apply()
 
-                it.setOnCheckedChangeListener { _, isChecked ->
-                    sharedPreferences.edit()
-                        .putBoolean("user_phrase_choice_rearward", isChecked).apply()
-                }
-            }
-
-            switchSettingEnablePhysicalKeyboard.let {
-                if (sharedPreferences.getBoolean("user_enable_physical_keyboard", false)) {
-                    it.isChecked = true
+                    }
                 }
 
-                it.setOnCheckedChangeListener { _, isChecked ->
-                    sharedPreferences.edit()
-                        .putBoolean("user_enable_physical_keyboard", isChecked).apply()
-                }
-            }
+                switchSettingSpaceAsSelection.let {
+                    if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
+                        it.isChecked = true
+                    }
 
-            val seekBarShiftValue = 40
-            var keyButtonPreferenceHeight = sharedPreferences.getInt("user_key_button_height", 52)
-            seekBarKeyButtonHeight.progress = keyButtonPreferenceHeight - seekBarShiftValue
-            textViewSettingKeyButtonCurrentHeight.text = "${keyButtonPreferenceHeight}dp"
-
-            seekBarKeyButtonHeight.setOnSeekBarChangeListener(object :
-                SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    keyButtonPreferenceHeight = progress + seekBarShiftValue
-                    sharedPreferences.edit()
-                        .putInt("user_key_button_height", keyButtonPreferenceHeight).apply()
-                    textViewSettingKeyButtonCurrentHeight.text = "${keyButtonPreferenceHeight}dp"
+                    it.setOnCheckedChangeListener { _, isChecked ->
+                        sharedPreferences.edit()
+                            .putBoolean("user_enable_space_as_selection", isChecked).apply()
+                    }
                 }
 
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                }
+                switchRearwardPhraseChoice.let {
+                    if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
+                        it.isChecked = true
+                    }
 
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                }
-
-            })
-
-            switchDisplayHsuQwertyLayout.let {
-                if (sharedPreferences.getBoolean("user_display_hsu_qwerty_layout", false)) {
-                    it.isChecked = true
-                }
-
-                it.setOnCheckedChangeListener { _, isChecked ->
-                    sharedPreferences.edit().putBoolean("user_display_hsu_qwerty_layout", isChecked).apply()
-
+                    it.setOnCheckedChangeListener { _, isChecked ->
+                        sharedPreferences.edit()
+                            .putBoolean("user_phrase_choice_rearward", isChecked).apply()
+                    }
                 }
             }
 
-            switchDisplayEten26QwertyLayout.let {
-                if (sharedPreferences.getBoolean("user_display_eten26_qwerty_layout", false)) {
-                    it.isChecked = true
+            sectionUserInterface.apply {
+                for ((button, strength) in
+                mapOf<RadioButton, Long>(
+                    radioButtonHapticFeedbackStrengthLight to Vibratable.VibrationStrength.LIGHT.strength,
+                    radioButtonHapticFeedbackStrengthMedium to Vibratable.VibrationStrength.NORMAL.strength,
+                    radioButtonHapticFeedbackStrengthHeavy to Vibratable.VibrationStrength.STRONG.strength
+                )) {
+                    button.setOnClickListener {
+                        sharedPreferences.edit().putInt("user_haptic_feedback_strength", strength.toInt())
+                            .apply()
+                    }
+
+                    if (sharedPreferences.getInt(
+                            "user_haptic_feedback_strength",
+                            GuilelessBopomofoService.defaultHapticFeedbackStrength
+                        ) == strength.toInt()
+                    ) {
+                        button.isChecked = true
+                    }
                 }
 
-                it.setOnCheckedChangeListener { _, isChecked ->
-                    sharedPreferences.edit().putBoolean("user_display_eten26_qwerty_layout", isChecked).apply()
+                switchSettingFullscreenWhenInLandscape.let {
+                    if (sharedPreferences.getBoolean("user_fullscreen_when_in_landscape", true)) {
+                        it.isChecked = true
+                    }
+
+                    it.setOnCheckedChangeListener { _, isChecked ->
+                        sharedPreferences.edit()
+                            .putBoolean("user_fullscreen_when_in_landscape", isChecked).apply()
+                    }
 
                 }
-            }
 
-            switchDisplayDvorakHsuBothLayout.let {
-                if (sharedPreferences.getBoolean("user_display_dvorak_hsu_both_layout", false)) {
-                    it.isChecked = true
+                switchSettingFullscreenWhenInPortrait.let {
+                    if (sharedPreferences.getBoolean("user_fullscreen_when_in_portrait", false)) {
+                        it.isChecked = true
+                    }
+
+                    it.setOnCheckedChangeListener { _, isChecked ->
+                        sharedPreferences.edit()
+                            .putBoolean("user_fullscreen_when_in_portrait", isChecked).apply()
+                    }
                 }
 
-                it.setOnCheckedChangeListener { _, isChecked ->
-                    sharedPreferences.edit().putBoolean("user_display_dvorak_hsu_both_layout", isChecked).apply()
+                switchSettingKeyButtonsElevation.let {
+                    if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
+                        it.isChecked = true
+                    }
 
+                    it.setOnCheckedChangeListener { _, isChecked ->
+                        sharedPreferences.edit()
+                            .putBoolean("user_enable_button_elevation", isChecked).apply()
+                    }
                 }
-            }
-        }
 
-        for ((button, layout) in
-        mapOf<RadioButton, String>(
-            binding.radioButtonLayoutDaChen to "KB_DEFAULT",
-            binding.radioButtonLayoutETen26 to "KB_ET26",
-            binding.radioButtonLayoutHsu to "KB_HSU",
-            binding.radioButtonLayoutDvorakHsu to "KB_DVORAK_HSU"
-        )) {
-            button.setOnClickListener {
-                sharedPreferences.edit().putString("user_keyboard_layout", layout).apply()
-            }
+                val seekBarShiftValue = 40
+                var keyButtonPreferenceHeight = sharedPreferences.getInt("user_key_button_height", 52)
 
-            if (sharedPreferences.getString(
-                    "user_keyboard_layout",
-                    GuilelessBopomofoService.defaultKeyboardLayout
-                ) == layout
-            ) {
-                button.isChecked = true
-            }
-        }
+                seekBarKeyButtonHeight.progress = keyButtonPreferenceHeight - seekBarShiftValue
+                textViewSettingKeyButtonCurrentHeight.text = "${keyButtonPreferenceHeight}dp"
 
-        for ((button, strength) in
-        mapOf<RadioButton, Long>(
-            binding.radioButtonHapticFeedbackStrengthLight to Vibratable.VibrationStrength.LIGHT.strength,
-            binding.radioButtonHapticFeedbackStrengthMedium to Vibratable.VibrationStrength.NORMAL.strength,
-            binding.radioButtonHapticFeedbackStrengthHeavy to Vibratable.VibrationStrength.STRONG.strength
-        )) {
-            button.setOnClickListener {
-                sharedPreferences.edit().putInt("user_haptic_feedback_strength", strength.toInt())
-                    .apply()
+                seekBarKeyButtonHeight.setOnSeekBarChangeListener(object :
+                    SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar?,
+                        progress: Int,
+                        fromUser: Boolean
+                    ) {
+                        keyButtonPreferenceHeight = progress + seekBarShiftValue
+                        sharedPreferences.edit()
+                            .putInt("user_key_button_height", keyButtonPreferenceHeight).apply()
+                        textViewSettingKeyButtonCurrentHeight.text = "${keyButtonPreferenceHeight}dp"
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    }
+
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    }
+
+                })
             }
 
-            if (sharedPreferences.getInt(
-                    "user_haptic_feedback_strength",
-                    GuilelessBopomofoService.defaultHapticFeedbackStrength
-                ) == strength.toInt()
-            ) {
-                button.isChecked = true
-            }
-        }
+            sectionPhysicalKeyboard.apply {
+                switchSettingEnablePhysicalKeyboard.let {
+                    if (sharedPreferences.getBoolean("user_enable_physical_keyboard", false)) {
+                        it.isChecked = true
+                    }
 
-        for ((button, keys) in
-        mapOf<RadioButton, String>(
-            binding.radioButtonNumberRow to "NUMBER_ROW",
-            binding.radioButtonHomeRow to "HOME_ROW",
-            binding.radioButtonHomeTabMixedMode1 to "HOME_TAB_MIXED_MODE1",
-            binding.radioButtonHomeTabMixedMode2 to "HOME_TAB_MIXED_MODE2",
-            binding.radioButtonDvorakHomeRow to "DVORAK_HOME_ROW",
-            binding.radioButtonDvorakMixedMode to "DVORAK_MIXED_MODE"
-        )) {
-            button.setOnClickListener {
-                sharedPreferences.edit().putString("user_candidate_selection_keys_option", keys)
-                    .apply()
-            }
+                    it.setOnCheckedChangeListener { _, isChecked ->
+                        sharedPreferences.edit()
+                            .putBoolean("user_enable_physical_keyboard", isChecked).apply()
+                    }
+                }
 
-            if (sharedPreferences.getString(
-                    "user_candidate_selection_keys_option",
-                    "NUMBER_ROW"
-                ) == keys
-            ) {
-                button.isChecked = true
+                for ((button, keys) in
+                mapOf<RadioButton, String>(
+                    radioButtonNumberRow to "NUMBER_ROW",
+                    radioButtonHomeRow to "HOME_ROW",
+                    radioButtonHomeTabMixedMode1 to "HOME_TAB_MIXED_MODE1",
+                    radioButtonHomeTabMixedMode2 to "HOME_TAB_MIXED_MODE2",
+                    radioButtonDvorakHomeRow to "DVORAK_HOME_ROW",
+                    radioButtonDvorakMixedMode to "DVORAK_MIXED_MODE"
+                )) {
+                    button.setOnClickListener {
+                        sharedPreferences.edit().putString("user_candidate_selection_keys_option", keys)
+                            .apply()
+                    }
+
+                    if (sharedPreferences.getString(
+                            "user_candidate_selection_keys_option",
+                            "NUMBER_ROW"
+                        ) == keys
+                    ) {
+                        button.isChecked = true
+                    }
+                }
             }
         }
 
@@ -271,7 +279,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == imeSettingsRequestCode) {
-            binding.textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
+            binding.sectionGeneral.textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
         }
     }
 
