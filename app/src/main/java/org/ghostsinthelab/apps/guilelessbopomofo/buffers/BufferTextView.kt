@@ -21,9 +21,10 @@ package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.emoji.widget.EmojiAppCompatTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
 
 abstract class BufferTextView(context: Context, attrs: AttributeSet) :
-    androidx.appcompat.widget.AppCompatTextView(context, attrs), DisplayMetricsComputable {
+    EmojiAppCompatTextView(context, attrs), DisplayMetricsComputable {
     abstract fun update()
 }

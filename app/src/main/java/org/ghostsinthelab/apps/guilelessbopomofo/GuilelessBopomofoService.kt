@@ -30,6 +30,8 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.emoji.bundled.BundledEmojiCompatConfig
+import androidx.emoji.text.EmojiCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.*
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -55,6 +57,9 @@ class GuilelessBopomofoService : InputMethodService() {
 
     override fun onCreate() {
         super.onCreate()
+
+        val emojiCompatConfig = BundledEmojiCompatConfig(this)
+        EmojiCompat.init(emojiCompatConfig)
 
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
         Log.v(LOGTAG, "onCreate()")

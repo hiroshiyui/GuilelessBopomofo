@@ -21,14 +21,14 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatButton
+import androidx.emoji.widget.EmojiAppCompatButton
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class CandidateButton(context: Context, attrs: AttributeSet) :
-    AppCompatButton(context, attrs, R.attr.buttonStyle), Vibratable {
+    EmojiAppCompatButton(context, attrs, R.attr.buttonStyle), Vibratable {
     lateinit var candidate: Candidate
 
     init {
