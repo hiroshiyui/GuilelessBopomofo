@@ -27,6 +27,7 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
 import android.widget.SeekBar
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -37,7 +38,6 @@ class MainActivity : AppCompatActivity() {
     private var engineeringModeEnterCount: Int = 0
     private val engineeringModeEnterClicks: Int = 5
     private var engineeringModeEnabled: Boolean = false
-    private val imeSettingsRequestCode: Int = 254
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,9 +68,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             sectionGeneral.apply {
+                val startImeSystemSettingActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                    textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
+                }
+
                 buttonLaunchImeSystemSettings.setOnClickListener {
                     val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
-                    startActivityForResult(intent, imeSettingsRequestCode)
+                    startImeSystemSettingActivity.launch(intent)
                 }
 
                 textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
@@ -274,13 +278,6 @@ class MainActivity : AppCompatActivity() {
 
         val view = binding.root
         setContentView(view)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == imeSettingsRequestCode) {
-            binding.sectionGeneral.textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
-        }
     }
 
     private fun isGuilelessBopomofoEnabled(): Boolean {
