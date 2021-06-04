@@ -43,7 +43,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_chewingNew(
         env->ThrowNew(Exception, "Unable to initialize Chewing engine.");
     }
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "New Chewing context: %lld",
-                        ctx);
+                        (long long) ctx);
     return (jlong) (intptr_t) ctx;
 }
 
