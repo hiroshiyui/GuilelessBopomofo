@@ -73,7 +73,7 @@
             layout="@layout/setting_general_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
             app:layout_constraintTop_toTopOf="@id/divider" />
@@ -94,7 +94,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="64dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
             app:layout_constraintStart_toStartOf="@id/guidelineStart"
