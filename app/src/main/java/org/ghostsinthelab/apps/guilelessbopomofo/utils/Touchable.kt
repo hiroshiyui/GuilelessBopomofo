@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2020 YOU, HUI-HONG
+ * Copyright (C) 2021 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,24 +17,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.utils
 
-import android.content.Context
-import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.MotionEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
-class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
-    override fun onDown(e: MotionEvent?): Boolean {
-        performVibrate(Vibratable.VibrationStrength.NORMAL)
+interface Touchable : GestureDetector.OnGestureListener {
+    override fun onShowPress(e: MotionEvent?) {}
+
+    override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
         return true
     }
 
-    override fun onSingleTapUp(e: MotionEvent?): Boolean {
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.backToMainLayout()
+    override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
         return true
     }
+}
 
-    override fun onLongPress(e: MotionEvent?) {}
+fun Touchable.onLongPress(e: MotionEvent?) {
+    TODO("Not yet implemented")
+}
+
+fun Touchable.onSingleTapUp(e: MotionEvent?): Boolean {
+    TODO("Not yet implemented")
+}
+
+fun Touchable.onDown(e: MotionEvent?): Boolean {
+    TODO("Not yet implemented")
 }

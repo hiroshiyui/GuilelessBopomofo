@@ -19,7 +19,6 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
@@ -29,44 +28,44 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 
 class CharacterKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
-                performVibrate(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength.toLong())
 
-                val keyButtonLocation = IntArray(2)
-                this.getLocationInWindow(keyButtonLocation)
+    override fun onDown(e: MotionEvent?): Boolean {
+        performVibrate(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength.toLong())
 
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.let {
-                    it.keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(this.drawable)
-                    it.keyButtonPopup.let { popup ->
-                        popup.height = this@CharacterKey.height
-                        popup.width = this@CharacterKey.width
-                        popup.showAtLocation(
-                            rootView,
-                            Gravity.NO_GRAVITY,
-                            keyButtonLocation.get(0),
-                            keyButtonLocation.get(1) - this@CharacterKey.height
-                        )
-                    }
-                }
-            }
-            MotionEvent.ACTION_UP -> {
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.keyButtonPopup.let { popup ->
-                    popup.dismiss()
-                }
+        val keyButtonLocation = IntArray(2)
+        this.getLocationInWindow(keyButtonLocation)
 
-                this.keyCodeString?.let { keycodeString ->
-                    val keyEvent =
-                        KeyEvent(
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.keyCodeFromString(keycodeString)
-                        )
-                    GuilelessBopomofoServiceContext.serviceInstance.onPrintingKeyDown(keyEvent)
-                }
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.let {
+            it.keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(this.drawable)
+            it.keyButtonPopup.let { popup ->
+                popup.height = this@CharacterKey.height
+                popup.width = this@CharacterKey.width
+                popup.showAtLocation(
+                    rootView,
+                    Gravity.NO_GRAVITY,
+                    keyButtonLocation.get(0),
+                    keyButtonLocation.get(1) - this@CharacterKey.height
+                )
             }
         }
-        return super.onTouchEvent(event)
+        return true
     }
+
+    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.keyButtonPopup.let { popup ->
+            popup.dismiss()
+        }
+
+        this.keyCodeString?.let { keycodeString ->
+            val keyEvent =
+                KeyEvent(
+                    KeyEvent.ACTION_DOWN,
+                    KeyEvent.keyCodeFromString(keycodeString)
+                )
+            GuilelessBopomofoServiceContext.serviceInstance.onPrintingKeyDown(keyEvent)
+        }
+        return true
+    }
+
+    override fun onLongPress(e: MotionEvent?) {}
 }

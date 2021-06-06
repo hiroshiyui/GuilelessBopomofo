@@ -22,15 +22,18 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.AttributeSet
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Touchable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
     AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
-    BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable, Vibratable {
+    BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable, Vibratable, Touchable {
     open val LOGTAG: String = "KeyImageButton"
     val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
@@ -38,6 +41,13 @@ abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
     override var keyType: Int? = null
     override var keySymbol: String? = null
     override var keyShiftSymbol: String? = null
+
+    var mDetector: GestureDetectorCompat = GestureDetectorCompat(context, this)
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        mDetector.onTouchEvent(event)
+        return true
+    }
 
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0, 0).apply {

@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -43,4 +44,14 @@ class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
             this@BopomofoBufferTextView.text = ChewingBridge.bopomofoStringStatic()
         }
     }
+
+    override fun onDown(e: MotionEvent?): Boolean {
+        return true
+    }
+
+    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        return true
+    }
+
+    override fun onLongPress(e: MotionEvent?) {}
 }

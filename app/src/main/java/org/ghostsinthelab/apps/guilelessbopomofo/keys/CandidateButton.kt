@@ -21,28 +21,24 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.emoji.widget.EmojiAppCompatButton
+import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class CandidateButton(context: Context, attrs: AttributeSet) :
-    EmojiAppCompatButton(context, attrs, R.attr.buttonStyle), Vibratable {
+    KeyButton(context, attrs), Vibratable {
     lateinit var candidate: Candidate
 
-    init {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.MaterialButton, 0, 0).apply {
-            try {
-                isHapticFeedbackEnabled = true
-            } finally {
-                recycle()
-            }
-        }
-
-        this.setOnClickListener {
-            performVibrate(Vibratable.VibrationStrength.LIGHT)
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.candidateSelectionDone(candidate.index)
-        }
+    override fun onDown(e: MotionEvent?): Boolean {
+        performVibrate(Vibratable.VibrationStrength.LIGHT)
+        return true
     }
+
+    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.candidateSelectionDone(candidate.index)
+        return true
+    }
+
+    override fun onLongPress(e: MotionEvent?) {}
 }

@@ -22,18 +22,24 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import android.view.KeyEvent
+import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
-    init {
-        this.setOnClickListener {
-            performVibrate(Vibratable.VibrationStrength.NORMAL)
-            action()
-        }
+    override fun onDown(e: MotionEvent?): Boolean {
+        performVibrate(Vibratable.VibrationStrength.NORMAL)
+        return true
     }
+
+    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        action()
+        return true
+    }
+
+    override fun onLongPress(e: MotionEvent?) {}
 
     companion object {
         fun action() {

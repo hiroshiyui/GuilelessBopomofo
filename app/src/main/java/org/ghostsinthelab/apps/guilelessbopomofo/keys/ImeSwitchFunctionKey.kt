@@ -23,40 +23,38 @@ import android.content.Context
 import android.os.Build
 import android.os.IBinder
 import android.util.AttributeSet
-import android.util.Log
+import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
+    override fun onDown(e: MotionEvent?): Boolean {
+        performVibrate(Vibratable.VibrationStrength.NORMAL)
+        return true
+    }
 
-    init {
-        this.setOnClickListener {
-            Log.v(LOGTAG, "KeyImageButtonImeSwitch")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                performVibrate(Vibratable.VibrationStrength.NORMAL)
-                GuilelessBopomofoServiceContext.serviceInstance.switchToNextInputMethod(false)
-            } else {
-                // backward compatibility, support IME switch on legacy devices
-                val imm =
-                    GuilelessBopomofoServiceContext.serviceInstance.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                val imeToken: IBinder? =
-                    GuilelessBopomofoServiceContext.serviceInstance.window?.let {
-                        it.window?.attributes?.token
-                    }
-                performVibrate(Vibratable.VibrationStrength.NORMAL)
-                imm.switchToNextInputMethod(imeToken, false)
-            }
-        }
-
-        this.setOnLongClickListener {
-            Log.v(LOGTAG, "KeyImageButtonImeSwitch")
-            performVibrate(Vibratable.VibrationStrength.STRONG)
+    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            GuilelessBopomofoServiceContext.serviceInstance.switchToNextInputMethod(false)
+        } else {
+            // backward compatibility, support IME switch on legacy devices
             val imm =
                 GuilelessBopomofoServiceContext.serviceInstance.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showInputMethodPicker()
-            return@setOnLongClickListener true
+            val imeToken: IBinder? =
+                GuilelessBopomofoServiceContext.serviceInstance.window?.let {
+                    it.window?.attributes?.token
+                }
+            imm.switchToNextInputMethod(imeToken, false)
         }
+        return true
+    }
+
+    override fun onLongPress(e: MotionEvent?) {
+        performVibrate(Vibratable.VibrationStrength.STRONG)
+        val imm =
+            GuilelessBopomofoServiceContext.serviceInstance.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showInputMethodPicker()
     }
 }

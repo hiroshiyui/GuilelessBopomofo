@@ -19,7 +19,6 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.text.SpannableString
 import android.text.Spanned
@@ -27,7 +26,6 @@ import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
-import android.widget.TextView
 import androidx.core.text.toSpannable
 import androidx.core.view.setPadding
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +36,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
-@SuppressLint("ClickableViewAccessibility")
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     BufferTextView(context, attrs), Vibratable {
     private val LOGTAG = "PreEditBufferTextView"
@@ -51,34 +48,6 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
 
     // which character did I touched? (index value)
     var offset: Int = ChewingBridge.cursorCurrent()
-
-    init {
-        this.setOnTouchListener { v, event ->
-            v as TextView
-
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    val x = event.x
-                    val y = event.y
-                    offset = v.getOffsetForPosition(x, y)
-
-                    return@setOnTouchListener false
-                }
-                else -> {
-                    return@setOnTouchListener false
-                }
-            }
-        }
-
-        this.setOnClickListener {
-            Log.v(LOGTAG, "offset: $offset")
-            performVibrate(Vibratable.VibrationStrength.LIGHT)
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
-                it.textViewPreEditBuffer.cursorMovedBy(CursorMovedBy.TOUCH)
-                it.keyboardPanel.switchToCandidatesLayout(offset)
-            }
-        }
-    }
 
     fun cursorMovedBy(source: CursorMovedBy) {
         when (source) {
@@ -156,4 +125,24 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
             this.setPadding(0)
         }
     }
+
+    override fun onDown(e: MotionEvent): Boolean {
+        val x = e.x
+        val y = e.y
+        offset = this.getOffsetForPosition(x, y)
+        Log.v(LOGTAG, "offset: $offset")
+        performVibrate(Vibratable.VibrationStrength.LIGHT)
+
+        return true
+    }
+
+    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
+            it.textViewPreEditBuffer.cursorMovedBy(CursorMovedBy.TOUCH)
+            it.keyboardPanel.switchToCandidatesLayout(offset)
+        }
+        return true
+    }
+
+    override fun onLongPress(e: MotionEvent?) {}
 }

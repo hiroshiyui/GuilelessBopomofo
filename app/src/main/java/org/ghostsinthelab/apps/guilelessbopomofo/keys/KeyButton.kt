@@ -19,17 +19,21 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
+import androidx.core.view.GestureDetectorCompat
+import androidx.emoji.widget.EmojiAppCompatButton
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Touchable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
-open class KeyButton(context: Context, attrs: AttributeSet) :
-    AppCompatButton(context, attrs, R.attr.buttonStyle), BehaveLikeKey<KeyButton>,
-    DisplayMetricsComputable, Vibratable {
+abstract class KeyButton(context: Context, attrs: AttributeSet) :
+    EmojiAppCompatButton(context, attrs, R.attr.buttonStyle), BehaveLikeKey<KeyButton>,
+    DisplayMetricsComputable, Vibratable, Touchable {
     private val LOGTAG: String = "KeyButton"
     private val sharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
@@ -37,6 +41,14 @@ open class KeyButton(context: Context, attrs: AttributeSet) :
     override var keyType: Int? = null
     override var keySymbol: String? = null
     override var keyShiftSymbol: String? = null
+
+    var mDetector: GestureDetectorCompat = GestureDetectorCompat(context, this)
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        mDetector.onTouchEvent(event)
+        return true
+    }
 
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyButton, 0, 0).apply {

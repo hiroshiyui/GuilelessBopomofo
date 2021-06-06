@@ -21,28 +21,29 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
-    init {
-        // 在大千鍵盤下，標準的逗號鍵會對映到「ㄝ」，這裡的逗號鍵要另外當成特別的「常用符號」功能鍵，
-        // 短觸會輸出全形逗號
-        this.setOnClickListener {
-            performVibrate(Vibratable.VibrationStrength.NORMAL)
-            ChewingUtil.handleShiftComma()
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
-                it.textViewPreEditBuffer.update()
-                it.textViewBopomofoBuffer.update()
-            }
-        }
+    override fun onDown(e: MotionEvent?): Boolean {
+        performVibrate(Vibratable.VibrationStrength.NORMAL)
+        return true
+    }
 
-        this.setOnLongClickListener {
-            performVibrate(Vibratable.VibrationStrength.STRONG)
-            ChewingUtil.openPuncCandidates()
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
-            return@setOnLongClickListener true
+    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        ChewingUtil.handleShiftComma()
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
+            it.textViewPreEditBuffer.update()
+            it.textViewBopomofoBuffer.update()
         }
+        return true
+    }
+
+    override fun onLongPress(e: MotionEvent?) {
+        performVibrate(Vibratable.VibrationStrength.STRONG)
+        ChewingUtil.openPuncCandidates()
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
     }
 }

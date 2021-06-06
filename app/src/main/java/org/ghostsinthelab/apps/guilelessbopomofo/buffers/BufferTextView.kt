@@ -21,10 +21,20 @@ package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
+import androidx.core.view.GestureDetectorCompat
 import androidx.emoji.widget.EmojiAppCompatTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Touchable
 
 abstract class BufferTextView(context: Context, attrs: AttributeSet) :
-    EmojiAppCompatTextView(context, attrs), DisplayMetricsComputable {
+    EmojiAppCompatTextView(context, attrs), DisplayMetricsComputable, Touchable {
+    var mDetector: GestureDetectorCompat = GestureDetectorCompat(context, this)
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        mDetector.onTouchEvent(event)
+        return true
+    }
+
     abstract fun update()
 }

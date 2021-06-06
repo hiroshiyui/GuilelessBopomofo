@@ -21,14 +21,21 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Touchable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
-class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
-    init {
-        this.setOnClickListener {
-            performVibrate(Vibratable.VibrationStrength.NORMAL)
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.toggleMainLayoutMode()
-        }
+class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs), Touchable {
+    override fun onDown(e: MotionEvent?): Boolean {
+        performVibrate(Vibratable.VibrationStrength.NORMAL)
+        return true
     }
+
+    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.toggleMainLayoutMode()
+        return true
+    }
+
+    override fun onLongPress(e: MotionEvent?) {}
 }

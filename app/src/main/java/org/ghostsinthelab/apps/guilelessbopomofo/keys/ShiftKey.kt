@@ -22,6 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -53,23 +54,29 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                 elevation = convertDpToPx(2F)
             }
         }
+    }
 
-        this.setOnClickListener {
-            performVibrate(Vibratable.VibrationStrength.NORMAL)
+    override fun onDown(e: MotionEvent?): Boolean {
+        performVibrate(Vibratable.VibrationStrength.NORMAL)
+        return true
+    }
 
-            when (currentShiftKeyState) {
-                ShiftKeyState.RELEASED -> {
-                    switchToState(ShiftKeyState.PRESSED)
-                }
-                ShiftKeyState.PRESSED -> {
-                    switchToState(ShiftKeyState.HOLD)
-                }
-                ShiftKeyState.HOLD -> {
-                    switchToState(ShiftKeyState.RELEASED)
-                }
+    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        when (currentShiftKeyState) {
+            ShiftKeyState.RELEASED -> {
+                switchToState(ShiftKeyState.PRESSED)
+            }
+            ShiftKeyState.PRESSED -> {
+                switchToState(ShiftKeyState.HOLD)
+            }
+            ShiftKeyState.HOLD -> {
+                switchToState(ShiftKeyState.RELEASED)
             }
         }
+        return true
     }
+
+    override fun onLongPress(e: MotionEvent?) {}
 
     fun switchToState(state: ShiftKeyState) {
         Log.v(LOGTAG, "Switch to state: ${state}")

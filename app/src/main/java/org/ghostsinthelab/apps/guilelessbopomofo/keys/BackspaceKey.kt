@@ -25,48 +25,57 @@ import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.MotionEvent
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import kotlin.concurrent.fixedRateTimer
 
-@SuppressLint("ClickableViewAccessibility")
 class BackspaceKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
     var backspacePressed: Boolean = false
     var lastBackspaceClickTime: Long = 0
 
-    init {
-        this.setOnTouchListener { v, event ->
-            when (event.action) {
+    override fun onDown(e: MotionEvent?): Boolean {
+        // avoids too fast repeat clicks
+        if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 100) {
+            return false
+        }
+        lastBackspaceClickTime = SystemClock.elapsedRealtime()
+
+        performVibrate(Vibratable.VibrationStrength.NORMAL)
+        return true
+    }
+
+    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        action()
+        return true
+    }
+
+    override fun onLongPress(e: MotionEvent?) {
+        GlobalScope.launch(Dispatchers.Main) {
+            repeatBackspace()
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        super.onTouchEvent(event)
+        event?.let {
+            when (it.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    backspacePressed = true
+                }
                 MotionEvent.ACTION_UP -> {
                     backspacePressed = false
                 }
             }
-            return@setOnTouchListener false
         }
-
-        this.setOnClickListener {
-            // avoids too fast repeat clicks
-            if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 100) {
-                return@setOnClickListener
-            }
-            lastBackspaceClickTime = SystemClock.elapsedRealtime()
-
-            performVibrate(Vibratable.VibrationStrength.NORMAL)
-            action()
-        }
-
-        this.setOnLongClickListener {
-            GlobalScope.launch(Dispatchers.Main) {
-                backspacePressed = true
-                repeatBackspace()
-            }
-
-            return@setOnLongClickListener true
-        }
+        return true
     }
 
     private suspend fun repeatBackspace() {
