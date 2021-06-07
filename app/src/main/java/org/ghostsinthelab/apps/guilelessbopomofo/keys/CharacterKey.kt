@@ -19,6 +19,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
@@ -52,10 +53,6 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
     }
 
     override fun onSingleTapUp(e: MotionEvent?): Boolean {
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.keyButtonPopup.let { popup ->
-            popup.dismiss()
-        }
-
         this.keyCodeString?.let { keycodeString ->
             val keyEvent =
                 KeyEvent(
@@ -68,4 +65,17 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
     }
 
     override fun onLongPress(e: MotionEvent?) {}
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        super.onTouchEvent(event)
+        event?.let {
+            when (it.action) {
+                MotionEvent.ACTION_UP -> {
+                    GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.keyButtonPopup.dismiss()
+                }
+            }
+        }
+        return true
+    }
 }
