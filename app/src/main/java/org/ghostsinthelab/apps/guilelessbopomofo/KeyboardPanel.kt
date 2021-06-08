@@ -27,12 +27,20 @@ import android.widget.RelativeLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
+import kotlin.coroutines.CoroutineContext
 
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
-) : RelativeLayout(context, attrs) {
+) : RelativeLayout(context, attrs), CoroutineScope {
     private val LOGTAG: String = "KeyboardPanel"
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
     var currentCandidatesList: Int = 0
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     private lateinit var keyboardHsuQwertyLayoutBinding: KeyboardHsuQwertyLayoutBinding
@@ -260,8 +268,8 @@ class KeyboardPanel(
 
     fun updateBuffers() {
         GuilelessBopomofoServiceContext.serviceInstance.viewBinding.apply {
-            textViewPreEditBuffer.update()
-            textViewBopomofoBuffer.update()
+            launch { textViewPreEditBuffer.update() }
+            launch { textViewBopomofoBuffer.update() }
         }
     }
 

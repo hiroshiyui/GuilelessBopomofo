@@ -28,9 +28,6 @@ import android.util.Log
 import android.view.MotionEvent
 import androidx.core.text.toSpannable
 import androidx.core.view.setPadding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
@@ -105,9 +102,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
             ChewingBridge.handleEnd()
         }
 
-        GlobalScope.launch(Dispatchers.Main) {
-            this@PreEditBufferTextView.text = ChewingBridge.bufferStringStatic()
-        }
+        this@PreEditBufferTextView.text = ChewingBridge.bufferStringStatic()
     }
 
     override fun onTextChanged(

@@ -25,8 +25,8 @@ import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.MotionEvent
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
@@ -34,11 +34,15 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import kotlin.concurrent.fixedRateTimer
+import kotlin.coroutines.CoroutineContext
 
 class BackspaceKey(context: Context, attrs: AttributeSet) :
-    KeyImageButton(context, attrs) {
+    KeyImageButton(context, attrs), CoroutineScope {
     var backspacePressed: Boolean = false
     var lastBackspaceClickTime: Long = 0
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
     override fun onDown(e: MotionEvent?): Boolean {
         // avoids too fast repeat clicks
@@ -57,9 +61,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     }
 
     override fun onLongPress(e: MotionEvent?) {
-        GlobalScope.launch(Dispatchers.Main) {
-            repeatBackspace()
-        }
+        launch { repeatBackspace() }
     }
 
     @SuppressLint("ClickableViewAccessibility")
