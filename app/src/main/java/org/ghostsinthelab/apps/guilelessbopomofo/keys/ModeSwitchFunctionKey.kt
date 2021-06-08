@@ -23,10 +23,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Touchable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
-class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs), Touchable {
+class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override fun onDown(e: MotionEvent?): Boolean {
         performVibrate(Vibratable.VibrationStrength.NORMAL)
         return true
