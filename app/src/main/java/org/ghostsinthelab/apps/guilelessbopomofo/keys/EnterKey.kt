@@ -45,10 +45,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         fun action() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) { // not committed yet
                 ChewingBridge.handleEnter()
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
-                    it.textViewPreEditBuffer.update()
-                    it.textViewBopomofoBuffer.update()
-                }
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
             } else {
                 GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
             }

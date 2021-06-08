@@ -171,10 +171,7 @@ class GuilelessBopomofoService : InputMethodService() {
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.v(LOGTAG, "onStartInputView()")
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
-            it.textViewPreEditBuffer.update()
-            it.textViewBopomofoBuffer.update()
-        }
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
     }
 
     override fun onFinishInput() {
@@ -309,10 +306,7 @@ class GuilelessBopomofoService : InputMethodService() {
             ChewingBridge.handleDefault(keyPressed)
         }
 
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
-            it.textViewPreEditBuffer.update()
-            it.textViewBopomofoBuffer.update()
-        }
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
 
         shiftKeyImageButton?.let {
             if (shiftKeyImageButton.isActive && !shiftKeyImageButton.isLocked) {

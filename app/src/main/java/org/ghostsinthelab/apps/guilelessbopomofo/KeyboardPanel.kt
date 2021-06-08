@@ -250,14 +250,18 @@ class KeyboardPanel(
     private fun finishCandidateSelection() {
         if (ChewingUtil.candWindowClosed()) {
             ChewingBridge.handleEnd()
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
-                it.textViewPreEditBuffer.update()
-                it.textViewBopomofoBuffer.update()
-            }
+            updateBuffers()
             currentCandidatesList = 0
             switchToMainLayout()
         } else {
             renderCandidatesLayout()
+        }
+    }
+
+    fun updateBuffers() {
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.apply {
+            textViewPreEditBuffer.update()
+            textViewBopomofoBuffer.update()
         }
     }
 

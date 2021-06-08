@@ -34,10 +34,7 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBu
 
     override fun onSingleTapUp(e: MotionEvent?): Boolean {
         ChewingUtil.handleShiftComma()
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
-            it.textViewPreEditBuffer.update()
-            it.textViewBopomofoBuffer.update()
-        }
+        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
         return true
     }
 
