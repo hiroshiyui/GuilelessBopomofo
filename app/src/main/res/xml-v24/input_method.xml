@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Guileless Bopomofo
-  ~ Copyright (C) 2020 YOU, HUI-HONG
+  ~ Copyright (C) 2021 YOU, HUI-HONG
   ~
   ~ This program is free software; you can redistribute it and/or
   ~ modify it under the terms of the GNU General Public License
@@ -24,8 +24,9 @@
 
     <subtype
         android:name="@string/display_name_bopomofo_keyboard_ime"
-        android:imeSubtypeLocale="zh"
+        android:imeSubtypeLocale="zh-rTW"
         android:imeSubtypeMode="keyboard"
         android:label="@string/display_name_bopomofo_keyboard_ime"
+        android:languageTag="zh-Hant"
         android:icon="@drawable/ic_guileless_bopomofo_icon_v2" />
 </input-method>
