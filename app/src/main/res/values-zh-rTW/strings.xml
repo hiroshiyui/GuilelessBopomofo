@@ -52,7 +52,6 @@
     <string name="key_button_height_description">調整按鍵高度（預設高度：52dp）</string>
     <string name="switch_display_hsu_qwerty_layout">使用許氏鍵盤排列時，顯示 QWERTY 鍵帽？</string>
     <string name="switch_display_eten26_qwerty_layout">使用倚天26鍵盤排列時，顯示 QWERTY 鍵帽？</string>
-    <string name="label_subtype_generic">%s</string>
     <string name="bopomofo_keyboard_layout_dvorak_hsu">許氏鍵盤 - Dvorak 鍵盤對映</string>
     <string name="switch_display_hsu_dvorak_both_layout">使用許氏鍵盤 - Dvorak 鍵盤對映排列時，顯示 Dvorak 鍵帽？</string>
     <string name="user_interface_settings">操作介面設定</string>

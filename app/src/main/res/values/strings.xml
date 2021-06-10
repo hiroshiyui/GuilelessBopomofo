@@ -51,7 +51,6 @@
     <string name="key_button_height_description">Adjust height of key buttons. (Default value: 52dp)</string>
     <string name="switch_display_hsu_qwerty_layout">Enable QWERTY keycaps for Hsu layout?</string>
     <string name="switch_display_eten26_qwerty_layout">Enable QWERTY keycaps for E-TEN 26 keys layout?</string>
-    <string name="label_subtype_generic">%s</string>
     <string name="bopomofo_keyboard_layout_dvorak_hsu">Hsu - Dvorak Keymap</string>
     <string name="switch_display_hsu_dvorak_both_layout">Enable Dvorak keycaps for Hsu - Dvorak Keymap layout?</string>
     <string name="user_interface_settings">User interface settings</string>
