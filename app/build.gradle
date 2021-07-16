@@ -61,6 +61,7 @@ android {
     }
 
     task copyChewingDataFiles(type: Copy) {
+        dependsOn 'prepareChewing'
         from("$rootDir/app/libs/libchewing/data") {
             include("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
         }
@@ -76,7 +77,15 @@ android {
         jvmTarget = '1.8'
     }
 
-    preBuild.dependsOn('prepareChewing', 'copyChewingDataFiles')
+    preBuild.dependsOn('copyChewingDataFiles')
+
+    clean.doLast {
+        file("$rootDir/app/src/main/assets/dictionary.dat").delete()
+        file("$rootDir/app/src/main/assets/index_tree.dat").delete()
+        file("$rootDir/app/src/main/assets/pinyin.tab").delete()
+        file("$rootDir/app/src/main/assets/swkb.dat").delete()
+        file("$rootDir/app/src/main/assets/symbols.dat").delete()
+    }
 }
 
 dependencies {
