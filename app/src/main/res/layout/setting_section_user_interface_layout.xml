@@ -66,6 +66,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewtextViewHapticFeedbackStrengthDescription" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchSettingApplySameHapticFeedbackStrengthToFunctionButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/setting_apply_same_haptic_feedback_strength_to_function_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBarHapticFeedbackStrength" />
+
     <TextView
         android:id="@+id/textViewSettingHapticFeedbaclCurrentStrength"
         android:layout_width="wrap_content"
@@ -86,7 +96,7 @@
         android:text="@string/fullscreen_mode_setting_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/seekBarHapticFeedbackStrength" />
+        app:layout_constraintTop_toBottomOf="@id/switchSettingApplySameHapticFeedbackStrengthToFunctionButtons" />
 
     <TextView
         android:id="@+id/textViewSettingDescriptionFullscreenMode"

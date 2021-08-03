@@ -53,4 +53,5 @@
     <string name="user_interface_settings">User interface settings</string>
     <string name="haptic_feedback_strength_setting">%1$dms</string>
     <string name="key_button_height_setting">%1$ddp</string>
+    <string name="setting_apply_same_haptic_feedback_strength_to_function_buttons">Apply same haptic feedback strength to function buttons?</string>
 </resources>

@@ -187,6 +187,17 @@ class MainActivity : AppCompatActivity(), Vibratable {
                     }
                 })
 
+                switchSettingApplySameHapticFeedbackStrengthToFunctionButtons.let {
+                    if (sharedPreferences.getBoolean("same_haptic_feedback_to_function_buttons", false)) {
+                        it.isChecked = true
+                    }
+
+                    it.setOnCheckedChangeListener { _, isChecked ->
+                        sharedPreferences.edit()
+                            .putBoolean("same_haptic_feedback_to_function_buttons", isChecked).apply()
+                    }
+                }
+
                 switchSettingFullscreenWhenInLandscape.let {
                     if (sharedPreferences.getBoolean("user_fullscreen_when_in_landscape", true)) {
                         it.isChecked = true
@@ -196,7 +207,6 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         sharedPreferences.edit()
                             .putBoolean("user_fullscreen_when_in_landscape", isChecked).apply()
                     }
-
                 }
 
                 switchSettingFullscreenWhenInPortrait.let {

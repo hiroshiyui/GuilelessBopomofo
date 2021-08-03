@@ -20,13 +20,16 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.utils
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 
 interface Vibratable {
-    enum class VibrationStrength(val strength: Long) {
+    enum class VibrationStrength(var strength: Long) {
         LIGHT(25),
         NORMAL(50),
         STRONG(100)
@@ -44,6 +47,16 @@ interface Vibratable {
         }
 
         val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java) as Vibrator
+
+        // If users want to use a consistent haptic feedback value for all buttons,
+        // just do as they wish.
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
+        val hapticFeedbackPreferenceStrength: Int =
+            sharedPreferences.getInt("user_haptic_feedback_strength", GuilelessBopomofoService.defaultHapticFeedbackStrength)
+        val sameHapticFeedbackToFuncButtons: Boolean = sharedPreferences.getBoolean("same_haptic_feedback_to_function_buttons", false)
+        if (sameHapticFeedbackToFuncButtons) {
+            strength.strength = hapticFeedbackPreferenceStrength.toLong()
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val vibrationEffect = VibrationEffect.createOneShot(strength.strength, amplitude)
