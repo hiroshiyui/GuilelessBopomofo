@@ -31,8 +31,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
 
     override fun onDown(e: MotionEvent?): Boolean {
-        performVibrate(GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength.toLong())
-
+        performVibrate(context, GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength.toLong())
         val keyButtonLocation = IntArray(2)
         this.getLocationInWindow(keyButtonLocation)
 

@@ -28,7 +28,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override fun onDown(e: MotionEvent?): Boolean {
-        performVibrate(Vibratable.VibrationStrength.NORMAL)
+        performVibrate(context, Vibratable.VibrationStrength.NORMAL)
         return true
     }
 
@@ -39,7 +39,7 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBu
     }
 
     override fun onLongPress(e: MotionEvent?) {
-        performVibrate(Vibratable.VibrationStrength.STRONG)
+        performVibrate(context, Vibratable.VibrationStrength.STRONG)
         ChewingUtil.openPuncCandidates()
         GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
     }

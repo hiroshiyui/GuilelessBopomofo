@@ -23,7 +23,7 @@ import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import androidx.core.content.ContextCompat
 
 interface Vibratable {
     enum class VibrationStrength(val strength: Long) {
@@ -35,10 +35,16 @@ interface Vibratable {
     val amplitude: Int
         get() = 128
 
-    val vibrator: Vibrator
-        get() = GuilelessBopomofoServiceContext.serviceInstance.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    val strengthRange: IntRange
+        get() = 0..150
 
-    fun performVibrate(strength: VibrationStrength) {
+    fun performVibrate(context: Context, strength: VibrationStrength) {
+        if (strength.strength == 0L) {
+            return
+        }
+
+        val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java) as Vibrator
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val vibrationEffect = VibrationEffect.createOneShot(strength.strength, amplitude)
             vibrator.vibrate(vibrationEffect)
@@ -47,7 +53,13 @@ interface Vibratable {
         }
     }
 
-    fun performVibrate(strength: Long) {
+    fun performVibrate(context: Context, strength: Long) {
+        if (strength == 0L) {
+            return
+        }
+
+        val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java) as Vibrator
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val vibrationEffect = VibrationEffect.createOneShot(strength, amplitude)
             vibrator.vibrate(vibrationEffect)

@@ -51,7 +51,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         }
         lastBackspaceClickTime = SystemClock.elapsedRealtime()
 
-        performVibrate(Vibratable.VibrationStrength.NORMAL)
+        performVibrate(context, Vibratable.VibrationStrength.NORMAL)
         return true
     }
 

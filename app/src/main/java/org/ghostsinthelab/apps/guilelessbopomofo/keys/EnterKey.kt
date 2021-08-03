@@ -30,7 +30,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override fun onDown(e: MotionEvent?): Boolean {
-        performVibrate(Vibratable.VibrationStrength.NORMAL)
+        performVibrate(context, Vibratable.VibrationStrength.NORMAL)
         return true
     }
 

@@ -35,9 +35,6 @@
     <string name="rearward_phrase_choice_description">如果啟用本功能，會從游標處向前選詞</string>
     <string name="haptic_feedback_strength">按鍵觸感力道</string>
     <string name="haptic_feedback_strength_description">調整字符鍵的按鍵觸感力道，實際效果依不同機種而有差異</string>
-    <string name="haptic_feedback_strength_light">輕柔</string>
-    <string name="haptic_feedback_strength_medium">適中</string>
-    <string name="haptic_feedback_strength_heavy">強勁</string>
     <string name="current_mode">目前模式：</string>
     <string name="mode_bopomofo">注音</string>
     <string name="mode_english">英數</string>
@@ -55,4 +52,6 @@
     <string name="bopomofo_keyboard_layout_dvorak_hsu">許氏鍵盤 - Dvorak 鍵盤對映</string>
     <string name="switch_display_hsu_dvorak_both_layout">使用許氏鍵盤 - Dvorak 鍵盤對映排列時，顯示 Dvorak 鍵帽？</string>
     <string name="user_interface_settings">操作介面設定</string>
+    <string name="haptic_feedback_strength_setting">%1$d毫秒</string>
+    <string name="key_button_height_setting">%1$ddp</string>
 </resources>

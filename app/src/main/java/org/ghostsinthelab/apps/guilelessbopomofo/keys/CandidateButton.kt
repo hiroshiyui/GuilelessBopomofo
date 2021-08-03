@@ -31,7 +31,7 @@ class CandidateButton(context: Context, attrs: AttributeSet) :
     lateinit var candidate: Candidate
 
     override fun onDown(e: MotionEvent?): Boolean {
-        performVibrate(Vibratable.VibrationStrength.LIGHT)
+        performVibrate(context, Vibratable.VibrationStrength.LIGHT)
         return true
     }
 

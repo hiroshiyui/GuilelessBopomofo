@@ -32,7 +32,7 @@ import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Vibratable {
     private val LOGTAG: String = "MainActivity"
     private lateinit var binding: ActivityMainBinding
     private var engineeringModeEnterCount: Int = 0
@@ -157,25 +157,35 @@ class MainActivity : AppCompatActivity() {
             }
 
             sectionUserInterface.apply {
-                for ((button, strength) in
-                mapOf<RadioButton, Long>(
-                    radioButtonHapticFeedbackStrengthLight to Vibratable.VibrationStrength.LIGHT.strength,
-                    radioButtonHapticFeedbackStrengthMedium to Vibratable.VibrationStrength.NORMAL.strength,
-                    radioButtonHapticFeedbackStrengthHeavy to Vibratable.VibrationStrength.STRONG.strength
-                )) {
-                    button.setOnClickListener {
-                        sharedPreferences.edit().putInt("user_haptic_feedback_strength", strength.toInt())
-                            .apply()
+                var hapticFeedbackPreferenceStrength =
+                    sharedPreferences.getInt("user_haptic_feedback_strength", GuilelessBopomofoService.defaultHapticFeedbackStrength)
+
+                textViewSettingHapticFeedbaclCurrentStrength.text =
+                    String.format(resources.getString(R.string.haptic_feedback_strength_setting), hapticFeedbackPreferenceStrength)
+                seekBarHapticFeedbackStrength.progress = hapticFeedbackPreferenceStrength
+
+                seekBarHapticFeedbackStrength.setOnSeekBarChangeListener(object :
+                    SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar?,
+                        progress: Int,
+                        fromUser: Boolean
+                    ) {
+                        hapticFeedbackPreferenceStrength = progress
+                        performVibrate(applicationContext, hapticFeedbackPreferenceStrength.toLong())
+
+                        sharedPreferences.edit()
+                            .putInt("user_haptic_feedback_strength", hapticFeedbackPreferenceStrength).apply()
+                        textViewSettingHapticFeedbaclCurrentStrength.text =
+                            String.format(resources.getString(R.string.haptic_feedback_strength_setting), hapticFeedbackPreferenceStrength)
                     }
 
-                    if (sharedPreferences.getInt(
-                            "user_haptic_feedback_strength",
-                            GuilelessBopomofoService.defaultHapticFeedbackStrength
-                        ) == strength.toInt()
-                    ) {
-                        button.isChecked = true
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
                     }
-                }
+
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    }
+                })
 
                 switchSettingFullscreenWhenInLandscape.let {
                     if (sharedPreferences.getBoolean("user_fullscreen_when_in_landscape", true)) {
@@ -215,7 +225,9 @@ class MainActivity : AppCompatActivity() {
                 var keyButtonPreferenceHeight = sharedPreferences.getInt("user_key_button_height", 52)
 
                 seekBarKeyButtonHeight.progress = keyButtonPreferenceHeight - seekBarShiftValue
-                textViewSettingKeyButtonCurrentHeight.text = "${keyButtonPreferenceHeight}dp"
+
+                textViewSettingKeyButtonCurrentHeight.text =
+                    String.format(resources.getString(R.string.key_button_height_setting), keyButtonPreferenceHeight)
 
                 seekBarKeyButtonHeight.setOnSeekBarChangeListener(object :
                     SeekBar.OnSeekBarChangeListener {
@@ -227,7 +239,8 @@ class MainActivity : AppCompatActivity() {
                         keyButtonPreferenceHeight = progress + seekBarShiftValue
                         sharedPreferences.edit()
                             .putInt("user_key_button_height", keyButtonPreferenceHeight).apply()
-                        textViewSettingKeyButtonCurrentHeight.text = "${keyButtonPreferenceHeight}dp"
+                        textViewSettingKeyButtonCurrentHeight.text =
+                            String.format(resources.getString(R.string.key_button_height_setting), keyButtonPreferenceHeight)
                     }
 
                     override fun onStartTrackingTouch(seekBar: SeekBar?) {

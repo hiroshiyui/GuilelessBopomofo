@@ -31,7 +31,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
     override fun onDown(e: MotionEvent?): Boolean {
-        performVibrate(Vibratable.VibrationStrength.NORMAL)
+        performVibrate(context, Vibratable.VibrationStrength.NORMAL)
         return true
     }
 
@@ -52,7 +52,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
     }
 
     override fun onLongPress(e: MotionEvent?) {
-        performVibrate(Vibratable.VibrationStrength.STRONG)
+        performVibrate(context, Vibratable.VibrationStrength.STRONG)
         val imm =
             GuilelessBopomofoServiceContext.serviceInstance.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showInputMethodPicker()

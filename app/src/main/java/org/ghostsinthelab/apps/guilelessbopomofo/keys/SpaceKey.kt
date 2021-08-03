@@ -30,7 +30,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override fun onDown(e: MotionEvent?): Boolean {
-        performVibrate(Vibratable.VibrationStrength.LIGHT)
+        performVibrate(context, Vibratable.VibrationStrength.LIGHT)
         return true
     }
 
