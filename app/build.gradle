@@ -85,6 +85,10 @@ android {
         file("$rootDir/app/src/main/assets/pinyin.tab").delete()
         file("$rootDir/app/src/main/assets/swkb.dat").delete()
         file("$rootDir/app/src/main/assets/symbols.dat").delete()
+        exec {
+            workingDir("$rootDir/app/libs/libchewing")
+            commandLine('make', 'clean')
+        }
     }
 }
 
