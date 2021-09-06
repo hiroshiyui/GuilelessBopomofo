@@ -48,6 +48,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
 
     init {
         mDetector = GestureDetectorCompat(context, MyGestureListener())
+        mDetector.setOnDoubleTapListener(null)
     }
 
     // which character did I touched? (index value)

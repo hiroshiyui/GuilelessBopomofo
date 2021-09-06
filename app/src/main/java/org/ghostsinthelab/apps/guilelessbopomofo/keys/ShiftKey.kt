@@ -43,6 +43,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
 
     init {
         mDetector = GestureDetectorCompat(context, MyGestureListener())
+        mDetector.setOnDoubleTapListener(null)
 
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0, 0).apply {
             try {

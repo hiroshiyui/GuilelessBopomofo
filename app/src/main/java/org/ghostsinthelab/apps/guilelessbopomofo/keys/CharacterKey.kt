@@ -36,6 +36,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
 
     init {
         mDetector = GestureDetectorCompat(context, MyGestureListener())
+        mDetector.setOnDoubleTapListener(null)
     }
 
     inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {

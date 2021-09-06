@@ -35,6 +35,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
 
     init {
         mDetector = GestureDetectorCompat(context, MyGestureListener())
+        mDetector.setOnDoubleTapListener(null)
     }
 
     inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
