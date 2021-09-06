@@ -23,8 +23,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.SystemClock
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.MotionEvent
+import androidx.core.view.GestureDetectorCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -40,28 +42,35 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs), CoroutineScope {
     var backspacePressed: Boolean = false
     var lastBackspaceClickTime: Long = 0
+    override lateinit var mDetector: GestureDetectorCompat
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    override fun onDown(e: MotionEvent?): Boolean {
-        // avoids too fast repeat clicks
-        if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 100) {
-            return false
+    init {
+        mDetector = GestureDetectorCompat(context, MyGestureListener())
+    }
+
+    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
+        override fun onDown(e: MotionEvent?): Boolean {
+            // avoids too fast repeat clicks
+            if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 100) {
+                return false
+            }
+            lastBackspaceClickTime = SystemClock.elapsedRealtime()
+
+            performVibrate(context, Vibratable.VibrationStrength.NORMAL)
+            return true
         }
-        lastBackspaceClickTime = SystemClock.elapsedRealtime()
 
-        performVibrate(context, Vibratable.VibrationStrength.NORMAL)
-        return true
-    }
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            action()
+            return true
+        }
 
-    override fun onSingleTapUp(e: MotionEvent?): Boolean {
-        action()
-        return true
-    }
-
-    override fun onLongPress(e: MotionEvent?) {
-        launch { repeatBackspace() }
+        override fun onLongPress(e: MotionEvent?) {
+            launch { repeatBackspace() }
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

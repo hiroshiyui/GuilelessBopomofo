@@ -21,25 +21,33 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.MotionEvent
+import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
-    override fun onDown(e: MotionEvent?): Boolean {
-        performVibrate(context, Vibratable.VibrationStrength.LIGHT)
-        return true
+    override lateinit var mDetector: GestureDetectorCompat
+
+    init {
+        mDetector = GestureDetectorCompat(context, MyGestureListener())
     }
 
-    override fun onSingleTapUp(e: MotionEvent?): Boolean {
-        action()
-        return true
-    }
+    inner class MyGestureListener: GestureDetector.SimpleOnGestureListener(), Vibratable {
+        override fun onDown(e: MotionEvent?): Boolean {
+            performVibrate(context, Vibratable.VibrationStrength.LIGHT)
+            return true
+        }
 
-    override fun onLongPress(e: MotionEvent?) {}
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            action()
+            return true
+        }
+    }
 
     companion object {
         fun action() {

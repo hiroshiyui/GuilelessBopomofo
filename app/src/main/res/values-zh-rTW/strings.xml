@@ -55,4 +55,7 @@
     <string name="haptic_feedback_strength_setting">%1$d毫秒</string>
     <string name="key_button_height_setting">%1$ddp</string>
     <string name="setting_apply_same_haptic_feedback_strength_to_function_buttons">讓功能鍵採用與字符鍵同樣的觸感力道設定？</string>
+    <string name="text_view_setting_ime_switch">切換輸入法</string>
+    <string name="text_view_setting_description_ime_switch">調整輸入法切換鍵的作用方式，是按一下還是兩下</string>
+    <string name="switch_setting_ime_switch">設定為「按兩下」切換到下一個輸入法？</string>
 </resources>

@@ -22,8 +22,10 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.content.ContextCompat
+import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
@@ -37,7 +39,11 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
     var isLocked: Boolean = false
     var isActive: Boolean = false
 
+    override lateinit var mDetector: GestureDetectorCompat
+
     init {
+        mDetector = GestureDetectorCompat(context, MyGestureListener())
+
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0, 0).apply {
             try {
                 keyCodeString = this.getString(R.styleable.KeyImageButton_keyCodeString)
@@ -56,27 +62,27 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
     }
 
-    override fun onDown(e: MotionEvent?): Boolean {
-        performVibrate(context, Vibratable.VibrationStrength.NORMAL)
-        return true
-    }
-
-    override fun onSingleTapUp(e: MotionEvent?): Boolean {
-        when (currentShiftKeyState) {
-            ShiftKeyState.RELEASED -> {
-                switchToState(ShiftKeyState.PRESSED)
-            }
-            ShiftKeyState.PRESSED -> {
-                switchToState(ShiftKeyState.HOLD)
-            }
-            ShiftKeyState.HOLD -> {
-                switchToState(ShiftKeyState.RELEASED)
-            }
+    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
+        override fun onDown(e: MotionEvent?): Boolean {
+            performVibrate(context, Vibratable.VibrationStrength.NORMAL)
+            return true
         }
-        return true
-    }
 
-    override fun onLongPress(e: MotionEvent?) {}
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            when (currentShiftKeyState) {
+                ShiftKeyState.RELEASED -> {
+                    switchToState(ShiftKeyState.PRESSED)
+                }
+                ShiftKeyState.PRESSED -> {
+                    switchToState(ShiftKeyState.HOLD)
+                }
+                ShiftKeyState.HOLD -> {
+                    switchToState(ShiftKeyState.RELEASED)
+                }
+            }
+            return true
+        }
+    }
 
     fun switchToState(state: ShiftKeyState) {
         Log.v(LOGTAG, "Switch to state: ${state}")

@@ -25,8 +25,10 @@ import android.text.Spanned
 import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.util.Log
+import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.text.toSpannable
+import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.setPadding
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
@@ -37,10 +39,15 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     BufferTextView(context, attrs), Vibratable {
     private val LOGTAG = "PreEditBufferTextView"
     private lateinit var span: SpannableString
+    override lateinit var mDetector: GestureDetectorCompat
 
     enum class CursorMovedBy {
         TOUCH,
         PHYSICAL_KEYBOARD
+    }
+
+    init {
+        mDetector = GestureDetectorCompat(context, MyGestureListener())
     }
 
     // which character did I touched? (index value)
@@ -121,23 +128,23 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
     }
 
-    override fun onDown(e: MotionEvent): Boolean {
-        val x = e.x
-        val y = e.y
-        offset = this.getOffsetForPosition(x, y)
-        Log.v(LOGTAG, "offset: $offset")
-        performVibrate(context, Vibratable.VibrationStrength.LIGHT)
+    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
+        override fun onDown(e: MotionEvent): Boolean {
+            val x = e.x
+            val y = e.y
+            offset = getOffsetForPosition(x, y)
+            Log.v(LOGTAG, "offset: $offset")
+            performVibrate(context, Vibratable.VibrationStrength.LIGHT)
 
-        return true
-    }
-
-    override fun onSingleTapUp(e: MotionEvent?): Boolean {
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
-            it.textViewPreEditBuffer.cursorMovedBy(CursorMovedBy.TOUCH)
-            it.keyboardPanel.switchToCandidatesLayout(offset)
+            return true
         }
-        return true
-    }
 
-    override fun onLongPress(e: MotionEvent?) {}
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
+                it.textViewPreEditBuffer.cursorMovedBy(CursorMovedBy.TOUCH)
+                it.keyboardPanel.switchToCandidatesLayout(offset)
+            }
+            return true
+        }
+    }
 }

@@ -21,7 +21,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.MotionEvent
+import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -29,16 +31,21 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 class CandidateButton(context: Context, attrs: AttributeSet) :
     KeyButton(context, attrs), Vibratable {
     lateinit var candidate: Candidate
+    override lateinit var mDetector: GestureDetectorCompat
 
-    override fun onDown(e: MotionEvent?): Boolean {
-        performVibrate(context, Vibratable.VibrationStrength.LIGHT)
-        return true
+    init {
+        mDetector = GestureDetectorCompat(context, MyGestureListener())
     }
 
-    override fun onSingleTapUp(e: MotionEvent?): Boolean {
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.candidateSelectionDone(candidate.index)
-        return true
-    }
+    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
+        override fun onDown(e: MotionEvent?): Boolean {
+            performVibrate(context, Vibratable.VibrationStrength.LIGHT)
+            return true
+        }
 
-    override fun onLongPress(e: MotionEvent?) {}
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.candidateSelectionDone(candidate.index)
+            return true
+        }
+    }
 }

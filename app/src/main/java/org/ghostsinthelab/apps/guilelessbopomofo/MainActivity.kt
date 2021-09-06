@@ -260,6 +260,17 @@ class MainActivity : AppCompatActivity(), Vibratable {
                     }
 
                 })
+
+                switchSettingImeSwitch.let {
+                    if (sharedPreferences.getBoolean("user_enable_double_touch_ime_switch", false)) {
+                        it.isChecked = true
+                    }
+
+                    it.setOnCheckedChangeListener { _, isChecked ->
+                        sharedPreferences.edit()
+                            .putBoolean("user_enable_double_touch_ime_switch", isChecked).apply()
+                    }
+                }
             }
 
             sectionPhysicalKeyboard.apply {

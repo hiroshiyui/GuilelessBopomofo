@@ -20,18 +20,15 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
 import android.content.Context
-import android.os.Vibrator
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import androidx.emoji.widget.EmojiAppCompatTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Touchable
 
 abstract class BufferTextView(context: Context, attrs: AttributeSet) :
-    EmojiAppCompatTextView(context, attrs), DisplayMetricsComputable, Touchable {
-    var mDetector: GestureDetectorCompat = GestureDetectorCompat(context, this)
-    val vibrator: Vibrator = this.context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    EmojiAppCompatTextView(context, attrs), DisplayMetricsComputable {
+    abstract var mDetector: GestureDetectorCompat
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         mDetector.onTouchEvent(event)

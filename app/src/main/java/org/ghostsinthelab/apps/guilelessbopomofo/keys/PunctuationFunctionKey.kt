@@ -21,26 +21,36 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.MotionEvent
+import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
-    override fun onDown(e: MotionEvent?): Boolean {
-        performVibrate(context, Vibratable.VibrationStrength.NORMAL)
-        return true
+    override lateinit var mDetector: GestureDetectorCompat
+
+    init {
+        mDetector = GestureDetectorCompat(context, MyGestureListener())
     }
 
-    override fun onSingleTapUp(e: MotionEvent?): Boolean {
-        ChewingUtil.handleShiftComma()
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
-        return true
-    }
+    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
+        override fun onDown(e: MotionEvent?): Boolean {
+            performVibrate(context, Vibratable.VibrationStrength.NORMAL)
+            return true
+        }
 
-    override fun onLongPress(e: MotionEvent?) {
-        performVibrate(context, Vibratable.VibrationStrength.STRONG)
-        ChewingUtil.openPuncCandidates()
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            ChewingUtil.handleShiftComma()
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
+            return true
+        }
+
+        override fun onLongPress(e: MotionEvent?) {
+            performVibrate(context, Vibratable.VibrationStrength.STRONG)
+            ChewingUtil.openPuncCandidates()
+            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
+        }
     }
 }

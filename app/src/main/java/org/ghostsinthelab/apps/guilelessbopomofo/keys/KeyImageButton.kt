@@ -28,12 +28,10 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Touchable
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
     AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
-    BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable, Vibratable, Touchable {
+    BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable {
     open val LOGTAG: String = "KeyImageButton"
     val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
@@ -42,7 +40,7 @@ abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
     override var keySymbol: String? = null
     override var keyShiftSymbol: String? = null
 
-    var mDetector: GestureDetectorCompat = GestureDetectorCompat(context, this)
+    abstract var mDetector: GestureDetectorCompat
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         mDetector.onTouchEvent(event)

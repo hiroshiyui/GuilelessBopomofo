@@ -202,4 +202,35 @@
         app:layout_constraintStart_toEndOf="@+id/seekBarKeyButtonHeight"
         app:layout_constraintTop_toTopOf="@id/seekBarKeyButtonHeight" />
 
+    <TextView
+        android:id="@+id/textViewSettingImeSwitch"
+        style="@style/SettingsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/text_view_setting_ime_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekBarKeyButtonHeight" />
+
+    <TextView
+        android:id="@+id/textViewSettingDescriptionImeSwitch"
+        style="@style/SettingsDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_view_setting_description_ime_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingImeSwitch" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchSettingImeSwitch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/switch_setting_ime_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionImeSwitch" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

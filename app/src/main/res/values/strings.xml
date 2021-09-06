@@ -54,4 +54,7 @@
     <string name="haptic_feedback_strength_setting">%1$dms</string>
     <string name="key_button_height_setting">%1$ddp</string>
     <string name="setting_apply_same_haptic_feedback_strength_to_function_buttons">Apply same haptic feedback strength to function buttons?</string>
+    <string name="text_view_setting_ime_switch">Switch Input Methods</string>
+    <string name="text_view_setting_description_ime_switch">Toggle the input method switch key between single or double touch</string>
+    <string name="switch_setting_ime_switch">Use double touch to switch to next input method?</string>
 </resources>

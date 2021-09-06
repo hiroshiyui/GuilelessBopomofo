@@ -23,38 +23,65 @@ import android.content.Context
 import android.os.Build
 import android.os.IBinder
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
-    override fun onDown(e: MotionEvent?): Boolean {
-        performVibrate(context, Vibratable.VibrationStrength.NORMAL)
-        return true
+    override lateinit var mDetector: GestureDetectorCompat
+
+    init {
+        mDetector = GestureDetectorCompat(context, MyGestureListener())
     }
 
-    override fun onSingleTapUp(e: MotionEvent?): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            GuilelessBopomofoServiceContext.serviceInstance.switchToNextInputMethod(false)
-        } else {
-            // backward compatibility, support IME switch on legacy devices
+    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
+        override fun onDown(e: MotionEvent?): Boolean {
+            performVibrate(context, Vibratable.VibrationStrength.NORMAL)
+            return true
+        }
+
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            if (sharedPreferences.getBoolean("user_enable_double_touch_ime_switch", false)) {
+                return true
+            } else {
+                switchInputMethod()
+            }
+            return true
+        }
+
+        override fun onDoubleTap(e: MotionEvent?): Boolean {
+            if (sharedPreferences.getBoolean("user_enable_double_touch_ime_switch", false)) {
+                switchInputMethod()
+            } else {
+                return true
+            }
+            return true
+        }
+
+        override fun onLongPress(e: MotionEvent?) {
+            performVibrate(context, Vibratable.VibrationStrength.STRONG)
             val imm =
                 GuilelessBopomofoServiceContext.serviceInstance.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            val imeToken: IBinder? =
-                GuilelessBopomofoServiceContext.serviceInstance.window?.let {
-                    it.window?.attributes?.token
-                }
-            imm.switchToNextInputMethod(imeToken, false)
+            imm.showInputMethodPicker()
         }
-        return true
-    }
 
-    override fun onLongPress(e: MotionEvent?) {
-        performVibrate(context, Vibratable.VibrationStrength.STRONG)
-        val imm =
-            GuilelessBopomofoServiceContext.serviceInstance.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showInputMethodPicker()
+        private fun switchInputMethod() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                GuilelessBopomofoServiceContext.serviceInstance.switchToNextInputMethod(false)
+            } else {
+                // backward compatibility, support IME switch on legacy devices
+                val imm =
+                    GuilelessBopomofoServiceContext.serviceInstance.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imeToken: IBinder? =
+                    GuilelessBopomofoServiceContext.serviceInstance.window?.let {
+                        it.window?.attributes?.token
+                    }
+                imm.switchToNextInputMethod(imeToken, false)
+            }
+        }
     }
 }
