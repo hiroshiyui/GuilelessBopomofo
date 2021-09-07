@@ -610,8 +610,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/colorKeyboardSpecialKeyBackground"
-            android:theme="@style/KeyImageButton"
+            android:theme="@style/SpecialKeyImageButton"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_mode_switch_bopomofo" />
 
@@ -620,8 +619,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/colorKeyboardSpecialKeyBackground"
-            android:theme="@style/KeyImageButton"
+            android:theme="@style/SpecialKeyImageButton"
             app:keyCodeString="KEYCODE_SHIFT_LEFT"
             app:keyTypeEnum="KEYTYPE_MODIFIER"
             app:srcCompat="@drawable/ic_baseline_keyboard_capslock_24" />
@@ -641,8 +639,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/colorKeyboardSpecialKeyBackground"
-            android:theme="@style/KeyImageButton"
+            android:theme="@style/SpecialKeyImageButton"
             app:keyCodeString="KEYCODE_DEL"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24" />
@@ -652,9 +649,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
-            android:backgroundTint="@color/colorKeyboardEnterKeyBackground"
             android:src="@drawable/ic_baseline_keyboard_return_24"
-            android:theme="@style/KeyImageButton"
+            android:theme="@style/EnterKeyImageButton"
             app:keyCodeString="KEYCODE_ENTER"
             app:keyTypeEnum="KEYTYPE_CONTROL" />
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Guileless Bopomofo
+  ~ Copyright (C) 2021 YOU, HUI-HONG
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="KeyboardPanel">
+        <item name="android:background">@color/colorKeyboardPanelBackgroundDark</item>
+    </style>
+
+    <style name="DividerKeyboardPanelTopBorder">
+        <item name="android:background">@color/colorKeyboardPanelBackground</item>
+        <item name="android:backgroundTint">@color/colorPrimaryDark</item>
+        <item name="android:backgroundTintMode">src_atop</item>
+    </style>
+
+    <style name="KeyboardTheme">
+        <item name="android:background">@color/colorKeyboardBackgroundDark</item>
+    </style>
+
+    <style name="KeyImageButton" parent="Theme.MaterialComponents">
+        <item name="android:background">@color/colorButtonBackgroundDark</item>
+        <item name="android:tint">@color/colorButtonForegroundDark</item>
+    </style>
+
+    <style name="SpecialKeyImageButton" parent="KeyImageButton">
+        <item name="android:backgroundTint">@color/colorKeyboardSpecialKeyBackgroundDark</item>
+    </style>
+
+    <style name="EnterKeyImageButton" parent="KeyImageButton">
+        <item name="android:backgroundTint">@color/colorKeyboardEnterKeyBackgroundDark</item>
+    </style>
+
+    <style name="KeyButton" parent="Theme.MaterialComponents">
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
+        <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
+        <item name="android:textColor">@color/colorButtonForegroundDark</item>
+        <item name="android:drawableTint">@color/colorButtonForegroundDark</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:minWidth">48dip</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="fontFamily">sans-serif-black</item>
+    </style>
+
+    <style name="CandidateItem" parent="Theme.MaterialComponents">
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
+        <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
+        <item name="android:textColor">@color/colorButtonForegroundDark</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">serif</item>
+        <item name="fontFamily">serif</item>
+        <item name="android:background">@color/colorButtonBackgroundDark</item>
+    </style>
+</resources>

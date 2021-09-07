@@ -7,7 +7,7 @@
     android:layout_alignParentBottom="true"
     android:layout_gravity="bottom"
     android:orientation="vertical"
-    android:theme="@style/Theme.AppCompat.Light"
+    android:theme="@style/KeyboardPanel"
     android:visibility="visible">
 
 
@@ -15,9 +15,6 @@
         android:id="@+id/flexBoxLayoutBufferTextViews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:backgroundTintMode="screen"
         android:orientation="horizontal"
         app:flexDirection="row"
         app:flexWrap="wrap">
@@ -47,9 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_weight="1"
-        android:background="@color/colorPrimary"
-        android:backgroundTint="#33AAAAAA"
-        android:backgroundTintMode="screen" />
+        android:theme="@style/DividerKeyboardPanelTopBorder" />
 
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
         android:id="@+id/keyboardPanel"

@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#868379</color>
-    <color name="colorPrimaryDark">#6C5A57</color>
-    <color name="colorAccent">#8A6F87</color>
+    <color name="colorPrimary">@color/colorGuilelessBopomofoThemeBase6</color>
+    <color name="colorPrimaryDark">@color/colorGuilelessBopomofoThemeBase3</color>
+    <color name="colorAccent">@color/colorGuilelessBopomofoThemeBase9</color>
+    <color name="colorTitleText">#FFFFFF</color>
+    <color name="colorKeyboardPanelBackground">@color/colorGuilelessBopomofoThemeBase6</color>
+    <color name="colorKeyboardPanelBackgroundDark">@color/colorGuilelessBopomofoThemeBase10</color>
     <color name="colorKeyboardBackground">#E6E6E6</color>
+    <color name="colorKeyboardBackgroundDark">@color/colorGuilelessBopomofoThemeBase10</color>
+    <color name="colorButtonBackgroundDark">#1B4A64</color>
+    <color name="colorButtonForegroundDark">#FFFEF7</color>
     <color name="colorKeyboardEnterKeyBackground">#8BC34A</color>
+    <color name="colorKeyboardEnterKeyBackgroundDark">#2B9CB6</color>
     <color name="colorKeyboardSpecialKeyBackground">#C5C5C5</color>
     <color name="colorKeyboardSpecialKeyBackgroundPressed">#69CDDA</color>
     <color name="colorKeyboardSpecialKeyBackgroundHold">#B2EDF4</color>
+    <color name="colorKeyboardSpecialKeyBackgroundDark">#795A48</color>
+    <color name="colorKeyboardSpecialKeyBackgroundDarkPressed">#AB8067</color>
+    <color name="colorKeyboardSpecialKeyBackgroundDarkHold">#D8A385</color>
     <color name="colorKeyButtonPopupWindow">#B5C9D4</color>
+    <color name="colorGuilelessBopomofoThemeBase1">#D5A692</color>
+    <color name="colorGuilelessBopomofoThemeBase2">#B7A19D</color>
+    <color name="colorGuilelessBopomofoThemeBase3">#72483F</color>
+    <color name="colorGuilelessBopomofoThemeBase4">#493024</color>
+    <color name="colorGuilelessBopomofoThemeBase5">#64483F</color>
+    <color name="colorGuilelessBopomofoThemeBase6">#9F938E</color>
+    <color name="colorGuilelessBopomofoThemeBase7">#CDBDB3</color>
+    <color name="colorGuilelessBopomofoThemeBase8">#C49366</color>
+    <color name="colorGuilelessBopomofoThemeBase9">#B46F4C</color>
+    <color name="colorGuilelessBopomofoThemeBase10">#4D4D4D</color>
 </resources>

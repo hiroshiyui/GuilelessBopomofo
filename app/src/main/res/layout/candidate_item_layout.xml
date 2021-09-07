@@ -26,13 +26,10 @@
 
     <org.ghostsinthelab.apps.guilelessbopomofo.keys.CandidateButton
         android:id="@+id/buttonCandidateItem"
-        style="@style/Widget.AppCompat.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="serif"
         android:text="Button"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="24sp"
+        android:theme="@style/CandidateItem"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

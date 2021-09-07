@@ -48,7 +48,6 @@
             android:drawablePadding="4dp"
             android:includeFontPadding="false"
             android:text="@string/back_to_main_layout"
-            android:textColor="@color/colorPrimaryDark"
             android:theme="@style/KeyButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

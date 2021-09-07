@@ -140,7 +140,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/tips_using_physical_keyboard"
-        android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/imageViewInfo"
         app:layout_constraintTop_toTopOf="@id/imageViewInfo" />

@@ -20,6 +20,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
+import android.content.res.Configuration
 import android.util.AttributeSet
 import android.util.Log
 import android.view.GestureDetector
@@ -88,6 +89,27 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
     fun switchToState(state: ShiftKeyState) {
         Log.v(LOGTAG, "Switch to state: ${state}")
         this.currentShiftKeyState = state
+
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        lateinit var buttonStateBackgroundColors: Map<ShiftKeyState, Int>
+
+        when(currentNightMode) {
+            Configuration.UI_MODE_NIGHT_NO -> {
+                buttonStateBackgroundColors = mapOf(
+                    ShiftKeyState.RELEASED to R.color.colorKeyboardSpecialKeyBackground,
+                    ShiftKeyState.PRESSED to R.color.colorKeyboardSpecialKeyBackgroundPressed,
+                    ShiftKeyState.HOLD to R.color.colorKeyboardSpecialKeyBackgroundHold
+                )
+            }
+            Configuration.UI_MODE_NIGHT_YES -> {
+                buttonStateBackgroundColors = mapOf(
+                    ShiftKeyState.RELEASED to R.color.colorKeyboardSpecialKeyBackgroundDark,
+                    ShiftKeyState.PRESSED to R.color.colorKeyboardSpecialKeyBackgroundDarkPressed,
+                    ShiftKeyState.HOLD to R.color.colorKeyboardSpecialKeyBackgroundDarkHold
+                )
+            }
+        }
+
         when (state) {
             ShiftKeyState.RELEASED -> {
                 isActive = false
@@ -95,7 +117,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                 background.setTint(
                     ContextCompat.getColor(
                         context,
-                        R.color.colorKeyboardSpecialKeyBackground
+                        buttonStateBackgroundColors.getValue(state)
                     )
                 )
             }
@@ -105,7 +127,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                 background.setTint(
                     ContextCompat.getColor(
                         context,
-                        R.color.colorKeyboardSpecialKeyBackgroundPressed
+                        buttonStateBackgroundColors.getValue(state)
                     )
                 )
             }
@@ -115,7 +137,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                 background.setTint(
                     ContextCompat.getColor(
                         context,
-                        R.color.colorKeyboardSpecialKeyBackgroundHold
+                        buttonStateBackgroundColors.getValue(state)
                     )
                 )
             }
