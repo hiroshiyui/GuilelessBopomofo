@@ -38,7 +38,8 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import java.io.File
 import java.io.FileOutputStream
 
-class GuilelessBopomofoService : InputMethodService() {
+class GuilelessBopomofoService : InputMethodService(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
     val LOGTAG = "GuilelessBopomofoSvc"
     var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
     var physicalKeyboardPresent: Boolean = false
@@ -62,6 +63,7 @@ class GuilelessBopomofoService : InputMethodService() {
         EmojiCompat.init(emojiCompatConfig)
 
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
         Log.v(LOGTAG, "onCreate()")
         // Initializing Chewing
         try {
@@ -182,6 +184,7 @@ class GuilelessBopomofoService : InputMethodService() {
     override fun onDestroy() {
         super.onDestroy()
         Log.v(LOGTAG, "onDestroy()")
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
         ChewingBridge.delete()
     }
 
@@ -411,5 +414,61 @@ class GuilelessBopomofoService : InputMethodService() {
             }
         }
         return true
+    }
+
+    // triggered if any sharedPreference has been changed
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+        when (key) {
+            "user_keyboard_layout",
+            "user_display_hsu_qwerty_layout",
+            "user_display_eten26_qwerty_layout",
+            "user_display_dvorak_hsu_both_layout" -> {
+                // just 'reload' the main layout
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToMainLayout()
+            }
+            "user_enable_space_as_selection" -> {
+                if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
+                    ChewingBridge.setSpaceAsSelection(1)
+                }
+            }
+            "user_phrase_choice_rearward" -> {
+                if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
+                    ChewingBridge.setPhraseChoiceRearward(true)
+                }
+            }
+            "user_haptic_feedback_strength" -> {
+                // reload the value
+                userHapticFeedbackStrength =
+                    sharedPreferences.getInt(
+                        "user_haptic_feedback_strength",
+                        defaultHapticFeedbackStrength
+                    )
+            }
+            "same_haptic_feedback_to_function_buttons" -> {
+                // do nothing
+            }
+            "user_fullscreen_when_in_landscape",
+            "user_fullscreen_when_in_portrait" -> {
+                // do nothing (onEvaluateFullscreenMode() will handle it well)
+            }
+            "user_enable_button_elevation",
+            "user_key_button_height",
+            "user_enable_double_touch_ime_switch" -> {
+                // just 'reload' the main layout
+                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToMainLayout()
+            }
+            "user_enable_physical_keyboard" -> {
+                // do nothing (onEvaluateInputViewShown() will handle it well)
+            }
+            "user_candidate_selection_keys_option" -> {
+                sharedPreferences.getString("user_candidate_selection_keys_option", "NUMBER_ROW")
+                    ?.let {
+                        ChewingBridge.setSelKey(
+                            ChewingUtil.SelectionKeysOption.valueOf(it).keys,
+                            10
+                        )
+                    }
+            }
+        }
     }
 }

@@ -29,7 +29,7 @@ import androidx.core.content.ContextCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 
 interface Vibratable {
-    enum class VibrationStrength(var strength: Long) {
+    enum class VibrationStrength(val strength: Long) {
         LIGHT(25),
         NORMAL(50),
         STRONG(100)
@@ -42,27 +42,34 @@ interface Vibratable {
         get() = 0..150
 
     fun performVibrate(context: Context, strength: VibrationStrength) {
-        if (strength.strength == 0L) {
-            return
-        }
-
         val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java) as Vibrator
+        var vibrationStrength: Long = strength.strength
 
         // If users want to use a consistent haptic feedback value for all buttons,
         // just do as they wish.
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
         val hapticFeedbackPreferenceStrength: Int =
-            sharedPreferences.getInt("user_haptic_feedback_strength", GuilelessBopomofoService.defaultHapticFeedbackStrength)
-        val sameHapticFeedbackToFuncButtons: Boolean = sharedPreferences.getBoolean("same_haptic_feedback_to_function_buttons", false)
+            sharedPreferences.getInt(
+                "user_haptic_feedback_strength",
+                GuilelessBopomofoService.defaultHapticFeedbackStrength
+            )
+        val sameHapticFeedbackToFuncButtons: Boolean =
+            sharedPreferences.getBoolean("same_haptic_feedback_to_function_buttons", false)
         if (sameHapticFeedbackToFuncButtons) {
-            strength.strength = hapticFeedbackPreferenceStrength.toLong()
+            vibrationStrength = hapticFeedbackPreferenceStrength.toLong()
+        }
+
+        // do nothing if user set vibration strength to 0
+        if (vibrationStrength == 0L) {
+            return
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val vibrationEffect = VibrationEffect.createOneShot(strength.strength, amplitude)
+            val vibrationEffect = VibrationEffect.createOneShot(vibrationStrength, amplitude)
             vibrator.vibrate(vibrationEffect)
         } else {
-            vibrator.vibrate(strength.strength)
+            vibrator.vibrate(vibrationStrength)
         }
     }
 
