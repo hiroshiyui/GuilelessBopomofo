@@ -28,14 +28,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/physical_keyboard_settings"
-        android:theme="@style/SettingsPrimaryHeader"
+        android:theme="@style/AppTheme.SettingsPrimaryHeader"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewSettingEnablePhysicalKeyboard"
-        style="@style/SettingsLabel"
+        style="@style/AppTheme.SettingsLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -65,7 +65,7 @@
 
     <TextView
         android:id="@+id/textViewSelectionKeysOption"
-        style="@style/SettingsLabel"
+        style="@style/AppTheme.SettingsLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"

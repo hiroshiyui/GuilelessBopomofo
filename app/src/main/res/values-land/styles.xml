@@ -24,9 +24,24 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTheme">@style/AppTheme.ActionBar</item>
     </style>
 
-    <style name="KeyboardTheme">
+    <style name="AppTheme.ActionBar">
+        <item name="android:textColorPrimary">@color/colorTitleText</item>
+    </style>
+
+    <style name="AppTheme.KeyboardPanel">
+        <item name="android:background">@color/colorKeyboardPanelBackground</item>
+    </style>
+
+    <style name="AppTheme.DividerKeyboardPanelTopBorder">
+        <item name="android:background">@color/colorKeyboardPanelBackground</item>
+        <item name="android:backgroundTint">@color/colorPrimaryDark</item>
+        <item name="android:backgroundTintMode">src_atop</item>
+    </style>
+
+    <style name="AppTheme.KeyboardTheme">
         <item name="android:background">@color/colorKeyboardBackground</item>
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="android:imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
@@ -36,12 +51,12 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="KeyboardRow" parent="KeyboardTheme">
+    <style name="AppTheme.KeyboardRow" parent="AppTheme.KeyboardTheme">
         <item name="android:layout_marginTop">2dp</item>
         <item name="android:layout_marginBottom">2dp</item>
     </style>
 
-    <style name="KeyImageButton" parent="Theme.AppCompat.Light">
+    <style name="AppTheme.KeyImageButton" parent="Theme.AppCompat.Light">
         <item name="android:imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
         <item name="imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
         <item name="android:minWidth">56dp</item>
@@ -49,15 +64,15 @@
         <item name="android:scaleType">centerCrop</item>
     </style>
 
-    <style name="SpecialKeyImageButton" parent="KeyImageButton">
+    <style name="AppTheme.KeyImageButton.SpecialKeyImageButton">
         <item name="android:backgroundTint">@color/colorKeyboardSpecialKeyBackground</item>
     </style>
 
-    <style name="EnterKeyImageButton" parent="KeyImageButton">
+    <style name="AppTheme.KeyImageButton.EnterKeyImageButton">
         <item name="android:backgroundTint">@color/colorKeyboardEnterKeyBackground</item>
     </style>
 
-    <style name="KeyButton" parent="Theme.AppCompat.Light">
+    <style name="AppTheme.KeyButton" parent="Theme.MaterialComponents.Light">
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
@@ -67,7 +82,7 @@
         <item name="fontFamily">sans-serif-black</item>
     </style>
 
-    <style name="CandidateItem" parent="Widget.AppCompat.Button">
+    <style name="AppTheme.CandidateItem" parent="Widget.AppCompat.Button">
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
@@ -76,7 +91,7 @@
         <item name="fontFamily">serif</item>
     </style>
 
-    <style name="SettingsLabel">
+    <style name="AppTheme.SettingsLabel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">32dp</item>
@@ -85,23 +100,28 @@
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 
-    <style name="SettingsDescription">
+    <style name="AppTheme.SettingsDescription">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
     </style>
 
-    <style name="SettingsWidget">
+    <style name="AppTheme.SettingsWidget">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="SettingsPrimaryHeader">
+    <style name="AppTheme.SettingsPrimaryHeader">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">sans-serif-black</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="KeyButtonPopupAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_show</item>
+        <item name="android:windowExitAnimation">@anim/popup_hide</item>
     </style>
 </resources>

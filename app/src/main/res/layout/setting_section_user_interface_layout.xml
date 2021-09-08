@@ -30,14 +30,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/user_interface_settings"
-        android:theme="@style/SettingsPrimaryHeader"
+        android:theme="@style/AppTheme.SettingsPrimaryHeader"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewHapticFeedbackStrength"
-        style="@style/SettingsLabel"
+        style="@style/AppTheme.SettingsLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -89,7 +89,7 @@
 
     <TextView
         android:id="@+id/textViewSettingFullscreen"
-        style="@style/SettingsLabel"
+        style="@style/AppTheme.SettingsLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -100,7 +100,7 @@
 
     <TextView
         android:id="@+id/textViewSettingDescriptionFullscreenMode"
-        style="@style/SettingsDescription"
+        style="@style/AppTheme.SettingsDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/fullscreen_mode_setting_description"
@@ -130,7 +130,7 @@
 
     <TextView
         android:id="@+id/textViewSettingKeyButtonsElevation"
-        style="@style/SettingsLabel"
+        style="@style/AppTheme.SettingsLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -141,7 +141,7 @@
 
     <TextView
         android:id="@+id/textViewSettingDescriptionKeyButtonsElevation"
-        style="@style/SettingsDescription"
+        style="@style/AppTheme.SettingsDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/switch_description_enable_keybutton_elevation"
@@ -161,7 +161,7 @@
 
     <TextView
         android:id="@+id/textViewSettingKeyButtonHeight"
-        style="@style/SettingsLabel"
+        style="@style/AppTheme.SettingsLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -172,7 +172,7 @@
 
     <TextView
         android:id="@+id/textViewSettingDescriptionKeyButtonHeight"
-        style="@style/SettingsDescription"
+        style="@style/AppTheme.SettingsDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/key_button_height_description"
@@ -204,7 +204,7 @@
 
     <TextView
         android:id="@+id/textViewSettingImeSwitch"
-        style="@style/SettingsLabel"
+        style="@style/AppTheme.SettingsLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -215,7 +215,7 @@
 
     <TextView
         android:id="@+id/textViewSettingDescriptionImeSwitch"
-        style="@style/SettingsDescription"
+        style="@style/AppTheme.SettingsDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/text_view_setting_description_ime_switch"
