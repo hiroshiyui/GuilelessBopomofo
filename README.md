@@ -26,12 +26,6 @@ A [Bopomofo](https://en.wikipedia.org/wiki/Bopomofo) software keyboard (aka inpu
 
 1. Enjoy!
 
-## Sponsor me or hire me! 贊助我，或者僱用我
-
-* https://www.patreon.com/hiroshiyui (long term sponsorship 長期贊助)
-* https://paypal.me/hiroshiyui (one-time donation 單筆捐款)
-* https://www.linkedin.com/in/huihongyou/ (My LinkedIn profile 我是誰)
-
 ## Acknowledgements 感謝有您
 
 * [Chewing contributors](http://chewing.im/about.html)
