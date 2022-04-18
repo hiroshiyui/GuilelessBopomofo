@@ -120,16 +120,18 @@ class KeyboardPanel(
                 GuilelessBopomofoService.defaultKeyboardLayout
             )
 
-        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
-            switchToCompactLayout()
-            return
-        }
-
         userKeyboardLayoutPreference?.let {
             val newKeyboardType = ChewingBridge.convKBStr2Num(it)
             ChewingBridge.setKBType(newKeyboardType)
         }
 
+        // Toggle to compact layout when physical keyboard is enabled:
+        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
+            switchToCompactLayout()
+            return
+        }
+
+        // Or we will use soft, on-screen keyboard:
         when (userKeyboardLayoutPreference) {
             "KB_HSU" -> {
                 if (GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getBoolean(
