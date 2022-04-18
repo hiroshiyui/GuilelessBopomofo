@@ -22,7 +22,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.util.AttributeSet
 import android.view.GestureDetector
-import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
@@ -56,7 +55,10 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                 ChewingBridge.handleEnter()
                 GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
             } else {
-                GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+                val editorInfo = GuilelessBopomofoServiceContext.serviceInstance.currentInputEditorInfo
+                editorInfo?.let {
+                    GuilelessBopomofoServiceContext.serviceInstance.currentInputConnection.performEditorAction(editorInfo.imeOptions)
+                }
             }
         }
     }
