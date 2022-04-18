@@ -32,30 +32,26 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="2dp"
-        android:background="@drawable/round_border"
-        android:fontFamily="monospace"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
         android:text="TextView"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
         tools:layout_conversion_absoluteHeight="26dp"
         tools:layout_conversion_absoluteWidth="83dp"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="7dp" />
+        tools:layout_editor_absoluteY="7dp"
+        style="@style/CandidateItemSelectionKey" />
 
     <TextView
         android:id="@+id/textViewCandidate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="serif"
         android:paddingStart="0dp"
         android:paddingEnd="4dp"
         android:text="TextView"
-        android:textSize="20sp"
         tools:layout_conversion_absoluteHeight="39dp"
         tools:layout_conversion_absoluteWidth="138dp"
         tools:layout_editor_absoluteX="87dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:layout_editor_absoluteY="0dp"
+        style="@style/PagedCandidateItem" />
 
 </LinearLayout>
