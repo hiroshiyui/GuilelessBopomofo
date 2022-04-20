@@ -40,9 +40,9 @@ import java.io.FileOutputStream
 
 class GuilelessBopomofoService : InputMethodService(),
     SharedPreferences.OnSharedPreferenceChangeListener {
-    val LOGTAG = "GuilelessBopomofoSvc"
+    private val logTag = "GuilelessBopomofoSvc"
     var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
-    var physicalKeyboardPresent: Boolean = false
+    private var physicalKeyboardPresent: Boolean = false
     var physicalKeyboardEnabled: Boolean = false
     lateinit var viewBinding: KeyboardLayoutBinding
     lateinit var sharedPreferences: SharedPreferences
@@ -64,7 +64,7 @@ class GuilelessBopomofoService : InputMethodService(),
 
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-        Log.v(LOGTAG, "onCreate()")
+        Log.d(logTag, "onCreate()")
         // Initializing Chewing
         try {
             val dataPath =
@@ -72,7 +72,7 @@ class GuilelessBopomofoService : InputMethodService(),
             setupChewingData(dataPath)
             ChewingBridge.connect(dataPath)
             ChewingBridge.context.let {
-                Log.v(LOGTAG, "Chewing context ptr: $it")
+                Log.d(logTag, "Chewing context ptr: $it")
             }
 
             if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
@@ -94,10 +94,10 @@ class GuilelessBopomofoService : InputMethodService(),
                 getString(R.string.libchewing_init_fail, exception.message)
             Toast.makeText(applicationContext, exceptionDescription, Toast.LENGTH_LONG)
                 .show()
-            exception.let {
-                it.printStackTrace()
-                it.message?.let {
-                    Log.e(LOGTAG, it)
+            exception.let { e ->
+                e.printStackTrace()
+                e.message?.let { msg ->
+                    Log.e(logTag, msg)
                 }
             }
         }
@@ -110,7 +110,7 @@ class GuilelessBopomofoService : InputMethodService(),
 
     override fun onCreateCandidatesView(): View? {
         // I want to implement my own candidate selection UI
-        Log.v(LOGTAG, "onCreateCandidatesView()")
+        Log.d(logTag, "onCreateCandidatesView()")
         return null
     }
 
@@ -138,7 +138,7 @@ class GuilelessBopomofoService : InputMethodService(),
     }
 
     override fun onCreateInputView(): View {
-        Log.v(LOGTAG, "onCreateInputView()")
+        Log.d(logTag, "onCreateInputView()")
         viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
         viewBinding.keyboardPanel.switchToMainLayout()
 
@@ -148,12 +148,12 @@ class GuilelessBopomofoService : InputMethodService(),
 
     override fun onInitializeInterface() {
         super.onInitializeInterface()
-        Log.v(LOGTAG, "onInitializeInterface()")
+        Log.d(logTag, "onInitializeInterface()")
     }
 
     override fun onEvaluateInputViewShown(): Boolean {
         super.onEvaluateInputViewShown()
-        Log.v(LOGTAG, "onEvaluateInputViewShown()")
+        Log.d(logTag, "onEvaluateInputViewShown()")
         physicalKeyboardPresent =
             (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY)
         physicalKeyboardEnabled = physicalKeyboardEnabled()
@@ -162,28 +162,28 @@ class GuilelessBopomofoService : InputMethodService(),
 
     override fun onBindInput() {
         super.onBindInput()
-        Log.v(LOGTAG, "onBindInput()")
+        Log.d(logTag, "onBindInput()")
     }
 
     override fun onStartInput(attribute: EditorInfo?, restarting: Boolean) {
         super.onStartInput(attribute, restarting)
-        Log.v(LOGTAG, "onStartInput()")
+        Log.d(logTag, "onStartInput()")
     }
 
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
-        Log.v(LOGTAG, "onStartInputView()")
+        Log.d(logTag, "onStartInputView()")
         GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
     }
 
     override fun onFinishInput() {
         super.onFinishInput()
-        Log.v(LOGTAG, "onFinishInput()")
+        Log.d(logTag, "onFinishInput()")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.v(LOGTAG, "onDestroy()")
+        Log.d(logTag, "onDestroy()")
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
         ChewingBridge.delete()
     }
@@ -274,7 +274,7 @@ class GuilelessBopomofoService : InputMethodService(),
 
         shiftKeyImageButton?.let {
             if (shiftKeyImageButton.isActive) {
-                Log.v(LOGTAG, "Shift is active")
+                Log.d(logTag, "Shift is active")
                 currentInputConnection.sendKeyEvent(
                     KeyEvent(ACTION_DOWN, KEYCODE_SHIFT_LEFT)
                 )
@@ -313,7 +313,7 @@ class GuilelessBopomofoService : InputMethodService(),
 
         shiftKeyImageButton?.let {
             if (shiftKeyImageButton.isActive && !shiftKeyImageButton.isLocked) {
-                Log.v(LOGTAG, "Release shift key")
+                Log.d(logTag, "Release shift key")
                 shiftKeyImageButton.switchToState(ShiftKey.ShiftKeyState.RELEASED)
                 currentInputConnection.sendKeyEvent(
                     KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT)
@@ -352,7 +352,7 @@ class GuilelessBopomofoService : InputMethodService(),
         val chewingDataDir = File(dataPath)
 
         if (!checkChewingData(dataPath)) {
-            Log.v(LOGTAG, "Install Chewing data files.")
+            Log.d(logTag, "Install Chewing data files.")
             installChewingData(dataPath)
         }
 
@@ -368,7 +368,7 @@ class GuilelessBopomofoService : InputMethodService(),
         }
 
         if (!chewingDataAppVersionTxt.readBytes().contentEquals(chewingAppVersion)) {
-            Log.v(LOGTAG, "Here comes a new version.")
+            Log.d(logTag, "Here comes a new version.")
             installChewingData(dataPath)
 
             // refresh app version
@@ -385,7 +385,7 @@ class GuilelessBopomofoService : InputMethodService(),
         // Copying data files
         for (file in chewingDataFiles) {
             val destinationFile = File(String.format("%s/%s", chewingDataDir.absolutePath, file))
-            Log.v(LOGTAG, "Copying ${file}...")
+            Log.d(logTag, "Copying ${file}...")
             val dataInputStream = assets.open(file)
             val dataOutputStream = FileOutputStream(destinationFile)
 
@@ -393,10 +393,10 @@ class GuilelessBopomofoService : InputMethodService(),
                 dataInputStream.copyTo(dataOutputStream)
             } catch (e: java.lang.Exception) {
                 e.message?.let {
-                    Log.e(LOGTAG, it)
+                    Log.e(logTag, it)
                 }
             } finally {
-                Log.v(LOGTAG, "Closing data I/O streams")
+                Log.d(logTag, "Closing data I/O streams")
                 dataInputStream.close()
                 dataOutputStream.close()
             }
@@ -404,7 +404,7 @@ class GuilelessBopomofoService : InputMethodService(),
     }
 
     private fun checkChewingData(dataPath: String): Boolean {
-        Log.v(LOGTAG, "Checking Chewing data files...")
+        Log.d(logTag, "Checking Chewing data files...")
         val chewingDataDir = File(dataPath)
 
         for (file in chewingDataFiles) {

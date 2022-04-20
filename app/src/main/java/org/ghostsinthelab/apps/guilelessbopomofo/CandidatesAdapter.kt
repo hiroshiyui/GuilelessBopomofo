@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidateItemLayoutBinding
 
 class CandidatesAdapter : RecyclerView.Adapter<CandidateViewHolder>() {
-    private val LOGTAG: String = "CandidatesAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CandidateViewHolder {
         val itemView =

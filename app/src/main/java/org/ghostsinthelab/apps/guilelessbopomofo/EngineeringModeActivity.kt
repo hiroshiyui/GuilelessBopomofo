@@ -29,7 +29,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityEngineering
 import java.io.File
 
 class EngineeringModeActivity : AppCompatActivity() {
-    private val LOGTAG: String = "EngineeringMode"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

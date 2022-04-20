@@ -23,7 +23,6 @@ import android.content.Context
 import android.os.Build
 import android.os.IBinder
 import android.util.AttributeSet
-import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.GestureDetectorCompat
@@ -38,7 +37,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
         mDetector = GestureDetectorCompat(context, MyGestureListener())
     }
 
-    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
+    inner class MyGestureListener : KeyImageButton.GestureListener() {
         override fun onDown(e: MotionEvent?): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.NORMAL)
             return true

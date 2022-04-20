@@ -33,7 +33,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class MainActivity : AppCompatActivity(), Vibratable {
-    private val LOGTAG: String = "MainActivity"
+    private val logTag: String = "MainActivity"
     private lateinit var binding: ActivityMainBinding
     private var engineeringModeEnterCount: Int = 0
     private val engineeringModeEnterClicks: Int = 5
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.v(LOGTAG, "onCreate()")
+        Log.d(logTag, "onCreate()")
         super.onCreate(savedInstanceState)
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
 
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
                 textViewServiceStatus.setTextColor(getColor(R.color.colorAccent))
 
                 for ((button, layout) in
-                mapOf<RadioButton, String>(
+                mapOf(
                     radioButtonLayoutDaChen to "KB_DEFAULT",
                     radioButtonLayoutETen26 to "KB_ET26",
                     radioButtonLayoutHsu to "KB_HSU",
@@ -286,7 +286,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
                 }
 
                 for ((button, keys) in
-                mapOf<RadioButton, String>(
+                mapOf(
                     radioButtonNumberRow to "NUMBER_ROW",
                     radioButtonHomeRow to "HOME_ROW",
                     radioButtonHomeTabMixedMode1 to "HOME_TAB_MIXED_MODE1",

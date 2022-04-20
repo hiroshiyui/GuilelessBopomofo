@@ -22,13 +22,11 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.GestureDetector
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class CharacterKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
@@ -39,7 +37,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
         mDetector.setOnDoubleTapListener(null)
     }
 
-    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
+    inner class MyGestureListener : KeyImageButton.GestureListener() {
         override fun onDown(e: MotionEvent?): Boolean {
             performVibrate(context, GuilelessBopomofoServiceContext.serviceInstance.userHapticFeedbackStrength.toLong())
             val keyButtonLocation = IntArray(2)
@@ -53,8 +51,8 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
                     popup.showAtLocation(
                         rootView,
                         Gravity.NO_GRAVITY,
-                        keyButtonLocation.get(0),
-                        keyButtonLocation.get(1) - this@CharacterKey.height
+                        keyButtonLocation[0],
+                        keyButtonLocation[1] - this@CharacterKey.height
                     )
                 }
             }

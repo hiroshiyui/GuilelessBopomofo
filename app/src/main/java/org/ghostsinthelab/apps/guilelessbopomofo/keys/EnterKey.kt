@@ -21,7 +21,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
@@ -39,7 +38,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         mDetector.setOnDoubleTapListener(null)
     }
 
-    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
+    inner class MyGestureListener : KeyImageButton.GestureListener() {
         override fun onDown(e: MotionEvent?): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.NORMAL)
             return true

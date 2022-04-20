@@ -24,7 +24,6 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 
 class KeyboardRow(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
-    private val LOGTAG: String = "KeyboardRow"
 
     init {
         this.orientation = HORIZONTAL

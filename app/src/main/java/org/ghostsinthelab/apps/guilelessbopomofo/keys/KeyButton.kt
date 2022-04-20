@@ -21,17 +21,18 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import androidx.emoji.widget.EmojiAppCompatButton
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 abstract class KeyButton(context: Context, attrs: AttributeSet) :
     EmojiAppCompatButton(context, attrs, R.attr.buttonStyle), BehaveLikeKey<KeyButton>,
     DisplayMetricsComputable {
-    private val LOGTAG: String = "KeyButton"
     private val sharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
     override var keyCodeString: String? = null
@@ -40,6 +41,7 @@ abstract class KeyButton(context: Context, attrs: AttributeSet) :
     override var keyShiftSymbol: String? = null
 
     abstract var mDetector: GestureDetectorCompat
+    abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         mDetector.onTouchEvent(event)

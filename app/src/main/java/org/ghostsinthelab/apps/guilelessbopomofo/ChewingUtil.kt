@@ -131,7 +131,7 @@ class ChewingUtil {
             }
         }
 
-        val dvorakKeysList: List<Char> = listOf(
+        private val dvorakKeysList: List<Char> = listOf(
             '\'', '\"', ',', '<', '.', '>', 'p', 'P', 'y', 'Y', 'f', 'F', 'g', 'G',
             'c', 'C', 'r', 'R', 'l', 'L', '/', '?', '=', '+', '\\', '|',
             'a', 'A', 'o', 'O', 'e', 'E', 'u', 'U', 'i', 'I', 'd', 'D', 'h', 'H',
@@ -140,7 +140,7 @@ class ChewingUtil {
             'w', 'W', 'v', 'V', 'z', 'Z'
         )
 
-        val qwertyKeysList: List<Char> = listOf(
+        private val qwertyKeysList: List<Char> = listOf(
             'q', 'Q', 'w', 'W', 'e', 'E', 'r', 'R', 't', 'T', 'y', 'Y', 'u', 'U',
             'i', 'I', 'o', 'O', 'p', 'P', '[', '{', ']', '}', '\\', '|',
             'a', 'A', 's', 'S', 'd', 'D', 'f', 'F', 'g', 'G', 'h', 'H', 'j', 'J',
@@ -149,10 +149,10 @@ class ChewingUtil {
             ',', '<', '.', '>', '/', '?'
         )
 
-        val qwertyKeyMapping: Map<Char, Char> = dvorakKeysList.zip(qwertyKeysList).toMap()
+        private val qwertyKeyMapping: Map<Char, Char> = dvorakKeysList.zip(qwertyKeysList).toMap()
 
         fun dvorakToQwertyKeyMapping(key: Char): Char {
-            qwertyKeyMapping.get(key)?.let {
+            qwertyKeyMapping[key]?.let {
                 return it
             }
             // if we can't find a mapping, then return the original key as-is

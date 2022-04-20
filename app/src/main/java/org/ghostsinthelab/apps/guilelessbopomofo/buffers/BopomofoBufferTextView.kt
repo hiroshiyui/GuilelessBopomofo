@@ -21,13 +21,11 @@ package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.GestureDetector
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 
 class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
     BufferTextView(context, attrs) {
-    private val LOGTAG = "BopomofoBufferTextView"
 
     override lateinit var mDetector: GestureDetectorCompat
 
@@ -45,5 +43,5 @@ class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
         this@BopomofoBufferTextView.text = ChewingBridge.bopomofoStringStatic()
     }
 
-    inner class MyGestureListener: GestureDetector.SimpleOnGestureListener()
+    inner class MyGestureListener: BufferTextView.GestureListener()
 }

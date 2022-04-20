@@ -25,7 +25,6 @@ import android.text.Spanned
 import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.util.Log
-import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.text.toSpannable
 import androidx.core.view.GestureDetectorCompat
@@ -37,7 +36,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     BufferTextView(context, attrs), Vibratable {
-    private val LOGTAG = "PreEditBufferTextView"
+    private val logTag = "PreEditBufferTextView"
     private lateinit var span: SpannableString
     override lateinit var mDetector: GestureDetectorCompat
 
@@ -92,7 +91,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         } catch (e: StringIndexOutOfBoundsException) {
-            Log.e(LOGTAG, "StringIndexOutOfBoundsException")
+            Log.e(logTag, "StringIndexOutOfBoundsException")
         }
     }
 
@@ -129,12 +128,12 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
     }
 
-    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
+    inner class MyGestureListener : BufferTextView.GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             val x = e.x
             val y = e.y
             offset = getOffsetForPosition(x, y)
-            Log.v(LOGTAG, "offset: $offset")
+            Log.d(logTag, "offset: $offset")
             performVibrate(context, Vibratable.VibrationStrength.LIGHT)
 
             return true

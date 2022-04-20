@@ -25,7 +25,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 
 class KeyboardLayout(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
-    private val LOGTAG: String = "Keyboard"
 
     init {
         this.orientation = VERTICAL

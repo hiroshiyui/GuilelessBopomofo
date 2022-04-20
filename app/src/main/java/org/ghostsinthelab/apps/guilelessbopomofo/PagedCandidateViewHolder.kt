@@ -24,7 +24,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class PagedCandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val LOGTAG: String = "PagedCandidateViewHolder"
 
     fun setData(candidate: Candidate) {
         val textViewCandidate = itemView.findViewById<TextView>(R.id.textViewCandidate)

@@ -23,7 +23,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.util.AttributeSet
 import android.util.Log
-import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
@@ -31,7 +30,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
-    override val LOGTAG: String = "ShiftKeyImageButton"
+    override val logTag: String = "ShiftKeyImageButton"
 
     // manage Shift key state
     enum class ShiftKeyState { RELEASED, PRESSED, HOLD }
@@ -64,7 +63,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
     }
 
-    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
+    inner class MyGestureListener : KeyImageButton.GestureListener() {
         override fun onDown(e: MotionEvent?): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.NORMAL)
             return true
@@ -87,7 +86,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
     }
 
     fun switchToState(state: ShiftKeyState) {
-        Log.v(LOGTAG, "Switch to state: ${state}")
+        Log.d(logTag, "Switch to state: $state")
         this.currentShiftKeyState = state
 
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK

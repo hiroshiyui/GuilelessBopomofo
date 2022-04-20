@@ -22,17 +22,19 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
     AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
     BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable {
-    open val LOGTAG: String = "KeyImageButton"
+    open val logTag: String = "KeyImageButton"
     val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
     override var keyCodeString: String? = null
@@ -41,6 +43,7 @@ abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
     override var keyShiftSymbol: String? = null
 
     abstract var mDetector: GestureDetectorCompat
+    abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         mDetector.onTouchEvent(event)

@@ -23,7 +23,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.SystemClock
 import android.util.AttributeSet
-import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
@@ -40,7 +39,7 @@ import kotlin.coroutines.CoroutineContext
 
 class BackspaceKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs), CoroutineScope {
-    var backspacePressed: Boolean = false
+    private var backspacePressed: Boolean = false
     var lastBackspaceClickTime: Long = 0
     override lateinit var mDetector: GestureDetectorCompat
 
@@ -52,7 +51,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         mDetector.setOnDoubleTapListener(null)
     }
 
-    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
+    inner class MyGestureListener : KeyImageButton.GestureListener() {
         override fun onDown(e: MotionEvent?): Boolean {
             // avoids too fast repeat clicks
             if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 100) {

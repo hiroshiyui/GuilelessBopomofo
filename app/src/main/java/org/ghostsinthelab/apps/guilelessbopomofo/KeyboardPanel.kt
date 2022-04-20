@@ -36,12 +36,12 @@ import kotlin.coroutines.CoroutineContext
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
 ) : RelativeLayout(context, attrs), CoroutineScope {
-    private val LOGTAG: String = "KeyboardPanel"
+    private val logTag: String = "KeyboardPanel"
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    var currentCandidatesList: Int = 0
+    private var currentCandidatesList: Int = 0
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     private lateinit var keyboardHsuQwertyLayoutBinding: KeyboardHsuQwertyLayoutBinding
     private lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
@@ -63,7 +63,7 @@ class KeyboardPanel(
     lateinit var currentKeyboardLayout: KeyboardLayout
 
     init {
-        Log.v(LOGTAG, "Building KeyboardLayout.")
+        Log.d(logTag, "Building KeyboardLayout.")
 
         keyButtonPopup.apply {
             animationStyle = R.style.KeyButtonPopupAnimation
@@ -93,7 +93,7 @@ class KeyboardPanel(
     }
 
     private fun switchToCompactLayout() {
-        Log.v(LOGTAG, "switchToCompactLayout")
+        Log.d(logTag, "switchToCompactLayout")
         this.removeAllViews()
         compactLayoutBinding =
             CompactLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
@@ -108,7 +108,7 @@ class KeyboardPanel(
     }
 
     private fun switchToBopomofoLayout() {
-        Log.v(LOGTAG, "switchToMainLayout")
+        Log.d(logTag, "switchToMainLayout")
         currentKeyboardLayout = KeyboardLayout.MAIN
 
         this.removeAllViews()
@@ -195,7 +195,7 @@ class KeyboardPanel(
     }
 
     private fun switchToQwertyLayout() {
-        Log.v(LOGTAG, "switchToQwertyLayout")
+        Log.d(logTag, "switchToQwertyLayout")
         currentKeyboardLayout = KeyboardLayout.QWERTY
 
         if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
@@ -211,7 +211,7 @@ class KeyboardPanel(
     }
 
     private fun switchToDvorakLayout() {
-        Log.v(LOGTAG, "switchToDvorakLayout")
+        Log.d(logTag, "switchToDvorakLayout")
         currentKeyboardLayout = KeyboardLayout.DVORAK
 
         if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
@@ -277,7 +277,7 @@ class KeyboardPanel(
 
     // list current offset's candidates in the candidate window
     fun switchToCandidatesLayout(offset: Int) {
-        Log.v(LOGTAG, "switchToCandidatesLayout")
+        Log.d(logTag, "switchToCandidatesLayout")
 
         // switch to the target candidates list
         repeat(currentCandidatesList) {
@@ -296,12 +296,12 @@ class KeyboardPanel(
 
     // just list current candidate window
     fun switchToCandidatesLayout() {
-        Log.v(LOGTAG, "switchToCandidatesLayout")
+        Log.d(logTag, "switchToCandidatesLayout")
         renderCandidatesLayout()
     }
 
     fun renderCandidatesLayout() {
-        Log.v(LOGTAG, "renderCandidatesLayout")
+        Log.d(logTag, "renderCandidatesLayout")
         currentKeyboardLayout = KeyboardLayout.CANDIDATES
 
         candidatesLayoutBinding =

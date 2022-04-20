@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.CandidateButton
 
 class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val LOGTAG: String = "CandidateViewHolder"
     private val candidateButton: CandidateButton = itemView.findViewById(R.id.buttonCandidateItem)
 
     fun setData(position: Int) {
