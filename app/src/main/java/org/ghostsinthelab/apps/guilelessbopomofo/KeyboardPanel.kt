@@ -23,6 +23,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.AttributeSet
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -57,7 +58,7 @@ class KeyboardPanel(
 
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
     val keyButtonPopupLayoutBinding: KeybuttonPopupLayoutBinding =
-        KeybuttonPopupLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+        KeybuttonPopupLayoutBinding.inflate(LayoutInflater.from(context))
     val keyButtonPopup = PopupWindow(keyButtonPopupLayoutBinding.root, 1, 1, false)
 
     enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY, DVORAK }
@@ -101,7 +102,7 @@ class KeyboardPanel(
         Log.d(logTag, "switchToCompactLayout")
         this.removeAllViews()
         compactLayoutBinding =
-            CompactLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+            CompactLayoutBinding.inflate(LayoutInflater.from(context))
         if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
             compactLayoutBinding.textViewCurrentModeValue.text =
                 resources.getString(R.string.mode_bopomofo)
@@ -145,11 +146,11 @@ class KeyboardPanel(
                     )
                 ) {
                     keyboardHsuQwertyLayoutBinding =
-                        KeyboardHsuQwertyLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                        KeyboardHsuQwertyLayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardHsuQwertyLayoutBinding.root)
                 } else {
                     keyboardHsuLayoutBinding =
-                        KeyboardHsuLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                        KeyboardHsuLayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardHsuLayoutBinding.root)
                 }
             }
@@ -160,11 +161,11 @@ class KeyboardPanel(
                     )
                 ) {
                     keyboardHsuDvorakBothLayoutBinding =
-                        KeyboardHsuDvorakBothLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                        KeyboardHsuDvorakBothLayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardHsuDvorakBothLayoutBinding.root)
                 } else {
                     keyboardHsuDvorakLayoutBinding =
-                        KeyboardHsuDvorakLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                        KeyboardHsuDvorakLayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardHsuDvorakLayoutBinding.root)
                 }
             }
@@ -175,17 +176,17 @@ class KeyboardPanel(
                     )
                 ) {
                     keyboardEt26QwertyLayoutBinding =
-                        KeyboardEt26QwertyLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                        KeyboardEt26QwertyLayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardEt26QwertyLayoutBinding.root)
                 } else {
                     keyboardEt26LayoutBinding =
-                        KeyboardEt26LayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                        KeyboardEt26LayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardEt26LayoutBinding.root)
                 }
             }
             "KB_DEFAULT" -> {
                 keyboardDachenLayoutBinding =
-                    KeyboardDachenLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+                    KeyboardDachenLayoutBinding.inflate(LayoutInflater.from(context))
                 this.addView(keyboardDachenLayoutBinding.root)
             }
         }
@@ -209,7 +210,7 @@ class KeyboardPanel(
         }
 
         keyboardQwertyLayoutBinding =
-            KeyboardQwertyLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+            KeyboardQwertyLayoutBinding.inflate(LayoutInflater.from(context))
 
         this.removeAllViews()
         this.addView(keyboardQwertyLayoutBinding.root)
@@ -225,7 +226,7 @@ class KeyboardPanel(
         }
 
         keyboardDvorakLayoutBinding =
-            KeyboardDvorakLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+            KeyboardDvorakLayoutBinding.inflate(LayoutInflater.from(context))
 
         this.removeAllViews()
         this.addView(keyboardDvorakLayoutBinding.root)
@@ -310,7 +311,7 @@ class KeyboardPanel(
         currentKeyboardLayout = KeyboardLayout.CANDIDATES
 
         candidatesLayoutBinding =
-            CandidatesLayoutBinding.inflate(GuilelessBopomofoServiceContext.serviceInstance.layoutInflater)
+            CandidatesLayoutBinding.inflate(LayoutInflater.from(context))
         this.removeAllViews()
         this.addView(candidatesLayoutBinding.root)
 
