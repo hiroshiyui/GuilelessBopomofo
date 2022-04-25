@@ -20,10 +20,12 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -61,6 +63,9 @@ class KeyboardPanel(
     enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY, DVORAK }
 
     lateinit var currentKeyboardLayout: KeyboardLayout
+
+    val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
 
     init {
         Log.d(logTag, "Building KeyboardLayout.")
@@ -115,7 +120,7 @@ class KeyboardPanel(
 
         // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
         val userKeyboardLayoutPreference =
-            GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getString(
+            sharedPreferences.getString(
                 "user_keyboard_layout",
                 GuilelessBopomofoService.defaultKeyboardLayout
             )
@@ -134,7 +139,7 @@ class KeyboardPanel(
         // Or we will use soft, on-screen keyboard:
         when (userKeyboardLayoutPreference) {
             "KB_HSU" -> {
-                if (GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getBoolean(
+                if (sharedPreferences.getBoolean(
                         "user_display_hsu_qwerty_layout",
                         false
                     )
@@ -149,7 +154,7 @@ class KeyboardPanel(
                 }
             }
             "KB_DVORAK_HSU" -> {
-                if (GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getBoolean(
+                if (sharedPreferences.getBoolean(
                         "user_display_dvorak_hsu_both_layout",
                         false
                     )
@@ -164,7 +169,7 @@ class KeyboardPanel(
                 }
             }
             "KB_ET26" -> {
-                if (GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getBoolean(
+                if (sharedPreferences.getBoolean(
                         "user_display_eten26_qwerty_layout",
                         false
                     )
@@ -227,7 +232,7 @@ class KeyboardPanel(
     }
 
     private fun userIsUsingDvorakHsu(): Boolean {
-        return (GuilelessBopomofoServiceContext.serviceInstance.sharedPreferences.getString(
+        return (sharedPreferences.getString(
             "user_keyboard_layout",
             GuilelessBopomofoService.defaultKeyboardLayout
         ) == "KB_DVORAK_HSU")
