@@ -173,7 +173,7 @@ class GuilelessBopomofoService : InputMethodService(),
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.d(logTag, "onStartInputView()")
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
+        viewBinding.keyboardPanel.updateBuffers()
     }
 
     override fun onFinishInput() {
@@ -248,7 +248,7 @@ class GuilelessBopomofoService : InputMethodService(),
             when (it.keyCode) {
                 KEYCODE_SHIFT_RIGHT -> {
                     ChewingUtil.openPuncCandidates()
-                    GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToCandidatesLayout()
+                    viewBinding.keyboardPanel.switchToCandidatesLayout()
                 }
                 KEYCODE_ALT_LEFT -> {
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -309,7 +309,7 @@ class GuilelessBopomofoService : InputMethodService(),
             ChewingBridge.handleDefault(keyPressed)
         }
 
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
+        viewBinding.keyboardPanel.updateBuffers()
 
         shiftKeyImageButton?.let {
             if (shiftKeyImageButton.isActive && !shiftKeyImageButton.isLocked) {
@@ -325,7 +325,7 @@ class GuilelessBopomofoService : InputMethodService(),
     private fun onPrintingKeyUp(event: KeyEvent) {
         // Detect if a candidate had been chosen by user
         val keyboardPanel =
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel
+            viewBinding.keyboardPanel
         if (keyboardPanel.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES) {
             if (ChewingUtil.candWindowClosed()) {
                 keyboardPanel.candidateSelectionDone()
@@ -424,7 +424,7 @@ class GuilelessBopomofoService : InputMethodService(),
             "user_display_eten26_qwerty_layout",
             "user_display_dvorak_hsu_both_layout" -> {
                 // just 'reload' the main layout
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToMainLayout()
+                viewBinding.keyboardPanel.switchToMainLayout()
             }
             "user_enable_space_as_selection" -> {
                 if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
@@ -455,7 +455,7 @@ class GuilelessBopomofoService : InputMethodService(),
             "user_key_button_height",
             "user_enable_double_touch_ime_switch" -> {
                 // just 'reload' the main layout
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToMainLayout()
+                viewBinding.keyboardPanel.switchToMainLayout()
             }
             "user_enable_physical_keyboard" -> {
                 // do nothing (onEvaluateInputViewShown() will handle it well)
