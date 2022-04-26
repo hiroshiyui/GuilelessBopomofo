@@ -32,12 +32,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.emoji.bundled.BundledEmojiCompatConfig
 import androidx.emoji.text.EmojiCompat
+import dagger.hilt.android.AndroidEntryPoint
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.*
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import java.io.File
 import java.io.FileOutputStream
 
+@AndroidEntryPoint
 class GuilelessBopomofoService : InputMethodService(),
     SharedPreferences.OnSharedPreferenceChangeListener {
     private val logTag = "GuilelessBopomofoSvc"

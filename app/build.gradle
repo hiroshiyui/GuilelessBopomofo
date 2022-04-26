@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 31
@@ -103,6 +104,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.preference:preference-ktx:1.2.0'
     implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.dagger:hilt-android:2.41'
     implementation 'com.github.google:flexbox-layout:2.0.1'
     implementation 'org.jetbrains.kotlin:kotlin-reflect:1.6.21'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1-native-mt'
@@ -122,4 +124,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.4.0'
     androidTestImplementation 'androidx.test:core:1.4.0'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    kapt 'com.google.dagger:hilt-compiler:2.41'
 }
