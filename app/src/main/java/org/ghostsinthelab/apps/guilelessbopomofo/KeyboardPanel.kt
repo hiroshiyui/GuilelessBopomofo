@@ -65,7 +65,7 @@ class KeyboardPanel(
 
     lateinit var currentKeyboardLayout: KeyboardLayout
 
-    val sharedPreferences: SharedPreferences =
+    private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
 
     init {

@@ -45,7 +45,7 @@ class GuilelessBopomofoService : InputMethodService(),
     private var physicalKeyboardPresent: Boolean = false
     var physicalKeyboardEnabled: Boolean = false
     lateinit var viewBinding: KeyboardLayoutBinding
-    lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var inputView: Keyboard
     private val chewingDataFiles =
         listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
@@ -237,7 +237,7 @@ class GuilelessBopomofoService : InputMethodService(),
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         event?.let {
             if (it.isPrintingKey) {
-                onPrintingKeyUp(it)
+                onPrintingKeyUp()
             }
         }
         return super.onKeyUp(keyCode, event)
@@ -322,7 +322,7 @@ class GuilelessBopomofoService : InputMethodService(),
         }
     }
 
-    private fun onPrintingKeyUp(event: KeyEvent) {
+    private fun onPrintingKeyUp() {
         // Detect if a candidate had been chosen by user
         val keyboardPanel =
             viewBinding.keyboardPanel
