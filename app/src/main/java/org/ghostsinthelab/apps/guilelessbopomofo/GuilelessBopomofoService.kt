@@ -34,6 +34,7 @@ import androidx.emoji.bundled.BundledEmojiCompatConfig
 import androidx.emoji.text.EmojiCompat
 import dagger.hilt.android.AndroidEntryPoint
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.*
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import java.io.File
@@ -89,7 +90,7 @@ class GuilelessBopomofoService : InputMethodService(),
             ChewingBridge.setCandPerPage(10)
 
             sharedPreferences.getString("user_candidate_selection_keys_option", "NUMBER_ROW")?.let {
-                ChewingBridge.setSelKey(ChewingUtil.SelectionKeysOption.valueOf(it).keys, 10)
+                ChewingBridge.setSelKey(SelectionKeys.valueOf(it).keys, 10)
             }
         } catch (exception: Exception) {
             val exceptionDescription: String =
@@ -466,7 +467,7 @@ class GuilelessBopomofoService : InputMethodService(),
                 sharedPreferences.getString("user_candidate_selection_keys_option", "NUMBER_ROW")
                     ?.let {
                         ChewingBridge.setSelKey(
-                            ChewingUtil.SelectionKeysOption.valueOf(it).keys,
+                            SelectionKeys.valueOf(it).keys,
                             10
                         )
                     }
