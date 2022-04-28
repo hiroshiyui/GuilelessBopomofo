@@ -106,7 +106,13 @@ class GuilelessBopomofoService : InputMethodService(),
         userHapticFeedbackStrength =
             sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
 
-        GuilelessBopomofoServiceContext.init(this)
+        viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
+
+        GuilelessBopomofoServiceContext.apply {
+            service = this@GuilelessBopomofoService
+            imeViewBinding = viewBinding
+            keyboardPanel = viewBinding.keyboardPanel
+        }
     }
 
     override fun onCreateCandidatesView(): View? {
@@ -140,14 +146,7 @@ class GuilelessBopomofoService : InputMethodService(),
 
     override fun onCreateInputView(): View {
         Log.d(logTag, "onCreateInputView()")
-        viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
         viewBinding.keyboardPanel.switchToMainLayout()
-
-        GuilelessBopomofoServiceContext.apply {
-            imeViewBinding = viewBinding
-            keyboardPanel = viewBinding.keyboardPanel
-        }
-
         inputView = viewBinding.root
         return inputView
     }
