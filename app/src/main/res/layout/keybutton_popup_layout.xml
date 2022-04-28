@@ -21,12 +21,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/keyButtonPopupWindowLayout"
+    style="@style/AppTheme.KeyButtonPopup"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/round_border"
-    android:backgroundTint="@color/colorKeyButtonPopupWindow"
-    android:backgroundTintMode="src_atop"
-    android:padding="8dp">
+    android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/keyButtonPopupImageView"
@@ -34,6 +31,6 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/keybutton_popup_image"
         android:scaleType="fitCenter"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme.KeyButtonPopupImageView"
         app:srcCompat="@drawable/ic_baseline_keyboard_24" />
 </RelativeLayout>

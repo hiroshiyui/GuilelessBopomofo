@@ -90,6 +90,18 @@
         <item name="android:background">@color/colorButtonBackgroundDark</item>
     </style>
 
+    <style name="AppTheme.KeyButtonPopup" parent="Theme.MaterialComponents">
+        <item name="android:background">@drawable/round_border</item>
+        <item name="android:backgroundTint">@color/colorGuilelessBopomofoThemeBase3</item>
+        <item name="android:backgroundTintMode">src_atop</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="AppTheme.KeyButtonPopupImageView" parent="Theme.MaterialComponents">
+        <item name="android:backgroundTint">@color/colorGuilelessBopomofoThemeBase3</item>
+        <item name="android:backgroundTintMode">src_atop</item>
+    </style>
+
     <style name="CandidateItemSelectionKey">
         <item name="android:background">@drawable/round_border</item>
         <item name="android:fontFamily">monospace</item>
