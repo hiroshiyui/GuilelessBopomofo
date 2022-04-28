@@ -21,12 +21,14 @@
     <alpha
         android:duration="150"
         android:fromAlpha="0"
+        android:interpolator="@android:anim/decelerate_interpolator"
         android:repeatCount="0"
         android:toAlpha="1.0" />
     <scale
         android:duration="150"
         android:fromXScale="0"
         android:fromYScale="0"
+        android:interpolator="@android:anim/linear_interpolator"
         android:pivotX="50%"
         android:pivotY="50%"
         android:repeatCount="0"
