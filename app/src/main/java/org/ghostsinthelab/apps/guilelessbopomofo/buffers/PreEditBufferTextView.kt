@@ -140,9 +140,9 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            GuilelessBopomofoServiceContext.imeViewBinding.let {
-                it.textViewPreEditBuffer.cursorMovedBy(CursorMovedBy.TOUCH)
-                it.keyboardPanel.switchToCandidatesLayout(offset)
+            GuilelessBopomofoServiceContext.imeViewBinding.apply {
+                textViewPreEditBuffer.cursorMovedBy(CursorMovedBy.TOUCH)
+                keyboardPanel.switchToCandidatesLayout(offset)
             }
             return true
         }

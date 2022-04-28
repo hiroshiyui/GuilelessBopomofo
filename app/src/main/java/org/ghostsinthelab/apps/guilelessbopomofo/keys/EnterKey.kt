@@ -59,10 +59,10 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                 val editorInfo =
                     GuilelessBopomofoServiceContext.service.currentInputEditorInfo
                 editorInfo?.let {
-                    when (editorInfo.imeOptions) {
+                    when (it.imeOptions) {
                         EditorInfo.IME_ACTION_GO, EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_SEARCH, EditorInfo.IME_ACTION_SEND -> {
                             GuilelessBopomofoServiceContext.service.currentInputConnection.performEditorAction(
-                                editorInfo.imeOptions
+                                it.imeOptions
                             )
                         }
                         else -> {

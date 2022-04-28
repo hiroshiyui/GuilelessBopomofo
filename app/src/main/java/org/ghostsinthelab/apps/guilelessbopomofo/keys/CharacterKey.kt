@@ -39,13 +39,16 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
 
     inner class MyGestureListener : KeyImageButton.GestureListener() {
         override fun onDown(e: MotionEvent?): Boolean {
-            performVibrate(context, GuilelessBopomofoServiceContext.service.userHapticFeedbackStrength.toLong())
+            performVibrate(
+                context,
+                GuilelessBopomofoServiceContext.service.userHapticFeedbackStrength.toLong()
+            )
             val keyButtonLocation = IntArray(2)
             getLocationInWindow(keyButtonLocation)
 
-            GuilelessBopomofoServiceContext.keyboardPanel.let {
-                it.keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(drawable)
-                it.keyButtonPopup.let { popup ->
+            GuilelessBopomofoServiceContext.keyboardPanel.apply {
+                keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(drawable)
+                keyButtonPopup.let { popup ->
                     popup.height = this@CharacterKey.height
                     popup.width = this@CharacterKey.width
                     popup.showAtLocation(

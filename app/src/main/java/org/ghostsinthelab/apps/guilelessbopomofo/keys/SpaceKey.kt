@@ -57,10 +57,10 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                 GuilelessBopomofoServiceContext.keyboardPanel.updateBuffers()
                 // 空白鍵是否為選字鍵？
                 if (ChewingBridge.getSpaceAsSelection() == 1 && ChewingBridge.candTotalChoice() > 0) {
-                    GuilelessBopomofoServiceContext.imeViewBinding.let {
-                        it.textViewPreEditBuffer.offset = ChewingBridge.cursorCurrent()
-                        it.textViewPreEditBuffer.renderUnderlineSpan()
-                        it.keyboardPanel.switchToCandidatesLayout()
+                    GuilelessBopomofoServiceContext.imeViewBinding.apply {
+                        textViewPreEditBuffer.offset = ChewingBridge.cursorCurrent()
+                        textViewPreEditBuffer.renderUnderlineSpan()
+                        keyboardPanel.switchToCandidatesLayout()
                     }
                 }
             } else {

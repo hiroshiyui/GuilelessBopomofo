@@ -281,7 +281,7 @@ class GuilelessBopomofoService : InputMethodService(),
             )
 
         shiftKeyImageButton?.let {
-            if (shiftKeyImageButton.isActive) {
+            if (it.isActive) {
                 Log.d(logTag, "Shift is active")
                 currentInputConnection.sendKeyEvent(
                     KeyEvent(ACTION_DOWN, KEYCODE_SHIFT_LEFT)
@@ -320,9 +320,9 @@ class GuilelessBopomofoService : InputMethodService(),
         viewBinding.keyboardPanel.updateBuffers()
 
         shiftKeyImageButton?.let {
-            if (shiftKeyImageButton.isActive && !shiftKeyImageButton.isLocked) {
+            if (it.isActive && !it.isLocked) {
                 Log.d(logTag, "Release shift key")
-                shiftKeyImageButton.switchToState(ShiftKey.ShiftKeyState.RELEASED)
+                it.switchToState(ShiftKey.ShiftKeyState.RELEASED)
                 currentInputConnection.sendKeyEvent(
                     KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT)
                 )
