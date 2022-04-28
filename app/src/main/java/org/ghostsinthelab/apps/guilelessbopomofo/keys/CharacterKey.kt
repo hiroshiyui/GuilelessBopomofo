@@ -39,26 +39,11 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
 
     inner class MyGestureListener : KeyImageButton.GestureListener() {
         override fun onDown(e: MotionEvent?): Boolean {
+            showKeyButtonPopup()
             performVibrate(
                 context,
                 GuilelessBopomofoServiceContext.service.userHapticFeedbackStrength.toLong()
             )
-            val keyButtonLocation = IntArray(2)
-            getLocationInWindow(keyButtonLocation)
-
-            GuilelessBopomofoServiceContext.keyboardPanel.apply {
-                keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(drawable)
-                keyButtonPopup.let { popup ->
-                    popup.height = this@CharacterKey.height
-                    popup.width = this@CharacterKey.width
-                    popup.showAtLocation(
-                        rootView,
-                        Gravity.NO_GRAVITY,
-                        keyButtonLocation[0],
-                        keyButtonLocation[1] - this@CharacterKey.height
-                    )
-                }
-            }
             return true
         }
 
@@ -86,5 +71,24 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
             }
         }
         return true
+    }
+
+    private fun showKeyButtonPopup() {
+        val keyButtonLocation = IntArray(2)
+        getLocationInWindow(keyButtonLocation)
+
+        GuilelessBopomofoServiceContext.keyboardPanel.apply {
+            keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(drawable)
+            keyButtonPopup.let { popup ->
+                popup.height = this@CharacterKey.height
+                popup.width = this@CharacterKey.width
+                popup.showAtLocation(
+                    rootView,
+                    Gravity.NO_GRAVITY,
+                    keyButtonLocation[0],
+                    keyButtonLocation[1] - this@CharacterKey.height
+                )
+            }
+        }
     }
 }
