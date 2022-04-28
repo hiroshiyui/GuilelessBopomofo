@@ -104,9 +104,9 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         fun action() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.handleBackspace()
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
+                GuilelessBopomofoServiceContext.keyboardPanel.updateBuffers()
             } else {
-                GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
+                GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
             }
         }
     }

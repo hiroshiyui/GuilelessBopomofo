@@ -32,15 +32,15 @@ class RightKey {
             ChewingBridge.handleRight()
             if (ChewingBridge.bufferLen() > 0) {
                 val preEditBuffer =
-                    GuilelessBopomofoServiceContext.serviceInstance.viewBinding.textViewPreEditBuffer
+                    GuilelessBopomofoServiceContext.imeViewBinding.textViewPreEditBuffer
                 preEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedBy.PHYSICAL_KEYBOARD)
             } else {
-                GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
+                GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
             }
 
             // toggle to next page of candidates
             val keyboardPanel =
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel
+                GuilelessBopomofoServiceContext.keyboardPanel
             if (keyboardPanel.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES && ChewingUtil.candWindowOpened()) {
                 keyboardPanel.renderCandidatesLayout()
             }

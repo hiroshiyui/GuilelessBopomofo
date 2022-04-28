@@ -19,10 +19,14 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-object GuilelessBopomofoServiceContext {
-    lateinit var serviceInstance: GuilelessBopomofoService
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 
-    fun bindServiceInstance(guilelessBopomofoService: GuilelessBopomofoService) {
-        this.serviceInstance = guilelessBopomofoService
+object GuilelessBopomofoServiceContext {
+    lateinit var service: GuilelessBopomofoService
+    lateinit var imeViewBinding: KeyboardLayoutBinding
+    lateinit var keyboardPanel: KeyboardPanel
+
+    fun init(guilelessBopomofoService: GuilelessBopomofoService) {
+        this.service = guilelessBopomofoService
     }
 }

@@ -132,7 +132,7 @@ class KeyboardPanel(
         }
 
         // Toggle to compact layout when physical keyboard is enabled:
-        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
+        if (GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
             switchToCompactLayout()
             return
         }
@@ -204,7 +204,7 @@ class KeyboardPanel(
         Log.d(logTag, "switchToQwertyLayout")
         currentKeyboardLayout = KeyboardLayout.QWERTY
 
-        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
+        if (GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
             switchToCompactLayout()
             return
         }
@@ -220,7 +220,7 @@ class KeyboardPanel(
         Log.d(logTag, "switchToDvorakLayout")
         currentKeyboardLayout = KeyboardLayout.DVORAK
 
-        if (GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
+        if (GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
             switchToCompactLayout()
             return
         }
@@ -275,7 +275,7 @@ class KeyboardPanel(
     }
 
     fun updateBuffers() {
-        GuilelessBopomofoServiceContext.serviceInstance.viewBinding.apply {
+        GuilelessBopomofoServiceContext.imeViewBinding.apply {
             launch { textViewPreEditBuffer.update() }
             launch { textViewBopomofoBuffer.update() }
         }
@@ -317,7 +317,7 @@ class KeyboardPanel(
 
         val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
 
-        if (!GuilelessBopomofoServiceContext.serviceInstance.physicalKeyboardEnabled) {
+        if (!GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
             candidatesRecyclerView.adapter = CandidatesAdapter()
             candidatesRecyclerView.layoutManager =
                 GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)

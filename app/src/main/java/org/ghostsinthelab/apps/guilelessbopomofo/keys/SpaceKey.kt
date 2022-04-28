@@ -54,24 +54,24 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         fun action() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.handleSpace()
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
+                GuilelessBopomofoServiceContext.keyboardPanel.updateBuffers()
                 // 空白鍵是否為選字鍵？
                 if (ChewingBridge.getSpaceAsSelection() == 1 && ChewingBridge.candTotalChoice() > 0) {
-                    GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
+                    GuilelessBopomofoServiceContext.imeViewBinding.let {
                         it.textViewPreEditBuffer.offset = ChewingBridge.cursorCurrent()
                         it.textViewPreEditBuffer.renderUnderlineSpan()
                         it.keyboardPanel.switchToCandidatesLayout()
                     }
                 }
             } else {
-                GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
+                GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
             }
         }
 
         // for physical keyboard space key, detect if Shift is pressed first:
         fun action(keyEvent: KeyEvent) {
             if (keyEvent.isShiftPressed) {
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.toggleMainLayoutMode()
+                GuilelessBopomofoServiceContext.keyboardPanel.toggleMainLayoutMode()
                 return
             }
             action()

@@ -54,19 +54,19 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         fun action() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) { // not committed yet
                 ChewingBridge.handleEnter()
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.updateBuffers()
+                GuilelessBopomofoServiceContext.keyboardPanel.updateBuffers()
             } else {
                 val editorInfo =
-                    GuilelessBopomofoServiceContext.serviceInstance.currentInputEditorInfo
+                    GuilelessBopomofoServiceContext.service.currentInputEditorInfo
                 editorInfo?.let {
                     when (editorInfo.imeOptions) {
                         EditorInfo.IME_ACTION_GO, EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_SEARCH, EditorInfo.IME_ACTION_SEND -> {
-                            GuilelessBopomofoServiceContext.serviceInstance.currentInputConnection.performEditorAction(
+                            GuilelessBopomofoServiceContext.service.currentInputConnection.performEditorAction(
                                 editorInfo.imeOptions
                             )
                         }
                         else -> {
-                            GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(
+                            GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(
                                 KeyEvent.KEYCODE_ENTER
                             )
                         }

@@ -40,7 +40,7 @@ class SymbolFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(
         }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.switchToSymbolPicker()
+            GuilelessBopomofoServiceContext.keyboardPanel.switchToSymbolPicker()
             return true
         }
     }

@@ -43,7 +43,7 @@ class CandidateButton(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel.candidateSelectionDone(candidate.index)
+            GuilelessBopomofoServiceContext.keyboardPanel.candidateSelectionDone(candidate.index)
             return true
         }
     }

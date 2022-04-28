@@ -32,15 +32,15 @@ class LeftKey {
             ChewingBridge.handleLeft()
             if (ChewingBridge.bufferLen() > 0) {
                 val preEditBuffer =
-                    GuilelessBopomofoServiceContext.serviceInstance.viewBinding.textViewPreEditBuffer
+                    GuilelessBopomofoServiceContext.imeViewBinding.textViewPreEditBuffer
                 preEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedBy.PHYSICAL_KEYBOARD)
             } else {
-                GuilelessBopomofoServiceContext.serviceInstance.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
+                GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
             }
 
             // toggle to previous page of candidates
             val keyboardPanel =
-                GuilelessBopomofoServiceContext.serviceInstance.viewBinding.keyboardPanel
+                GuilelessBopomofoServiceContext.keyboardPanel
             if (keyboardPanel.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES && ChewingUtil.candWindowOpened()) {
                 keyboardPanel.renderCandidatesLayout()
             }

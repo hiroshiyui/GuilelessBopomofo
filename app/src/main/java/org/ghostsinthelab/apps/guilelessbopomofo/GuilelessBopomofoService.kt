@@ -47,7 +47,7 @@ class GuilelessBopomofoService : InputMethodService(),
     var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
     private var physicalKeyboardPresent: Boolean = false
     var physicalKeyboardEnabled: Boolean = false
-    lateinit var viewBinding: KeyboardLayoutBinding
+    private lateinit var viewBinding: KeyboardLayoutBinding
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var inputView: Keyboard
     private val chewingDataFiles =
@@ -108,7 +108,7 @@ class GuilelessBopomofoService : InputMethodService(),
         userHapticFeedbackStrength =
             sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
 
-        GuilelessBopomofoServiceContext.bindServiceInstance(this)
+        GuilelessBopomofoServiceContext.init(this)
     }
 
     override fun onCreateCandidatesView(): View? {
@@ -144,6 +144,11 @@ class GuilelessBopomofoService : InputMethodService(),
         Log.d(logTag, "onCreateInputView()")
         viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
         viewBinding.keyboardPanel.switchToMainLayout()
+
+        GuilelessBopomofoServiceContext.apply {
+            imeViewBinding = viewBinding
+            keyboardPanel = viewBinding.keyboardPanel
+        }
 
         inputView = viewBinding.root
         return inputView

@@ -100,7 +100,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         // 會把 pre-edit buffer 開頭送到 commit buffer，
         // 所以要先丟出來：
         if (ChewingBridge.commitCheck() == 1) {
-            GuilelessBopomofoServiceContext.serviceInstance.currentInputConnection.commitText(
+            GuilelessBopomofoServiceContext.service.currentInputConnection.commitText(
                 ChewingBridge.commitString(),
                 1
             )
@@ -140,7 +140,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            GuilelessBopomofoServiceContext.serviceInstance.viewBinding.let {
+            GuilelessBopomofoServiceContext.imeViewBinding.let {
                 it.textViewPreEditBuffer.cursorMovedBy(CursorMovedBy.TOUCH)
                 it.keyboardPanel.switchToCandidatesLayout(offset)
             }
