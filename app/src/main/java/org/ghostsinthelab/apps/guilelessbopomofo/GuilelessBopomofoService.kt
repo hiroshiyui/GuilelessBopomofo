@@ -106,14 +106,17 @@ class GuilelessBopomofoService : InputMethodService(),
         userHapticFeedbackStrength =
             sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
 
-        viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
+        ensureViewBindingIsInitialized()
 
         GuilelessBopomofoServiceContext.apply {
             service = this@GuilelessBopomofoService
-            imeViewBinding = viewBinding
-            keyboardPanel = viewBinding.keyboardPanel
+            service.apply {
+                imeViewBinding = this.viewBinding
+                keyboardPanel = this.viewBinding.keyboardPanel
+            }
         }
     }
+
 
     override fun onCreateCandidatesView(): View? {
         // I want to implement my own candidate selection UI
@@ -146,6 +149,7 @@ class GuilelessBopomofoService : InputMethodService(),
 
     override fun onCreateInputView(): View {
         Log.d(logTag, "onCreateInputView()")
+        ensureViewBindingIsInitialized()
         viewBinding.keyboardPanel.switchToMainLayout()
         inputView = viewBinding.root
         return inputView
@@ -350,6 +354,14 @@ class GuilelessBopomofoService : InputMethodService(),
             return true
         }
         return false
+    }
+
+    private fun ensureViewBindingIsInitialized() {
+        if (this::viewBinding.isInitialized) {
+            return
+        } else {
+            viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
+        }
     }
 
     private fun setupChewingData(dataPath: String) {
