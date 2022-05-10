@@ -276,8 +276,8 @@ class GuilelessBopomofoService : InputMethodService(),
 
         var keyPressed: Char = event.unicodeChar.toChar()
 
-        val shiftKeyImageButton =
-            viewBinding.keyboardPanel.findViewById<ShiftKey>(
+        val shiftKeyImageButton: ShiftKey? =
+            viewBinding.keyboardPanel.findViewById(
                 R.id.keyImageButtonShift
             )
 
