@@ -54,10 +54,10 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         fun action() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.handleSpace()
-                GuilelessBopomofoServiceContext.keyboardPanel.updateBuffers()
+                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.updateBuffers()
                 // 空白鍵是否為選字鍵？
                 if (ChewingBridge.getSpaceAsSelection() == 1 && ChewingBridge.candTotalChoice() > 0) {
-                    GuilelessBopomofoServiceContext.imeViewBinding.apply {
+                    GuilelessBopomofoServiceContext.service.viewBinding.apply {
                         textViewPreEditBuffer.offset = ChewingBridge.cursorCurrent()
                         textViewPreEditBuffer.renderUnderlineSpan()
                         keyboardPanel.switchToCandidatesLayout()
@@ -71,7 +71,7 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         // for physical keyboard space key, detect if Shift is pressed first:
         fun action(keyEvent: KeyEvent) {
             if (keyEvent.isShiftPressed) {
-                GuilelessBopomofoServiceContext.keyboardPanel.toggleMainLayoutMode()
+                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.toggleMainLayoutMode()
                 return
             }
             action()

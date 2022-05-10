@@ -40,7 +40,7 @@ class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBut
         }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            GuilelessBopomofoServiceContext.keyboardPanel.toggleMainLayoutMode()
+            GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.toggleMainLayoutMode()
             return true
         }
     }

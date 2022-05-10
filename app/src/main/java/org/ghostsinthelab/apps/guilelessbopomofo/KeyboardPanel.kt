@@ -275,7 +275,7 @@ class KeyboardPanel(
     }
 
     fun updateBuffers() {
-        GuilelessBopomofoServiceContext.imeViewBinding.apply {
+        GuilelessBopomofoServiceContext.service.viewBinding.apply {
             launch { textViewPreEditBuffer.update() }
             launch { textViewBopomofoBuffer.update() }
         }

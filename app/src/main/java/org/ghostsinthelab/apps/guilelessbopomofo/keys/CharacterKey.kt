@@ -66,7 +66,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
         event?.let {
             when (it.action) {
                 MotionEvent.ACTION_UP -> {
-                    GuilelessBopomofoServiceContext.keyboardPanel.keyButtonPopup.dismiss()
+                    GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.keyButtonPopup.dismiss()
                 }
             }
         }
@@ -77,7 +77,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
         val keyButtonLocation = IntArray(2)
         getLocationInWindow(keyButtonLocation)
 
-        GuilelessBopomofoServiceContext.keyboardPanel.apply {
+        GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.apply {
             keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(drawable)
             keyButtonPopup.let { popup ->
                 popup.height = this@CharacterKey.height

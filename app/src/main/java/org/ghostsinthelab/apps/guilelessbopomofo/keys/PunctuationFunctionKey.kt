@@ -42,14 +42,14 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBu
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
             ChewingUtil.handleShiftComma()
-            GuilelessBopomofoServiceContext.keyboardPanel.updateBuffers()
+            GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.updateBuffers()
             return true
         }
 
         override fun onLongPress(e: MotionEvent?) {
             performVibrate(context, Vibratable.VibrationStrength.STRONG)
             ChewingUtil.openPuncCandidates()
-            GuilelessBopomofoServiceContext.keyboardPanel.switchToCandidatesLayout()
+            GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.switchToCandidatesLayout()
         }
     }
 }

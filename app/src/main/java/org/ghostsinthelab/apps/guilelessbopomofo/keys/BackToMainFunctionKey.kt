@@ -40,7 +40,7 @@ class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(c
         }
 
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            GuilelessBopomofoServiceContext.keyboardPanel.backToMainLayout()
+            GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.backToMainLayout()
             return true
         }
     }

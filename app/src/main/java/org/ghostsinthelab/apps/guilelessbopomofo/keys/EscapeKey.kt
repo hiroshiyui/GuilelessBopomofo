@@ -26,7 +26,7 @@ class EscapeKey {
     companion object {
         fun action() {
             val keyboardPanel =
-                GuilelessBopomofoServiceContext.keyboardPanel
+                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel
             if (keyboardPanel.currentKeyboardLayout in listOf(
                     KeyboardPanel.KeyboardLayout.SYMBOLS,
                     KeyboardPanel.KeyboardLayout.CANDIDATES

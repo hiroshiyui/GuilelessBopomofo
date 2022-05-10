@@ -19,10 +19,6 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
-
 object GuilelessBopomofoServiceContext {
     lateinit var service: GuilelessBopomofoService
-    lateinit var imeViewBinding: KeyboardLayoutBinding
-    lateinit var keyboardPanel: KeyboardPanel
 }
