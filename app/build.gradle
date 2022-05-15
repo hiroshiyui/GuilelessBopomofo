@@ -89,6 +89,7 @@ android {
         exec {
             workingDir("$rootDir/app/libs/libchewing")
             commandLine('make', 'clean')
+            ignoreExitValue true
         }
     }
 }
