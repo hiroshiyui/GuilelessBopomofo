@@ -42,7 +42,7 @@ android {
             version "3.22.1"
         }
     }
-    ndkVersion '22.1.7171670'
+    ndkVersion '23.1.7779620'
 
     testOptions {
         unitTests {
