@@ -6,6 +6,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 32
     buildToolsVersion '32.0.0'
+    namespace 'org.ghostsinthelab.apps.guilelessbopomofo'
 
     defaultConfig {
         applicationId "org.ghostsinthelab.apps.guilelessbopomofo"
@@ -36,18 +37,29 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
             version "3.22.1"
         }
     }
+
     ndkVersion '23.1.7779620'
 
     testOptions {
         unitTests {
             includeAndroidResources = true
         }
+    }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 
     task prepareChewing(type: Exec) {
@@ -60,38 +72,32 @@ android {
         commandLine('./build-android.sh')
     }
 
+    def chewingDataFiles = ["dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat"]
+
     task copyChewingDataFiles(type: Copy) {
         dependsOn 'prepareChewing'
         from("$rootDir/app/libs/libchewing/data") {
-            include("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
+            include(chewingDataFiles)
         }
         into("$rootDir/app/src/main/assets")
     }
 
-    compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
-        sourceCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-    namespace 'org.ghostsinthelab.apps.guilelessbopomofo'
-
     preBuild.dependsOn('copyChewingDataFiles')
 
-    clean.doLast {
-        file("$rootDir/app/src/main/assets/dictionary.dat").delete()
-        file("$rootDir/app/src/main/assets/index_tree.dat").delete()
-        file("$rootDir/app/src/main/assets/pinyin.tab").delete()
-        file("$rootDir/app/src/main/assets/swkb.dat").delete()
-        file("$rootDir/app/src/main/assets/symbols.dat").delete()
-        exec {
-            workingDir("$rootDir/app/libs/libchewing")
-            commandLine('make', 'clean')
-            ignoreExitValue true
+    task cleanChewingDataFiles(type: Delete) {
+        chewingDataFiles.each {
+            file("$rootDir/app/src/main/assets/$it").delete()
         }
     }
+
+    task execMakeClean(type: Exec) {
+        onlyIf { file("$rootDir/app/libs/libchewing/Makefile").exists() }
+        workingDir("$rootDir/app/libs/libchewing")
+        commandLine('make', 'clean')
+        ignoreExitValue true
+    }
+
+    clean.dependsOn('cleanChewingDataFiles', 'execMakeClean')
 }
 
 dependencies {
