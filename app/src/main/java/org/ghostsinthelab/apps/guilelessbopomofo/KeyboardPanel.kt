@@ -72,7 +72,6 @@ class KeyboardPanel(
         Log.d(logTag, "Building KeyboardLayout.")
 
         keyButtonPopup.apply {
-            animationStyle = R.style.KeyButtonPopupAnimation
             elevation = 8F
         }
     }
