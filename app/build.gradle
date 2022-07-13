@@ -101,20 +101,20 @@ android {
 }
 
 dependencies {
-    def androidx_appcompat_version = '1.4.1'
+    def androidx_appcompat_version = '1.4.2'
     def androidx_emoji_version = '1.2.0-alpha03'
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
     implementation "androidx.appcompat:appcompat-resources:$androidx_appcompat_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.preference:preference-ktx:1.2.0'
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.android.material:material:1.6.1'
     implementation 'com.github.google:flexbox-layout:2.0.1'
-    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.6.21'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1-native-mt'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.10'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3'
     implementation "androidx.emoji:emoji:$androidx_emoji_version"
     implementation "androidx.emoji:emoji-appcompat:$androidx_emoji_version"
     implementation "androidx.emoji:emoji-bundled:$androidx_emoji_version"
