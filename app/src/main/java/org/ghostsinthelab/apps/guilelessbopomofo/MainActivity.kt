@@ -67,9 +67,10 @@ class MainActivity : AppCompatActivity(), Vibratable {
             }
 
             sectionGeneral.apply {
-                val startImeSystemSettingActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                    textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
-                }
+                val startImeSystemSettingActivity =
+                    registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                        textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
+                    }
 
                 buttonLaunchImeSystemSettings.setOnClickListener {
                     val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
@@ -105,7 +106,8 @@ class MainActivity : AppCompatActivity(), Vibratable {
                     }
 
                     it.setOnCheckedChangeListener { _, isChecked ->
-                        sharedPreferences.edit().putBoolean("user_display_hsu_qwerty_layout", isChecked).apply()
+                        sharedPreferences.edit()
+                            .putBoolean("user_display_hsu_qwerty_layout", isChecked).apply()
 
                     }
                 }
@@ -116,18 +118,24 @@ class MainActivity : AppCompatActivity(), Vibratable {
                     }
 
                     it.setOnCheckedChangeListener { _, isChecked ->
-                        sharedPreferences.edit().putBoolean("user_display_eten26_qwerty_layout", isChecked).apply()
+                        sharedPreferences.edit()
+                            .putBoolean("user_display_eten26_qwerty_layout", isChecked).apply()
 
                     }
                 }
 
                 switchDisplayDvorakHsuBothLayout.let {
-                    if (sharedPreferences.getBoolean("user_display_dvorak_hsu_both_layout", false)) {
+                    if (sharedPreferences.getBoolean(
+                            "user_display_dvorak_hsu_both_layout",
+                            false
+                        )
+                    ) {
                         it.isChecked = true
                     }
 
                     it.setOnCheckedChangeListener { _, isChecked ->
-                        sharedPreferences.edit().putBoolean("user_display_dvorak_hsu_both_layout", isChecked).apply()
+                        sharedPreferences.edit()
+                            .putBoolean("user_display_dvorak_hsu_both_layout", isChecked).apply()
 
                     }
                 }
@@ -157,10 +165,16 @@ class MainActivity : AppCompatActivity(), Vibratable {
 
             sectionUserInterface.apply {
                 var hapticFeedbackPreferenceStrength =
-                    sharedPreferences.getInt("user_haptic_feedback_strength", GuilelessBopomofoService.defaultHapticFeedbackStrength)
+                    sharedPreferences.getInt(
+                        "user_haptic_feedback_strength",
+                        GuilelessBopomofoService.defaultHapticFeedbackStrength
+                    )
 
                 textViewSettingHapticFeedbaclCurrentStrength.text =
-                    String.format(resources.getString(R.string.haptic_feedback_strength_setting), hapticFeedbackPreferenceStrength)
+                    String.format(
+                        resources.getString(R.string.haptic_feedback_strength_setting),
+                        hapticFeedbackPreferenceStrength
+                    )
                 seekBarHapticFeedbackStrength.progress = hapticFeedbackPreferenceStrength
 
                 seekBarHapticFeedbackStrength.setOnSeekBarChangeListener(object :
@@ -171,12 +185,21 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         fromUser: Boolean
                     ) {
                         hapticFeedbackPreferenceStrength = progress
-                        performVibrate(applicationContext, hapticFeedbackPreferenceStrength.toLong())
+                        performVibrate(
+                            applicationContext,
+                            hapticFeedbackPreferenceStrength.toLong()
+                        )
 
                         sharedPreferences.edit()
-                            .putInt("user_haptic_feedback_strength", hapticFeedbackPreferenceStrength).apply()
+                            .putInt(
+                                "user_haptic_feedback_strength",
+                                hapticFeedbackPreferenceStrength
+                            ).apply()
                         textViewSettingHapticFeedbaclCurrentStrength.text =
-                            String.format(resources.getString(R.string.haptic_feedback_strength_setting), hapticFeedbackPreferenceStrength)
+                            String.format(
+                                resources.getString(R.string.haptic_feedback_strength_setting),
+                                hapticFeedbackPreferenceStrength
+                            )
                     }
 
                     override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -187,13 +210,18 @@ class MainActivity : AppCompatActivity(), Vibratable {
                 })
 
                 switchSettingApplySameHapticFeedbackStrengthToFunctionButtons.let {
-                    if (sharedPreferences.getBoolean("same_haptic_feedback_to_function_buttons", false)) {
+                    if (sharedPreferences.getBoolean(
+                            "same_haptic_feedback_to_function_buttons",
+                            false
+                        )
+                    ) {
                         it.isChecked = true
                     }
 
                     it.setOnCheckedChangeListener { _, isChecked ->
                         sharedPreferences.edit()
-                            .putBoolean("same_haptic_feedback_to_function_buttons", isChecked).apply()
+                            .putBoolean("same_haptic_feedback_to_function_buttons", isChecked)
+                            .apply()
                     }
                 }
 
@@ -231,12 +259,16 @@ class MainActivity : AppCompatActivity(), Vibratable {
                 }
 
                 val seekBarShiftValue = 40
-                var keyButtonPreferenceHeight = sharedPreferences.getInt("user_key_button_height", 52)
+                var keyButtonPreferenceHeight =
+                    sharedPreferences.getInt("user_key_button_height", 52)
 
                 seekBarKeyButtonHeight.progress = keyButtonPreferenceHeight - seekBarShiftValue
 
                 textViewSettingKeyButtonCurrentHeight.text =
-                    String.format(resources.getString(R.string.key_button_height_setting), keyButtonPreferenceHeight)
+                    String.format(
+                        resources.getString(R.string.key_button_height_setting),
+                        keyButtonPreferenceHeight
+                    )
 
                 seekBarKeyButtonHeight.setOnSeekBarChangeListener(object :
                     SeekBar.OnSeekBarChangeListener {
@@ -249,7 +281,10 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         sharedPreferences.edit()
                             .putInt("user_key_button_height", keyButtonPreferenceHeight).apply()
                         textViewSettingKeyButtonCurrentHeight.text =
-                            String.format(resources.getString(R.string.key_button_height_setting), keyButtonPreferenceHeight)
+                            String.format(
+                                resources.getString(R.string.key_button_height_setting),
+                                keyButtonPreferenceHeight
+                            )
                     }
 
                     override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -261,7 +296,11 @@ class MainActivity : AppCompatActivity(), Vibratable {
                 })
 
                 switchSettingImeSwitch.let {
-                    if (sharedPreferences.getBoolean("user_enable_double_touch_ime_switch", false)) {
+                    if (sharedPreferences.getBoolean(
+                            "user_enable_double_touch_ime_switch",
+                            false
+                        )
+                    ) {
                         it.isChecked = true
                     }
 
@@ -294,7 +333,8 @@ class MainActivity : AppCompatActivity(), Vibratable {
                     radioButtonDvorakMixedMode to "DVORAK_MIXED_MODE"
                 )) {
                     button.setOnClickListener {
-                        sharedPreferences.edit().putString("user_candidate_selection_keys_option", keys)
+                        sharedPreferences.edit()
+                            .putString("user_candidate_selection_keys_option", keys)
                             .apply()
                     }
 
