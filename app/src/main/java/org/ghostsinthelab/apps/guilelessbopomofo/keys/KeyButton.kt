@@ -44,7 +44,9 @@ abstract class KeyButton(context: Context, attrs: AttributeSet) :
     abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        mDetector.onTouchEvent(event)
+        if (event != null) {
+            mDetector.onTouchEvent(event)
+        }
         return true
     }
 
