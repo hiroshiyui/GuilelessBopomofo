@@ -29,6 +29,9 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityEngineering
 import java.io.File
 
 class EngineeringModeActivity : AppCompatActivity() {
+    // ViewBinding
+    private var _viewBinding: ActivityEngineeringModeBinding? = null
+    private val viewBinding get() = _viewBinding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,16 +39,21 @@ class EngineeringModeActivity : AppCompatActivity() {
         val emojiCompatConfig = BundledEmojiCompatConfig(this)
         EmojiCompat.init(emojiCompatConfig)
 
-        val activityEngineeringModeBinding: ActivityEngineeringModeBinding = ActivityEngineeringModeBinding.inflate(this.layoutInflater)
-        activityEngineeringModeBinding.chewingDataFilesStatus.text = checkChewingDateFiles().toString()
+        _viewBinding = ActivityEngineeringModeBinding.inflate(this.layoutInflater)
+        viewBinding.chewingDataFilesStatus.text = checkChewingDateFiles().toString()
 
-        activityEngineeringModeBinding.testTextInputEditText.setOnLongClickListener {
+        viewBinding.testTextInputEditText.setOnLongClickListener {
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showInputMethodPicker()
             return@setOnLongClickListener true
         }
 
-        setContentView(activityEngineeringModeBinding.root)
+        setContentView(viewBinding.root)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _viewBinding = null
     }
 
     private fun checkChewingDateFiles(): Boolean {

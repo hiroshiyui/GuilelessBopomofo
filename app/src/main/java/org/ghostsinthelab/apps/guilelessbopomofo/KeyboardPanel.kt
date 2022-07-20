@@ -55,8 +55,8 @@ class KeyboardPanel(
     private lateinit var keyboardHsuDvorakBothLayoutBinding: KeyboardHsuDvorakBothLayoutBinding
     private lateinit var keyboardDvorakLayoutBinding: KeyboardDvorakLayoutBinding
     private lateinit var compactLayoutBinding: CompactLayoutBinding
-
     private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
+
     val keyButtonPopupLayoutBinding: KeybuttonPopupLayoutBinding =
         KeybuttonPopupLayoutBinding.inflate(LayoutInflater.from(context))
     val keyButtonPopup = PopupWindow(keyButtonPopupLayoutBinding.root, 1, 1, false)

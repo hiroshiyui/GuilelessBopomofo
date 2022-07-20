@@ -45,8 +45,11 @@ class GuilelessBopomofoService : InputMethodService(),
     var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
     private var physicalKeyboardPresent: Boolean = false
     var physicalKeyboardEnabled: Boolean = false
+
+    // ViewBinding
     private var _viewBinding: KeyboardLayoutBinding? = null
     val viewBinding get() = _viewBinding!!
+
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var inputView: Keyboard
     private val chewingDataFiles =

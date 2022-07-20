@@ -33,7 +33,11 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class MainActivity : AppCompatActivity(), Vibratable {
     private val logTag: String = "MainActivity"
-    private lateinit var binding: ActivityMainBinding
+
+    // ViewBinding
+    private var _viewBinding: ActivityMainBinding? = null
+    val viewBinding get() = _viewBinding!!
+
     private var engineeringModeEnterCount: Int = 0
     private val engineeringModeEnterClicks: Int = 5
     private var engineeringModeEnabled: Boolean = false
@@ -44,9 +48,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
         super.onCreate(savedInstanceState)
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        _viewBinding = ActivityMainBinding.inflate(layoutInflater)
 
-        binding.apply {
+        viewBinding.apply {
             textViewAppVersion.text =
                 applicationContext.packageManager.getPackageInfo(
                     this@MainActivity.packageName,
@@ -349,8 +353,13 @@ class MainActivity : AppCompatActivity(), Vibratable {
             }
         }
 
-        val view = binding.root
+        val view = viewBinding.root
         setContentView(view)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _viewBinding = null
     }
 
     private fun isGuilelessBopomofoEnabled(): Boolean {
