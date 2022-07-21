@@ -55,11 +55,16 @@ class KeyboardPanel(
     private lateinit var keyboardHsuDvorakBothLayoutBinding: KeyboardHsuDvorakBothLayoutBinding
     private lateinit var keyboardDvorakLayoutBinding: KeyboardDvorakLayoutBinding
     private lateinit var compactLayoutBinding: CompactLayoutBinding
-    private lateinit var candidatesLayoutBinding: CandidatesLayoutBinding
 
+    // keyButtonPopup
     val keyButtonPopupLayoutBinding: KeybuttonPopupLayoutBinding =
         KeybuttonPopupLayoutBinding.inflate(LayoutInflater.from(context))
     val keyButtonPopup = PopupWindow(keyButtonPopupLayoutBinding.root, 1, 1, false)
+
+    // candidatesRecyclerView
+    private val candidatesLayoutBinding: CandidatesLayoutBinding =
+        CandidatesLayoutBinding.inflate(LayoutInflater.from(context))
+    private val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
 
     enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY, DVORAK }
 
@@ -264,9 +269,11 @@ class KeyboardPanel(
 
     private fun finishCandidateSelection() {
         if (ChewingUtil.candWindowClosed()) {
+            ChewingBridge.candClose()
             ChewingBridge.handleEnd()
             updateBuffers()
             currentCandidatesList = 0
+            candidatesRecyclerView.adapter = null
             switchToMainLayout()
         } else {
             renderCandidatesLayout()
@@ -309,12 +316,8 @@ class KeyboardPanel(
         Log.d(logTag, "renderCandidatesLayout")
         currentKeyboardLayout = KeyboardLayout.CANDIDATES
 
-        candidatesLayoutBinding =
-            CandidatesLayoutBinding.inflate(LayoutInflater.from(context))
         this.removeAllViews()
         this.addView(candidatesLayoutBinding.root)
-
-        val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
 
         if (!GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
             candidatesRecyclerView.adapter = CandidatesAdapter()
