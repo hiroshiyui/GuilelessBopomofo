@@ -21,7 +21,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.GestureDetectorCompat
@@ -61,16 +60,17 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                 editorInfo?.let {
                     when (it.imeOptions) {
                         EditorInfo.IME_ACTION_GO, EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_SEARCH, EditorInfo.IME_ACTION_SEND -> {
+                            // The current EditText has a specified android:imeOptions attribute
                             GuilelessBopomofoServiceContext.service.currentInputConnection.performEditorAction(
                                 it.imeOptions
                             )
                         }
                         else -> {
-                            GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(
-                                KeyEvent.KEYCODE_ENTER
-                            )
+                            // The current EditText has no android:imeOptions attribute
+                            GuilelessBopomofoServiceContext.service.sendDefaultEditorAction(true)
                         }
                     }
+
                 }
             }
         }
