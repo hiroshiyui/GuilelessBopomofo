@@ -101,7 +101,7 @@ android {
 }
 
 dependencies {
-    def androidx_appcompat_version = '1.4.2'
+    def androidx_appcompat_version = '1.5.0'
     def androidx_emoji_version = '1.2.0-alpha03'
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
