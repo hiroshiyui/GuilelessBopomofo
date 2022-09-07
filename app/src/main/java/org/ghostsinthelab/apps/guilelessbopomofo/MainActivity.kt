@@ -109,9 +109,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         it.isChecked = true
                     }
 
-                    it.setOnCheckedChangeListener { _, isChecked ->
+                    it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean("user_display_hsu_qwerty_layout", isChecked).apply()
+                            .putBoolean("user_display_hsu_qwerty_layout", it.isChecked).apply()
 
                     }
                 }
@@ -121,9 +121,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         it.isChecked = true
                     }
 
-                    it.setOnCheckedChangeListener { _, isChecked ->
+                    it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean("user_display_eten26_qwerty_layout", isChecked).apply()
+                            .putBoolean("user_display_eten26_qwerty_layout", it.isChecked).apply()
 
                     }
                 }
@@ -137,9 +137,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         it.isChecked = true
                     }
 
-                    it.setOnCheckedChangeListener { _, isChecked ->
+                    it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean("user_display_dvorak_hsu_both_layout", isChecked).apply()
+                            .putBoolean("user_display_dvorak_hsu_both_layout", it.isChecked).apply()
 
                     }
                 }
@@ -149,9 +149,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         it.isChecked = true
                     }
 
-                    it.setOnCheckedChangeListener { _, isChecked ->
+                    it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean("user_enable_space_as_selection", isChecked).apply()
+                            .putBoolean("user_enable_space_as_selection", it.isChecked).apply()
                     }
                 }
 
@@ -160,9 +160,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         it.isChecked = true
                     }
 
-                    it.setOnCheckedChangeListener { _, isChecked ->
+                    it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean("user_phrase_choice_rearward", isChecked).apply()
+                            .putBoolean("user_phrase_choice_rearward", it.isChecked).apply()
                     }
                 }
             }
@@ -222,9 +222,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         it.isChecked = true
                     }
 
-                    it.setOnCheckedChangeListener { _, isChecked ->
+                    it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean("same_haptic_feedback_to_function_buttons", isChecked)
+                            .putBoolean("same_haptic_feedback_to_function_buttons", it.isChecked)
                             .apply()
                     }
                 }
@@ -234,9 +234,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         it.isChecked = true
                     }
 
-                    it.setOnCheckedChangeListener { _, isChecked ->
+                    it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean("user_fullscreen_when_in_landscape", isChecked).apply()
+                            .putBoolean("user_fullscreen_when_in_landscape", it.isChecked).apply()
                     }
                 }
 
@@ -245,9 +245,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         it.isChecked = true
                     }
 
-                    it.setOnCheckedChangeListener { _, isChecked ->
+                    it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean("user_fullscreen_when_in_portrait", isChecked).apply()
+                            .putBoolean("user_fullscreen_when_in_portrait", it.isChecked).apply()
                     }
                 }
 
@@ -256,9 +256,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         it.isChecked = true
                     }
 
-                    it.setOnCheckedChangeListener { _, isChecked ->
+                    it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean("user_enable_button_elevation", isChecked).apply()
+                            .putBoolean("user_enable_button_elevation", it.isChecked).apply()
                     }
                 }
 
@@ -308,9 +308,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         it.isChecked = true
                     }
 
-                    it.setOnCheckedChangeListener { _, isChecked ->
+                    it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean("user_enable_double_touch_ime_switch", isChecked).apply()
+                            .putBoolean("user_enable_double_touch_ime_switch", it.isChecked).apply()
                     }
                 }
             }
@@ -321,9 +321,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         it.isChecked = true
                     }
 
-                    it.setOnCheckedChangeListener { _, isChecked ->
+                    it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean("user_enable_physical_keyboard", isChecked).apply()
+                            .putBoolean("user_enable_physical_keyboard", it.isChecked).apply()
                     }
                 }
 
