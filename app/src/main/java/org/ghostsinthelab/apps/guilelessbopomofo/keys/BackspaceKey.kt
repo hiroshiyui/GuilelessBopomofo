@@ -52,7 +52,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     }
 
     inner class MyGestureListener : KeyImageButton.GestureListener() {
-        override fun onDown(e: MotionEvent?): Boolean {
+        override fun onDown(e: MotionEvent): Boolean {
             // avoids too fast repeat clicks
             if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 100) {
                 return false
@@ -63,12 +63,12 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
             return true
         }
 
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             action()
             return true
         }
 
-        override fun onLongPress(e: MotionEvent?) {
+        override fun onLongPress(e: MotionEvent) {
             launch { repeatBackspace() }
         }
     }

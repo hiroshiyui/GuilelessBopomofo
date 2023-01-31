@@ -38,7 +38,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
     }
 
     inner class MyGestureListener : KeyImageButton.GestureListener() {
-        override fun onDown(e: MotionEvent?): Boolean {
+        override fun onDown(e: MotionEvent): Boolean {
             performVibrate(
                 context,
                 GuilelessBopomofoServiceContext.service.userHapticFeedbackStrength.toLong()
@@ -46,7 +46,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
             return true
         }
 
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             keyCodeString?.let { keycodeString ->
                 val keyEvent =
                     KeyEvent(

@@ -35,18 +35,18 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBu
     }
 
     inner class MyGestureListener : KeyImageButton.GestureListener() {
-        override fun onDown(e: MotionEvent?): Boolean {
+        override fun onDown(e: MotionEvent): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.NORMAL)
             return true
         }
 
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             ChewingUtil.handleShiftComma()
             GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.updateBuffers()
             return true
         }
 
-        override fun onLongPress(e: MotionEvent?) {
+        override fun onLongPress(e: MotionEvent) {
             performVibrate(context, Vibratable.VibrationStrength.STRONG)
             ChewingUtil.openPuncCandidates()
             GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.switchToCandidatesLayout()

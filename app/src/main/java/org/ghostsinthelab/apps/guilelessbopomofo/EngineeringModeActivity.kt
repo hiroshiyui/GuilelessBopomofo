@@ -20,6 +20,8 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -58,7 +60,11 @@ class EngineeringModeActivity : AppCompatActivity() {
 
     private fun checkChewingDateFiles(): Boolean {
         val dataPath =
-            packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
+            } else {
+                packageManager.getPackageInfo(this.packageName, PackageManager.PackageInfoFlags.of(0)).applicationInfo.dataDir
+            }
 
         val chewingDataDir = File(dataPath)
 

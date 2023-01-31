@@ -21,8 +21,10 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
+import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.*
@@ -73,7 +75,14 @@ class GuilelessBopomofoService : InputMethodService(),
         // Initializing Chewing
         try {
             val dataPath =
-                packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                    packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
+                } else {
+                    packageManager.getPackageInfo(
+                        this.packageName,
+                        PackageManager.PackageInfoFlags.of(0)
+                    ).applicationInfo.dataDir
+                }
             setupChewingData(dataPath)
             ChewingBridge.connect(dataPath)
             ChewingBridge.context.let {
@@ -364,7 +373,11 @@ class GuilelessBopomofoService : InputMethodService(),
 
         // Save app version
         val chewingAppVersion =
-            packageManager.getPackageInfo(this.packageName, 0).versionName.toByteArray()
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                packageManager.getPackageInfo(this.packageName, 0).versionName.toByteArray()
+            } else {
+                packageManager.getPackageInfo(this.packageName, PackageManager.PackageInfoFlags.of(0)).versionName.toByteArray()
+            }
         val chewingDataAppVersionTxt =
             File(String.format("%s/%s", chewingDataDir.absolutePath, "data_appversion.txt"))
 

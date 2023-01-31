@@ -34,12 +34,12 @@ class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBut
     }
 
     inner class MyGestureListener : KeyImageButton.GestureListener() {
-        override fun onDown(e: MotionEvent?): Boolean {
+        override fun onDown(e: MotionEvent): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.NORMAL)
             return true
         }
 
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.toggleMainLayoutMode()
             return true
         }

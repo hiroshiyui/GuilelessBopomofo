@@ -40,12 +40,12 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
     }
 
     inner class MyGestureListener : KeyImageButton.GestureListener() {
-        override fun onDown(e: MotionEvent?): Boolean {
+        override fun onDown(e: MotionEvent): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.NORMAL)
             return true
         }
 
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             action()
             return true
         }

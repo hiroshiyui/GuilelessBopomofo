@@ -38,12 +38,12 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
     }
 
     inner class MyGestureListener : KeyImageButton.GestureListener() {
-        override fun onDown(e: MotionEvent?): Boolean {
+        override fun onDown(e: MotionEvent): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.NORMAL)
             return true
         }
 
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             if (sharedPreferences.getBoolean("user_enable_double_touch_ime_switch", false)) {
                 return true
             } else {
@@ -52,7 +52,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
             return true
         }
 
-        override fun onDoubleTap(e: MotionEvent?): Boolean {
+        override fun onDoubleTap(e: MotionEvent): Boolean {
             if (sharedPreferences.getBoolean("user_enable_double_touch_ime_switch", false)) {
                 switchInputMethod()
             } else {
@@ -61,7 +61,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
             return true
         }
 
-        override fun onLongPress(e: MotionEvent?) {
+        override fun onLongPress(e: MotionEvent) {
             performVibrate(context, Vibratable.VibrationStrength.STRONG)
             val imm =
                 GuilelessBopomofoServiceContext.service.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
