@@ -79,6 +79,8 @@ interface Vibratable {
         }
 
         val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java) as Vibrator
+        // reduces UI blocking by vibrator (if user be typing too fast)
+        vibrator.cancel()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val vibrationEffect = VibrationEffect.createOneShot(strength, amplitude)
