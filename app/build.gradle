@@ -101,7 +101,7 @@ android {
 }
 
 dependencies {
-    def androidx_appcompat_version = '1.5.0'
+    def androidx_appcompat_version = '1.6.0'
     def androidx_emoji_version = '1.2.0-alpha03'
     def lifecycle_version = "2.5.1"
 
@@ -110,11 +110,11 @@ dependencies {
     implementation "androidx.appcompat:appcompat-resources:$androidx_appcompat_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.preference:preference-ktx:1.2.0'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'com.github.google:flexbox-layout:2.0.1'
-    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.10'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.21'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation "androidx.emoji:emoji:$androidx_emoji_version"
