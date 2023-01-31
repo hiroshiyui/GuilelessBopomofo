@@ -121,7 +121,7 @@ dependencies {
     implementation "androidx.emoji:emoji-appcompat:$androidx_emoji_version"
     implementation "androidx.emoji:emoji-bundled:$androidx_emoji_version"
     testImplementation 'junit:junit:4.13.2'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
