@@ -37,12 +37,13 @@ import androidx.emoji.text.EmojiCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.*
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import java.io.File
 import java.io.FileOutputStream
 
 class GuilelessBopomofoService : InputMethodService(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
+    SharedPreferences.OnSharedPreferenceChangeListener, KeyEventExtension {
     private val logTag = "GuilelessBopomofoSvc"
     var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
     private var physicalKeyboardPresent: Boolean = false
@@ -275,6 +276,13 @@ class GuilelessBopomofoService : InputMethodService(),
     }
 
     fun onPrintingKeyDown(event: KeyEvent) {
+        // Consider keys in NumPad
+        if (event.isNumPadKey()) {
+            currentInputConnection.sendKeyEvent(event)
+            viewBinding.keyboardPanel.updateBuffers()
+            return
+        }
+
         if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.getChiEngMode() == CHINESE_MODE && !event.isShiftPressed) {
             viewBinding.keyboardPanel.switchToSymbolPicker()
             return
