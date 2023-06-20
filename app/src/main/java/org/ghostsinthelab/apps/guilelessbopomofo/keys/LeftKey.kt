@@ -35,7 +35,9 @@ class LeftKey {
                     GuilelessBopomofoServiceContext.service.viewBinding.textViewPreEditBuffer
                 preEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedBy.PHYSICAL_KEYBOARD)
             } else {
-                GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
+                if (ChewingUtil.candWindowClosed()) {
+                    GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
+                }
             }
 
             // toggle to previous page of candidates
