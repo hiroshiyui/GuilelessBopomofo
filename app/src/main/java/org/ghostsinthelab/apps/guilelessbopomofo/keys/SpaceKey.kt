@@ -27,8 +27,13 @@ import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SendSingleDownUpKeyEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SwitchToCandidatesLayoutEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ToggleToMainLayoutModeEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.UpdateBuffersEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.UpdateCursorEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
 
 class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override lateinit var mDetector: GestureDetectorCompat
@@ -54,24 +59,23 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         fun action() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.handleSpace()
-                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.updateBuffers()
+                EventBus.getDefault().post(UpdateBuffersEvent())
                 // 空白鍵是否為選字鍵？
                 if (ChewingBridge.getSpaceAsSelection() == 1 && ChewingBridge.candTotalChoice() > 0) {
-                    GuilelessBopomofoServiceContext.service.viewBinding.apply {
-                        textViewPreEditBuffer.offset = ChewingBridge.cursorCurrent()
-                        textViewPreEditBuffer.renderUnderlineSpan()
-                        keyboardPanel.switchToCandidatesLayout()
+                    EventBus.getDefault().let {
+                        it.post(UpdateCursorEvent())
+                        it.post(SwitchToCandidatesLayoutEvent())
                     }
                 }
             } else {
-                GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
+                EventBus.getDefault().post(SendSingleDownUpKeyEvent(KeyEvent.KEYCODE_SPACE))
             }
         }
 
         // for physical keyboard space key, detect if Shift is pressed first:
         fun action(keyEvent: KeyEvent) {
             if (keyEvent.isShiftPressed) {
-                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.toggleMainLayoutMode()
+                EventBus.getDefault().post(ToggleToMainLayoutModeEvent())
                 return
             }
             action()

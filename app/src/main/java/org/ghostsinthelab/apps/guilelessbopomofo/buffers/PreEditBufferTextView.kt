@@ -31,8 +31,14 @@ import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.setPadding
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.CommitTextEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.CursorMovedByPhysicalKeyboardEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SwitchToCandidatesLayoutEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.UpdateBuffersEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.UpdateCursorEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     BufferTextView(context, attrs), Vibratable {
@@ -48,6 +54,39 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     init {
         mDetector = GestureDetectorCompat(context, MyGestureListener())
         mDetector.setOnDoubleTapListener(null)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
+    }
+
+    @Subscribe
+    fun onUpdateBuffersEvent(event: UpdateBuffersEvent) {
+        this.update()
+    }
+
+    @Subscribe
+    fun onUpdateCursorEvent(event: UpdateCursorEvent) {
+        this.offset = ChewingBridge.cursorCurrent()
+        this.renderUnderlineSpan()
+    }
+
+    @Subscribe
+    fun onCursorMovedByPhysicalKeyboardEvent(event: CursorMovedByPhysicalKeyboardEvent) {
+        Log.d(logTag, "onCursorMovedByPhysicalKeyboardEvent")
+        this.cursorMovedBy(CursorMovedBy.PHYSICAL_KEYBOARD)
     }
 
     // which character did I touched? (index value)
@@ -102,10 +141,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         // 會把 pre-edit buffer 開頭送到 commit buffer，
         // 所以要先丟出來：
         if (ChewingBridge.commitCheck() == 1) {
-            GuilelessBopomofoServiceContext.service.currentInputConnection.commitText(
-                ChewingBridge.commitString(),
-                1
-            )
+            EventBus.getDefault().post(CommitTextEvent())
             // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
             // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
             ChewingBridge.handleEnd()
@@ -130,7 +166,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
     }
 
-    inner class MyGestureListener : BufferTextView.GestureListener() {
+    inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             val x = e.x
             val y = e.y
@@ -142,10 +178,8 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            GuilelessBopomofoServiceContext.service.viewBinding.apply {
-                textViewPreEditBuffer.cursorMovedBy(CursorMovedBy.TOUCH)
-                keyboardPanel.switchToCandidatesLayout(offset)
-            }
+            this@PreEditBufferTextView.cursorMovedBy(CursorMovedBy.TOUCH)
+            EventBus.getDefault().post(SwitchToCandidatesLayoutEvent())
             return true
         }
     }

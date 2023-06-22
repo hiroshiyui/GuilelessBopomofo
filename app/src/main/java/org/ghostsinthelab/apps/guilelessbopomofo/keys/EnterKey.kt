@@ -29,7 +29,10 @@ import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SendSingleDownUpKeyEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.UpdateBuffersEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
 
 class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override lateinit var mDetector: GestureDetectorCompat
@@ -39,7 +42,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         mDetector.setOnDoubleTapListener(null)
     }
 
-    inner class MyGestureListener : KeyImageButton.GestureListener() {
+    inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.NORMAL)
             return true
@@ -55,7 +58,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         fun action() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) { // not committed yet
                 ChewingBridge.handleEnter()
-                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.updateBuffers()
+                EventBus.getDefault().post(UpdateBuffersEvent())
             } else {
                 val editorInfo =
                     GuilelessBopomofoServiceContext.service.currentInputEditorInfo
@@ -71,7 +74,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
 
                     // Just do as press Enter, never care about the defined action if we are now in a multiple line text field
                     if (multiLineEditText) {
-                        GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+                        EventBus.getDefault().post(SendSingleDownUpKeyEvent(KeyEvent.KEYCODE_ENTER))
                         return
                     }
 
@@ -84,7 +87,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                         }
                         else -> {
                             // The current EditText has no android:imeOptions attribute, or I don't want to make it act as is.
-                            GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
+                            EventBus.getDefault().post(SendSingleDownUpKeyEvent(KeyEvent.KEYCODE_ENTER))
                         }
                     }
                 }

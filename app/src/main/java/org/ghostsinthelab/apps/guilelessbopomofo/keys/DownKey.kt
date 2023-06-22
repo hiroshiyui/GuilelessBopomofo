@@ -21,7 +21,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SendSingleDownUpKeyEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SwitchToCandidatesLayoutEvent
+import org.greenrobot.eventbus.EventBus
 
 class DownKey {
     companion object {
@@ -29,9 +31,9 @@ class DownKey {
             if (ChewingBridge.bufferLen() > 0) {
                 ChewingBridge.candClose()
                 ChewingBridge.candOpen()
-                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.switchToCandidatesLayout(ChewingBridge.cursorCurrent())
+                EventBus.getDefault().post(SwitchToCandidatesLayoutEvent())
             } else {
-                GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN)
+                EventBus.getDefault().post(SendSingleDownUpKeyEvent(KeyEvent.KEYCODE_DPAD_DOWN))
             }
         }
     }

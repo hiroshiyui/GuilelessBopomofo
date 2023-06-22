@@ -22,30 +22,25 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
-import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
+import org.ghostsinthelab.apps.guilelessbopomofo.events.CursorMovedByPhysicalKeyboardEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SendSingleDownUpKeyEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ToggleToPreviousCandidatesPageEvent
+import org.greenrobot.eventbus.EventBus
 
 class RightKey {
     companion object {
         fun action() {
             ChewingBridge.handleRight()
             if (ChewingBridge.bufferLen() > 0) {
-                val preEditBuffer =
-                    GuilelessBopomofoServiceContext.service.viewBinding.textViewPreEditBuffer
-                preEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedBy.PHYSICAL_KEYBOARD)
+                EventBus.getDefault().post(CursorMovedByPhysicalKeyboardEvent())
             } else {
                 if (ChewingUtil.candWindowClosed()) {
-                    GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
+                    EventBus.getDefault().post(SendSingleDownUpKeyEvent(KeyEvent.KEYCODE_DPAD_RIGHT))
                 }
             }
 
-            // toggle to next page of candidates
-            val keyboardPanel =
-                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel
-            if (keyboardPanel.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES && ChewingUtil.candWindowOpened()) {
-                keyboardPanel.renderCandidatesLayout()
-            }
+            // toggle to previous page of candidates
+            EventBus.getDefault().post(ToggleToPreviousCandidatesPageEvent())
         }
     }
 }
