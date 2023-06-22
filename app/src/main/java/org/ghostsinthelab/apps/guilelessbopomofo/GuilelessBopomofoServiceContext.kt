@@ -21,4 +21,5 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 object GuilelessBopomofoServiceContext {
     lateinit var service: GuilelessBopomofoService
+    var physicalKeyboardEnabled: Boolean = false
 }

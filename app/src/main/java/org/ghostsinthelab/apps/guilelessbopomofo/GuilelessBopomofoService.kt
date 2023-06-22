@@ -46,8 +46,6 @@ class GuilelessBopomofoService : InputMethodService(),
     SharedPreferences.OnSharedPreferenceChangeListener, KeyEventExtension {
     private val logTag = "GuilelessBopomofoSvc"
     var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
-    private var physicalKeyboardPresent: Boolean = false
-    var physicalKeyboardEnabled: Boolean = false
 
     // ViewBinding
     private var _viewBinding: KeyboardLayoutBinding? = null
@@ -167,9 +165,7 @@ class GuilelessBopomofoService : InputMethodService(),
     override fun onEvaluateInputViewShown(): Boolean {
         super.onEvaluateInputViewShown()
         Log.d(logTag, "onEvaluateInputViewShown()")
-        physicalKeyboardPresent =
-            (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY)
-        physicalKeyboardEnabled = physicalKeyboardEnabled()
+        GuilelessBopomofoServiceContext.physicalKeyboardEnabled = physicalKeyboardEnabled()
         return true
     }
 
@@ -364,6 +360,8 @@ class GuilelessBopomofoService : InputMethodService(),
     }
 
     private fun physicalKeyboardEnabled(): Boolean {
+        val physicalKeyboardPresent: Boolean = (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY)
+
         if (physicalKeyboardPresent
             && sharedPreferences.getBoolean(
                 "user_enable_physical_keyboard",
