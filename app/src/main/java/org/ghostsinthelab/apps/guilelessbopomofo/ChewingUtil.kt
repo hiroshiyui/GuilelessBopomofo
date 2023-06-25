@@ -80,7 +80,7 @@ class ChewingUtil {
             return candidatesInThisPage.toList()
         }
 
-        fun getCandidate(index: Int): Candidate {
+        private fun getCandidate(index: Int): Candidate {
             val candidate = Candidate(index)
             candidate.candidateString = ChewingBridge.candStringByIndexStatic(index)
 

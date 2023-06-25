@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
 
     // ViewBinding
     private var _viewBinding: ActivityMainBinding? = null
-    val viewBinding get() = _viewBinding!!
+    private val viewBinding get() = _viewBinding!!
 
     private var engineeringModeEnterCount: Int = 0
     private val engineeringModeEnterClicks: Int = 5
