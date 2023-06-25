@@ -25,6 +25,7 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.os.Build
+import android.os.IBinder
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
@@ -59,6 +60,8 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CommitTextEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.SendPrintingKeyDownEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.SendSingleDownUpKeyEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ShowInputMethodPickerEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.SwitchInputMethodEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.UpdateBuffersEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.BackspaceKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.DownKey
@@ -82,6 +85,8 @@ class GuilelessBopomofoService : InputMethodService(),
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
+    private lateinit var imm: InputMethodManager
+
     // ViewBinding
     private var _viewBinding: KeyboardLayoutBinding? = null
     val viewBinding get() = _viewBinding!!
@@ -94,6 +99,8 @@ class GuilelessBopomofoService : InputMethodService(),
     override fun onCreate() {
         super.onCreate()
         EventBus.getDefault().register(this)
+
+        imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
@@ -424,6 +431,25 @@ class GuilelessBopomofoService : InputMethodService(),
     fun onSendPrintingKeyDownEvent(event: SendPrintingKeyDownEvent) {
         Log.d(logTag, "onSendPrintingKeyDownEvent")
         this.onPrintingKeyDown(event.keyEvent)
+    }
+
+    @Subscribe
+    fun onShowInputMethodPickerEvent(event: ShowInputMethodPickerEvent) {
+        this.imm.showInputMethodPicker()
+    }
+
+    @Subscribe
+    fun onSwitchInputMethodEvent(event: SwitchInputMethodEvent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            this.switchToNextInputMethod(false)
+        } else {
+            // backward compatibility, support IME switch on legacy devices
+            val imeToken: IBinder? =
+                this.window?.let {
+                    it.window?.attributes?.token
+                }
+            imm.switchToNextInputMethod(imeToken, false)
+        }
     }
 
     private fun physicalKeyboardEnabled(): Boolean {
