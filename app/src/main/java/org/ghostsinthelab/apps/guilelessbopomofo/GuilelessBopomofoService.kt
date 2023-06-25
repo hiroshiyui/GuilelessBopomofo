@@ -26,6 +26,7 @@ import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.os.IBinder
+import android.text.InputType
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
@@ -58,6 +59,7 @@ import kotlinx.coroutines.Dispatchers
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.events.CommitTextEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.HandleEnterKeyBehaviorEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.SendPrintingKeyDownEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.SendSingleDownUpKeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ShowInputMethodPickerEvent
@@ -449,6 +451,40 @@ class GuilelessBopomofoService : InputMethodService(),
                     it.window?.attributes?.token
                 }
             imm.switchToNextInputMethod(imeToken, false)
+        }
+    }
+
+    @Subscribe
+    fun onHandleEnterKeyBehaviorEvent(event: HandleEnterKeyBehaviorEvent) {
+        val editorInfo = this.currentInputEditorInfo
+        var multiLineEditText = false
+
+        editorInfo?.let {
+            // Is it a multiple line text field?
+            if ((it.inputType and InputType.TYPE_MASK_CLASS and InputType.TYPE_CLASS_TEXT) == InputType.TYPE_CLASS_TEXT) {
+                if ((it.inputType and InputType.TYPE_MASK_FLAGS and InputType.TYPE_TEXT_FLAG_MULTI_LINE) == InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
+                    multiLineEditText = true
+                }
+            }
+
+            // Just do as press Enter, never care about the defined action if we are now in a multiple line text field
+            if (multiLineEditText) {
+                this.sendDownUpKeyEvents(KEYCODE_ENTER)
+                return
+            }
+
+            when (val imeAction = (it.imeOptions and EditorInfo.IME_MASK_ACTION)) {
+                EditorInfo.IME_ACTION_GO, EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_SEARCH, EditorInfo.IME_ACTION_SEND -> {
+                    // The current EditText has a specified android:imeOptions attribute.
+                    this.currentInputConnection.performEditorAction(
+                        imeAction
+                    )
+                }
+                else -> {
+                    // The current EditText has no android:imeOptions attribute, or I don't want to make it act as is.
+                    this.sendDownUpKeyEvents(KEYCODE_ENTER)
+                }
+            }
         }
     }
 
