@@ -22,12 +22,13 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.DismissKeyPopupEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.SendPrintingKeyDownEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ShowKeyPopupEvent
 import org.greenrobot.eventbus.EventBus
 
 class CharacterKey(context: Context, attrs: AttributeSet) :
@@ -69,25 +70,10 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
                 MotionEvent.ACTION_DOWN -> {
                     val keyButtonLocation = IntArray(2)
                     getLocationInWindow(keyButtonLocation)
-
-                    GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.apply {
-                        keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(
-                            drawable
-                        )
-                        keyButtonPopup.let { popup ->
-                            popup.height = this@CharacterKey.height
-                            popup.width = this@CharacterKey.width
-                            popup.showAtLocation(
-                                rootView,
-                                Gravity.NO_GRAVITY,
-                                keyButtonLocation[0],
-                                keyButtonLocation[1] - this@CharacterKey.height
-                            )
-                        }
-                    }
+                    EventBus.getDefault().post(ShowKeyPopupEvent(keyButtonLocation, this@CharacterKey))
                 }
                 MotionEvent.ACTION_UP -> {
-                    GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.keyButtonPopup.dismiss()
+                    EventBus.getDefault().post(DismissKeyPopupEvent())
                 }
                 else -> {}
             }
