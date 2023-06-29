@@ -23,9 +23,6 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
-import org.ghostsinthelab.apps.guilelessbopomofo.events.UpdateBuffersEvent
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 
 class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
     BufferTextView(context, attrs) {
@@ -42,30 +39,9 @@ class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
         mDetector = GestureDetectorCompat(context, MyGestureListener())
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
-        }
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this)
-        }
-    }
-
     override fun update() {
         this@BopomofoBufferTextView.text = ChewingBridge.bopomofoStringStatic()
     }
 
-    @Subscribe
-    fun onUpdateBuffersEvent(event: UpdateBuffersEvent) {
-        this.update()
-    }
-
-    inner class MyGestureListener : GestureListener()
+    inner class MyGestureListener: BufferTextView.GestureListener()
 }

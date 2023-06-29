@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
 
                     if (sharedPreferences.getString(
                             "user_keyboard_layout",
-                            GuilelessBopomofoServiceContext.defaultKeyboardLayout
+                            GuilelessBopomofoService.defaultKeyboardLayout
                         ) == layout
                     ) {
                         button.isChecked = true
@@ -180,7 +180,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
                 var hapticFeedbackPreferenceStrength =
                     sharedPreferences.getInt(
                         "user_haptic_feedback_strength",
-                        GuilelessBopomofoServiceContext.defaultHapticFeedbackStrength
+                        GuilelessBopomofoService.defaultHapticFeedbackStrength
                     )
 
                 textViewSettingHapticFeedbaclCurrentStrength.text =

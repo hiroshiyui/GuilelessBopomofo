@@ -24,9 +24,8 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
-import org.ghostsinthelab.apps.guilelessbopomofo.events.DoneCandidateSelectionEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-import org.greenrobot.eventbus.EventBus
 
 class CandidateButton(context: Context, attrs: AttributeSet) :
     KeyButton(context, attrs), Vibratable {
@@ -37,14 +36,14 @@ class CandidateButton(context: Context, attrs: AttributeSet) :
         mDetector = GestureDetectorCompat(context, MyGestureListener())
     }
 
-    inner class MyGestureListener : GestureListener() {
+    inner class MyGestureListener : KeyButton.GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.LIGHT)
             return true
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            EventBus.getDefault().post(DoneCandidateSelectionEvent(candidate.index))
+            GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.candidateSelectionDone(candidate.index)
             return true
         }
     }

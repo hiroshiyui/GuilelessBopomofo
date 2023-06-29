@@ -19,13 +19,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-
 object GuilelessBopomofoServiceContext {
     lateinit var service: GuilelessBopomofoService
     var physicalKeyboardEnabled: Boolean = false
-    val defaultHapticFeedbackStrength: Int =
-        Vibratable.VibrationStrength.NORMAL.strength.toInt()
-    var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
-    const val defaultKeyboardLayout: String = "KB_DEFAULT"
 }

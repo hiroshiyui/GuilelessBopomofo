@@ -27,8 +27,6 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.events.SendPrintingKeyDownEvent
-import org.greenrobot.eventbus.EventBus
 
 class CharacterKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
@@ -39,11 +37,11 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
         mDetector.setOnDoubleTapListener(null)
     }
 
-    inner class MyGestureListener : GestureListener() {
+    inner class MyGestureListener : KeyImageButton.GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             performVibrate(
                 context,
-                GuilelessBopomofoServiceContext.userHapticFeedbackStrength.toLong()
+                GuilelessBopomofoServiceContext.service.userHapticFeedbackStrength.toLong()
             )
             return true
         }
@@ -55,7 +53,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
                         KeyEvent.ACTION_DOWN,
                         KeyEvent.keyCodeFromString(keycodeString)
                     )
-                EventBus.getDefault().post(SendPrintingKeyDownEvent(keyEvent))
+                GuilelessBopomofoServiceContext.service.onPrintingKeyDown(keyEvent)
             }
             return true
         }

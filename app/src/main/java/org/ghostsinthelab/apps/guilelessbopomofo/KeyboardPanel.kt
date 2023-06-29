@@ -32,28 +32,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CompactLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDvorakLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26LayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26QwertyLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuDvorakBothLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuDvorakLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuQwertyLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeybuttonPopupLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.events.BackToMainLayoutEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.DecideToBackToMainLayoutEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.DoneCandidateSelectionEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.SwitchToCandidatesLayoutEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.SwitchToSymbolPickerEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.ToggleToMainLayoutModeEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.ToggleToPreviousCandidatesPageEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.UpdateBuffersEvent
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
+import kotlinx.coroutines.launch
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
 import kotlin.coroutines.CoroutineContext
 
 class KeyboardPanel(
@@ -101,78 +81,12 @@ class KeyboardPanel(
         }
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
-        }
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this)
-        }
-    }
-
-    @Subscribe
-    fun onBackToMainLayoutEvent(event: BackToMainLayoutEvent) {
-        Log.d(logTag, "onBackToMainLayoutEvent")
-        this.backToMainLayout()
-    }
-
-    @Subscribe
-    fun onDecideToBackToMainLayoutEvent(event: DecideToBackToMainLayoutEvent) {
-        if (currentKeyboardLayout in listOf(
-                KeyboardLayout.SYMBOLS,
-                KeyboardLayout.CANDIDATES
-            )
-        ) {
-            this.backToMainLayout()
-        }
-    }
-
-    @Subscribe
-    fun onDoneCandidateSelectionEvent(event: DoneCandidateSelectionEvent) {
-        Log.d(logTag, "onDoneCandidateSelectionEvent")
-        this.candidateSelectionDone(event.index)
-    }
-
-    @Subscribe
-    fun onSwitchToCandidatesLayoutEvent(event: SwitchToCandidatesLayoutEvent) {
-        Log.d(logTag, "onSwitchToCandidatesLayoutEvent")
-        this.switchToCandidatesLayout()
-    }
-
-    @Subscribe
-    fun onSwitchToSymbolPickerEvent(event: SwitchToSymbolPickerEvent) {
-        Log.d(logTag, "onSwitchToSymbolPickerEvent")
-        this.switchToSymbolPicker()
-    }
-
-    @Subscribe
-    fun onToggleToPreviousCandidatesPageEvent(event: ToggleToPreviousCandidatesPageEvent) {
-        Log.d(logTag, "onToggleToPreviousCandidatesPageEvent")
-        if (currentKeyboardLayout == KeyboardLayout.CANDIDATES && ChewingUtil.candWindowOpened()) {
-            this.renderCandidatesLayout()
-        }
-    }
-
-    @Subscribe
-    fun onToggleToMainLayoutModeEvent(event: ToggleToMainLayoutModeEvent) {
-        Log.d(logTag, "onToggleToMainLayoutModeEvent")
-        this.toggleMainLayoutMode()
-    }
-
     fun toggleMainLayoutMode() {
         when (ChewingBridge.getChiEngMode()) {
             SYMBOL_MODE -> {
                 ChewingBridge.setChiEngMode(CHINESE_MODE)
                 switchToBopomofoLayout()
             }
-
             CHINESE_MODE -> {
                 ChewingBridge.setChiEngMode(SYMBOL_MODE)
                 switchToAlphabeticalLayout()
@@ -213,7 +127,7 @@ class KeyboardPanel(
         val userKeyboardLayoutPreference =
             sharedPreferences.getString(
                 "user_keyboard_layout",
-                GuilelessBopomofoServiceContext.defaultKeyboardLayout
+                GuilelessBopomofoService.defaultKeyboardLayout
             )
 
         userKeyboardLayoutPreference?.let {
@@ -244,7 +158,6 @@ class KeyboardPanel(
                     this.addView(keyboardHsuLayoutBinding.root)
                 }
             }
-
             "KB_DVORAK_HSU" -> {
                 if (sharedPreferences.getBoolean(
                         "user_display_dvorak_hsu_both_layout",
@@ -260,7 +173,6 @@ class KeyboardPanel(
                     this.addView(keyboardHsuDvorakLayoutBinding.root)
                 }
             }
-
             "KB_ET26" -> {
                 if (sharedPreferences.getBoolean(
                         "user_display_eten26_qwerty_layout",
@@ -276,7 +188,6 @@ class KeyboardPanel(
                     this.addView(keyboardEt26LayoutBinding.root)
                 }
             }
-
             "KB_DEFAULT" -> {
                 keyboardDachenLayoutBinding =
                     KeyboardDachenLayoutBinding.inflate(LayoutInflater.from(context))
@@ -328,11 +239,11 @@ class KeyboardPanel(
     private fun userIsUsingDvorakHsu(): Boolean {
         return (sharedPreferences.getString(
             "user_keyboard_layout",
-            GuilelessBopomofoServiceContext.defaultKeyboardLayout
+            GuilelessBopomofoService.defaultKeyboardLayout
         ) == "KB_DVORAK_HSU")
     }
 
-    private fun backToMainLayout() {
+    fun backToMainLayout() {
         // force back to main layout whatever a candidate has been chosen or not
         if (currentKeyboardLayout == KeyboardLayout.CANDIDATES) {
             ChewingBridge.candClose()
@@ -351,7 +262,7 @@ class KeyboardPanel(
         finishCandidateSelection()
     }
 
-    private fun candidateSelectionDone(index: Int) {
+    fun candidateSelectionDone(index: Int) {
         ChewingBridge.candChooseByIndex(index)
         finishCandidateSelection()
     }
@@ -360,7 +271,7 @@ class KeyboardPanel(
         if (ChewingUtil.candWindowClosed()) {
             ChewingBridge.candClose()
             ChewingBridge.handleEnd()
-            EventBus.getDefault().post(UpdateBuffersEvent())
+            updateBuffers()
             currentCandidatesList = 0
             candidatesRecyclerView.adapter = null
             switchToMainLayout()
@@ -369,7 +280,15 @@ class KeyboardPanel(
         }
     }
 
-    fun switchToCandidatesLayout() {
+    fun updateBuffers() {
+        GuilelessBopomofoServiceContext.service.viewBinding.apply {
+            launch { textViewPreEditBuffer.update() }
+            launch { textViewBopomofoBuffer.update() }
+        }
+    }
+
+    // list current offset's candidates in the candidate window
+    fun switchToCandidatesLayout(offset: Int) {
         Log.d(logTag, "switchToCandidatesLayout")
 
         // switch to the target candidates list
@@ -384,6 +303,12 @@ class KeyboardPanel(
             currentCandidatesList = 0
         }
 
+        renderCandidatesLayout()
+    }
+
+    // just list current candidate window
+    fun switchToCandidatesLayout() {
+        Log.d(logTag, "switchToCandidatesLayout")
         renderCandidatesLayout()
     }
 

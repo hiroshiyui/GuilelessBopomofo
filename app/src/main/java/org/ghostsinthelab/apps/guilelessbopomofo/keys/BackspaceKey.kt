@@ -32,10 +32,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.events.SendSingleDownUpKeyEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.UpdateBuffersEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-import org.greenrobot.eventbus.EventBus
 import kotlin.concurrent.fixedRateTimer
 import kotlin.coroutines.CoroutineContext
 
@@ -53,7 +51,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         mDetector.setOnDoubleTapListener(null)
     }
 
-    inner class MyGestureListener : GestureListener() {
+    inner class MyGestureListener : KeyImageButton.GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             // avoids too fast repeat clicks
             if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 100) {
@@ -106,9 +104,9 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         fun action() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.handleBackspace()
-                EventBus.getDefault().post(UpdateBuffersEvent())
+                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.updateBuffers()
             } else {
-                EventBus.getDefault().post(SendSingleDownUpKeyEvent(KeyEvent.KEYCODE_DEL))
+                GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
             }
         }
     }
