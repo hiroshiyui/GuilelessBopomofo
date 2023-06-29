@@ -23,13 +23,13 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.GestureDetectorCompat
+import androidx.emoji.widget.EmojiAppCompatTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 abstract class BufferTextView(context: Context, attrs: AttributeSet) :
-    AppCompatTextView(context, attrs), DisplayMetricsComputable {
+    EmojiAppCompatTextView(context, attrs), DisplayMetricsComputable {
     abstract var mDetector: GestureDetectorCompat
     abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable
 

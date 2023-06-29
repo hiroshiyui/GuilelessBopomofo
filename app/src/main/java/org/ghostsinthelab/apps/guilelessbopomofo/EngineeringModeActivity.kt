@@ -25,6 +25,8 @@ import android.os.Build
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.emoji.bundled.BundledEmojiCompatConfig
+import androidx.emoji.text.EmojiCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityEngineeringModeBinding
 import java.io.File
 
@@ -35,6 +37,9 @@ class EngineeringModeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val emojiCompatConfig = BundledEmojiCompatConfig(this)
+        EmojiCompat.init(emojiCompatConfig)
 
         _viewBinding = ActivityEngineeringModeBinding.inflate(this.layoutInflater)
         viewBinding.chewingDataFilesStatus.text = checkChewingDateFiles().toString()

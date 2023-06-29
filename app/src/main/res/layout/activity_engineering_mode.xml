@@ -41,7 +41,7 @@
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <androidx.emoji.widget.EmojiAppCompatEditText
             android:id="@+id/testTextInputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
