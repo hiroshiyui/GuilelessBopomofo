@@ -90,9 +90,9 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     }
 
     // which character did I touched? (index value)
-    private var offset: Int = ChewingBridge.cursorCurrent()
+    var offset: Int = ChewingBridge.cursorCurrent()
 
-    private fun cursorMovedBy(source: CursorMovedBy) {
+    fun cursorMovedBy(source: CursorMovedBy) {
         when (source) {
             CursorMovedBy.TOUCH -> {
                 ChewingUtil.moveToPreEditBufferOffset(offset)
@@ -115,7 +115,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         renderUnderlineSpan()
     }
 
-    private fun renderUnderlineSpan() {
+    fun renderUnderlineSpan() {
         span = this.text.toSpannable() as SpannableString
         val underlineSpans = span.getSpans(0, span.length, UnderlineSpan::class.java)
 

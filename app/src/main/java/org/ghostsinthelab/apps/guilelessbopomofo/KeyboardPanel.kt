@@ -80,9 +80,9 @@ class KeyboardPanel(
     private lateinit var compactLayoutBinding: CompactLayoutBinding
 
     // keyButtonPopup
-    private val keyButtonPopupLayoutBinding: KeybuttonPopupLayoutBinding =
+    val keyButtonPopupLayoutBinding: KeybuttonPopupLayoutBinding =
         KeybuttonPopupLayoutBinding.inflate(LayoutInflater.from(context))
-    private val keyButtonPopup = PopupWindow(keyButtonPopupLayoutBinding.root, 1, 1, false)
+    val keyButtonPopup = PopupWindow(keyButtonPopupLayoutBinding.root, 1, 1, false)
 
     // candidatesRecyclerView
     private val candidatesLayoutBinding: CandidatesLayoutBinding =
