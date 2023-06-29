@@ -28,6 +28,7 @@ android {
     }
 
     buildFeatures {
+        dataBinding true
         viewBinding true
     }
 
@@ -102,11 +103,13 @@ android {
 
 dependencies {
     def androidx_appcompat_version = '1.6.1'
+    def lifecycle_version = '2.6.1'
     def kotlin_version = '1.8.22'
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
     implementation "androidx.appcompat:appcompat-resources:$androidx_appcompat_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.preference:preference-ktx:1.2.0'
