@@ -20,13 +20,14 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
+import android.os.Build
+import android.os.IBinder
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.GestureDetectorCompat
-import org.ghostsinthelab.apps.guilelessbopomofo.events.ShowInputMethodPickerEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.SwitchInputMethodEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-import org.greenrobot.eventbus.EventBus
 
 class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
@@ -62,11 +63,24 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
 
         override fun onLongPress(e: MotionEvent) {
             performVibrate(context, Vibratable.VibrationStrength.STRONG)
-            EventBus.getDefault().post(ShowInputMethodPickerEvent())
+            val imm =
+                GuilelessBopomofoServiceContext.service.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showInputMethodPicker()
         }
 
         private fun switchInputMethod() {
-            EventBus.getDefault().post(SwitchInputMethodEvent())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                GuilelessBopomofoServiceContext.service.switchToNextInputMethod(false)
+            } else {
+                // backward compatibility, support IME switch on legacy devices
+                val imm =
+                    GuilelessBopomofoServiceContext.service.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imeToken: IBinder? =
+                    GuilelessBopomofoServiceContext.service.window?.let {
+                        it.window?.attributes?.token
+                    }
+                imm.switchToNextInputMethod(imeToken, false)
+            }
         }
     }
 }
