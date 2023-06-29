@@ -54,6 +54,7 @@ class GuilelessBopomofoService : InputMethodService(),
     val viewBinding get() = _viewBinding!!
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var inputView: Keyboard
     private val chewingDataFiles =
         listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
 
@@ -156,7 +157,8 @@ class GuilelessBopomofoService : InputMethodService(),
         Log.d(logTag, "onCreateInputView()")
         _viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
         viewBinding.keyboardPanel.switchToMainLayout()
-        return viewBinding.root
+        inputView = viewBinding.root
+        return inputView
     }
 
     override fun onInitializeInterface() {
