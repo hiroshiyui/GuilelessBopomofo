@@ -274,13 +274,6 @@ class GuilelessBopomofoService : InputMethodService(),
     }
 
     fun onPrintingKeyDown(event: KeyEvent) {
-        Log.d(logTag, "onPrintingKeyDown")
-
-        // No views, no duty!
-        if (!isInputViewShown) {
-            return
-        }
-
         // Consider keys in NumPad
         if (event.isNumPadKey()) {
             currentInputConnection.sendKeyEvent(event)
