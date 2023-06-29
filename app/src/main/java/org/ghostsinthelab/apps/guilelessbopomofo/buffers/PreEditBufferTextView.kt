@@ -61,15 +61,13 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                 // 如果使用者點選最後一個字的時候很邊邊角角，
                 // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來
                 if (offset >= this.text.length) {
-                    Log.d(logTag, "Offset is over the buffer length!")
-                    offset = this.text.length - 1
+                    offset -= 1
                 }
             }
             CursorMovedBy.PHYSICAL_KEYBOARD -> {
                 offset = ChewingBridge.cursorCurrent()
                 if (offset >= ChewingBridge.bufferLen()) {
-                    Log.d(logTag, "Offset is over the buffer length!")
-                    offset = this.text.length - 1
+                    offset -= 1
                 }
             }
         }
