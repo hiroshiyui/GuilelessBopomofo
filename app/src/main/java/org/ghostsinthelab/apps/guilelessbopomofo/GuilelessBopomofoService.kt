@@ -91,7 +91,7 @@ class GuilelessBopomofoService : InputMethodService(),
 
     // ViewBinding
     private var _viewBinding: KeyboardLayoutBinding? = null
-    private val viewBinding get() = _viewBinding!!
+    val viewBinding get() = _viewBinding!!
     private lateinit var keyboardPanel: KeyboardPanel
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -156,6 +156,8 @@ class GuilelessBopomofoService : InputMethodService(),
                 "user_haptic_feedback_strength",
                 GuilelessBopomofoServiceContext.defaultHapticFeedbackStrength
             )
+
+        GuilelessBopomofoServiceContext.service = this@GuilelessBopomofoService
     }
 
 
@@ -204,7 +206,7 @@ class GuilelessBopomofoService : InputMethodService(),
     override fun onEvaluateInputViewShown(): Boolean {
         super.onEvaluateInputViewShown()
         Log.d(logTag, "onEvaluateInputViewShown()")
-        GuilelessBopomofoServiceContext.physicalKeyboardEnabled = isPhysicalKeyboardEnabled()
+        GuilelessBopomofoServiceContext.physicalKeyboardEnabled = physicalKeyboardEnabled()
         return true
     }
 
@@ -478,7 +480,6 @@ class GuilelessBopomofoService : InputMethodService(),
                         imeAction
                     )
                 }
-
                 else -> {
                     // The current EditText has no android:imeOptions attribute, or I don't want to make it act as is.
                     this.sendDownUpKeyEvents(KEYCODE_ENTER)
@@ -487,7 +488,7 @@ class GuilelessBopomofoService : InputMethodService(),
         }
     }
 
-    private fun isPhysicalKeyboardEnabled(): Boolean {
+    private fun physicalKeyboardEnabled(): Boolean {
         val physicalKeyboardPresent: Boolean =
             (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY)
 
