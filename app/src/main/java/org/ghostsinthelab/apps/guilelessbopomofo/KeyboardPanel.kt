@@ -23,7 +23,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.AttributeSet
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
@@ -47,9 +46,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayou
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeybuttonPopupLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.events.BackToMainLayoutEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.DecideToBackToMainLayoutEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.DismissKeyPopupEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.DoneCandidateSelectionEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.ShowKeyPopupEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.SwitchToCandidatesLayoutEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.SwitchToSymbolPickerEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ToggleToMainLayoutModeEvent
@@ -169,31 +166,7 @@ class KeyboardPanel(
         this.toggleMainLayoutMode()
     }
 
-    @Subscribe
-    fun onShowKeyPopupEvent(event: ShowKeyPopupEvent) {
-        this.apply {
-            keyButtonPopupLayoutBinding.keyButtonPopupImageView.apply {
-                this.setImageDrawable(event.characterKey.drawable)
-            }
-            this.keyButtonPopup.let { popup ->
-                popup.height = event.characterKey.height
-                popup.width = event.characterKey.width
-                popup.showAtLocation(
-                    rootView,
-                    Gravity.NO_GRAVITY,
-                    event.keyButtonLocation[0],
-                    event.keyButtonLocation[1] - event.characterKey.height
-                )
-            }
-        }
-    }
-
-    @Subscribe
-    fun onDismissKeyPopupEvent(event: DismissKeyPopupEvent) {
-        this.keyButtonPopup.dismiss()
-    }
-
-    private fun toggleMainLayoutMode() {
+    fun toggleMainLayoutMode() {
         when (ChewingBridge.getChiEngMode()) {
             SYMBOL_MODE -> {
                 ChewingBridge.setChiEngMode(CHINESE_MODE)
