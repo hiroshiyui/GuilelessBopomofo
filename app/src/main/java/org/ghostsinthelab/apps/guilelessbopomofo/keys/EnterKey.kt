@@ -22,6 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import android.text.InputType
 import android.util.AttributeSet
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.EditorInfo
@@ -39,7 +40,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         mDetector.setOnDoubleTapListener(null)
     }
 
-    inner class MyGestureListener : KeyImageButton.GestureListener() {
+    inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.NORMAL)
             return true
@@ -54,7 +55,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
     companion object {
         fun action() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) { // not committed yet
-                ChewingBridge.handleEnter()
+                ChewingBridge.commitPreeditBuf(ChewingBridge.context)
                 GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.updateBuffers()
             } else {
                 val editorInfo =
@@ -75,7 +76,9 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                         return
                     }
 
-                    when (val imeAction = (it.imeOptions and EditorInfo.IME_MASK_ACTION)) {
+                    val imeAction = (it.imeOptions and EditorInfo.IME_MASK_ACTION)
+                    Log.d(this::class.java.name, "IME Action: $imeAction")
+                    when (imeAction) {
                         EditorInfo.IME_ACTION_GO, EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_SEARCH, EditorInfo.IME_ACTION_SEND -> {
                             // The current EditText has a specified android:imeOptions attribute.
                             GuilelessBopomofoServiceContext.service.currentInputConnection.performEditorAction(

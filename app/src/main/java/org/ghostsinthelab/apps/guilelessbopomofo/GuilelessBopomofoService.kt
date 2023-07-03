@@ -27,7 +27,27 @@ import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
-import android.view.KeyEvent.*
+import android.view.KeyEvent.ACTION_DOWN
+import android.view.KeyEvent.ACTION_UP
+import android.view.KeyEvent.KEYCODE_A
+import android.view.KeyEvent.KEYCODE_ALT_LEFT
+import android.view.KeyEvent.KEYCODE_BACK
+import android.view.KeyEvent.KEYCODE_C
+import android.view.KeyEvent.KEYCODE_DEL
+import android.view.KeyEvent.KEYCODE_DPAD_DOWN
+import android.view.KeyEvent.KEYCODE_DPAD_LEFT
+import android.view.KeyEvent.KEYCODE_DPAD_RIGHT
+import android.view.KeyEvent.KEYCODE_ENTER
+import android.view.KeyEvent.KEYCODE_ESCAPE
+import android.view.KeyEvent.KEYCODE_GRAVE
+import android.view.KeyEvent.KEYCODE_R
+import android.view.KeyEvent.KEYCODE_SHIFT_LEFT
+import android.view.KeyEvent.KEYCODE_SHIFT_RIGHT
+import android.view.KeyEvent.KEYCODE_SPACE
+import android.view.KeyEvent.KEYCODE_V
+import android.view.KeyEvent.KEYCODE_X
+import android.view.KeyEvent.KEYCODE_Z
+import android.view.KeyEvent.META_SHIFT_ON
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -36,7 +56,14 @@ import androidx.emoji.bundled.BundledEmojiCompatConfig
 import androidx.emoji.text.EmojiCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.*
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.BackspaceKey
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.DownKey
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.EnterKey
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.EscapeKey
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.LeftKey
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.RightKey
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKey
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.SpaceKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import java.io.File
@@ -65,6 +92,7 @@ class GuilelessBopomofoService : InputMethodService(),
     }
 
     override fun onCreate() {
+        Log.d(logTag, "onCreate()")
         super.onCreate()
 
         val emojiCompatConfig = BundledEmojiCompatConfig(this)
@@ -72,7 +100,6 @@ class GuilelessBopomofoService : InputMethodService(),
 
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-        Log.d(logTag, "onCreate()")
         // Initializing Chewing
         try {
             val dataPath =
@@ -132,6 +159,7 @@ class GuilelessBopomofoService : InputMethodService(),
 
     // Disable fullscreen mode when device's orientation is landscape
     override fun onEvaluateFullscreenMode(): Boolean {
+        Log.d(logTag, "onEvaluateFullscreenMode()")
         super.onEvaluateFullscreenMode()
 
         if (sharedPreferences.getBoolean(
@@ -205,6 +233,7 @@ class GuilelessBopomofoService : InputMethodService(),
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.d(logTag, "onKeyDown()")
         event?.let {
             if (it.isPrintingKey) {
                 onPrintingKeyDown(it)
@@ -226,6 +255,7 @@ class GuilelessBopomofoService : InputMethodService(),
                         BackspaceKey.action()
                     }
                     KEYCODE_ENTER -> {
+                        Log.d(logTag, "KEYCODE_ENTER")
                         EnterKey.action()
                     }
                     KEYCODE_ESCAPE -> {
@@ -251,15 +281,26 @@ class GuilelessBopomofoService : InputMethodService(),
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.d(logTag, "onKeyUp()")
         event?.let {
             if (it.isPrintingKey) {
                 onPrintingKeyUp()
+            }  else {
+                when (it.keyCode) {
+                    KEYCODE_ENTER -> {
+                        // DO NOTHING HERE, has been handled by EnterKey.action()
+                    }
+                    else -> {
+                        return super.onKeyUp(keyCode, event)
+                    }
+                }
             }
         }
-        return super.onKeyUp(keyCode, event)
+        return true
     }
 
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.d(logTag, "onKeyLongPress()")
         event?.let {
             when (it.keyCode) {
                 KEYCODE_SHIFT_RIGHT -> {
@@ -276,6 +317,7 @@ class GuilelessBopomofoService : InputMethodService(),
     }
 
     fun onPrintingKeyDown(event: KeyEvent) {
+        Log.d(logTag, "onPrintingKeyDown()")
         // Consider keys in NumPad
         if (event.isNumPadKey()) {
             currentInputConnection.sendKeyEvent(event)
@@ -346,6 +388,7 @@ class GuilelessBopomofoService : InputMethodService(),
     }
 
     private fun onPrintingKeyUp() {
+        Log.d(logTag, "onPrintingKeyUp()")
         // Detect if a candidate had been chosen by user
         val keyboardPanel =
             viewBinding.keyboardPanel
