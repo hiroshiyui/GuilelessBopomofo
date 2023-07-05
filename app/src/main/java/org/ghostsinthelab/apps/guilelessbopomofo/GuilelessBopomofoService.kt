@@ -243,33 +243,42 @@ class GuilelessBopomofoService : InputMethodService(),
                         // keep default behavior of Back key
                         return super.onKeyDown(keyCode, event)
                     }
+
                     KEYCODE_ALT_LEFT, KEYCODE_SHIFT_RIGHT -> {
                         // for onKeyLongPress()...
                         it.startTracking()
                         return true
                     }
+
                     KEYCODE_SPACE -> {
                         SpaceKey.action(it)
                     }
+
                     KEYCODE_DEL -> {
                         BackspaceKey.action()
                     }
+
                     KEYCODE_ENTER -> {
                         Log.d(logTag, "KEYCODE_ENTER")
                         EnterKey.action()
                     }
+
                     KEYCODE_ESCAPE -> {
                         EscapeKey.action()
                     }
+
                     KEYCODE_DPAD_LEFT -> {
                         LeftKey.action()
                     }
+
                     KEYCODE_DPAD_RIGHT -> {
                         RightKey.action()
                     }
+
                     KEYCODE_DPAD_DOWN -> {
                         DownKey.action()
                     }
+
                     else -> {
                         return super.onKeyDown(keyCode, event)
                     }
@@ -285,18 +294,25 @@ class GuilelessBopomofoService : InputMethodService(),
         event?.let {
             if (it.isPrintingKey) {
                 onPrintingKeyUp()
-            }  else {
+            } else {
                 when (it.keyCode) {
                     KEYCODE_ENTER -> {
                         // DO NOTHING HERE, has been handled by EnterKey.action()
+                        return true
                     }
+
+                    KEYCODE_SPACE -> {
+                        // DO NOTHING HERE, has been handled by SpaceKey.action()
+                        return true
+                    }
+
                     else -> {
                         return super.onKeyUp(keyCode, event)
                     }
                 }
             }
         }
-        return true
+        return super.onKeyUp(keyCode, event)
     }
 
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
@@ -307,6 +323,7 @@ class GuilelessBopomofoService : InputMethodService(),
                     ChewingUtil.openPuncCandidates()
                     viewBinding.keyboardPanel.switchToCandidatesLayout()
                 }
+
                 KEYCODE_ALT_LEFT -> {
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.showInputMethodPicker()
@@ -316,8 +333,26 @@ class GuilelessBopomofoService : InputMethodService(),
         return super.onKeyLongPress(keyCode, event)
     }
 
+    override fun onWindowHidden() {
+        super.onWindowHidden()
+        Log.d(logTag, "onWindowHidden()")
+        // If IME view is hidden, switch to plain alphabetical mode,
+        // to avoid confusing while using physical keyboard.
+        ChewingBridge.setChiEngMode(SYMBOL_MODE)
+        viewBinding.keyboardPanel.switchToAlphabeticalLayout()
+    }
+
+    override fun onWindowShown() {
+        super.onWindowShown()
+        Log.d(logTag, "onWindowShown()")
+        // Reversal business logic of onWindowHidden()
+        ChewingBridge.setChiEngMode(CHINESE_MODE)
+        viewBinding.keyboardPanel.switchToMainLayout()
+    }
+
     fun onPrintingKeyDown(event: KeyEvent) {
         Log.d(logTag, "onPrintingKeyDown()")
+
         // Consider keys in NumPad
         if (event.isNumPadKey()) {
             currentInputConnection.sendKeyEvent(event)
@@ -353,18 +388,23 @@ class GuilelessBopomofoService : InputMethodService(),
                     KEYCODE_A -> {
                         performContextMenuAction(android.R.id.selectAll)
                     }
+
                     KEYCODE_Z -> {
                         performContextMenuAction(android.R.id.undo)
                     }
+
                     KEYCODE_X -> {
                         performContextMenuAction(android.R.id.cut)
                     }
+
                     KEYCODE_C -> {
                         performContextMenuAction(android.R.id.copy)
                     }
+
                     KEYCODE_V -> {
                         performContextMenuAction(android.R.id.paste)
                     }
+
                     KEYCODE_R -> {
                         performContextMenuAction(android.R.id.redo)
                     }
@@ -390,13 +430,15 @@ class GuilelessBopomofoService : InputMethodService(),
     private fun onPrintingKeyUp() {
         Log.d(logTag, "onPrintingKeyUp()")
         // Detect if a candidate had been chosen by user
-        val keyboardPanel =
-            viewBinding.keyboardPanel
-        if (keyboardPanel.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES) {
-            if (ChewingUtil.candWindowClosed()) {
-                keyboardPanel.candidateSelectionDone()
-            } else {
-                keyboardPanel.renderCandidatesLayout()
+        if (_viewBinding != null) {
+            viewBinding.keyboardPanel.let {
+                if (it.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES) {
+                    if (ChewingUtil.candWindowClosed()) {
+                        it.candidateSelectionDone()
+                    } else {
+                        it.renderCandidatesLayout()
+                    }
+                }
             }
         }
     }
@@ -427,7 +469,10 @@ class GuilelessBopomofoService : InputMethodService(),
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                 packageManager.getPackageInfo(this.packageName, 0).versionName.toByteArray()
             } else {
-                packageManager.getPackageInfo(this.packageName, PackageManager.PackageInfoFlags.of(0)).versionName.toByteArray()
+                packageManager.getPackageInfo(
+                    this.packageName,
+                    PackageManager.PackageInfoFlags.of(0)
+                ).versionName.toByteArray()
             }
         val chewingDataAppVersionTxt =
             File(String.format("%s/%s", chewingDataDir.absolutePath, "data_appversion.txt"))
@@ -494,18 +539,23 @@ class GuilelessBopomofoService : InputMethodService(),
             "user_display_eten26_qwerty_layout",
             "user_display_dvorak_hsu_both_layout" -> {
                 // just 'reload' the main layout
-                viewBinding.keyboardPanel.switchToMainLayout()
+                if (_viewBinding != null) {
+                    viewBinding.keyboardPanel.switchToMainLayout()
+                }
             }
+
             "user_enable_space_as_selection" -> {
                 if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
                     ChewingBridge.setSpaceAsSelection(1)
                 }
             }
+
             "user_phrase_choice_rearward" -> {
                 if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
                     ChewingBridge.setPhraseChoiceRearward(true)
                 }
             }
+
             "user_haptic_feedback_strength" -> {
                 // reload the value
                 userHapticFeedbackStrength =
@@ -514,22 +564,29 @@ class GuilelessBopomofoService : InputMethodService(),
                         defaultHapticFeedbackStrength
                     )
             }
+
             "same_haptic_feedback_to_function_buttons" -> {
                 // do nothing
             }
+
             "user_fullscreen_when_in_landscape",
             "user_fullscreen_when_in_portrait" -> {
                 // do nothing (onEvaluateFullscreenMode() will handle it well)
             }
+
             "user_enable_button_elevation",
             "user_key_button_height",
             "user_enable_double_touch_ime_switch" -> {
                 // just 'reload' the main layout
-                viewBinding.keyboardPanel.switchToMainLayout()
+                if (_viewBinding != null) {
+                    viewBinding.keyboardPanel.switchToMainLayout()
+                }
             }
+
             "user_enable_physical_keyboard" -> {
                 // do nothing (onEvaluateInputViewShown() will handle it well)
             }
+
             "user_candidate_selection_keys_option" -> {
                 sharedPreferences.getString("user_candidate_selection_keys_option", "NUMBER_ROW")
                     ?.let {

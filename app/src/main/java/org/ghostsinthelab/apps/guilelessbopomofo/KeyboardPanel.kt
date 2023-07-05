@@ -33,7 +33,18 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.*
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CompactLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDvorakLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26LayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26QwertyLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuDvorakBothLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuDvorakLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuQwertyLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeybuttonPopupLayoutBinding
 import kotlin.coroutines.CoroutineContext
 
 class KeyboardPanel(
@@ -196,7 +207,7 @@ class KeyboardPanel(
         }
     }
 
-    private fun switchToAlphabeticalLayout() {
+    fun switchToAlphabeticalLayout() {
         if (userIsUsingDvorakHsu()) {
             switchToDvorakLayout()
         } else {
