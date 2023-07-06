@@ -69,11 +69,8 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
 
         // for physical keyboard space key, detect if Shift is pressed first:
-        fun action(keyEvent: KeyEvent, imeWindowVisible: Boolean) {
-            // if user hide IME window completely, disallow to switch main layouts,
-            //  acts as a plain alphabetical keyboard
-            //  See also: GuilelessBopomofoService#onWindowHidden()
-            if (keyEvent.isShiftPressed && imeWindowVisible) {
+        fun action(keyEvent: KeyEvent) {
+            if (keyEvent.isShiftPressed) {
                 GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.toggleMainLayoutMode()
                 return
             }

@@ -235,6 +235,12 @@ class GuilelessBopomofoService : InputMethodService(),
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(logTag, "onKeyDown()")
+
+        if (!imeWindowVisible) {
+            Log.d(logTag, "IME window is invisible, disable interrupt onKeyDown() events.")
+            return false
+        }
+
         event?.let {
             if (it.isPrintingKey) {
                 onPrintingKeyDown(it)
@@ -252,7 +258,7 @@ class GuilelessBopomofoService : InputMethodService(),
                     }
 
                     KEYCODE_SPACE -> {
-                        SpaceKey.action(it, imeWindowVisible)
+                        SpaceKey.action(it)
                     }
 
                     KEYCODE_DEL -> {
@@ -292,6 +298,12 @@ class GuilelessBopomofoService : InputMethodService(),
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(logTag, "onKeyUp()")
+
+        if (!imeWindowVisible) {
+            Log.d(logTag, "IME window is invisible, disable interrupt onKeyUp() events.")
+            return false
+        }
+
         event?.let {
             if (it.isPrintingKey) {
                 onPrintingKeyUp()
@@ -338,23 +350,12 @@ class GuilelessBopomofoService : InputMethodService(),
         super.onWindowHidden()
         Log.d(logTag, "onWindowHidden()")
         imeWindowVisible = false
-        // If IME view is hidden, switch to plain alphabetical mode,
-        // to avoid confusing while using physical keyboard.
-        if (physicalKeyboardEnabled()) {
-            ChewingBridge.setChiEngMode(SYMBOL_MODE)
-            viewBinding.keyboardPanel.switchToAlphabeticalLayout()
-        }
     }
 
     override fun onWindowShown() {
         super.onWindowShown()
         Log.d(logTag, "onWindowShown()")
         imeWindowVisible = true
-        // Reversal business logic of onWindowHidden()
-        if (physicalKeyboardEnabled()) {
-            ChewingBridge.setChiEngMode(CHINESE_MODE)
-            viewBinding.keyboardPanel.switchToMainLayout()
-        }
     }
 
     fun onPrintingKeyDown(event: KeyEvent) {
