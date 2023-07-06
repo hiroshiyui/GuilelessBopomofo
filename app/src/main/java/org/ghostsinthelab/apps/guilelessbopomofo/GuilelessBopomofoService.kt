@@ -75,6 +75,7 @@ class GuilelessBopomofoService : InputMethodService(),
     var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
     private var physicalKeyboardPresent: Boolean = false
     var physicalKeyboardEnabled: Boolean = false
+    var imeWindowVisible: Boolean = true
 
     // ViewBinding
     private var _viewBinding: KeyboardLayoutBinding? = null
@@ -251,7 +252,7 @@ class GuilelessBopomofoService : InputMethodService(),
                     }
 
                     KEYCODE_SPACE -> {
-                        SpaceKey.action(it)
+                        SpaceKey.action(it, imeWindowVisible)
                     }
 
                     KEYCODE_DEL -> {
@@ -295,19 +296,19 @@ class GuilelessBopomofoService : InputMethodService(),
             if (it.isPrintingKey) {
                 onPrintingKeyUp()
             } else {
-                when (it.keyCode) {
+                return when (it.keyCode) {
                     KEYCODE_ENTER -> {
                         // DO NOTHING HERE, has been handled by EnterKey.action()
-                        return true
+                        true
                     }
 
                     KEYCODE_SPACE -> {
                         // DO NOTHING HERE, has been handled by SpaceKey.action()
-                        return true
+                        true
                     }
 
                     else -> {
-                        return super.onKeyUp(keyCode, event)
+                        super.onKeyUp(keyCode, event)
                     }
                 }
             }
@@ -336,18 +337,24 @@ class GuilelessBopomofoService : InputMethodService(),
     override fun onWindowHidden() {
         super.onWindowHidden()
         Log.d(logTag, "onWindowHidden()")
+        imeWindowVisible = false
         // If IME view is hidden, switch to plain alphabetical mode,
         // to avoid confusing while using physical keyboard.
-        ChewingBridge.setChiEngMode(SYMBOL_MODE)
-        viewBinding.keyboardPanel.switchToAlphabeticalLayout()
+        if (physicalKeyboardEnabled()) {
+            ChewingBridge.setChiEngMode(SYMBOL_MODE)
+            viewBinding.keyboardPanel.switchToAlphabeticalLayout()
+        }
     }
 
     override fun onWindowShown() {
         super.onWindowShown()
         Log.d(logTag, "onWindowShown()")
+        imeWindowVisible = true
         // Reversal business logic of onWindowHidden()
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        viewBinding.keyboardPanel.switchToMainLayout()
+        if (physicalKeyboardEnabled()) {
+            ChewingBridge.setChiEngMode(CHINESE_MODE)
+            viewBinding.keyboardPanel.switchToMainLayout()
+        }
     }
 
     fun onPrintingKeyDown(event: KeyEvent) {
@@ -356,21 +363,29 @@ class GuilelessBopomofoService : InputMethodService(),
         // Consider keys in NumPad
         if (event.isNumPadKey()) {
             currentInputConnection.sendKeyEvent(event)
-            viewBinding.keyboardPanel.updateBuffers()
+            if (viewBindingIsReady()) {
+                viewBinding.keyboardPanel.updateBuffers()
+            }
             return
         }
 
         if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.getChiEngMode() == CHINESE_MODE && !event.isShiftPressed) {
-            viewBinding.keyboardPanel.switchToSymbolPicker()
+            if (viewBindingIsReady()) {
+                viewBinding.keyboardPanel.switchToSymbolPicker()
+            }
             return
         }
 
         var keyPressed: Char = event.unicodeChar.toChar()
 
         val shiftKeyImageButton: ShiftKey? =
-            viewBinding.keyboardPanel.findViewById(
-                R.id.keyImageButtonShift
-            )
+            if (viewBindingIsReady()) {
+                viewBinding.keyboardPanel.findViewById(
+                    R.id.keyImageButtonShift
+                )
+            } else {
+                null
+            }
 
         shiftKeyImageButton?.let {
             if (it.isActive) {
@@ -414,7 +429,9 @@ class GuilelessBopomofoService : InputMethodService(),
             ChewingBridge.handleDefault(keyPressed)
         }
 
-        viewBinding.keyboardPanel.updateBuffers()
+        if (viewBindingIsReady()) {
+            viewBinding.keyboardPanel.updateBuffers()
+        }
 
         shiftKeyImageButton?.let {
             if (it.isActive && !it.isLocked) {
@@ -430,7 +447,7 @@ class GuilelessBopomofoService : InputMethodService(),
     private fun onPrintingKeyUp() {
         Log.d(logTag, "onPrintingKeyUp()")
         // Detect if a candidate had been chosen by user
-        if (_viewBinding != null) {
+        if (viewBindingIsReady()) {
             viewBinding.keyboardPanel.let {
                 if (it.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES) {
                     if (ChewingUtil.candWindowClosed()) {
@@ -450,6 +467,13 @@ class GuilelessBopomofoService : InputMethodService(),
                 false
             )
         ) {
+            return true
+        }
+        return false
+    }
+
+    private fun viewBindingIsReady(): Boolean {
+        if (_viewBinding != null) {
             return true
         }
         return false
@@ -539,7 +563,7 @@ class GuilelessBopomofoService : InputMethodService(),
             "user_display_eten26_qwerty_layout",
             "user_display_dvorak_hsu_both_layout" -> {
                 // just 'reload' the main layout
-                if (_viewBinding != null) {
+                if (viewBindingIsReady()) {
                     viewBinding.keyboardPanel.switchToMainLayout()
                 }
             }
@@ -578,7 +602,7 @@ class GuilelessBopomofoService : InputMethodService(),
             "user_key_button_height",
             "user_enable_double_touch_ime_switch" -> {
                 // just 'reload' the main layout
-                if (_viewBinding != null) {
+                if (viewBindingIsReady()) {
                     viewBinding.keyboardPanel.switchToMainLayout()
                 }
             }

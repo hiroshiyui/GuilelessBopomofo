@@ -93,11 +93,13 @@ class KeyboardPanel(
     }
 
     fun toggleMainLayoutMode() {
+        Log.d(logTag, "toggleMainLayoutMode()")
         when (ChewingBridge.getChiEngMode()) {
             SYMBOL_MODE -> {
                 ChewingBridge.setChiEngMode(CHINESE_MODE)
                 switchToBopomofoLayout()
             }
+
             CHINESE_MODE -> {
                 ChewingBridge.setChiEngMode(SYMBOL_MODE)
                 switchToAlphabeticalLayout()
@@ -169,6 +171,7 @@ class KeyboardPanel(
                     this.addView(keyboardHsuLayoutBinding.root)
                 }
             }
+
             "KB_DVORAK_HSU" -> {
                 if (sharedPreferences.getBoolean(
                         "user_display_dvorak_hsu_both_layout",
@@ -184,6 +187,7 @@ class KeyboardPanel(
                     this.addView(keyboardHsuDvorakLayoutBinding.root)
                 }
             }
+
             "KB_ET26" -> {
                 if (sharedPreferences.getBoolean(
                         "user_display_eten26_qwerty_layout",
@@ -199,6 +203,7 @@ class KeyboardPanel(
                     this.addView(keyboardEt26LayoutBinding.root)
                 }
             }
+
             "KB_DEFAULT" -> {
                 keyboardDachenLayoutBinding =
                     KeyboardDachenLayoutBinding.inflate(LayoutInflater.from(context))
