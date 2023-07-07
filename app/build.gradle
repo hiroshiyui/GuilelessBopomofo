@@ -103,7 +103,7 @@ android {
 
 dependencies {
     def androidx_appcompat_version = '1.6.1'
-    def androidx_emoji_version = '1.2.0-alpha03'
+    def androidx_emoji2_version = '1.3.0'
     def lifecycle_version = '2.6.1'
     def kotlin_version = '1.8.22'
 
@@ -119,9 +119,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
-    implementation "androidx.emoji:emoji:$androidx_emoji_version"
-    implementation "androidx.emoji:emoji-appcompat:$androidx_emoji_version"
-    implementation "androidx.emoji:emoji-bundled:$androidx_emoji_version"
+    implementation "androidx.emoji2:emoji2:$androidx_emoji2_version"
+    implementation "androidx.emoji2:emoji2-views:$androidx_emoji2_version"
+    implementation "androidx.emoji2:emoji2-views-helper:$androidx_emoji2_version"
+    implementation "androidx.emoji2:emoji2-bundled:$androidx_emoji2_version"
     testImplementation 'junit:junit:4.13.2'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.11'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

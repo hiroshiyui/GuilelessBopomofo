@@ -52,8 +52,8 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.emoji.bundled.BundledEmojiCompatConfig
-import androidx.emoji.text.EmojiCompat
+import androidx.emoji2.bundled.BundledEmojiCompatConfig
+import androidx.emoji2.text.EmojiCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.BackspaceKey
@@ -95,8 +95,7 @@ class GuilelessBopomofoService : InputMethodService(),
         Log.d(logTag, "onCreate()")
         super.onCreate()
 
-        val emojiCompatConfig = BundledEmojiCompatConfig(this)
-        EmojiCompat.init(emojiCompatConfig)
+        EmojiCompat.init(BundledEmojiCompatConfig(this@GuilelessBopomofoService.applicationContext))
 
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
