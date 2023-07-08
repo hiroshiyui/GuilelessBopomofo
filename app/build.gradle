@@ -117,14 +117,14 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'com.github.google:flexbox-layout:2.0.1'
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2'
     implementation "androidx.emoji2:emoji2:$androidx_emoji2_version"
     implementation "androidx.emoji2:emoji2-views:$androidx_emoji2_version"
     implementation "androidx.emoji2:emoji2-views-helper:$androidx_emoji2_version"
     implementation "androidx.emoji2:emoji2-bundled:$androidx_emoji2_version"
     testImplementation 'junit:junit:4.13.2'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.11'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
