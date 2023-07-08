@@ -32,15 +32,14 @@ import java.io.File
 
 class EngineeringModeActivity : AppCompatActivity() {
     // ViewBinding
-    private var _viewBinding: ActivityEngineeringModeBinding? = null
-    private val viewBinding get() = _viewBinding!!
+    private lateinit var viewBinding: ActivityEngineeringModeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         EmojiCompat.init(BundledEmojiCompatConfig(this@EngineeringModeActivity.applicationContext))
 
-        _viewBinding = ActivityEngineeringModeBinding.inflate(this.layoutInflater)
+        viewBinding = ActivityEngineeringModeBinding.inflate(this.layoutInflater)
         viewBinding.chewingDataFilesStatus.text = checkChewingDateFiles().toString()
 
         viewBinding.testTextInputEditText.setOnLongClickListener {
@@ -50,11 +49,6 @@ class EngineeringModeActivity : AppCompatActivity() {
         }
 
         setContentView(viewBinding.root)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _viewBinding = null
     }
 
     private fun checkChewingDateFiles(): Boolean {

@@ -37,8 +37,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
     private val logTag: String = "MainActivity"
 
     // ViewBinding
-    private var _viewBinding: ActivityMainBinding? = null
-    val viewBinding get() = _viewBinding!!
+    private lateinit var viewBinding: ActivityMainBinding
 
     private var engineeringModeEnterCount: Int = 0
     private val engineeringModeEnterClicks: Int = 5
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
         super.onCreate(savedInstanceState)
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
 
-        _viewBinding = ActivityMainBinding.inflate(layoutInflater)
+        viewBinding = ActivityMainBinding.inflate(layoutInflater)
 
         viewBinding.apply {
             textViewAppVersion.text =
@@ -364,11 +363,6 @@ class MainActivity : AppCompatActivity(), Vibratable {
 
         val view = viewBinding.root
         setContentView(view)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _viewBinding = null
     }
 
     private fun isGuilelessBopomofoEnabled(): Boolean {
