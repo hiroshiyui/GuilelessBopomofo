@@ -29,7 +29,7 @@ class DownKey {
             if (ChewingBridge.bufferLen() > 0) {
                 ChewingBridge.candClose()
                 ChewingBridge.candOpen()
-                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.switchToCandidatesLayout(ChewingBridge.cursorCurrent())
+                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.switchToCandidatesLayout()
             } else {
                 GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN)
             }

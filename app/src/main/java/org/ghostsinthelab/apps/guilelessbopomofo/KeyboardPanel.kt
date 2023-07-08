@@ -304,7 +304,7 @@ class KeyboardPanel(
     }
 
     // list current offset's candidates in the candidate window
-    fun switchToCandidatesLayout(offset: Int) {
+    fun switchToCandidatesLayout() {
         Log.d(logTag, "switchToCandidatesLayout")
 
         // switch to the target candidates list
@@ -319,12 +319,6 @@ class KeyboardPanel(
             currentCandidatesList = 0
         }
 
-        renderCandidatesLayout()
-    }
-
-    // just list current candidate window
-    fun switchToCandidatesLayout() {
-        Log.d(logTag, "switchToCandidatesLayout")
         renderCandidatesLayout()
     }
 
