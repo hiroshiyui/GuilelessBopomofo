@@ -36,7 +36,7 @@ class CandidateButton(context: Context, attrs: AttributeSet) :
         mDetector = GestureDetectorCompat(context, MyGestureListener())
     }
 
-    inner class MyGestureListener : KeyButton.GestureListener() {
+    inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.LIGHT)
             return true

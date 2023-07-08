@@ -43,5 +43,5 @@ class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
         this@BopomofoBufferTextView.text = ChewingBridge.bopomofoStringStatic()
     }
 
-    inner class MyGestureListener: BufferTextView.GestureListener()
+    inner class MyGestureListener: GestureListener()
 }

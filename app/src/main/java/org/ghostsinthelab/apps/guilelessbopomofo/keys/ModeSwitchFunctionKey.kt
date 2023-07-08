@@ -33,7 +33,7 @@ class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBut
         mDetector = GestureDetectorCompat(context, MyGestureListener())
     }
 
-    inner class MyGestureListener : KeyImageButton.GestureListener() {
+    inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.NORMAL)
             return true

@@ -212,7 +212,7 @@ class KeyboardPanel(
         }
     }
 
-    fun switchToAlphabeticalLayout() {
+    private fun switchToAlphabeticalLayout() {
         if (userIsUsingDvorakHsu()) {
             switchToDvorakLayout()
         } else {

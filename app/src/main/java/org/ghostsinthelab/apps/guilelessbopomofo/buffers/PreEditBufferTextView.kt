@@ -128,7 +128,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
     }
 
-    inner class MyGestureListener : BufferTextView.GestureListener() {
+    inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             val x = e.x
             val y = e.y

@@ -51,7 +51,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         mDetector.setOnDoubleTapListener(null)
     }
 
-    inner class MyGestureListener : KeyImageButton.GestureListener() {
+    inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             // avoids too fast repeat clicks
             if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 100) {

@@ -33,7 +33,7 @@ class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(c
         mDetector = GestureDetectorCompat(context, MyGestureListener())
     }
 
-    inner class MyGestureListener : KeyButton.GestureListener() {
+    inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             performVibrate(context, Vibratable.VibrationStrength.NORMAL)
             return true

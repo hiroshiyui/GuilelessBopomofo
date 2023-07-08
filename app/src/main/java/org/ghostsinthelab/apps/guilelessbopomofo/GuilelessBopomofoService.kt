@@ -75,7 +75,7 @@ class GuilelessBopomofoService : InputMethodService(),
     var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
     private var physicalKeyboardPresent: Boolean = false
     var physicalKeyboardEnabled: Boolean = false
-    var imeWindowVisible: Boolean = true
+    private var imeWindowVisible: Boolean = true
 
     // ViewBinding
     lateinit var viewBinding: KeyboardLayoutBinding
