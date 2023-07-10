@@ -76,8 +76,6 @@ class GuilelessBopomofoService : InputMethodService(),
     private var physicalKeyboardPresent: Boolean = false
     var physicalKeyboardEnabled: Boolean = false
     private var imeWindowVisible: Boolean = true
-
-    // ViewBinding
     lateinit var viewBinding: KeyboardLayoutBinding
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -94,10 +92,15 @@ class GuilelessBopomofoService : InputMethodService(),
         Log.d(logTag, "onCreate()")
         super.onCreate()
 
+        // initializing ViewBinding as early as possible (before onCreateInputView())
+        viewBinding = KeyboardLayoutBinding.inflate(this.layoutInflater)
+
+        // emoji2-bundled (fonts-embedded)
         EmojiCompat.init(BundledEmojiCompatConfig(this@GuilelessBopomofoService.applicationContext))
 
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+
         // Initializing Chewing
         try {
             val dataPath =
@@ -181,9 +184,9 @@ class GuilelessBopomofoService : InputMethodService(),
 
     override fun onCreateInputView(): View {
         Log.d(logTag, "onCreateInputView()")
-        viewBinding = KeyboardLayoutBinding.inflate(layoutInflater)
+        val inputView = viewBinding.root
         viewBinding.keyboardPanel.switchToMainLayout()
-        return viewBinding.root
+        return inputView
     }
 
     override fun onInitializeInterface() {
