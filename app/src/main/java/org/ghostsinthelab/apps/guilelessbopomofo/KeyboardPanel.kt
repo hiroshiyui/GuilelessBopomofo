@@ -108,6 +108,7 @@ class KeyboardPanel(
     }
 
     fun switchToMainLayout() {
+        Log.d(logTag, "switchToMainLayout()")
         if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
             switchToBopomofoLayout()
         } else {
@@ -131,7 +132,7 @@ class KeyboardPanel(
     }
 
     private fun switchToBopomofoLayout() {
-        Log.d(logTag, "switchToMainLayout")
+        Log.d(logTag, "switchToBopomofoLayout()")
         currentKeyboardLayout = KeyboardLayout.MAIN
 
         this.removeAllViews()
@@ -170,6 +171,7 @@ class KeyboardPanel(
                         KeyboardHsuLayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardHsuLayoutBinding.root)
                 }
+                return
             }
 
             "KB_DVORAK_HSU" -> {
@@ -186,6 +188,7 @@ class KeyboardPanel(
                         KeyboardHsuDvorakLayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardHsuDvorakLayoutBinding.root)
                 }
+                return
             }
 
             "KB_ET26" -> {
@@ -202,17 +205,21 @@ class KeyboardPanel(
                         KeyboardEt26LayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardEt26LayoutBinding.root)
                 }
+                return
             }
 
             "KB_DEFAULT" -> {
                 keyboardDachenLayoutBinding =
                     KeyboardDachenLayoutBinding.inflate(LayoutInflater.from(context))
                 this.addView(keyboardDachenLayoutBinding.root)
+                return
             }
         }
     }
 
     private fun switchToAlphabeticalLayout() {
+        Log.d(logTag, "switchToAlphabeticalLayout()")
+
         if (userIsUsingDvorakHsu()) {
             switchToDvorakLayout()
         } else {
