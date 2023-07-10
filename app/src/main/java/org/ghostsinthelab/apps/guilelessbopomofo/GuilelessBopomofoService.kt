@@ -93,6 +93,7 @@ class GuilelessBopomofoService : InputMethodService(),
         super.onCreate()
 
         // initializing ViewBinding as early as possible (before onCreateInputView())
+        // TODO: Should remove this, seems like all NPEs are caused to KeyboardPanel method operations.
         viewBinding = KeyboardLayoutBinding.inflate(this.layoutInflater)
 
         // emoji2-bundled (fonts-embedded)
@@ -184,9 +185,9 @@ class GuilelessBopomofoService : InputMethodService(),
 
     override fun onCreateInputView(): View {
         Log.d(logTag, "onCreateInputView()")
-        val inputView = viewBinding.root
-        viewBinding.keyboardPanel.switchToMainLayout()
-        return inputView
+        // Potential memory leak...
+        viewBinding = KeyboardLayoutBinding.inflate(this.layoutInflater)
+        return viewBinding.root
     }
 
     override fun onInitializeInterface() {
@@ -216,6 +217,7 @@ class GuilelessBopomofoService : InputMethodService(),
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.d(logTag, "onStartInputView()")
+        viewBinding.keyboardPanel.switchToMainLayout()
         viewBinding.keyboardPanel.updateBuffers()
     }
 
