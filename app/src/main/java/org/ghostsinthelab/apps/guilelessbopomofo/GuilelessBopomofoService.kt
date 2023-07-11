@@ -181,7 +181,6 @@ class GuilelessBopomofoService : InputMethodService(),
 
     override fun onCreateInputView(): View {
         Log.d(logTag, "onCreateInputView()")
-        // Potential memory leak...
         viewBinding = KeyboardLayoutBinding.inflate(this.layoutInflater)
         return viewBinding.root
     }
