@@ -92,10 +92,6 @@ class GuilelessBopomofoService : InputMethodService(),
         Log.d(logTag, "onCreate()")
         super.onCreate()
 
-        // initializing ViewBinding as early as possible (before onCreateInputView())
-        // TODO: Should remove this, seems like all NPEs are caused to KeyboardPanel method operations.
-        viewBinding = KeyboardLayoutBinding.inflate(this.layoutInflater)
-
         // emoji2-bundled (fonts-embedded)
         EmojiCompat.init(BundledEmojiCompatConfig(this@GuilelessBopomofoService.applicationContext))
 
