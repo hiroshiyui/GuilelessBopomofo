@@ -325,16 +325,32 @@ class GuilelessBopomofoService : InputMethodService(),
 
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(logTag, "onKeyLongPress()")
+
+        if (!imeWindowVisible) {
+            Log.d(logTag, "IME window is invisible, disable interrupt onKeyLongPress() events.")
+            return false
+        }
+
         event?.let {
             when (it.keyCode) {
                 KEYCODE_SHIFT_RIGHT -> {
-                    ChewingUtil.openPuncCandidates()
-                    viewBinding.keyboardPanel.switchToCandidatesLayout()
+                    if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
+                        ChewingUtil.openPuncCandidates()
+                        viewBinding.keyboardPanel.switchToCandidatesLayout()
+                        return true
+                    } else {
+                        return super.onKeyLongPress(keyCode, event)
+                    }
                 }
 
                 KEYCODE_ALT_LEFT -> {
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.showInputMethodPicker()
+                    return true
+                }
+
+                else -> {
+                    return super.onKeyLongPress(keyCode, event)
                 }
             }
         }
