@@ -236,6 +236,17 @@ class GuilelessBopomofoService : InputMethodService(),
             return false
         }
 
+        // 實在是不懂既然 imeWindowVisible 又為何進到 onPrintingKeyDown() 後會發生
+        // lateinit property viewBinding has not been initialized 例外？
+        // 先在這邊擋掉：
+        if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
+            Log.d(
+                logTag,
+                "viewBinding has not been initialized, disable interrupt onKeyDown() events."
+            )
+            return false
+        }
+
         event?.let {
             if (it.isPrintingKey) {
                 onPrintingKeyDown(it)
@@ -299,6 +310,14 @@ class GuilelessBopomofoService : InputMethodService(),
             return false
         }
 
+        if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
+            Log.d(
+                logTag,
+                "viewBinding has not been initialized, disable interrupt onKeyUp() events."
+            )
+            return false
+        }
+
         event?.let {
             if (it.isPrintingKey) {
                 onPrintingKeyUp()
@@ -328,6 +347,14 @@ class GuilelessBopomofoService : InputMethodService(),
 
         if (!imeWindowVisible) {
             Log.d(logTag, "IME window is invisible, disable interrupt onKeyLongPress() events.")
+            return false
+        }
+
+        if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
+            Log.d(
+                logTag,
+                "viewBinding has not been initialized, disable interrupt onKeyLongPress() events."
+            )
             return false
         }
 
