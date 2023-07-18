@@ -44,7 +44,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     override lateinit var mDetector: GestureDetectorCompat
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     init {
         mDetector = GestureDetectorCompat(context, MyGestureListener())
@@ -81,7 +81,13 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
                 MotionEvent.ACTION_DOWN -> {
                     backspacePressed = true
                 }
+                MotionEvent.ACTION_MOVE -> {
+                    backspacePressed = true
+                }
                 MotionEvent.ACTION_UP -> {
+                    backspacePressed = false
+                }
+                MotionEvent.ACTION_CANCEL -> {
                     backspacePressed = false
                 }
             }
@@ -94,7 +100,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
             if (backspacePressed) {
                 action()
             } else {
-                this.cancel()
+                this@fixedRateTimer.cancel()
             }
         }
         delay(50L)
