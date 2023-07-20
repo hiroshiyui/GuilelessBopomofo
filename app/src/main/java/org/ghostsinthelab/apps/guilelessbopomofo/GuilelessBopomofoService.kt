@@ -583,7 +583,9 @@ class GuilelessBopomofoService : InputMethodService(),
             "user_display_eten26_qwerty_layout",
             "user_display_dvorak_hsu_both_layout" -> {
                 // just 'reload' the main layout
-                viewBinding.keyboardPanel.switchToMainLayout()
+                if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
+                    viewBinding.keyboardPanel.switchToMainLayout()
+                }
             }
 
             "user_enable_space_as_selection" -> {
@@ -620,7 +622,9 @@ class GuilelessBopomofoService : InputMethodService(),
             "user_key_button_height",
             "user_enable_double_touch_ime_switch" -> {
                 // just 'reload' the main layout
-                viewBinding.keyboardPanel.switchToMainLayout()
+                if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
+                    viewBinding.keyboardPanel.switchToMainLayout()
+                }
             }
 
             "user_enable_physical_keyboard" -> {
