@@ -575,6 +575,12 @@ class GuilelessBopomofoService : InputMethodService(),
         return true
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // toggle main layout automatically between physical keyboard being connected and disconnected
+        viewBinding.keyboardPanel.switchToMainLayout()
+    }
+
     // triggered if any sharedPreference has been changed
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         when (key) {
