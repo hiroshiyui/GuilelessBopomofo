@@ -5,8 +5,8 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion '33.0.1'
+    compileSdkVersion = 33
+    buildToolsVersion = "33.0.1"
     namespace 'org.ghostsinthelab.apps.guilelessbopomofo'
 
     defaultConfig {
