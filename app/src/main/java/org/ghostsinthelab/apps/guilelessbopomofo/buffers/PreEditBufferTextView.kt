@@ -92,6 +92,9 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
             )
         } catch (e: StringIndexOutOfBoundsException) {
             Log.e(logTag, "StringIndexOutOfBoundsException")
+        } catch (e: IndexOutOfBoundsException) {
+            // 在候選區已經有字的情況下按 ` 選擇符號，再按下實體 Space 鍵時會觸發…
+            Log.e(logTag, "IndexOutOfBoundsException")
         }
     }
 
