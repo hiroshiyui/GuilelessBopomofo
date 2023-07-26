@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidateItemLayoutBinding
 
 class CandidatesAdapter : RecyclerView.Adapter<CandidateViewHolder>() {
+    private val itemCount: Int = ChewingBridge.candTotalChoice()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CandidateViewHolder {
         val itemView =
@@ -37,7 +38,7 @@ class CandidatesAdapter : RecyclerView.Adapter<CandidateViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return ChewingBridge.candTotalChoice()
+        return itemCount
     }
 
 }
