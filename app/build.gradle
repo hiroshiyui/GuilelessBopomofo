@@ -117,8 +117,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'com.github.google:flexbox-layout:2.0.1'
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
     implementation "androidx.emoji2:emoji2:$androidx_emoji2_version"
     implementation "androidx.emoji2:emoji2-views:$androidx_emoji2_version"
     implementation "androidx.emoji2:emoji2-views-helper:$androidx_emoji2_version"
