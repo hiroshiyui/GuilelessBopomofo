@@ -57,6 +57,10 @@
         <item name="android:minHeight">52dp</item>
         <item name="minHeight">52dp</item>
         <item name="android:scaleType">centerCrop</item>
+        <item name="android:topLeftRadius">8dp</item>
+        <item name="android:bottomLeftRadius">8dp</item>
+        <item name="android:topRightRadius">8dp</item>
+        <item name="android:bottomRightRadius">8dp</item>
         <item name="android:background">@color/colorButtonBackgroundDark</item>
         <item name="android:tint">@color/colorButtonForegroundDark</item>
     </style>
@@ -78,6 +82,10 @@
         <item name="android:minWidth">48dip</item>
         <item name="android:fontFamily">sans-serif-black</item>
         <item name="fontFamily">sans-serif-black</item>
+        <item name="android:topLeftRadius">8dp</item>
+        <item name="android:bottomLeftRadius">8dp</item>
+        <item name="android:topRightRadius">8dp</item>
+        <item name="android:bottomRightRadius">8dp</item>
     </style>
 
     <style name="AppTheme.CandidateItem" parent="Theme.MaterialComponents">
@@ -87,6 +95,10 @@
         <item name="android:textSize">24sp</item>
         <item name="android:fontFamily">serif</item>
         <item name="fontFamily">serif</item>
+        <item name="android:topLeftRadius">8dp</item>
+        <item name="android:bottomLeftRadius">8dp</item>
+        <item name="android:topRightRadius">8dp</item>
+        <item name="android:bottomRightRadius">8dp</item>
         <item name="android:background">@color/colorButtonBackgroundDark</item>
     </style>
 </resources>
