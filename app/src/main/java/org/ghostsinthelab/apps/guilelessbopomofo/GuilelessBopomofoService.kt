@@ -272,7 +272,6 @@ class GuilelessBopomofoService : InputMethodService(),
                     }
 
                     KEYCODE_ENTER -> {
-                        Log.d(logTag, "KEYCODE_ENTER")
                         EnterKey.action()
                     }
 
