@@ -39,6 +39,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     private val logTag = "PreEditBufferTextView"
     private lateinit var span: SpannableString
     override lateinit var mDetector: GestureDetectorCompat
+    var offset: Int = 0
 
     enum class CursorMovedBy {
         TOUCH,
@@ -50,9 +51,6 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         mDetector.setOnDoubleTapListener(null)
     }
 
-    // which character did I touched? (index value)
-    var offset: Int = ChewingBridge.cursorCurrent()
-
     fun cursorMovedBy(source: CursorMovedBy) {
         when (source) {
             CursorMovedBy.TOUCH -> {
@@ -61,19 +59,20 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                 // 如果使用者點選最後一個字的時候很邊邊角角，
                 // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來
                 if (offset >= this.text.length) {
-                    offset -= 1
+                    offset = ChewingBridge.bufferLen() - 1
                 }
             }
             CursorMovedBy.PHYSICAL_KEYBOARD -> {
                 offset = ChewingBridge.cursorCurrent()
                 if (offset >= ChewingBridge.bufferLen()) {
-                    offset -= 1
+                    offset = ChewingBridge.bufferLen() - 1
                 }
             }
         }
         renderUnderlineSpan()
     }
 
+    // It just renders, presents underline for current cursor
     fun renderUnderlineSpan() {
         span = this.text.toSpannable() as SpannableString
         val underlineSpans = span.getSpans(0, span.length, UnderlineSpan::class.java)
@@ -81,6 +80,12 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         // clear the existent underlines first
         underlineSpans?.forEach {
             span.removeSpan(it)
+        }
+
+        // Avoids IndexOutOfBoundsException early, just skip the rendering:
+        if (offset + 1 > ChewingBridge.bufferLen()) {
+            Log.d(logTag, "Avoids IndexOutOfBoundsException early, just skip the rendering")
+            return
         }
 
         try {
@@ -93,7 +98,8 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         } catch (e: StringIndexOutOfBoundsException) {
             Log.e(logTag, "StringIndexOutOfBoundsException")
         } catch (e: IndexOutOfBoundsException) {
-            // 在候選區已經有字的情況下按 ` 選擇符號，再按下實體 Space 鍵時會觸發…
+            // For physical keyboard users, it's a very common case for them to change offset by keys,
+            // and sometimes make it out of bounds.
             Log.e(logTag, "IndexOutOfBoundsException")
         }
     }
