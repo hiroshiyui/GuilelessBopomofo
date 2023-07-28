@@ -29,7 +29,7 @@ import androidx.core.content.ContextCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 
 interface Vibratable {
-    enum class VibrationStrength(val strength: Long) {
+    enum class VibrationStrength(val strength: Int) {
         LIGHT(25),
         NORMAL(50),
         STRONG(100)
@@ -47,9 +47,9 @@ interface Vibratable {
     val strengthRange: IntRange
         get() = 0..150
 
-    fun performVibrate(context: Context, strength: VibrationStrength) {
+    fun performVibrate(context: Context, vibrationStrength: VibrationStrength) {
         val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java) as Vibrator
-        var vibrationStrength: Long = strength.strength
+        var strength: Int = vibrationStrength.strength
 
         // If users want to use a consistent haptic feedback value for all buttons,
         // just do as they wish.
@@ -63,25 +63,25 @@ interface Vibratable {
         val sameHapticFeedbackToFuncButtons: Boolean =
             sharedPreferences.getBoolean("same_haptic_feedback_to_function_buttons", false)
         if (sameHapticFeedbackToFuncButtons) {
-            vibrationStrength = hapticFeedbackPreferenceStrength.toLong()
+            strength = hapticFeedbackPreferenceStrength
         }
 
         // do nothing if user set vibration strength to 0
-        if (vibrationStrength == 0L) {
+        if (strength == 0) {
             return
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val vibrationEffect = VibrationEffect.createOneShot(vibrationStrength, amplitude)
+            val vibrationEffect = VibrationEffect.createOneShot(strength.toLong(), amplitude)
             vibrator.vibrate(vibrationEffect)
         } else {
             @Suppress("DEPRECATION")
-            vibrator.vibrate(vibrationStrength)
+            vibrator.vibrate(strength.toLong())
         }
     }
 
-    fun performVibrate(context: Context, strength: Long) {
-        if (strength == 0L) {
+    fun performVibrate(context: Context, vibrationStrength: Int) {
+        if (vibrationStrength == 0) {
             return
         }
 
@@ -90,11 +90,11 @@ interface Vibratable {
         vibrator.cancel()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val vibrationEffect = VibrationEffect.createOneShot(strength, amplitude)
+            val vibrationEffect = VibrationEffect.createOneShot(vibrationStrength.toLong(), amplitude)
             vibrator.vibrate(vibrationEffect)
         } else {
             @Suppress("DEPRECATION")
-            vibrator.vibrate(strength)
+            vibrator.vibrate(vibrationStrength.toLong())
         }
     }
 }

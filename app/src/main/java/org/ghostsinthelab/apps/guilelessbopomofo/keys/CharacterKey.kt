@@ -41,7 +41,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
         override fun onDown(e: MotionEvent): Boolean {
             performVibrate(
                 context,
-                GuilelessBopomofoServiceContext.service.userHapticFeedbackStrength.toLong()
+                GuilelessBopomofoServiceContext.service.userHapticFeedbackStrength
             )
             return true
         }

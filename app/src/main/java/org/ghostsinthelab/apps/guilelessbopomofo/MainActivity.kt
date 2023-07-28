@@ -200,7 +200,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         hapticFeedbackPreferenceStrength = progress
                         performVibrate(
                             applicationContext,
-                            hapticFeedbackPreferenceStrength.toLong()
+                            hapticFeedbackPreferenceStrength
                         )
 
                         sharedPreferences.edit()

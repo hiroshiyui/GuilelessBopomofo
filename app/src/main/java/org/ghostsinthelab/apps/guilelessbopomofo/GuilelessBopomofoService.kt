@@ -72,7 +72,7 @@ import java.io.FileOutputStream
 class GuilelessBopomofoService : InputMethodService(),
     SharedPreferences.OnSharedPreferenceChangeListener, KeyEventExtension {
     private val logTag = "GuilelessBopomofoSvc"
-    var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength.toInt()
+    var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
     private var physicalKeyboardPresent: Boolean = false
     var physicalKeyboardEnabled: Boolean = false
     private var imeWindowVisible: Boolean = true
@@ -84,7 +84,7 @@ class GuilelessBopomofoService : InputMethodService(),
 
     companion object {
         val defaultHapticFeedbackStrength: Int =
-            Vibratable.VibrationStrength.NORMAL.strength.toInt()
+            Vibratable.VibrationStrength.NORMAL.strength
         const val defaultKeyboardLayout: String = "KB_DEFAULT"
     }
 
