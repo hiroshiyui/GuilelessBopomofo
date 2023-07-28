@@ -69,6 +69,7 @@ interface Vibratable {
             val vibrationEffect = VibrationEffect.createOneShot(vibrationStrength, amplitude)
             vibrator.vibrate(vibrationEffect)
         } else {
+            @Suppress("DEPRECATION")
             vibrator.vibrate(vibrationStrength)
         }
     }
@@ -86,6 +87,7 @@ interface Vibratable {
             val vibrationEffect = VibrationEffect.createOneShot(strength, amplitude)
             vibrator.vibrate(vibrationEffect)
         } else {
+            @Suppress("DEPRECATION")
             vibrator.vibrate(strength)
         }
     }

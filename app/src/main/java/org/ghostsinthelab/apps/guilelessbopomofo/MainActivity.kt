@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
         viewBinding.apply {
             textViewAppVersion.text =
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                    @Suppress("DEPRECATION")
                     applicationContext.packageManager.getPackageInfo(
                         this@MainActivity.packageName,
                         0

@@ -79,6 +79,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
                     GuilelessBopomofoServiceContext.service.window?.let {
                         it.window?.attributes?.token
                     }
+                @Suppress("DEPRECATION")
                 imm.switchToNextInputMethod(imeToken, false)
             }
         }
