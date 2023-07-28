@@ -36,7 +36,13 @@ interface Vibratable {
     }
 
     val amplitude: Int
-        get() = 128
+        get() {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                VibrationEffect.DEFAULT_AMPLITUDE
+            } else {
+                -1
+            }
+        }
 
     val strengthRange: IntRange
         get() = 0..150
