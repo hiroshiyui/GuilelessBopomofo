@@ -107,8 +107,31 @@ class KeyboardPanel(
         }
     }
 
-    fun switchToMainLayout() {
+    fun switchToLayout(layout: KeyboardLayout) {
+        currentKeyboardLayout = layout
+        when (layout) {
+            KeyboardLayout.MAIN -> {
+                switchToMainLayout()
+            }
+
+            KeyboardLayout.CANDIDATES -> {
+                switchToCandidatesLayout()
+            }
+
+            KeyboardLayout.SYMBOLS -> {
+                switchToSymbolPicker()
+            }
+
+            else -> {}
+        }
+    }
+
+    private fun switchToMainLayout() {
         Log.d(logTag, "switchToMainLayout()")
+
+        ChewingBridge.candClose()
+        ChewingBridge.handleEnd()
+
         if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
             switchToBopomofoLayout()
         } else {
@@ -266,16 +289,7 @@ class KeyboardPanel(
         ) == "KB_DVORAK_HSU")
     }
 
-    fun backToMainLayout() {
-        // force back to main layout whatever a candidate has been chosen or not
-        if (currentKeyboardLayout == KeyboardLayout.CANDIDATES) {
-            ChewingBridge.candClose()
-            ChewingBridge.handleEnd()
-            switchToMainLayout()
-        }
-    }
-
-    fun switchToSymbolPicker() {
+    private fun switchToSymbolPicker() {
         currentKeyboardLayout = KeyboardLayout.SYMBOLS
         ChewingUtil.openSymbolCandidates()
         renderCandidatesLayout()
@@ -311,7 +325,7 @@ class KeyboardPanel(
     }
 
     // list current offset's candidates in the candidate window
-    fun switchToCandidatesLayout() {
+    private fun switchToCandidatesLayout() {
         Log.d(logTag, "switchToCandidatesLayout")
 
         // switch to the target candidates list

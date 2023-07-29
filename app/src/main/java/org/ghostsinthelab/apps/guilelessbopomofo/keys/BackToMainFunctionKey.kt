@@ -24,6 +24,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
@@ -40,7 +41,7 @@ class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(c
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.backToMainLayout()
+            GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
             return true
         }
     }

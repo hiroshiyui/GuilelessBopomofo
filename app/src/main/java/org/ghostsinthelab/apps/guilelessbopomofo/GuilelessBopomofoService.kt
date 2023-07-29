@@ -213,7 +213,7 @@ class GuilelessBopomofoService : InputMethodService(),
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.d(logTag, "onStartInputView()")
-        viewBinding.keyboardPanel.switchToMainLayout()
+        viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
         viewBinding.keyboardPanel.updateBuffers()
     }
 
@@ -363,7 +363,7 @@ class GuilelessBopomofoService : InputMethodService(),
                 KEYCODE_SHIFT_RIGHT -> {
                     if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
                         ChewingUtil.openPuncCandidates()
-                        viewBinding.keyboardPanel.switchToCandidatesLayout()
+                        viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.CANDIDATES)
                         return true
                     } else {
                         return super.onKeyLongPress(keyCode, event)
@@ -407,7 +407,7 @@ class GuilelessBopomofoService : InputMethodService(),
         }
 
         if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.getChiEngMode() == CHINESE_MODE && !event.isShiftPressed) {
-            viewBinding.keyboardPanel.switchToSymbolPicker()
+            viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.SYMBOLS)
             return
         }
 
@@ -580,7 +580,7 @@ class GuilelessBopomofoService : InputMethodService(),
         super.onConfigurationChanged(newConfig)
         // toggle main layout automatically between physical keyboard being connected and disconnected
         if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
-            viewBinding.keyboardPanel.switchToMainLayout()
+            viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
         }
     }
 
@@ -593,7 +593,7 @@ class GuilelessBopomofoService : InputMethodService(),
             "user_display_dvorak_hsu_both_layout" -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
-                    viewBinding.keyboardPanel.switchToMainLayout()
+                    viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
                 }
             }
 
@@ -632,7 +632,7 @@ class GuilelessBopomofoService : InputMethodService(),
             "user_enable_double_touch_ime_switch" -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
-                    viewBinding.keyboardPanel.switchToMainLayout()
+                    viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
                 }
             }
 

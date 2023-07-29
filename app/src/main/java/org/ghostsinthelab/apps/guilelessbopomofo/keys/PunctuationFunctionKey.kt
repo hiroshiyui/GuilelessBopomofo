@@ -25,6 +25,7 @@ import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
@@ -49,7 +50,7 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBu
         override fun onLongPress(e: MotionEvent) {
             performVibrate(context, Vibratable.VibrationStrength.STRONG)
             ChewingUtil.openPuncCandidates()
-            GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.switchToCandidatesLayout()
+            GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.CANDIDATES)
         }
     }
 }

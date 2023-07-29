@@ -28,6 +28,7 @@ import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
@@ -60,7 +61,7 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                     GuilelessBopomofoServiceContext.service.viewBinding.apply {
                         textViewPreEditBuffer.offset = ChewingBridge.cursorCurrent()
                         textViewPreEditBuffer.renderUnderlineSpan()
-                        keyboardPanel.switchToCandidatesLayout()
+                        keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.CANDIDATES)
                     }
                 }
             } else {

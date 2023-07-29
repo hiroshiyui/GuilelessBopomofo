@@ -32,7 +32,7 @@ class EscapeKey {
                     KeyboardPanel.KeyboardLayout.CANDIDATES
                 )
             ) {
-                keyboardPanel.backToMainLayout()
+                keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
             }
         }
     }
