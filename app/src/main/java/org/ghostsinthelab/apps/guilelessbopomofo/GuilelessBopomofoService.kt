@@ -73,8 +73,6 @@ class GuilelessBopomofoService : InputMethodService(),
     SharedPreferences.OnSharedPreferenceChangeListener, KeyEventExtension {
     private val logTag = "GuilelessBopomofoSvc"
     var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
-    private var physicalKeyboardPresent: Boolean = false
-    var physicalKeyboardEnabled: Boolean = false
     private var imeWindowVisible: Boolean = true
     lateinit var viewBinding: KeyboardLayoutBinding
 
@@ -194,9 +192,6 @@ class GuilelessBopomofoService : InputMethodService(),
     override fun onEvaluateInputViewShown(): Boolean {
         super.onEvaluateInputViewShown()
         Log.d(logTag, "onEvaluateInputViewShown()")
-        physicalKeyboardPresent =
-            (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY)
-        physicalKeyboardEnabled = physicalKeyboardEnabled()
         return true
     }
 
@@ -485,18 +480,6 @@ class GuilelessBopomofoService : InputMethodService(),
                 }
             }
         }
-    }
-
-    private fun physicalKeyboardEnabled(): Boolean {
-        if (physicalKeyboardPresent
-            && sharedPreferences.getBoolean(
-                "user_enable_physical_keyboard",
-                false
-            )
-        ) {
-            return true
-        }
-        return false
     }
 
     private fun setupChewingData(dataPath: String) {

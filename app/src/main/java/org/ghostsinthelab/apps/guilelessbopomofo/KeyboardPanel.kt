@@ -45,11 +45,12 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBi
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeybuttonPopupLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.PhysicalKeyboardDetectable
 import kotlin.coroutines.CoroutineContext
 
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
-) : RelativeLayout(context, attrs), CoroutineScope {
+) : RelativeLayout(context, attrs), CoroutineScope, PhysicalKeyboardDetectable {
     private val logTag: String = "KeyboardPanel"
 
     override val coroutineContext: CoroutineContext
@@ -81,7 +82,7 @@ class KeyboardPanel(
 
     lateinit var currentKeyboardLayout: KeyboardLayout
 
-    private val sharedPreferences: SharedPreferences =
+    override val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
 
     init {
@@ -173,7 +174,7 @@ class KeyboardPanel(
         }
 
         // Toggle to compact layout when physical keyboard is enabled:
-        if (GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
+        if (physicalKeyboardEnabled()) {
             switchToCompactLayout()
             return
         }
@@ -254,7 +255,7 @@ class KeyboardPanel(
         Log.d(logTag, "switchToQwertyLayout")
         currentKeyboardLayout = KeyboardLayout.QWERTY
 
-        if (GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
+        if (physicalKeyboardEnabled()) {
             switchToCompactLayout()
             return
         }
@@ -270,7 +271,7 @@ class KeyboardPanel(
         Log.d(logTag, "switchToDvorakLayout")
         currentKeyboardLayout = KeyboardLayout.DVORAK
 
-        if (GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
+        if (physicalKeyboardEnabled()) {
             switchToCompactLayout()
             return
         }
@@ -350,7 +351,7 @@ class KeyboardPanel(
         this.removeAllViews()
         this.addView(candidatesLayoutBinding.root)
 
-        if (!GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
+        if (!physicalKeyboardEnabled()) {
             candidatesRecyclerView.adapter = CandidatesAdapter()
             candidatesRecyclerView.layoutManager =
                 GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)
