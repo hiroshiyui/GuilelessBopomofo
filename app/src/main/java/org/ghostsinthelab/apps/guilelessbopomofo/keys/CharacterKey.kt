@@ -26,6 +26,7 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 
 class CharacterKey(context: Context, attrs: AttributeSet) :
@@ -41,7 +42,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
         override fun onDown(e: MotionEvent): Boolean {
             performVibrate(
                 context,
-                GuilelessBopomofoServiceContext.service.userHapticFeedbackStrength
+                GuilelessBopomofoService.userHapticFeedbackStrength
             )
             return true
         }
