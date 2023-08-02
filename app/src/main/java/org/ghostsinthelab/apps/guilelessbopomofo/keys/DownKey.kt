@@ -26,7 +26,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
 
 class DownKey {
     companion object {
-        fun action() {
+        fun performAction() {
             if (ChewingBridge.bufferLen() > 0) {
                 ChewingBridge.candClose()
                 ChewingBridge.candOpen()

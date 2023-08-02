@@ -64,7 +64,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            action()
+            performAction()
             return true
         }
 
@@ -98,7 +98,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     private suspend fun repeatBackspace() {
         fixedRateTimer("repeatBackspace", true, 50L, 100L) {
             if (backspacePressed) {
-                action()
+                performAction()
             } else {
                 this@fixedRateTimer.cancel()
             }
@@ -107,7 +107,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     }
 
     companion object {
-        fun action() {
+        fun performAction() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.handleBackspace()
                 GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.updateBuffers()

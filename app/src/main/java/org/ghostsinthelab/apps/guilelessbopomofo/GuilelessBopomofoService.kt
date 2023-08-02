@@ -243,11 +243,11 @@ class GuilelessBopomofoService : InputMethodService(),
             return false
         }
 
-        event?.let {
-            if (it.isPrintingKey) {
-                onPrintingKeyDown(it)
+        event?.apply {
+            if (this.isPrintingKey) {
+                onPrintingKeyDown(this)
             } else {
-                when (it.keyCode) {
+                when (this.keyCode) {
                     KEYCODE_BACK -> {
                         // keep default behavior of Back key
                         return super.onKeyDown(keyCode, event)
@@ -255,36 +255,36 @@ class GuilelessBopomofoService : InputMethodService(),
 
                     KEYCODE_ALT_LEFT, KEYCODE_SHIFT_RIGHT -> {
                         // for onKeyLongPress()...
-                        it.startTracking()
+                        this.startTracking()
                         return true
                     }
 
                     KEYCODE_SPACE -> {
-                        SpaceKey.action(it)
+                        SpaceKey.performPhysicalAction(this)
                     }
 
                     KEYCODE_DEL -> {
-                        BackspaceKey.action()
+                        BackspaceKey.performAction()
                     }
 
                     KEYCODE_ENTER -> {
-                        EnterKey.action()
+                        EnterKey.performAction()
                     }
 
                     KEYCODE_ESCAPE -> {
-                        EscapeKey.action()
+                        EscapeKey.performAction()
                     }
 
                     KEYCODE_DPAD_LEFT -> {
-                        LeftKey.action()
+                        LeftKey.performAction()
                     }
 
                     KEYCODE_DPAD_RIGHT -> {
-                        RightKey.action()
+                        RightKey.performAction()
                     }
 
                     KEYCODE_DPAD_DOWN -> {
-                        DownKey.action()
+                        DownKey.performAction()
                     }
 
                     else -> {
@@ -319,12 +319,12 @@ class GuilelessBopomofoService : InputMethodService(),
             } else {
                 return when (it.keyCode) {
                     KEYCODE_ENTER -> {
-                        // DO NOTHING HERE, has been handled by EnterKey.action()
+                        // DO NOTHING HERE, has been handled by EnterKey.performAction()
                         true
                     }
 
                     KEYCODE_SPACE -> {
-                        // DO NOTHING HERE, has been handled by SpaceKey.action()
+                        // DO NOTHING HERE, has been handled by SpaceKey.performPhysicalAction()
                         true
                     }
 

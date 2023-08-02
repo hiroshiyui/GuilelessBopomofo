@@ -28,7 +28,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
 
 class LeftKey {
     companion object {
-        fun action() {
+        fun performAction() {
             ChewingBridge.handleLeft()
             if (ChewingBridge.bufferLen() > 0) {
                 val preEditBuffer =

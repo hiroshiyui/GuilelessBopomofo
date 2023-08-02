@@ -24,7 +24,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
 
 class EscapeKey {
     companion object {
-        fun action() {
+        fun performAction() {
             val keyboardPanel =
                 GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel
             if (keyboardPanel.currentKeyboardLayout in listOf(

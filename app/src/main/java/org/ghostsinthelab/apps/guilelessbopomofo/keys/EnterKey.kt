@@ -47,13 +47,13 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            action()
+            performAction()
             return true
         }
     }
 
     companion object {
-        fun action() {
+        fun performAction() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) { // not committed yet
                 ChewingBridge.commitPreeditBuf(ChewingBridge.context)
                 GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.updateBuffers()

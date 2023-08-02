@@ -70,7 +70,7 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
 
         // for physical keyboard space key, detect if Shift is pressed first:
-        fun action(keyEvent: KeyEvent) {
+        fun performPhysicalAction(keyEvent: KeyEvent) {
             if (keyEvent.isShiftPressed) {
                 GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.toggleMainLayoutMode()
                 return
