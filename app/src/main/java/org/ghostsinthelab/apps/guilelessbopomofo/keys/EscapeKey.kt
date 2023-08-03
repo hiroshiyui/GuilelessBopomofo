@@ -19,21 +19,13 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.greenrobot.eventbus.EventBus
 
 class EscapeKey {
     companion object {
         fun performAction() {
-            val keyboardPanel =
-                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel
-            if (keyboardPanel.currentKeyboardLayout in listOf(
-                    KeyboardPanel.KeyboardLayout.SYMBOLS,
-                    KeyboardPanel.KeyboardLayout.CANDIDATES
-                )
-            ) {
-                keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
-            }
+            EventBus.getDefault().post(Events.ExitKeyboardSubLayouts())
         }
     }
 }

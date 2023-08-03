@@ -508,6 +508,19 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onExitKeyboardSubLayouts(event: Events.ExitKeyboardSubLayouts) {
+        viewBinding.keyboardPanel.apply {
+            if (this.currentKeyboardLayout in listOf(
+                    KeyboardPanel.KeyboardLayout.SYMBOLS,
+                    KeyboardPanel.KeyboardLayout.CANDIDATES
+                )
+            ) {
+                this.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
+            }
+        }
+    }
+
     private fun setupChewingData(dataPath: String) {
         // Get app data directory
         val chewingDataDir = File(dataPath)
