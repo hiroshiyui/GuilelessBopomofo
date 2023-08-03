@@ -23,9 +23,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
 
 class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
     override lateinit var mDetector: GestureDetectorCompat
@@ -41,7 +42,7 @@ class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(c
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
+            EventBus.getDefault().post(Events.SwitchToKeyboardLayout(KeyboardPanel.KeyboardLayout.MAIN))
             return true
         }
     }

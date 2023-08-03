@@ -501,6 +501,13 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSwitchToKeyboardLayout(event: Events.SwitchToKeyboardLayout) {
+        viewBinding.apply {
+            keyboardPanel.switchToLayout(event.keyboardLayout)
+        }
+    }
+
     private fun setupChewingData(dataPath: String) {
         // Get app data directory
         val chewingDataDir = File(dataPath)

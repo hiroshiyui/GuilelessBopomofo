@@ -33,7 +33,9 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
 
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     BufferTextView(context, attrs), Vibratable {
@@ -150,10 +152,8 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            GuilelessBopomofoServiceContext.service.viewBinding.apply {
-                textViewPreEditBuffer.cursorMovedBy(CursorMovedBy.TOUCH)
-                keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.CANDIDATES)
-            }
+            this@PreEditBufferTextView.cursorMovedBy(CursorMovedBy.TOUCH)
+            EventBus.getDefault().post(Events.SwitchToKeyboardLayout(KeyboardPanel.KeyboardLayout.CANDIDATES))
             return true
         }
     }
