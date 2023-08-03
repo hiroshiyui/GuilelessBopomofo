@@ -57,7 +57,7 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         fun action() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.handleSpace()
-                EventBus.getDefault().post(Events.UpdateBuffersEvent())
+                EventBus.getDefault().post(Events.UpdateBuffers())
                 // 空白鍵是否為選字鍵？
                 if (ChewingBridge.getSpaceAsSelection() == 1 && ChewingBridge.candTotalChoice() > 0) {
                     GuilelessBopomofoServiceContext.service.viewBinding.apply {

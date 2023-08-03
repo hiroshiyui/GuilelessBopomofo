@@ -58,7 +58,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         fun performAction() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) { // not committed yet
                 ChewingBridge.commitPreeditBuf(ChewingBridge.context)
-                EventBus.getDefault().post(Events.UpdateBuffersEvent())
+                EventBus.getDefault().post(Events.UpdateBuffers())
             } else {
                 val editorInfo =
                     GuilelessBopomofoServiceContext.service.currentInputEditorInfo

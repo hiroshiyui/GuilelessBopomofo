@@ -310,7 +310,7 @@ class KeyboardPanel(
         if (ChewingUtil.candWindowClosed()) {
             ChewingBridge.candClose()
             ChewingBridge.handleEnd()
-            EventBus.getDefault().post(Events.UpdateBuffersEvent())
+            EventBus.getDefault().post(Events.UpdateBuffers())
             currentCandidatesList = 0
             candidatesRecyclerView.adapter = null
             switchToMainLayout()

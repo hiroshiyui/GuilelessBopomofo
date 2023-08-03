@@ -112,7 +112,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         fun performAction() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.handleBackspace()
-                EventBus.getDefault().post(Events.UpdateBuffersEvent())
+                EventBus.getDefault().post(Events.UpdateBuffers())
             } else {
                 GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
             }

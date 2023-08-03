@@ -45,7 +45,7 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBu
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             ChewingUtil.handleShiftComma()
-            EventBus.getDefault().post(Events.UpdateBuffersEvent())
+            EventBus.getDefault().post(Events.UpdateBuffers())
             return true
         }
 

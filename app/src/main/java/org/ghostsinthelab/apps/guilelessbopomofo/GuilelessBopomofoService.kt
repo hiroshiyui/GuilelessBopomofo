@@ -219,7 +219,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         super.onStartInputView(info, restarting)
         Log.d(logTag, "onStartInputView()")
         viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
-        EventBus.getDefault().post(Events.UpdateBuffersEvent())
+        EventBus.getDefault().post(Events.UpdateBuffers())
     }
 
     override fun onFinishInput() {
@@ -408,7 +408,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         // Consider keys in NumPad
         if (event.isNumPadKey()) {
             currentInputConnection.sendKeyEvent(event)
-            EventBus.getDefault().post(Events.UpdateBuffersEvent())
+            EventBus.getDefault().post(Events.UpdateBuffers())
             return
         }
 
@@ -466,7 +466,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             ChewingBridge.handleDefault(keyPressed)
         }
 
-        EventBus.getDefault().post(Events.UpdateBuffersEvent())
+        EventBus.getDefault().post(Events.UpdateBuffers())
 
         shiftKeyImageButton?.let {
             if (it.isActive && !it.isLocked) {
@@ -494,7 +494,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onUpdateBuffersEvent(event: Events.UpdateBuffersEvent) {
+    fun onUpdateBuffersEvent(event: Events.UpdateBuffers) {
         viewBinding.apply {
             launch { textViewPreEditBuffer.update() }
             launch { textViewBopomofoBuffer.update() }
