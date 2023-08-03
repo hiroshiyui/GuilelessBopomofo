@@ -30,8 +30,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CompactLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenLayoutBinding
@@ -47,15 +45,11 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeybuttonPopupLayou
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.PhysicalKeyboardDetectable
 import org.greenrobot.eventbus.EventBus
-import kotlin.coroutines.CoroutineContext
 
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
-) : RelativeLayout(context, attrs), CoroutineScope, PhysicalKeyboardDetectable {
+) : RelativeLayout(context, attrs), PhysicalKeyboardDetectable {
     private val logTag: String = "KeyboardPanel"
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
 
     private var currentCandidatesList: Int = 0
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
