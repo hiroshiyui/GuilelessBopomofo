@@ -123,6 +123,7 @@ dependencies {
     implementation "androidx.emoji2:emoji2-views:$androidx_emoji2_version"
     implementation "androidx.emoji2:emoji2-views-helper:$androidx_emoji2_version"
     implementation "androidx.emoji2:emoji2-bundled:$androidx_emoji2_version"
+    implementation "org.greenrobot:eventbus:3.3.1"
     testImplementation 'junit:junit:4.13.2'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

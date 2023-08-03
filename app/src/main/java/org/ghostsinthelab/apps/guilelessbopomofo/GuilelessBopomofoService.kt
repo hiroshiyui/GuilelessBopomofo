@@ -66,6 +66,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.SpaceKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.io.FileOutputStream
 
@@ -89,6 +90,8 @@ class GuilelessBopomofoService : InputMethodService(),
     override fun onCreate() {
         Log.d(logTag, "onCreate()")
         super.onCreate()
+
+        EventBus.getDefault().register(this)
 
         // emoji2-bundled (fonts-embedded)
         EmojiCompat.init(BundledEmojiCompatConfig(this@GuilelessBopomofoService.applicationContext))
@@ -222,6 +225,7 @@ class GuilelessBopomofoService : InputMethodService(),
         Log.d(logTag, "onDestroy()")
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
         ChewingBridge.delete()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
