@@ -20,14 +20,13 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
-import android.os.Build
-import android.os.IBinder
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.GestureDetectorCompat
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
 
 class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
@@ -47,14 +46,14 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
             if (sharedPreferences.getBoolean("user_enable_double_touch_ime_switch", false)) {
                 return true
             } else {
-                switchInputMethod()
+                switchNextInputMethod()
             }
             return true
         }
 
         override fun onDoubleTap(e: MotionEvent): Boolean {
             if (sharedPreferences.getBoolean("user_enable_double_touch_ime_switch", false)) {
-                switchInputMethod()
+                switchNextInputMethod()
             } else {
                 return true
             }
@@ -67,17 +66,8 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
             imm.showInputMethodPicker()
         }
 
-        private fun switchInputMethod() {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                GuilelessBopomofoServiceContext.service.switchToNextInputMethod(false)
-            } else {
-                // backward compatibility, support IME switch on legacy devices
-                val imm =
-                    context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                val imeToken: IBinder? = windowToken
-                @Suppress("DEPRECATION")
-                imm.switchToNextInputMethod(imeToken, false)
-            }
+        private fun switchNextInputMethod() {
+            EventBus.getDefault().post(Events.SwitchToNextInputMethod())
         }
     }
 }

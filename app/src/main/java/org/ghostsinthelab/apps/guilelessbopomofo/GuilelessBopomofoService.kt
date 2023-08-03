@@ -25,6 +25,7 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.os.Build
+import android.os.IBinder
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
@@ -518,6 +519,20 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             ) {
                 this.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSwitchToNextInputMethod(event: Events.SwitchToNextInputMethod) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            switchToNextInputMethod(false)
+        } else {
+            // backward compatibility, support IME switch on legacy devices
+            val imm =
+                applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imeToken: IBinder? = viewBinding.root.windowToken
+            @Suppress("DEPRECATION")
+            imm.switchToNextInputMethod(imeToken, false)
         }
     }
 
