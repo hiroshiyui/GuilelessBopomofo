@@ -26,7 +26,9 @@ import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
 
 class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override lateinit var mDetector: GestureDetectorCompat
@@ -43,7 +45,7 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBu
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             ChewingUtil.handleShiftComma()
-            GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.updateBuffers()
+            EventBus.getDefault().post(Events.UpdateBuffersEvent())
             return true
         }
 

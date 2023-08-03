@@ -54,8 +54,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.emoji2.bundled.BundledEmojiCompatConfig
 import androidx.emoji2.text.EmojiCompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.BackspaceKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.DownKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.EnterKey
@@ -67,10 +71,13 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.SpaceKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.coroutines.CoroutineContext
 
-class GuilelessBopomofoService : InputMethodService(),
+class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     SharedPreferences.OnSharedPreferenceChangeListener, KeyEventExtension {
     private val logTag = "GuilelessBopomofoSvc"
     private var imeWindowVisible: Boolean = true
@@ -212,7 +219,7 @@ class GuilelessBopomofoService : InputMethodService(),
         super.onStartInputView(info, restarting)
         Log.d(logTag, "onStartInputView()")
         viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
-        viewBinding.keyboardPanel.updateBuffers()
+        EventBus.getDefault().post(Events.UpdateBuffersEvent())
     }
 
     override fun onFinishInput() {
@@ -401,7 +408,7 @@ class GuilelessBopomofoService : InputMethodService(),
         // Consider keys in NumPad
         if (event.isNumPadKey()) {
             currentInputConnection.sendKeyEvent(event)
-            viewBinding.keyboardPanel.updateBuffers()
+            EventBus.getDefault().post(Events.UpdateBuffersEvent())
             return
         }
 
@@ -459,7 +466,7 @@ class GuilelessBopomofoService : InputMethodService(),
             ChewingBridge.handleDefault(keyPressed)
         }
 
-        viewBinding.keyboardPanel.updateBuffers()
+        EventBus.getDefault().post(Events.UpdateBuffersEvent())
 
         shiftKeyImageButton?.let {
             if (it.isActive && !it.isLocked) {
@@ -483,6 +490,14 @@ class GuilelessBopomofoService : InputMethodService(),
                     it.renderCandidatesLayout()
                 }
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUpdateBuffersEvent(event: Events.UpdateBuffersEvent) {
+        viewBinding.apply {
+            launch { textViewPreEditBuffer.update() }
+            launch { textViewBopomofoBuffer.update() }
         }
     }
 
@@ -577,7 +592,8 @@ class GuilelessBopomofoService : InputMethodService(),
             "user_keyboard_layout",
             "user_display_hsu_qwerty_layout",
             "user_display_eten26_qwerty_layout",
-            "user_display_dvorak_hsu_both_layout" -> {
+            "user_display_dvorak_hsu_both_layout",
+            -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
                     viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
@@ -610,13 +626,15 @@ class GuilelessBopomofoService : InputMethodService(),
             }
 
             "user_fullscreen_when_in_landscape",
-            "user_fullscreen_when_in_portrait" -> {
+            "user_fullscreen_when_in_portrait",
+            -> {
                 // do nothing (onEvaluateFullscreenMode() will handle it well)
             }
 
             "user_enable_button_elevation",
             "user_key_button_height",
-            "user_enable_double_touch_ime_switch" -> {
+            "user_enable_double_touch_ime_switch",
+            -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
                     viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
@@ -638,4 +656,7 @@ class GuilelessBopomofoService : InputMethodService(),
             }
         }
     }
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 }

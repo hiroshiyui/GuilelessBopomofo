@@ -33,7 +33,9 @@ import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
 import kotlin.concurrent.fixedRateTimer
 import kotlin.coroutines.CoroutineContext
 
@@ -110,7 +112,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         fun performAction() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.handleBackspace()
-                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.updateBuffers()
+                EventBus.getDefault().post(Events.UpdateBuffersEvent())
             } else {
                 GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
             }

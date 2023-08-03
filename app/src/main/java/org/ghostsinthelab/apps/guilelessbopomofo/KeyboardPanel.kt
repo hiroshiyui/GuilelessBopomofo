@@ -32,7 +32,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CompactLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenLayoutBinding
@@ -45,7 +44,9 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBi
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeybuttonPopupLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.PhysicalKeyboardDetectable
+import org.greenrobot.eventbus.EventBus
 import kotlin.coroutines.CoroutineContext
 
 class KeyboardPanel(
@@ -309,19 +310,12 @@ class KeyboardPanel(
         if (ChewingUtil.candWindowClosed()) {
             ChewingBridge.candClose()
             ChewingBridge.handleEnd()
-            updateBuffers()
+            EventBus.getDefault().post(Events.UpdateBuffersEvent())
             currentCandidatesList = 0
             candidatesRecyclerView.adapter = null
             switchToMainLayout()
         } else {
             renderCandidatesLayout()
-        }
-    }
-
-    fun updateBuffers() {
-        GuilelessBopomofoServiceContext.service.viewBinding.apply {
-            launch { textViewPreEditBuffer.update() }
-            launch { textViewBopomofoBuffer.update() }
         }
     }
 
