@@ -9,4 +9,5 @@ class Events {
     class CommitTextInChewingCommitBuffer
     class SwitchToNextInputMethod
     class ListCandidatesForCurrentCursor
+    class SendDownUpKeyEvents(val keycode: Int)
 }
