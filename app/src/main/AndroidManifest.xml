@@ -12,6 +12,8 @@
 
         <activity
             android:name=".EngineeringModeActivity"
+            android:configChanges="orientation"
+            android:windowSoftInputMode="stateVisible"
             android:label="@string/engineering_mode_label" />
 
         <service
