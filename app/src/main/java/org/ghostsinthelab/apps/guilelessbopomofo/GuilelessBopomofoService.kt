@@ -523,6 +523,14 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCommitTextInChewingCommitBuffer(event: Events.CommitTextInChewingCommitBuffer) {
+        currentInputConnection.commitText(
+            ChewingBridge.commitString(),
+            1
+        )
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSwitchToNextInputMethod(event: Events.SwitchToNextInputMethod) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             switchToNextInputMethod(false)

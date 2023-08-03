@@ -31,7 +31,6 @@ import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.setPadding
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
 import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -112,10 +111,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         // 會把 pre-edit buffer 開頭送到 commit buffer，
         // 所以要先丟出來：
         if (ChewingBridge.commitCheck() == 1) {
-            GuilelessBopomofoServiceContext.service.currentInputConnection.commitText(
-                ChewingBridge.commitString(),
-                1
-            )
+            EventBus.getDefault().post(Events.CommitTextInChewingCommitBuffer())
             // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
             // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
             ChewingBridge.handleEnd()

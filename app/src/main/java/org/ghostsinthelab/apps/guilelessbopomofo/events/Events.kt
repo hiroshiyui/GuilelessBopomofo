@@ -6,5 +6,6 @@ class Events {
     class UpdateBuffers
     class SwitchToKeyboardLayout(val keyboardLayout: KeyboardPanel.KeyboardLayout)
     class ExitKeyboardSubLayouts
+    class CommitTextInChewingCommitBuffer
     class SwitchToNextInputMethod
 }
