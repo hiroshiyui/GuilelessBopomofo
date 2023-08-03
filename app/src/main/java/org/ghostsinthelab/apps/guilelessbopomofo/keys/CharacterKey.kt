@@ -48,7 +48,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            keyCodeString?.let { keycodeString ->
+            this@CharacterKey.keyCodeString?.let { keycodeString ->
                 val keyEvent =
                     KeyEvent(
                         KeyEvent.ACTION_DOWN,
@@ -67,17 +67,17 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
             when (it.action) {
                 MotionEvent.ACTION_DOWN -> {
                     val keyButtonLocation = IntArray(2)
-                    getLocationInWindow(keyButtonLocation)
+                    this@CharacterKey.getLocationInWindow(keyButtonLocation)
 
                     GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.apply {
                         keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(
-                            drawable
+                            this@CharacterKey.drawable
                         )
                         keyButtonPopup.let { popup ->
                             popup.height = this@CharacterKey.height
                             popup.width = this@CharacterKey.width
                             popup.showAtLocation(
-                                rootView,
+                                this@CharacterKey.rootView,
                                 Gravity.NO_GRAVITY,
                                 keyButtonLocation[0],
                                 keyButtonLocation[1] - this@CharacterKey.height
