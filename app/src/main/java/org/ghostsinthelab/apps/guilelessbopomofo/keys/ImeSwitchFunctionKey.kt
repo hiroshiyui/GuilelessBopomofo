@@ -63,8 +63,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
 
         override fun onLongPress(e: MotionEvent) {
             performVibrate(context, Vibratable.VibrationStrength.STRONG)
-            val imm =
-                GuilelessBopomofoServiceContext.service.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
         }
 
@@ -74,11 +73,8 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
             } else {
                 // backward compatibility, support IME switch on legacy devices
                 val imm =
-                    GuilelessBopomofoServiceContext.service.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                val imeToken: IBinder? =
-                    GuilelessBopomofoServiceContext.service.window?.let {
-                        it.window?.attributes?.token
-                    }
+                    context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imeToken: IBinder? = windowToken
                 @Suppress("DEPRECATION")
                 imm.switchToNextInputMethod(imeToken, false)
             }
