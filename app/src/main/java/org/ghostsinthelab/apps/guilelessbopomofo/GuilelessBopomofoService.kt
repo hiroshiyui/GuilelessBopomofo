@@ -495,7 +495,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onUpdateBuffersEvent(event: Events.UpdateBuffers) {
+    fun onUpdateBuffers(event: Events.UpdateBuffers) {
         viewBinding.apply {
             launch { textViewPreEditBuffer.update() }
             launch { textViewBopomofoBuffer.update() }
