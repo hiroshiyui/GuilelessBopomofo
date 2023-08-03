@@ -548,6 +548,15 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onListCandidatesForCurrentCursor(event: Events.ListCandidatesForCurrentCursor) {
+        viewBinding.apply {
+            textViewPreEditBuffer.offset = ChewingBridge.cursorCurrent()
+            textViewPreEditBuffer.renderUnderlineSpan()
+            keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.CANDIDATES)
+        }
+    }
+
     private fun setupChewingData(dataPath: String) {
         // Get app data directory
         val chewingDataDir = File(dataPath)

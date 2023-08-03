@@ -8,4 +8,5 @@ class Events {
     class ExitKeyboardSubLayouts
     class CommitTextInChewingCommitBuffer
     class SwitchToNextInputMethod
+    class ListCandidatesForCurrentCursor
 }
