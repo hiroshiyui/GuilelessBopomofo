@@ -272,7 +272,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                     }
 
                     KEYCODE_SPACE -> {
-                        SpaceKey.performPhysicalAction(this)
+                        if (this.isShiftPressed) {
+                            viewBinding.keyboardPanel.toggleMainLayoutMode()
+                            return true
+                        }
+                        SpaceKey.performAction()
                     }
 
                     KEYCODE_DEL -> {

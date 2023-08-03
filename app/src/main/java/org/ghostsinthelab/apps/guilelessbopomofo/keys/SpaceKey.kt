@@ -48,13 +48,13 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            action()
+            performAction()
             return true
         }
     }
 
     companion object {
-        fun action() {
+        fun performAction() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.handleSpace()
                 EventBus.getDefault().post(Events.UpdateBuffers())
@@ -69,15 +69,6 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
             } else {
                 GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE)
             }
-        }
-
-        // for physical keyboard space key, detect if Shift is pressed first:
-        fun performPhysicalAction(keyEvent: KeyEvent) {
-            if (keyEvent.isShiftPressed) {
-                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.toggleMainLayoutMode()
-                return
-            }
-            action()
         }
     }
 }
