@@ -562,6 +562,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         sendDownUpKeyEvents(event.keycode)
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCandidateSelectionDone(event: Events.CandidateSelectionDone) {
+        viewBinding.keyboardPanel.candidateSelectionDone(event.index)
+    }
+
     private fun setupChewingData(dataPath: String) {
         // Get app data directory
         val chewingDataDir = File(dataPath)

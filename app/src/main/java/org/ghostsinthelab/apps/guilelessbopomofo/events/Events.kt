@@ -10,4 +10,5 @@ class Events {
     class SwitchToNextInputMethod
     class ListCandidatesForCurrentCursor
     class SendDownUpKeyEvents(val keycode: Int)
+    class CandidateSelectionDone(val index: Int)
 }
