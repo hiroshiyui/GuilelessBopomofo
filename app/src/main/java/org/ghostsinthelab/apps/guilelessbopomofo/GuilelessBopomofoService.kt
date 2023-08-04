@@ -407,7 +407,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         imeWindowVisible = true
     }
 
-    fun onPrintingKeyDown(event: KeyEvent) {
+    private fun onPrintingKeyDown(event: KeyEvent) {
         Log.d(logTag, "onPrintingKeyDown()")
 
         // Consider keys in NumPad
@@ -565,6 +565,18 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCandidateSelectionDone(event: Events.CandidateSelectionDone) {
         viewBinding.keyboardPanel.candidateSelectionDone(event.index)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onPrintingKeyDown(event: Events.PrintingKeyDown) {
+        event.characterKey.keyCodeString?.let { keycodeString ->
+            val keyEvent =
+                KeyEvent(
+                    ACTION_DOWN,
+                    KeyEvent.keyCodeFromString(keycodeString)
+                )
+            this@GuilelessBopomofoService.onPrintingKeyDown(keyEvent)
+        }
     }
 
     private fun setupChewingData(dataPath: String) {

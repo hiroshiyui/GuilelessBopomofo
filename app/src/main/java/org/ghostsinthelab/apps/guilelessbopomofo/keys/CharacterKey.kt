@@ -23,11 +23,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.greenrobot.eventbus.EventBus
 
 class CharacterKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
@@ -48,14 +49,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            this@CharacterKey.keyCodeString?.let { keycodeString ->
-                val keyEvent =
-                    KeyEvent(
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.keyCodeFromString(keycodeString)
-                    )
-                GuilelessBopomofoServiceContext.service.onPrintingKeyDown(keyEvent)
-            }
+            EventBus.getDefault().post(Events.PrintingKeyDown(this@CharacterKey))
             return true
         }
     }
