@@ -23,8 +23,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
 
 class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override lateinit var mDetector: GestureDetectorCompat
@@ -40,7 +41,7 @@ class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBut
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.toggleMainLayoutMode()
+            EventBus.getDefault().post(Events.ToggleKeyboardMainLayoutMode())
             return true
         }
     }
