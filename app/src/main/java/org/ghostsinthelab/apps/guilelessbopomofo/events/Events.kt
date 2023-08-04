@@ -15,4 +15,6 @@ class Events {
     class PrintingKeyDown(val characterKey: CharacterKey)
     class ToggleKeyboardMainLayoutMode
     class EnterKeyDownWhenBufferIsEmpty
+    class ShowKeyButtonPopup(val characterKey: CharacterKey)
+    class DismissKeyButtonPopup
 }

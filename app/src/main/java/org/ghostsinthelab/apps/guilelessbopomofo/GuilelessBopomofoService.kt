@@ -28,6 +28,7 @@ import android.os.Build
 import android.os.IBinder
 import android.text.InputType
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
 import android.view.KeyEvent.ACTION_UP
@@ -617,6 +618,33 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 }
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onShowKeyButtonPopup(event: Events.ShowKeyButtonPopup) {
+        val keyButtonLocation = IntArray(2)
+        event.characterKey.getLocationInWindow(keyButtonLocation)
+
+        viewBinding.keyboardPanel.apply {
+            keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(
+                event.characterKey.drawable
+            )
+            keyButtonPopup.let { popup ->
+                popup.height = event.characterKey.height
+                popup.width = event.characterKey.width
+                popup.showAtLocation(
+                    event.characterKey.rootView,
+                    Gravity.NO_GRAVITY,
+                    keyButtonLocation[0],
+                    keyButtonLocation[1] - event.characterKey.height
+                )
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDismissKeyButtonPopup(event: Events.DismissKeyButtonPopup) {
+        viewBinding.keyboardPanel.keyButtonPopup.dismiss()
     }
 
     private fun setupChewingData(dataPath: String) {
