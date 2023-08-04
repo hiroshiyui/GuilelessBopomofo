@@ -17,4 +17,6 @@ class Events {
     class EnterKeyDownWhenBufferIsEmpty
     class ShowKeyButtonPopup(val characterKey: CharacterKey)
     class DismissKeyButtonPopup
+    enum class DirectionKey {RIGHT, LEFT}
+    class DirectionKeyDown(val direction: DirectionKey)
 }

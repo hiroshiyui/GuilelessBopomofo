@@ -60,6 +60,7 @@ import androidx.emoji2.text.EmojiCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
@@ -84,7 +85,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     SharedPreferences.OnSharedPreferenceChangeListener, KeyEventExtension {
     private val logTag = "GuilelessBopomofoSvc"
     private var imeWindowVisible: Boolean = true
-    lateinit var viewBinding: KeyboardLayoutBinding
+    private lateinit var viewBinding: KeyboardLayoutBinding
 
     private lateinit var sharedPreferences: SharedPreferences
     private val chewingDataFiles =
@@ -645,6 +646,32 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onDismissKeyButtonPopup(event: Events.DismissKeyButtonPopup) {
         viewBinding.keyboardPanel.keyButtonPopup.dismiss()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDirectionKeyDown(event: Events.DirectionKeyDown) {
+        if (ChewingBridge.bufferLen() > 0) {
+            viewBinding.textViewPreEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedBy.PHYSICAL_KEYBOARD)
+        } else {
+            if (ChewingUtil.candWindowClosed()) {
+                when (event.direction) {
+                    Events.DirectionKey.LEFT -> {
+                        sendDownUpKeyEvents(KEYCODE_DPAD_LEFT)
+                    }
+
+                    Events.DirectionKey.RIGHT -> {
+                        sendDownUpKeyEvents(KEYCODE_DPAD_RIGHT)
+                    }
+                }
+            }
+        }
+
+        // toggle to next page of candidates
+        viewBinding.keyboardPanel.apply {
+            if (this.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES && ChewingUtil.candWindowOpened()) {
+                this.renderCandidatesLayout()
+            }
+        }
     }
 
     private fun setupChewingData(dataPath: String) {

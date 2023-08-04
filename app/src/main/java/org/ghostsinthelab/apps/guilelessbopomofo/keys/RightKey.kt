@@ -19,33 +19,16 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
-import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
-import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
-import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.greenrobot.eventbus.EventBus
 
 class RightKey {
     companion object {
+        // by now Right key is just been implemented as physical form only.
         fun performAction() {
             ChewingBridge.handleRight()
-            if (ChewingBridge.bufferLen() > 0) {
-                val preEditBuffer =
-                    GuilelessBopomofoServiceContext.service.viewBinding.textViewPreEditBuffer
-                preEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedBy.PHYSICAL_KEYBOARD)
-            } else {
-                if (ChewingUtil.candWindowClosed()) {
-                    GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
-                }
-            }
-
-            // toggle to next page of candidates
-            val keyboardPanel =
-                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel
-            if (keyboardPanel.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES && ChewingUtil.candWindowOpened()) {
-                keyboardPanel.renderCandidatesLayout()
-            }
+            EventBus.getDefault().post(Events.DirectionKeyDown(Events.DirectionKey.RIGHT))
         }
     }
 }
