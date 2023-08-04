@@ -157,8 +157,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         userHapticFeedbackStrength =
             sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
-
-        GuilelessBopomofoServiceContext.service = this@GuilelessBopomofoService
     }
 
 
