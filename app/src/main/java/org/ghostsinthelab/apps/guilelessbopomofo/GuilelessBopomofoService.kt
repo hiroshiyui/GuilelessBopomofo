@@ -62,6 +62,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.BackspaceKey
@@ -653,11 +654,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         } else {
             if (ChewingUtil.candWindowClosed()) {
                 when (event.direction) {
-                    Events.DirectionKey.LEFT -> {
+                    DirectionKey.LEFT -> {
                         sendDownUpKeyEvents(KEYCODE_DPAD_LEFT)
                     }
 
-                    Events.DirectionKey.RIGHT -> {
+                    DirectionKey.RIGHT -> {
                         sendDownUpKeyEvents(KEYCODE_DPAD_RIGHT)
                     }
                 }

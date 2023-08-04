@@ -1,6 +1,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.events
 
 import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
 
 class Events {
@@ -17,6 +18,5 @@ class Events {
     class EnterKeyDownWhenBufferIsEmpty
     class ShowKeyButtonPopup(val characterKey: CharacterKey)
     class DismissKeyButtonPopup
-    enum class DirectionKey {RIGHT, LEFT}
     class DirectionKeyDown(val direction: DirectionKey)
 }

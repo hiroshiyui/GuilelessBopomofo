@@ -20,6 +20,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
 
@@ -28,7 +29,7 @@ class RightKey {
         // by now Right key is just been implemented as physical form only.
         fun performAction() {
             ChewingBridge.handleRight()
-            EventBus.getDefault().post(Events.DirectionKeyDown(Events.DirectionKey.RIGHT))
+            EventBus.getDefault().post(Events.DirectionKeyDown(DirectionKey.RIGHT))
         }
     }
 }
