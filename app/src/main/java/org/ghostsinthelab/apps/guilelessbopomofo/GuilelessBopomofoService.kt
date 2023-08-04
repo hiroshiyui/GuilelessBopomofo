@@ -26,6 +26,7 @@ import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.os.Build
 import android.os.IBinder
+import android.text.InputType
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
@@ -582,6 +583,40 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onToggleKeyboardMainLayoutMode(event: Events.ToggleKeyboardMainLayoutMode) {
         viewBinding.keyboardPanel.toggleMainLayoutMode()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEnterKeyDownWhenBufferIsEmpty(event: Events.EnterKeyDownWhenBufferIsEmpty) {
+        var multiLineEditText = false
+
+        currentInputEditorInfo?.apply {
+            // Is it a multiple line text field?
+            if ((this.inputType and InputType.TYPE_MASK_CLASS and InputType.TYPE_CLASS_TEXT) == InputType.TYPE_CLASS_TEXT) {
+                if ((this.inputType and InputType.TYPE_MASK_FLAGS and InputType.TYPE_TEXT_FLAG_MULTI_LINE) == InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
+                    multiLineEditText = true
+                }
+            }
+
+            // Just do as press Enter, never care about the defined action if we are now in a multiple line text field
+            if (multiLineEditText) {
+                this@GuilelessBopomofoService.sendDownUpKeyEvents(KEYCODE_ENTER)
+                return
+            }
+
+            when (val imeAction = (this.imeOptions and EditorInfo.IME_MASK_ACTION)) {
+                EditorInfo.IME_ACTION_GO, EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_SEARCH, EditorInfo.IME_ACTION_SEND -> {
+                    // The current EditText has a specified android:imeOptions attribute.
+                    this@GuilelessBopomofoService.currentInputConnection.performEditorAction(
+                        imeAction
+                    )
+                }
+
+                else -> {
+                    // The current EditText has no android:imeOptions attribute, or I don't want to make it act as is.
+                    this@GuilelessBopomofoService.sendDownUpKeyEvents(KEYCODE_ENTER)
+                }
+            }
+        }
     }
 
     private fun setupChewingData(dataPath: String) {
