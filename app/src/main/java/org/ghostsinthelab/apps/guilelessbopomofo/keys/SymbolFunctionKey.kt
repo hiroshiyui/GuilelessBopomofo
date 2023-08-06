@@ -23,7 +23,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
-import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
@@ -42,7 +42,7 @@ class SymbolFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            EventBus.getDefault().post(Events.SwitchToKeyboardLayout(KeyboardPanel.KeyboardLayout.SYMBOLS))
+            EventBus.getDefault().post(Events.SwitchToLayout(Layout.SYMBOLS))
             return true
         }
     }

@@ -1,12 +1,12 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.events
 
-import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
 
 class Events {
     class UpdateBuffers
-    class SwitchToKeyboardLayout(val keyboardLayout: KeyboardPanel.KeyboardLayout)
+    class SwitchToLayout(val layout: Layout)
     class ExitKeyboardSubLayouts
     class CommitTextInChewingCommitBuffer
     class SwitchToNextInputMethod

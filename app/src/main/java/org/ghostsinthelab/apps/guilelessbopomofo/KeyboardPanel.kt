@@ -42,6 +42,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBi
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeybuttonPopupLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.PhysicalKeyboardDetectable
 import org.greenrobot.eventbus.EventBus
@@ -73,9 +74,7 @@ class KeyboardPanel(
         CandidatesLayoutBinding.inflate(LayoutInflater.from(context))
     private val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
 
-    enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY, DVORAK }
-
-    lateinit var currentKeyboardLayout: KeyboardLayout
+    lateinit var currentLayout: Layout
 
     override val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
@@ -103,18 +102,18 @@ class KeyboardPanel(
         }
     }
 
-    fun switchToLayout(layout: KeyboardLayout) {
-        currentKeyboardLayout = layout
+    fun switchToLayout(layout: Layout) {
+        currentLayout = layout
         when (layout) {
-            KeyboardLayout.MAIN -> {
+            Layout.MAIN -> {
                 switchToMainLayout()
             }
 
-            KeyboardLayout.CANDIDATES -> {
+            Layout.CANDIDATES -> {
                 switchToCandidatesLayout()
             }
 
-            KeyboardLayout.SYMBOLS -> {
+            Layout.SYMBOLS -> {
                 switchToSymbolPicker()
             }
 
@@ -152,7 +151,7 @@ class KeyboardPanel(
 
     private fun switchToBopomofoLayout() {
         Log.d(logTag, "switchToBopomofoLayout()")
-        currentKeyboardLayout = KeyboardLayout.MAIN
+        currentLayout = Layout.MAIN
 
         this.removeAllViews()
 
@@ -248,7 +247,7 @@ class KeyboardPanel(
 
     private fun switchToQwertyLayout() {
         Log.d(logTag, "switchToQwertyLayout")
-        currentKeyboardLayout = KeyboardLayout.QWERTY
+        currentLayout = Layout.QWERTY
 
         if (physicalKeyboardEnabled()) {
             switchToCompactLayout()
@@ -264,7 +263,7 @@ class KeyboardPanel(
 
     private fun switchToDvorakLayout() {
         Log.d(logTag, "switchToDvorakLayout")
-        currentKeyboardLayout = KeyboardLayout.DVORAK
+        currentLayout = Layout.DVORAK
 
         if (physicalKeyboardEnabled()) {
             switchToCompactLayout()
@@ -286,7 +285,7 @@ class KeyboardPanel(
     }
 
     private fun switchToSymbolPicker() {
-        currentKeyboardLayout = KeyboardLayout.SYMBOLS
+        currentLayout = Layout.SYMBOLS
         ChewingUtil.openSymbolCandidates()
         renderCandidatesLayout()
     }
@@ -334,7 +333,7 @@ class KeyboardPanel(
 
     fun renderCandidatesLayout() {
         Log.d(logTag, "renderCandidatesLayout")
-        currentKeyboardLayout = KeyboardLayout.CANDIDATES
+        currentLayout = Layout.CANDIDATES
 
         this.removeAllViews()
         this.addView(candidatesLayoutBinding.root)

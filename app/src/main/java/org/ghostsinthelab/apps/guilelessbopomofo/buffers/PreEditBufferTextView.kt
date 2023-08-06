@@ -31,7 +31,7 @@ import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.setPadding
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
@@ -149,7 +149,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             this@PreEditBufferTextView.cursorMovedBy(CursorMovedBy.TOUCH)
-            EventBus.getDefault().post(Events.SwitchToKeyboardLayout(KeyboardPanel.KeyboardLayout.CANDIDATES))
+            EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
             return true
         }
     }

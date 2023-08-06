@@ -63,6 +63,7 @@ import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.BackspaceKey
@@ -221,7 +222,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.d(logTag, "onStartInputView()")
-        viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
+        viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
         EventBus.getDefault().post(Events.UpdateBuffers())
     }
 
@@ -376,7 +377,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 KEYCODE_SHIFT_RIGHT -> {
                     if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
                         ChewingUtil.openPuncCandidates()
-                        viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.CANDIDATES)
+                        viewBinding.keyboardPanel.switchToLayout(Layout.CANDIDATES)
                         return true
                     } else {
                         return super.onKeyLongPress(keyCode, event)
@@ -420,7 +421,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         }
 
         if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.getChiEngMode() == CHINESE_MODE && !event.isShiftPressed) {
-            viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.SYMBOLS)
+            viewBinding.keyboardPanel.switchToLayout(Layout.SYMBOLS)
             return
         }
 
@@ -490,7 +491,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         Log.d(logTag, "onPrintingKeyUp()")
         // Detect if a candidate had been chosen by user
         viewBinding.keyboardPanel.let {
-            if (it.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES) {
+            if (it.currentLayout == Layout.CANDIDATES) {
                 if (ChewingUtil.candWindowClosed()) {
                     it.candidateSelectionDone()
                 } else {
@@ -509,21 +510,21 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSwitchToKeyboardLayout(event: Events.SwitchToKeyboardLayout) {
+    fun onSwitchToLayout(event: Events.SwitchToLayout) {
         viewBinding.apply {
-            keyboardPanel.switchToLayout(event.keyboardLayout)
+            keyboardPanel.switchToLayout(event.layout)
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onExitKeyboardSubLayouts(event: Events.ExitKeyboardSubLayouts) {
         viewBinding.keyboardPanel.apply {
-            if (this.currentKeyboardLayout in listOf(
-                    KeyboardPanel.KeyboardLayout.SYMBOLS,
-                    KeyboardPanel.KeyboardLayout.CANDIDATES
+            if (this.currentLayout in listOf(
+                    Layout.SYMBOLS,
+                    Layout.CANDIDATES
                 )
             ) {
-                this.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
+                this.switchToLayout(Layout.MAIN)
             }
         }
     }
@@ -555,7 +556,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         viewBinding.apply {
             textViewPreEditBuffer.offset = ChewingBridge.cursorCurrent()
             textViewPreEditBuffer.renderUnderlineSpan()
-            keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.CANDIDATES)
+            keyboardPanel.switchToLayout(Layout.CANDIDATES)
         }
     }
 
@@ -667,7 +668,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         // toggle to next page of candidates
         viewBinding.keyboardPanel.apply {
-            if (this.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES && ChewingUtil.candWindowOpened()) {
+            if (this.currentLayout == Layout.CANDIDATES && ChewingUtil.candWindowOpened()) {
                 this.renderCandidatesLayout()
             }
         }
@@ -754,7 +755,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         super.onConfigurationChanged(newConfig)
         // toggle main layout automatically between physical keyboard being connected and disconnected
         if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
-            viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
+            viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
         }
     }
 
@@ -768,7 +769,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
-                    viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
+                    viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
                 }
             }
 
@@ -809,7 +810,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
-                    viewBinding.keyboardPanel.switchToLayout(KeyboardPanel.KeyboardLayout.MAIN)
+                    viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
                 }
             }
 
