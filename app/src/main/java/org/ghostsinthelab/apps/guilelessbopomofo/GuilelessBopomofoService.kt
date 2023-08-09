@@ -25,7 +25,10 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.os.Build
+import android.os.IBinder
+import android.text.InputType
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
 import android.view.KeyEvent.ACTION_UP
@@ -54,8 +57,15 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.emoji2.bundled.BundledEmojiCompatConfig
 import androidx.emoji2.text.EmojiCompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.BackspaceKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.DownKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.EnterKey
@@ -66,17 +76,18 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.SpaceKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.coroutines.CoroutineContext
 
-class GuilelessBopomofoService : InputMethodService(),
+class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     SharedPreferences.OnSharedPreferenceChangeListener, KeyEventExtension {
     private val logTag = "GuilelessBopomofoSvc"
-    var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
-    private var physicalKeyboardPresent: Boolean = false
-    var physicalKeyboardEnabled: Boolean = false
     private var imeWindowVisible: Boolean = true
-    lateinit var viewBinding: KeyboardLayoutBinding
+    private lateinit var viewBinding: KeyboardLayoutBinding
 
     private lateinit var sharedPreferences: SharedPreferences
     private val chewingDataFiles =
@@ -86,11 +97,14 @@ class GuilelessBopomofoService : InputMethodService(),
         val defaultHapticFeedbackStrength: Int =
             Vibratable.VibrationStrength.NORMAL.strength
         const val defaultKeyboardLayout: String = "KB_DEFAULT"
+        var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
     }
 
     override fun onCreate() {
         Log.d(logTag, "onCreate()")
         super.onCreate()
+
+        EventBus.getDefault().register(this)
 
         // emoji2-bundled (fonts-embedded)
         EmojiCompat.init(BundledEmojiCompatConfig(this@GuilelessBopomofoService.applicationContext))
@@ -145,8 +159,6 @@ class GuilelessBopomofoService : InputMethodService(),
 
         userHapticFeedbackStrength =
             sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
-
-        GuilelessBopomofoServiceContext.service = this@GuilelessBopomofoService
     }
 
 
@@ -194,9 +206,6 @@ class GuilelessBopomofoService : InputMethodService(),
     override fun onEvaluateInputViewShown(): Boolean {
         super.onEvaluateInputViewShown()
         Log.d(logTag, "onEvaluateInputViewShown()")
-        physicalKeyboardPresent =
-            (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY)
-        physicalKeyboardEnabled = physicalKeyboardEnabled()
         return true
     }
 
@@ -213,8 +222,8 @@ class GuilelessBopomofoService : InputMethodService(),
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.d(logTag, "onStartInputView()")
-        viewBinding.keyboardPanel.switchToMainLayout()
-        viewBinding.keyboardPanel.updateBuffers()
+        viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
+        EventBus.getDefault().post(Events.UpdateBuffers())
     }
 
     override fun onFinishInput() {
@@ -227,6 +236,7 @@ class GuilelessBopomofoService : InputMethodService(),
         Log.d(logTag, "onDestroy()")
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
         ChewingBridge.delete()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
@@ -248,11 +258,11 @@ class GuilelessBopomofoService : InputMethodService(),
             return false
         }
 
-        event?.let {
-            if (it.isPrintingKey) {
-                onPrintingKeyDown(it)
+        event?.apply {
+            if (this.isPrintingKey) {
+                onPrintingKeyDown(this)
             } else {
-                when (it.keyCode) {
+                when (this.keyCode) {
                     KEYCODE_BACK -> {
                         // keep default behavior of Back key
                         return super.onKeyDown(keyCode, event)
@@ -260,36 +270,40 @@ class GuilelessBopomofoService : InputMethodService(),
 
                     KEYCODE_ALT_LEFT, KEYCODE_SHIFT_RIGHT -> {
                         // for onKeyLongPress()...
-                        it.startTracking()
+                        this.startTracking()
                         return true
                     }
 
                     KEYCODE_SPACE -> {
-                        SpaceKey.action(it)
+                        if (this.isShiftPressed) {
+                            viewBinding.keyboardPanel.toggleMainLayoutMode()
+                            return true
+                        }
+                        SpaceKey.performAction()
                     }
 
                     KEYCODE_DEL -> {
-                        BackspaceKey.action()
+                        BackspaceKey.performAction()
                     }
 
                     KEYCODE_ENTER -> {
-                        EnterKey.action()
+                        EnterKey.performAction()
                     }
 
                     KEYCODE_ESCAPE -> {
-                        EscapeKey.action()
+                        EscapeKey.performAction()
                     }
 
                     KEYCODE_DPAD_LEFT -> {
-                        LeftKey.action()
+                        LeftKey.performAction()
                     }
 
                     KEYCODE_DPAD_RIGHT -> {
-                        RightKey.action()
+                        RightKey.performAction()
                     }
 
                     KEYCODE_DPAD_DOWN -> {
-                        DownKey.action()
+                        DownKey.performAction()
                     }
 
                     else -> {
@@ -324,12 +338,12 @@ class GuilelessBopomofoService : InputMethodService(),
             } else {
                 return when (it.keyCode) {
                     KEYCODE_ENTER -> {
-                        // DO NOTHING HERE, has been handled by EnterKey.action()
+                        // DO NOTHING HERE, has been handled by EnterKey.performAction()
                         true
                     }
 
                     KEYCODE_SPACE -> {
-                        // DO NOTHING HERE, has been handled by SpaceKey.action()
+                        // DO NOTHING HERE, has been handled by SpaceKey.performPhysicalAction()
                         true
                     }
 
@@ -363,7 +377,7 @@ class GuilelessBopomofoService : InputMethodService(),
                 KEYCODE_SHIFT_RIGHT -> {
                     if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
                         ChewingUtil.openPuncCandidates()
-                        viewBinding.keyboardPanel.switchToCandidatesLayout()
+                        viewBinding.keyboardPanel.switchToLayout(Layout.CANDIDATES)
                         return true
                     } else {
                         return super.onKeyLongPress(keyCode, event)
@@ -396,18 +410,18 @@ class GuilelessBopomofoService : InputMethodService(),
         imeWindowVisible = true
     }
 
-    fun onPrintingKeyDown(event: KeyEvent) {
+    private fun onPrintingKeyDown(event: KeyEvent) {
         Log.d(logTag, "onPrintingKeyDown()")
 
         // Consider keys in NumPad
         if (event.isNumPadKey()) {
             currentInputConnection.sendKeyEvent(event)
-            viewBinding.keyboardPanel.updateBuffers()
+            EventBus.getDefault().post(Events.UpdateBuffers())
             return
         }
 
         if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.getChiEngMode() == CHINESE_MODE && !event.isShiftPressed) {
-            viewBinding.keyboardPanel.switchToSymbolPicker()
+            viewBinding.keyboardPanel.switchToLayout(Layout.SYMBOLS)
             return
         }
 
@@ -460,7 +474,7 @@ class GuilelessBopomofoService : InputMethodService(),
             ChewingBridge.handleDefault(keyPressed)
         }
 
-        viewBinding.keyboardPanel.updateBuffers()
+        EventBus.getDefault().post(Events.UpdateBuffers())
 
         shiftKeyImageButton?.let {
             if (it.isActive && !it.isLocked) {
@@ -477,7 +491,7 @@ class GuilelessBopomofoService : InputMethodService(),
         Log.d(logTag, "onPrintingKeyUp()")
         // Detect if a candidate had been chosen by user
         viewBinding.keyboardPanel.let {
-            if (it.currentKeyboardLayout == KeyboardPanel.KeyboardLayout.CANDIDATES) {
+            if (it.currentLayout == Layout.CANDIDATES) {
                 if (ChewingUtil.candWindowClosed()) {
                     it.candidateSelectionDone()
                 } else {
@@ -487,16 +501,177 @@ class GuilelessBopomofoService : InputMethodService(),
         }
     }
 
-    private fun physicalKeyboardEnabled(): Boolean {
-        if (physicalKeyboardPresent
-            && sharedPreferences.getBoolean(
-                "user_enable_physical_keyboard",
-                false
-            )
-        ) {
-            return true
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUpdateBuffers(event: Events.UpdateBuffers) {
+        viewBinding.apply {
+            launch { textViewPreEditBuffer.update() }
+            launch { textViewBopomofoBuffer.update() }
         }
-        return false
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSwitchToLayout(event: Events.SwitchToLayout) {
+        viewBinding.apply {
+            keyboardPanel.switchToLayout(event.layout)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onExitKeyboardSubLayouts(event: Events.ExitKeyboardSubLayouts) {
+        viewBinding.keyboardPanel.apply {
+            if (this.currentLayout in listOf(
+                    Layout.SYMBOLS,
+                    Layout.CANDIDATES
+                )
+            ) {
+                this.switchToLayout(Layout.MAIN)
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCommitTextInChewingCommitBuffer(event: Events.CommitTextInChewingCommitBuffer) {
+        currentInputConnection.commitText(
+            ChewingBridge.commitString(),
+            1
+        )
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSwitchToNextInputMethod(event: Events.SwitchToNextInputMethod) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            switchToNextInputMethod(false)
+        } else {
+            // backward compatibility, support IME switch on legacy devices
+            val imm =
+                applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imeToken: IBinder? = viewBinding.root.windowToken
+            @Suppress("DEPRECATION")
+            imm.switchToNextInputMethod(imeToken, false)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onListCandidatesForCurrentCursor(event: Events.ListCandidatesForCurrentCursor) {
+        viewBinding.apply {
+            textViewPreEditBuffer.offset = ChewingBridge.cursorCurrent()
+            textViewPreEditBuffer.renderUnderlineSpan()
+            keyboardPanel.switchToLayout(Layout.CANDIDATES)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSendDownUpKeyEvents(event: Events.SendDownUpKeyEvents) {
+        sendDownUpKeyEvents(event.keycode)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCandidateSelectionDone(event: Events.CandidateSelectionDone) {
+        viewBinding.keyboardPanel.candidateSelectionDone(event.index)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onPrintingKeyDown(event: Events.PrintingKeyDown) {
+        event.characterKey.keyCodeString?.let { keycodeString ->
+            val keyEvent =
+                KeyEvent(
+                    ACTION_DOWN,
+                    KeyEvent.keyCodeFromString(keycodeString)
+                )
+            this@GuilelessBopomofoService.onPrintingKeyDown(keyEvent)
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onToggleKeyboardMainLayoutMode(event: Events.ToggleKeyboardMainLayoutMode) {
+        viewBinding.keyboardPanel.toggleMainLayoutMode()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEnterKeyDownWhenBufferIsEmpty(event: Events.EnterKeyDownWhenBufferIsEmpty) {
+        var multiLineEditText = false
+
+        currentInputEditorInfo?.apply {
+            // Is it a multiple line text field?
+            if ((this.inputType and InputType.TYPE_MASK_CLASS and InputType.TYPE_CLASS_TEXT) == InputType.TYPE_CLASS_TEXT) {
+                if ((this.inputType and InputType.TYPE_MASK_FLAGS and InputType.TYPE_TEXT_FLAG_MULTI_LINE) == InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
+                    multiLineEditText = true
+                }
+            }
+
+            // Just do as press Enter, never care about the defined action if we are now in a multiple line text field
+            if (multiLineEditText) {
+                this@GuilelessBopomofoService.sendDownUpKeyEvents(KEYCODE_ENTER)
+                return
+            }
+
+            when (val imeAction = (this.imeOptions and EditorInfo.IME_MASK_ACTION)) {
+                EditorInfo.IME_ACTION_GO, EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_SEARCH, EditorInfo.IME_ACTION_SEND -> {
+                    // The current EditText has a specified android:imeOptions attribute.
+                    this@GuilelessBopomofoService.currentInputConnection.performEditorAction(
+                        imeAction
+                    )
+                }
+
+                else -> {
+                    // The current EditText has no android:imeOptions attribute, or I don't want to make it act as is.
+                    this@GuilelessBopomofoService.sendDownUpKeyEvents(KEYCODE_ENTER)
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onShowKeyButtonPopup(event: Events.ShowKeyButtonPopup) {
+        val keyButtonLocation = IntArray(2)
+        event.characterKey.getLocationInWindow(keyButtonLocation)
+
+        viewBinding.keyboardPanel.apply {
+            keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(
+                event.characterKey.drawable
+            )
+            keyButtonPopup.let { popup ->
+                popup.height = event.characterKey.height
+                popup.width = event.characterKey.width
+                popup.showAtLocation(
+                    event.characterKey.rootView,
+                    Gravity.NO_GRAVITY,
+                    keyButtonLocation[0],
+                    keyButtonLocation[1] - event.characterKey.height
+                )
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDismissKeyButtonPopup(event: Events.DismissKeyButtonPopup) {
+        viewBinding.keyboardPanel.keyButtonPopup.dismiss()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDirectionKeyDown(event: Events.DirectionKeyDown) {
+        if (ChewingBridge.bufferLen() > 0) {
+            viewBinding.textViewPreEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedBy.PHYSICAL_KEYBOARD)
+        } else {
+            if (ChewingUtil.candWindowClosed()) {
+                when (event.direction) {
+                    DirectionKey.LEFT -> {
+                        sendDownUpKeyEvents(KEYCODE_DPAD_LEFT)
+                    }
+
+                    DirectionKey.RIGHT -> {
+                        sendDownUpKeyEvents(KEYCODE_DPAD_RIGHT)
+                    }
+                }
+            }
+        }
+
+        // toggle to next page of candidates
+        viewBinding.keyboardPanel.apply {
+            if (this.currentLayout == Layout.CANDIDATES && ChewingUtil.candWindowOpened()) {
+                this.renderCandidatesLayout()
+            }
+        }
     }
 
     private fun setupChewingData(dataPath: String) {
@@ -580,7 +755,7 @@ class GuilelessBopomofoService : InputMethodService(),
         super.onConfigurationChanged(newConfig)
         // toggle main layout automatically between physical keyboard being connected and disconnected
         if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
-            viewBinding.keyboardPanel.switchToMainLayout()
+            viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
         }
     }
 
@@ -590,10 +765,11 @@ class GuilelessBopomofoService : InputMethodService(),
             "user_keyboard_layout",
             "user_display_hsu_qwerty_layout",
             "user_display_eten26_qwerty_layout",
-            "user_display_dvorak_hsu_both_layout" -> {
+            "user_display_dvorak_hsu_both_layout",
+            -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
-                    viewBinding.keyboardPanel.switchToMainLayout()
+                    viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
                 }
             }
 
@@ -623,16 +799,18 @@ class GuilelessBopomofoService : InputMethodService(),
             }
 
             "user_fullscreen_when_in_landscape",
-            "user_fullscreen_when_in_portrait" -> {
+            "user_fullscreen_when_in_portrait",
+            -> {
                 // do nothing (onEvaluateFullscreenMode() will handle it well)
             }
 
             "user_enable_button_elevation",
             "user_key_button_height",
-            "user_enable_double_touch_ime_switch" -> {
+            "user_enable_double_touch_ime_switch",
+            -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
-                    viewBinding.keyboardPanel.switchToMainLayout()
+                    viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
                 }
             }
 
@@ -651,4 +829,7 @@ class GuilelessBopomofoService : InputMethodService(),
             }
         }
     }
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 }

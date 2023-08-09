@@ -32,9 +32,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CompactLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenLayoutBinding
@@ -47,16 +44,15 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBi
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeybuttonPopupLayoutBinding
-import kotlin.coroutines.CoroutineContext
-import kotlin.math.absoluteValue
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.PhysicalKeyboardDetectable
+import org.greenrobot.eventbus.EventBus
 
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
-) : RelativeLayout(context, attrs), CoroutineScope {
+) : RelativeLayout(context, attrs), PhysicalKeyboardDetectable {
     private val logTag: String = "KeyboardPanel"
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
 
     private var currentCandidatesList: Int = 0
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
@@ -80,11 +76,9 @@ class KeyboardPanel(
         CandidatesLayoutBinding.inflate(LayoutInflater.from(context))
     private val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
 
-    enum class KeyboardLayout { MAIN, SYMBOLS, CANDIDATES, QWERTY, DVORAK }
+    lateinit var currentLayout: Layout
 
-    lateinit var currentKeyboardLayout: KeyboardLayout
-
-    private val sharedPreferences: SharedPreferences =
+    override val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
 
     private var motionStartPointX: Float = 0F
@@ -171,8 +165,31 @@ class KeyboardPanel(
         }
     }
 
-    fun switchToMainLayout() {
+    fun switchToLayout(layout: Layout) {
+        currentLayout = layout
+        when (layout) {
+            Layout.MAIN -> {
+                switchToMainLayout()
+            }
+
+            Layout.CANDIDATES -> {
+                switchToCandidatesLayout()
+            }
+
+            Layout.SYMBOLS -> {
+                switchToSymbolPicker()
+            }
+
+            else -> {}
+        }
+    }
+
+    private fun switchToMainLayout() {
         Log.d(logTag, "switchToMainLayout()")
+
+        ChewingBridge.candClose()
+        ChewingBridge.handleEnd()
+
         if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
             switchToBopomofoLayout()
         } else {
@@ -196,7 +213,7 @@ class KeyboardPanel(
 
     private fun switchToBopomofoLayout() {
         Log.d(logTag, "switchToBopomofoLayout()")
-        currentKeyboardLayout = KeyboardLayout.MAIN
+        currentLayout = Layout.MAIN
 
         this.removeAllViews()
 
@@ -211,7 +228,7 @@ class KeyboardPanel(
         }
 
         // Toggle to compact layout when physical keyboard is enabled:
-        if (GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
+        if (physicalKeyboardEnabled()) {
             switchToCompactLayout()
             return
         }
@@ -287,9 +304,9 @@ class KeyboardPanel(
 
     private fun switchToQwertyLayout() {
         Log.d(logTag, "switchToQwertyLayout")
-        currentKeyboardLayout = KeyboardLayout.QWERTY
+        currentLayout = Layout.QWERTY
 
-        if (GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
+        if (physicalKeyboardEnabled()) {
             switchToCompactLayout()
             return
         }
@@ -303,9 +320,9 @@ class KeyboardPanel(
 
     private fun switchToDvorakLayout() {
         Log.d(logTag, "switchToDvorakLayout")
-        currentKeyboardLayout = KeyboardLayout.DVORAK
+        currentLayout = Layout.DVORAK
 
-        if (GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
+        if (physicalKeyboardEnabled()) {
             switchToCompactLayout()
             return
         }
@@ -323,17 +340,8 @@ class KeyboardPanel(
         ) == "KB_DVORAK_HSU")
     }
 
-    fun backToMainLayout() {
-        // force back to main layout whatever a candidate has been chosen or not
-        if (currentKeyboardLayout == KeyboardLayout.CANDIDATES) {
-            ChewingBridge.candClose()
-            ChewingBridge.handleEnd()
-            switchToMainLayout()
-        }
-    }
-
-    fun switchToSymbolPicker() {
-        currentKeyboardLayout = KeyboardLayout.SYMBOLS
+    private fun switchToSymbolPicker() {
+        currentLayout = Layout.SYMBOLS
         ChewingUtil.openSymbolCandidates()
         renderCandidatesLayout()
     }
@@ -351,7 +359,7 @@ class KeyboardPanel(
         if (ChewingUtil.candWindowClosed()) {
             ChewingBridge.candClose()
             ChewingBridge.handleEnd()
-            updateBuffers()
+            EventBus.getDefault().post(Events.UpdateBuffers())
             currentCandidatesList = 0
             candidatesRecyclerView.adapter = null
             switchToMainLayout()
@@ -360,15 +368,8 @@ class KeyboardPanel(
         }
     }
 
-    fun updateBuffers() {
-        GuilelessBopomofoServiceContext.service.viewBinding.apply {
-            launch { textViewPreEditBuffer.update() }
-            launch { textViewBopomofoBuffer.update() }
-        }
-    }
-
     // list current offset's candidates in the candidate window
-    fun switchToCandidatesLayout() {
+    private fun switchToCandidatesLayout() {
         Log.d(logTag, "switchToCandidatesLayout")
 
         // switch to the target candidates list
@@ -388,12 +389,12 @@ class KeyboardPanel(
 
     fun renderCandidatesLayout() {
         Log.d(logTag, "renderCandidatesLayout")
-        currentKeyboardLayout = KeyboardLayout.CANDIDATES
+        currentLayout = Layout.CANDIDATES
 
         this.removeAllViews()
         this.addView(candidatesLayoutBinding.root)
 
-        if (!GuilelessBopomofoServiceContext.service.physicalKeyboardEnabled) {
+        if (!physicalKeyboardEnabled()) {
             candidatesRecyclerView.adapter = CandidatesAdapter()
             candidatesRecyclerView.layoutManager =
                 GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)

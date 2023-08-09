@@ -32,8 +32,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoServiceContext
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
 import kotlin.concurrent.fixedRateTimer
 import kotlin.coroutines.CoroutineContext
 
@@ -64,7 +65,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            action()
+            performAction()
             return true
         }
 
@@ -98,7 +99,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     private suspend fun repeatBackspace() {
         fixedRateTimer("repeatBackspace", true, 50L, 100L) {
             if (backspacePressed) {
-                action()
+                performAction()
             } else {
                 this@fixedRateTimer.cancel()
             }
@@ -107,12 +108,12 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     }
 
     companion object {
-        fun action() {
+        fun performAction() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.handleBackspace()
-                GuilelessBopomofoServiceContext.service.viewBinding.keyboardPanel.updateBuffers()
+                EventBus.getDefault().post(Events.UpdateBuffers())
             } else {
-                GuilelessBopomofoServiceContext.service.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
+                EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_DEL))
             }
         }
     }
