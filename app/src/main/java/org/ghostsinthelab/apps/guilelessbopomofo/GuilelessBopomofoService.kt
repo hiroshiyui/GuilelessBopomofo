@@ -171,13 +171,13 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     // Disable fullscreen mode when device's orientation is landscape
     override fun onEvaluateFullscreenMode(): Boolean {
         Log.d(logTag, "onEvaluateFullscreenMode()")
-        super.onEvaluateFullscreenMode()
 
         if (sharedPreferences.getBoolean(
                 "user_fullscreen_when_in_landscape",
                 true
             ) && resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         ) {
+            Log.d(logTag, "Now on landscape orientation.")
             return true
         }
 
@@ -186,6 +186,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 false
             ) && resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
         ) {
+            Log.d(logTag, "Now on portrait orientation.")
             return true
         }
 
