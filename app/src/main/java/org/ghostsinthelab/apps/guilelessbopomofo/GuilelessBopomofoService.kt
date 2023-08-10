@@ -753,6 +753,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
+        Log.d(logTag, "onConfigurationChanged()")
         super.onConfigurationChanged(newConfig)
         // toggle main layout automatically between physical keyboard being connected and disconnected
         if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
