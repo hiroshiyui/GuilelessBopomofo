@@ -248,9 +248,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             return false
         }
 
-        if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
-            updateInputViewShown()
-        }
+        forceViewBindingInitialized()
 
         event?.apply {
             if (this.isPrintingKey) {
@@ -318,9 +316,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             return false
         }
 
-        if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
-            updateInputViewShown()
-        }
+        forceViewBindingInitialized()
 
         event?.let {
             if (it.isPrintingKey) {
@@ -354,9 +350,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             return false
         }
 
-        if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
-            updateInputViewShown()
-        }
+        forceViewBindingInitialized()
 
         event?.let {
             when (it.keyCode) {
@@ -740,11 +734,15 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     override fun onConfigurationChanged(newConfig: Configuration) {
         Log.d(logTag, "onConfigurationChanged()")
         super.onConfigurationChanged(newConfig)
-        if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
-            updateInputViewShown()
-        }
+        forceViewBindingInitialized()
         // toggle main layout automatically between physical keyboard being connected and disconnected
         viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
+    }
+
+    private fun forceViewBindingInitialized() {
+        if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
+            viewBinding = KeyboardLayoutBinding.inflate(this.layoutInflater)
+        }
     }
 
     // triggered if any sharedPreference has been changed
