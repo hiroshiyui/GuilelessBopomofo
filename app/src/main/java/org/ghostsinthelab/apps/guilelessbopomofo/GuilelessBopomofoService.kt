@@ -741,7 +741,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     private fun forceViewBindingInitialized() {
         if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
+            Log.d(logTag, "forceViewBindingInitialized()")
             viewBinding = KeyboardLayoutBinding.inflate(this.layoutInflater)
+            setInputView(viewBinding.root)
         }
     }
 
