@@ -248,15 +248,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             return false
         }
 
-        // 實在是不懂既然 imeWindowVisible 又為何進到 onPrintingKeyDown() 後會發生
-        // lateinit property viewBinding has not been initialized 例外？
-        // 先在這邊擋掉：
         if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
-            Log.d(
-                logTag,
-                "viewBinding has not been initialized, disable interrupt onKeyDown() events."
-            )
-            return false
+            updateInputViewShown()
         }
 
         event?.apply {
@@ -326,11 +319,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         }
 
         if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
-            Log.d(
-                logTag,
-                "viewBinding has not been initialized, disable interrupt onKeyUp() events."
-            )
-            return false
+            updateInputViewShown()
         }
 
         event?.let {
@@ -366,11 +355,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         }
 
         if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
-            Log.d(
-                logTag,
-                "viewBinding has not been initialized, disable interrupt onKeyLongPress() events."
-            )
-            return false
+            updateInputViewShown()
         }
 
         event?.let {
@@ -755,10 +740,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     override fun onConfigurationChanged(newConfig: Configuration) {
         Log.d(logTag, "onConfigurationChanged()")
         super.onConfigurationChanged(newConfig)
-        // toggle main layout automatically between physical keyboard being connected and disconnected
-        if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
-            viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
+        if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
+            updateInputViewShown()
         }
+        // toggle main layout automatically between physical keyboard being connected and disconnected
+        viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
     }
 
     // triggered if any sharedPreference has been changed
