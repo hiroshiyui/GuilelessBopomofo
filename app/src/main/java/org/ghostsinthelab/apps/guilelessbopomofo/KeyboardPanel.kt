@@ -74,7 +74,7 @@ class KeyboardPanel(
         CandidatesLayoutBinding.inflate(LayoutInflater.from(context))
     private val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
 
-    lateinit var currentLayout: Layout
+    var currentLayout: Layout = Layout.MAIN
 
     override val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
