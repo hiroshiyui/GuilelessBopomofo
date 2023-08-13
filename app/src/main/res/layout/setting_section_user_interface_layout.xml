@@ -27,10 +27,10 @@
 
     <TextView
         android:id="@+id/textViewHeadingUserInterfaceSettings"
+        style="@style/AppTheme.SettingsPrimaryHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/user_interface_settings"
-        android:theme="@style/AppTheme.SettingsPrimaryHeader"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -48,6 +48,7 @@
 
     <TextView
         android:id="@+id/textViewtextViewHapticFeedbackStrengthDescription"
+        style="@style/AppTheme.SettingsDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/haptic_feedback_strength_description"

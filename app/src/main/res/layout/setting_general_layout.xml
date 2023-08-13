@@ -215,6 +215,7 @@
 
     <TextView
         android:id="@+id/textViewRearwardPhraseChoiceDescription"
+        style="@style/AppTheme.SettingsDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/rearward_phrase_choice_description"
