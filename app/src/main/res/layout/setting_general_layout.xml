@@ -141,7 +141,7 @@
 
     </RadioGroup>
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchDisplayHsuQwertyLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/radioGroupSettingBopomofoKeyboardLayout" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchDisplayEten26QwertyLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/switchDisplayHsuQwertyLayout" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchDisplayDvorakHsuBothLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewSettingSpaceAsSelection" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchSettingSpaceAsSelection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -223,7 +223,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewRearwardPhraseChoice" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchRearwardPhraseChoice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
