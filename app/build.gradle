@@ -6,15 +6,15 @@ apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
     compileSdkVersion = 33
-    buildToolsVersion = "33.0.1"
+    buildToolsVersion = '33.0.2'
     namespace 'org.ghostsinthelab.apps.guilelessbopomofo'
 
     defaultConfig {
         applicationId "org.ghostsinthelab.apps.guilelessbopomofo"
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 99
-        versionName "1.9.29"
+        versionCode 100
+        versionName "1.9.30"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
@@ -46,7 +46,7 @@ android {
         }
     }
 
-    ndkVersion '23.1.7779620'
+    ndkVersion '23.2.8568313'
 
     testOptions {
         unitTests {
