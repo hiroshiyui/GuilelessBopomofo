@@ -48,7 +48,7 @@
             android:drawablePadding="4dp"
             android:includeFontPadding="false"
             android:text="@string/back_to_main_layout"
-            android:theme="@style/AppTheme.KeyButton"
+            android:theme="@style/KeyButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/CandidatesRecyclerView" />

@@ -26,17 +26,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.KeyboardPanel">
+    <style name="KeyboardPanel">
         <item name="android:background">@color/colorKeyboardPanelBackgroundDark</item>
     </style>
 
-    <style name="AppTheme.DividerKeyboardPanelTopBorder">
+    <style name="DividerKeyboardPanelTopBorder">
         <item name="android:background">@color/colorKeyboardPanelBackground</item>
         <item name="android:backgroundTint">@color/colorPrimaryDark</item>
         <item name="android:backgroundTintMode">src_atop</item>
     </style>
 
-    <style name="AppTheme.KeyboardTheme">
+    <style name="KeyboardTheme">
         <item name="android:background">@color/colorKeyboardBackgroundDark</item>
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="android:imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
@@ -46,12 +46,12 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="AppTheme.KeyboardRow" parent="AppTheme.KeyboardTheme">
+    <style name="KeyboardRow" parent="KeyboardTheme">
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginBottom">0dp</item>
     </style>
 
-    <style name="AppTheme.KeyImageButton" parent="Theme.MaterialComponents">
+    <style name="KeyImageButton" parent="Theme.MaterialComponents">
         <item name="android:imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
         <item name="imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
         <item name="android:minHeight">52dp</item>
@@ -65,15 +65,15 @@
         <item name="android:tint">@color/colorButtonForegroundDark</item>
     </style>
 
-    <style name="AppTheme.KeyImageButton.SpecialKeyImageButton">
+    <style name="KeyImageButton.SpecialKeyImageButton">
         <item name="android:backgroundTint">@color/colorKeyboardSpecialKeyBackgroundDark</item>
     </style>
 
-    <style name="AppTheme.KeyImageButton.EnterKeyImageButton">
+    <style name="KeyImageButton.EnterKeyImageButton">
         <item name="android:backgroundTint">@color/colorKeyboardEnterKeyBackgroundDark</item>
     </style>
 
-    <style name="AppTheme.KeyButton" parent="Theme.MaterialComponents">
+    <style name="KeyButton" parent="Theme.MaterialComponents">
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="android:textColor">@color/colorButtonForegroundDark</item>
@@ -88,7 +88,7 @@
         <item name="android:bottomRightRadius">8dp</item>
     </style>
 
-    <style name="AppTheme.CandidateItem" parent="Theme.MaterialComponents">
+    <style name="CandidateItem" parent="Theme.MaterialComponents">
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="android:textColor">@color/colorButtonForegroundDark</item>

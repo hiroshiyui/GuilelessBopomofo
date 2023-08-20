@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/textViewHeadingUserInterfaceSettings"
-        style="@style/AppTheme.SettingsPrimaryHeader"
+        style="@style/Settings.PrimaryHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/user_interface_settings"
@@ -37,7 +37,7 @@
 
     <TextView
         android:id="@+id/textViewHapticFeedbackStrength"
-        style="@style/AppTheme.SettingsLabel"
+        style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -48,7 +48,7 @@
 
     <TextView
         android:id="@+id/textViewtextViewHapticFeedbackStrengthDescription"
-        style="@style/AppTheme.SettingsDescription"
+        style="@style/Settings.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/haptic_feedback_strength_description"
@@ -90,7 +90,7 @@
 
     <TextView
         android:id="@+id/textViewSettingFullscreen"
-        style="@style/AppTheme.SettingsLabel"
+        style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -101,7 +101,7 @@
 
     <TextView
         android:id="@+id/textViewSettingDescriptionFullscreenMode"
-        style="@style/AppTheme.SettingsDescription"
+        style="@style/Settings.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/fullscreen_mode_setting_description"
@@ -131,7 +131,7 @@
 
     <TextView
         android:id="@+id/textViewSettingKeyButtonsElevation"
-        style="@style/AppTheme.SettingsLabel"
+        style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -142,7 +142,7 @@
 
     <TextView
         android:id="@+id/textViewSettingDescriptionKeyButtonsElevation"
-        style="@style/AppTheme.SettingsDescription"
+        style="@style/Settings.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/switch_description_enable_keybutton_elevation"
@@ -162,7 +162,7 @@
 
     <TextView
         android:id="@+id/textViewSettingKeyButtonHeight"
-        style="@style/AppTheme.SettingsLabel"
+        style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -173,7 +173,7 @@
 
     <TextView
         android:id="@+id/textViewSettingDescriptionKeyButtonHeight"
-        style="@style/AppTheme.SettingsDescription"
+        style="@style/Settings.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/key_button_height_description"
@@ -205,7 +205,7 @@
 
     <TextView
         android:id="@+id/textViewSettingImeSwitch"
-        style="@style/AppTheme.SettingsLabel"
+        style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -216,7 +216,7 @@
 
     <TextView
         android:id="@+id/textViewSettingDescriptionImeSwitch"
-        style="@style/AppTheme.SettingsDescription"
+        style="@style/Settings.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/text_view_setting_description_ime_switch"

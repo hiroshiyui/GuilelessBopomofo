@@ -25,7 +25,7 @@
 
     <TextView
         android:id="@+id/textViewHeadingPhysicalKeyboardSettings"
-        style="@style/AppTheme.SettingsPrimaryHeader"
+        style="@style/Settings.PrimaryHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/physical_keyboard_settings"
@@ -35,7 +35,7 @@
 
     <TextView
         android:id="@+id/textViewSettingEnablePhysicalKeyboard"
-        style="@style/AppTheme.SettingsLabel"
+        style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -46,7 +46,7 @@
 
     <TextView
         android:id="@+id/textViewSettingDescriptionEnablePhysicalKeyboard"
-        style="@style/AppTheme.SettingsDescription"
+        style="@style/Settings.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/enable_physical_keyboard_description"
@@ -66,7 +66,7 @@
 
     <TextView
         android:id="@+id/textViewSelectionKeysOption"
-        style="@style/AppTheme.SettingsLabel"
+        style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
