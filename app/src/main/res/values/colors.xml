@@ -49,5 +49,4 @@
     <color name="colorKeyboardSpecialKeyBackgroundDark">#795A48</color>
     <color name="colorKeyboardSpecialKeyBackgroundDarkPressed">#AB8067</color>
     <color name="colorKeyboardSpecialKeyBackgroundDarkHold">#D8A385</color>
-    <color name="colorKeyButtonPopupWindow">#B5C9D4</color>
 </resources>

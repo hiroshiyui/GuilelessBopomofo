@@ -26,7 +26,7 @@
 
     <TextView
         android:id="@+id/textViewHeadingGenericSettings"
-        style="@style/AppTheme.SettingsPrimaryHeader"
+        style="@style/Settings.PrimaryHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/general_settings_label"
@@ -36,7 +36,7 @@
 
     <TextView
         android:id="@+id/textViewSettingServiceStatus"
-        style="@style/AppTheme.SettingsLabel"
+        style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -47,7 +47,7 @@
 
     <TextView
         android:id="@+id/textViewSettingDescriptionServiceStatus"
-        style="@style/AppTheme.SettingsDescription"
+        style="@style/Settings.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/guileless_bopomofo_service_status_description"
@@ -57,7 +57,7 @@
 
     <TextView
         android:id="@+id/textViewSettingLabelServiceStatus"
-        style="@style/AppTheme.SettingsWidget"
+        style="@style/Settings.Widget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -89,7 +89,7 @@
 
     <TextView
         android:id="@+id/textViewSettingBopomofoKeyboardLayout"
-        style="@style/AppTheme.SettingsLabel"
+        style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_marginTop="32dp"
         android:text="@string/bopomofo_keyboard_layout"
@@ -99,7 +99,7 @@
 
     <TextView
         android:id="@+id/textViewSettingDescriptionBopomofoKeyboardLayout"
-        style="@style/AppTheme.SettingsDescription"
+        style="@style/Settings.Description"
         android:layout_width="0dp"
         android:text="@string/bopomofo_keyboard_layout_description"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +108,7 @@
 
     <RadioGroup
         android:id="@+id/radioGroupSettingBopomofoKeyboardLayout"
-        style="@style/AppTheme.SettingsWidget"
+        style="@style/Settings.Widget"
         android:layout_width="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -173,7 +173,7 @@
 
     <TextView
         android:id="@+id/textViewSettingSpaceAsSelection"
-        style="@style/AppTheme.SettingsLabel"
+        style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -184,7 +184,7 @@
 
     <TextView
         android:id="@+id/textViewSettingDescriptionSpaceAsSelection"
-        style="@style/AppTheme.SettingsDescription"
+        style="@style/Settings.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/space_as_selection_key_description"
@@ -204,7 +204,7 @@
 
     <TextView
         android:id="@+id/textViewRearwardPhraseChoice"
-        style="@style/AppTheme.SettingsLabel"
+        style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -215,7 +215,7 @@
 
     <TextView
         android:id="@+id/textViewRearwardPhraseChoiceDescription"
-        style="@style/AppTheme.SettingsDescription"
+        style="@style/Settings.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/rearward_phrase_choice_description"

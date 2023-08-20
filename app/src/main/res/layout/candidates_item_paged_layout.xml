@@ -39,7 +39,7 @@
         tools:layout_conversion_absoluteWidth="83dp"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="7dp"
-        style="@style/CandidateItemSelectionKey" />
+        style="@style/CandidateItem.SelectionKey" />
 
     <TextView
         android:id="@+id/textViewCandidate"
@@ -52,6 +52,6 @@
         tools:layout_conversion_absoluteWidth="138dp"
         tools:layout_editor_absoluteX="87dp"
         tools:layout_editor_absoluteY="0dp"
-        style="@style/PagedCandidateItem" />
+        style="@style/CandidateItem.Paged" />
 
 </LinearLayout>
