@@ -92,7 +92,9 @@
         <item name="android:bottomRightRadius">8dp</item>
     </style>
 
-    <style name="CandidateItem" parent="Widget.AppCompat.Button">
+    <style name="CandidateItem"></style>
+
+    <style name="CandidateItem.Button" parent="Widget.AppCompat.Button">
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
@@ -117,8 +119,7 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="Settings" parent="AppTheme">
-    </style>
+    <style name="Settings" parent="AppTheme"></style>
 
     <style name="Settings.Label">
         <item name="android:layout_width">wrap_content</item>

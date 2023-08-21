@@ -40,7 +40,7 @@
     <color name="colorKeyboardPanelBackground">@color/colorGuilelessBopomofoThemeBase6</color>
     <color name="colorKeyboardPanelBackgroundDark">@color/colorGuilelessBopomofoThemeBase10</color>
     <color name="colorKeyboardBackground">#E6E6E6</color>
-    <color name="colorKeyboardBackgroundDark">@color/colorGuilelessBopomofoThemeBase10</color>
+    <color name="colorKeyboardBackgroundDark">#4B4A4A</color>
     <color name="colorButtonBackgroundDark">#1B4A64</color>
     <color name="colorButtonForegroundDark">#FFFEF7</color>
     <color name="colorKeyboardEnterKeyBackground">#8BC34A</color>

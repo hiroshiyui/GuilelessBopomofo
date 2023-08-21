@@ -23,6 +23,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -88,7 +90,9 @@
         <item name="android:bottomRightRadius">8dp</item>
     </style>
 
-    <style name="CandidateItem" parent="Theme.MaterialComponents">
+    <style name="CandidateItem"></style>
+
+    <style name="CandidateItem.Button" parent="Widget.AppCompat.Button">
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
         <item name="android:textColor">@color/colorButtonForegroundDark</item>
