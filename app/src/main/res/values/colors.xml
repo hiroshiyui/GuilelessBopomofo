@@ -33,6 +33,8 @@
     <!-- color settings -->
     <color name="colorPrimary">@color/colorGuilelessBopomofoThemeBase6</color>
     <color name="colorPrimaryDark">@color/colorGuilelessBopomofoThemeBase3</color>
+    <color name="colorOnPrimary">#FFFEF7</color>
+    <color name="colorSecondary">@color/colorGuilelessBopomofoThemeBase7</color>
     <color name="colorAccent">@color/colorGuilelessBopomofoThemeBase9</color>
     <color name="colorTitleText">@android:color/white</color>
     <color name="colorKeyboardPanelBackground">@color/colorGuilelessBopomofoThemeBase6</color>

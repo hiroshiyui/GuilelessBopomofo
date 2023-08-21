@@ -27,7 +27,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
-import android.widget.SeekBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
@@ -188,39 +187,26 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         resources.getString(R.string.haptic_feedback_strength_setting),
                         hapticFeedbackPreferenceStrength
                     )
-                seekBarHapticFeedbackStrength.progress = hapticFeedbackPreferenceStrength
 
-                seekBarHapticFeedbackStrength.setOnSeekBarChangeListener(object :
-                    SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(
-                        seekBar: SeekBar?,
-                        progress: Int,
-                        fromUser: Boolean
-                    ) {
-                        hapticFeedbackPreferenceStrength = progress
-                        performVibrate(
-                            applicationContext,
+                seekBarHapticFeedbackStrength.value = hapticFeedbackPreferenceStrength.toFloat()
+                seekBarHapticFeedbackStrength.addOnChangeListener { slider, value, fromUser ->
+                    hapticFeedbackPreferenceStrength = value.toInt()
+                    performVibrate(
+                        applicationContext,
+                        hapticFeedbackPreferenceStrength
+                    )
+
+                    sharedPreferences.edit()
+                        .putInt(
+                            "user_haptic_feedback_strength",
+                            hapticFeedbackPreferenceStrength
+                        ).apply()
+                    textViewSettingHapticFeedbaclCurrentStrength.text =
+                        String.format(
+                            resources.getString(R.string.haptic_feedback_strength_setting),
                             hapticFeedbackPreferenceStrength
                         )
-
-                        sharedPreferences.edit()
-                            .putInt(
-                                "user_haptic_feedback_strength",
-                                hapticFeedbackPreferenceStrength
-                            ).apply()
-                        textViewSettingHapticFeedbaclCurrentStrength.text =
-                            String.format(
-                                resources.getString(R.string.haptic_feedback_strength_setting),
-                                hapticFeedbackPreferenceStrength
-                            )
-                    }
-
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    }
-
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    }
-                })
+                }
 
                 switchSettingApplySameHapticFeedbackStrengthToFunctionButtons.let {
                     if (sharedPreferences.getBoolean(
@@ -271,11 +257,10 @@ class MainActivity : AppCompatActivity(), Vibratable {
                     }
                 }
 
-                val seekBarShiftValue = 40
                 var keyButtonPreferenceHeight =
                     sharedPreferences.getInt("user_key_button_height", 52)
 
-                seekBarKeyButtonHeight.progress = keyButtonPreferenceHeight - seekBarShiftValue
+                seekBarKeyButtonHeight.value = keyButtonPreferenceHeight.toFloat()
 
                 textViewSettingKeyButtonCurrentHeight.text =
                     String.format(
@@ -283,30 +268,16 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         keyButtonPreferenceHeight
                     )
 
-                seekBarKeyButtonHeight.setOnSeekBarChangeListener(object :
-                    SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(
-                        seekBar: SeekBar?,
-                        progress: Int,
-                        fromUser: Boolean
-                    ) {
-                        keyButtonPreferenceHeight = progress + seekBarShiftValue
-                        sharedPreferences.edit()
-                            .putInt("user_key_button_height", keyButtonPreferenceHeight).apply()
-                        textViewSettingKeyButtonCurrentHeight.text =
-                            String.format(
-                                resources.getString(R.string.key_button_height_setting),
-                                keyButtonPreferenceHeight
-                            )
-                    }
-
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    }
-
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    }
-
-                })
+                seekBarKeyButtonHeight.addOnChangeListener { slider, value, fromUser ->
+                    keyButtonPreferenceHeight = value.toInt()
+                    sharedPreferences.edit()
+                        .putInt("user_key_button_height", keyButtonPreferenceHeight).apply()
+                    textViewSettingKeyButtonCurrentHeight.text =
+                        String.format(
+                            resources.getString(R.string.key_button_height_setting),
+                            keyButtonPreferenceHeight
+                        )
+                }
 
                 switchSettingImeSwitch.let {
                     if (sharedPreferences.getBoolean(

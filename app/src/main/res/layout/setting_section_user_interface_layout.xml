@@ -56,13 +56,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewHapticFeedbackStrength" />
 
-    <SeekBar
+    <com.google.android.material.slider.Slider
         android:id="@+id/seekBarHapticFeedbackStrength"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:max="150"
-        android:progress="50"
+        android:valueFrom="0"
+        android:valueTo="150"
+        android:value="50"
+        android:stepSize="1"
         app:layout_constraintEnd_toStartOf="@id/textViewSettingHapticFeedbaclCurrentStrength"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewtextViewHapticFeedbackStrengthDescription" />
@@ -181,13 +183,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewSettingKeyButtonHeight" />
 
-    <SeekBar
+    <com.google.android.material.slider.Slider
         android:id="@+id/seekBarKeyButtonHeight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:max="40"
-        android:progress="10"
+        android:valueFrom="40"
+        android:valueTo="80"
+        android:value="52"
+        android:stepSize="1"
         app:layout_constraintEnd_toStartOf="@+id/textViewSettingKeyButtonCurrentHeight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewSettingDescriptionKeyButtonHeight" />
