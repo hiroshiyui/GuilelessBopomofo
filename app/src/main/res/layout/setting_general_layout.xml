@@ -78,7 +78,7 @@
         app:layout_constraintStart_toEndOf="@+id/textViewSettingLabelServiceStatus"
         app:layout_constraintTop_toTopOf="@+id/textViewSettingLabelServiceStatus" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonLaunchImeSystemSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

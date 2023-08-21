@@ -23,7 +23,13 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorButtonForegroundDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="materialButtonStyle">@style/MaterialButton</item>
+    </style>
+
+    <style name="MaterialButton" parent="Widget.Material3.Button">
+        <item name="android:textColor">@color/colorButtonForegroundDark</item>
     </style>
 
     <style name="KeyboardPanel">
