@@ -157,4 +157,18 @@
         <item name="android:backgroundTint">@color/colorGuilelessBopomofoThemeBase7</item>
         <item name="android:backgroundTintMode">src_atop</item>
     </style>
+
+    <style name="PreEditBufferTextView" parent="Theme.AppCompat">
+        <item name="android:background">#2196F3</item>
+        <item name="android:bufferType">spannable</item>
+        <item name="android:fontFamily">serif</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="BopomofoBufferTextView" parent="Theme.AppCompat">
+        <item name="android:background">#00BCD4</item>
+        <item name="android:fontFamily">serif</item>
+        <item name="android:textSize">26sp</item>
+    </style>
 </resources>
