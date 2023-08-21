@@ -162,16 +162,17 @@
     </style>
 
     <style name="PreEditBufferTextView" parent="Theme.AppCompat">
-        <item name="android:background">#2196F3</item>
+        <item name="android:background">@color/colorPreEditBufferTextViewBackground</item>
         <item name="android:bufferType">spannable</item>
         <item name="android:fontFamily">serif</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@color/colorPreEditBufferTextView</item>
         <item name="android:textSize">26sp</item>
     </style>
 
     <style name="BopomofoBufferTextView" parent="Theme.AppCompat">
-        <item name="android:background">#00BCD4</item>
+        <item name="android:background">@color/colorBopomofoBufferTextViewBackground</item>
         <item name="android:fontFamily">serif</item>
+        <item name="android:textColor">@color/colorBopomofoBufferTextView</item>
         <item name="android:textSize">26sp</item>
     </style>
 </resources>

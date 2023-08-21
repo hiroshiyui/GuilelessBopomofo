@@ -51,4 +51,8 @@
     <color name="colorKeyboardSpecialKeyBackgroundDark">#795A48</color>
     <color name="colorKeyboardSpecialKeyBackgroundDarkPressed">#AB8067</color>
     <color name="colorKeyboardSpecialKeyBackgroundDarkHold">#D8A385</color>
+    <color name="colorPreEditBufferTextView">#FFFFFF</color>
+    <color name="colorPreEditBufferTextViewBackground">#2196F3</color>
+    <color name="colorBopomofoBufferTextView">#333333</color>
+    <color name="colorBopomofoBufferTextViewBackground">#00BCD4</color>
 </resources>
