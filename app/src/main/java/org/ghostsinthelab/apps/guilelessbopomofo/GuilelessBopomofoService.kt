@@ -748,7 +748,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     }
 
     // triggered if any sharedPreference has been changed
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
             "user_keyboard_layout",
             "user_display_hsu_qwerty_layout",
@@ -762,24 +762,30 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             }
 
             "user_enable_space_as_selection" -> {
-                if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
-                    ChewingBridge.setSpaceAsSelection(1)
+                sharedPreferences?.apply {
+                    if (this.getBoolean("user_enable_space_as_selection", true)) {
+                        ChewingBridge.setSpaceAsSelection(1)
+                    }
                 }
             }
 
             "user_phrase_choice_rearward" -> {
-                if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
-                    ChewingBridge.setPhraseChoiceRearward(true)
+                sharedPreferences?.apply {
+                    if (this.getBoolean("user_phrase_choice_rearward", false)) {
+                        ChewingBridge.setPhraseChoiceRearward(true)
+                    }
                 }
             }
 
             "user_haptic_feedback_strength" -> {
                 // reload the value
-                userHapticFeedbackStrength =
-                    sharedPreferences.getInt(
-                        "user_haptic_feedback_strength",
-                        defaultHapticFeedbackStrength
-                    )
+                sharedPreferences?.apply {
+                    userHapticFeedbackStrength =
+                        this.getInt(
+                            "user_haptic_feedback_strength",
+                            defaultHapticFeedbackStrength
+                        )
+                }
             }
 
             "same_haptic_feedback_to_function_buttons" -> {
@@ -807,13 +813,15 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             }
 
             "user_candidate_selection_keys_option" -> {
-                sharedPreferences.getString("user_candidate_selection_keys_option", "NUMBER_ROW")
-                    ?.let {
-                        ChewingBridge.setSelKey(
-                            SelectionKeys.valueOf(it).keys,
-                            10
-                        )
-                    }
+                sharedPreferences?.apply {
+                    this.getString("user_candidate_selection_keys_option", "NUMBER_ROW")
+                        ?.let {
+                            ChewingBridge.setSelKey(
+                                SelectionKeys.valueOf(it).keys,
+                                10
+                            )
+                        }
+                }
             }
         }
     }
