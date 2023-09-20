@@ -38,7 +38,7 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBu
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibrate(context, Vibratable.VibrationStrength.NORMAL)
+            performVibration(context, Vibratable.VibrationStrength.NORMAL)
             return true
         }
 
@@ -49,7 +49,7 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBu
         }
 
         override fun onLongPress(e: MotionEvent) {
-            performVibrate(context, Vibratable.VibrationStrength.STRONG)
+            performVibration(context, Vibratable.VibrationStrength.STRONG)
             ChewingUtil.openPuncCandidates()
             EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
         }

@@ -142,7 +142,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
             val y = e.y
             offset = getOffsetForPosition(x, y)
             Log.d(logTag, "offset: $offset")
-            performVibrate(context, Vibratable.VibrationStrength.LIGHT)
+            performVibration(context, Vibratable.VibrationStrength.LIGHT)
 
             return true
         }

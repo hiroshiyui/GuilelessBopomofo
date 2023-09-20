@@ -65,7 +65,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibrate(context, Vibratable.VibrationStrength.NORMAL)
+            performVibration(context, Vibratable.VibrationStrength.NORMAL)
             return true
         }
 

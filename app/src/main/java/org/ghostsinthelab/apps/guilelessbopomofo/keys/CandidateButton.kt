@@ -39,7 +39,7 @@ class CandidateButton(context: Context, attrs: AttributeSet) :
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibrate(context, Vibratable.VibrationStrength.LIGHT)
+            performVibration(context, Vibratable.VibrationStrength.LIGHT)
             return true
         }
 

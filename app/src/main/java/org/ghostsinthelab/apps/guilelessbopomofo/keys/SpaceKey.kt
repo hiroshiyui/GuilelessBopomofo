@@ -41,7 +41,7 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
 
     inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibrate(context, Vibratable.VibrationStrength.LIGHT)
+            performVibration(context, Vibratable.VibrationStrength.LIGHT)
             return true
         }
 

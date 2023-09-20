@@ -39,7 +39,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibrate(
+            performVibration(
                 context,
                 GuilelessBopomofoService.userHapticFeedbackStrength
             )

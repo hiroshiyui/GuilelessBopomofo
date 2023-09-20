@@ -38,7 +38,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibrate(context, Vibratable.VibrationStrength.NORMAL)
+            performVibration(context, Vibratable.VibrationStrength.NORMAL)
             return true
         }
 
@@ -61,7 +61,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
         }
 
         override fun onLongPress(e: MotionEvent) {
-            performVibrate(context, Vibratable.VibrationStrength.STRONG)
+            performVibration(context, Vibratable.VibrationStrength.STRONG)
             val imm = context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
         }

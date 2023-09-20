@@ -27,6 +27,7 @@ import android.os.Vibrator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
+import kotlin.properties.Delegates
 
 interface Vibratable {
     enum class VibrationStrength(val strength: Int) {
@@ -47,9 +48,33 @@ interface Vibratable {
     val strengthRange: IntRange
         get() = 0..150
 
-    fun performVibrate(context: Context, vibrationStrength: VibrationStrength) {
+    fun <T> performVibration(context: Context, vibrationStrength: T) {
         val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java) as Vibrator
-        var strength: Int = vibrationStrength.strength
+
+        // If device doesn't have vibrator, do nothing (e.g: many tablets)
+        if (!vibrator.hasVibrator()) {
+            return
+        }
+
+        var strength by Delegates.notNull<Int>()
+
+        when (vibrationStrength) {
+            is VibrationStrength -> {
+                strength = vibrationStrength.strength
+            }
+
+            is Int -> {
+                strength = vibrationStrength.toInt()
+            }
+        }
+
+        // do nothing if user set vibration strength to 0
+        if (strength == 0) {
+            return
+        }
+
+        // reduces UI blocking by vibrator (if user be typing too fast)
+        vibrator.cancel()
 
         // If users want to use a consistent haptic feedback value for all buttons,
         // just do as they wish.
@@ -66,35 +91,13 @@ interface Vibratable {
             strength = hapticFeedbackPreferenceStrength
         }
 
-        // do nothing if user set vibration strength to 0
-        if (strength == 0) {
-            return
-        }
-
+        // perform vibration
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val vibrationEffect = VibrationEffect.createOneShot(strength.toLong(), amplitude)
             vibrator.vibrate(vibrationEffect)
         } else {
             @Suppress("DEPRECATION")
             vibrator.vibrate(strength.toLong())
-        }
-    }
-
-    fun performVibrate(context: Context, vibrationStrength: Int) {
-        if (vibrationStrength == 0) {
-            return
-        }
-
-        val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java) as Vibrator
-        // reduces UI blocking by vibrator (if user be typing too fast)
-        vibrator.cancel()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val vibrationEffect = VibrationEffect.createOneShot(vibrationStrength.toLong(), amplitude)
-            vibrator.vibrate(vibrationEffect)
-        } else {
-            @Suppress("DEPRECATION")
-            vibrator.vibrate(vibrationStrength.toLong())
         }
     }
 }

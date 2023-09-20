@@ -191,7 +191,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
                 seekBarHapticFeedbackStrength.value = hapticFeedbackPreferenceStrength.toFloat()
                 seekBarHapticFeedbackStrength.addOnChangeListener { slider, value, fromUser ->
                     hapticFeedbackPreferenceStrength = value.toInt()
-                    performVibrate(
+                    performVibration(
                         applicationContext,
                         hapticFeedbackPreferenceStrength
                     )
