@@ -95,19 +95,11 @@
         <item name="android:bottomRightRadius">8dp</item>
     </style>
 
-    <style name="CandidateItem"></style>
+    <style name="CandidateItem" />
 
-    <style name="CandidateItem.Button" parent="Widget.AppCompat.Button">
-        <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
-        <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
-        <item name="android:textColor">@color/colorButtonForegroundDark</item>
+    <style name="CandidateItem.Button" parent="KeyButton">
         <item name="android:textSize">24sp</item>
         <item name="android:fontFamily">serif</item>
         <item name="fontFamily">serif</item>
-        <item name="android:topLeftRadius">8dp</item>
-        <item name="android:bottomLeftRadius">8dp</item>
-        <item name="android:topRightRadius">8dp</item>
-        <item name="android:bottomRightRadius">8dp</item>
-        <item name="android:background">@color/colorButtonBackgroundDark</item>
     </style>
 </resources>
