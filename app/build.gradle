@@ -102,17 +102,12 @@ android {
 }
 
 dependencies {
-    def androidx_appcompat_version = '1.6.1'
-    def androidx_emoji2_version = '1.4.0'
-    def lifecycle_version = '2.6.1'
-    def kotlin_version = '1.9.10'
-
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
     implementation "androidx.appcompat:appcompat-resources:$androidx_appcompat_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.preference:preference-ktx:1.2.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'com.github.google:flexbox-layout:2.0.1'
