@@ -24,7 +24,8 @@
     android:id="@+id/keyboard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:theme="@style/KeyboardTheme">
+    android:theme="@style/KeyboardTheme"
+    app:layout_constraintHorizontal_weight="1">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -454,6 +455,8 @@
             android:scaleType="fitCenter"
             android:theme="@style/KeyImageButton.SpecialKeyImageButton"
             app:keyTypeEnum="KEYTYPE_CONTROL"
+            app:layout_constraintEnd_toStartOf="@+id/keyImageButtonSymbol"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/keyImageButtonZ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_mode_switch_eng"
@@ -468,6 +471,8 @@
             android:theme="@style/KeyImageButton.SpecialKeyImageButton"
             app:keyCodeString="KEYCODE_PICTSYMBOLS"
             app:keyTypeEnum="KEYTYPE_CONTROL"
+            app:layout_constraintEnd_toStartOf="@+id/keyImageButtonImeSwitch"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonModeSwitch"
             app:layout_constraintTop_toTopOf="@+id/keyImageButtonModeSwitch"
             app:srcCompat="@drawable/ic_baseline_format_quote_24"
@@ -482,6 +487,8 @@
             android:src="@drawable/ic_baseline_language_24"
             android:theme="@style/KeyImageButton.SpecialKeyImageButton"
             app:keyTypeEnum="KEYTYPE_FUNCTION"
+            app:layout_constraintEnd_toStartOf="@+id/keyImageButtonSpace"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonSymbol"
             app:layout_constraintTop_toTopOf="@+id/keyImageButtonModeSwitch"
             tools:layout_conversion_absoluteHeight="52dp"
@@ -495,6 +502,7 @@
             app:keyCodeString="KEYCODE_SPACE"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonBackspace"
+            app:layout_constraintHorizontal_weight="3"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonImeSwitch"
             app:layout_constraintTop_toTopOf="@+id/keyImageButtonModeSwitch"
             app:srcCompat="@drawable/ic_baseline_space_bar_24"
@@ -510,6 +518,8 @@
             app:keyCodeString="KEYCODE_DEL"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonEnter"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/keyImageButtonSpace"
             app:layout_constraintTop_toTopOf="@+id/keyImageButtonModeSwitch"
             app:srcCompat="@drawable/ic_baseline_keyboard_backspace_24"
             tools:layout_conversion_absoluteHeight="52dp"
@@ -525,6 +535,8 @@
             app:keyCodeString="KEYCODE_ENTER"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1.5"
+            app:layout_constraintStart_toEndOf="@+id/keyImageButtonBackspace"
             app:layout_constraintTop_toTopOf="@+id/keyImageButtonModeSwitch"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="60dp" />
