@@ -206,7 +206,7 @@
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonF"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonS"
-            app:layout_constraintTop_toTopOf="@+id/keyImageButtonS"
+            app:layout_constraintTop_toTopOf="@+id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_d"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
@@ -221,7 +221,7 @@
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonG"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonD"
-            app:layout_constraintTop_toTopOf="@+id/keyImageButtonS"
+            app:layout_constraintTop_toTopOf="@+id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_f"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
@@ -236,7 +236,7 @@
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonH"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonF"
-            app:layout_constraintTop_toTopOf="@+id/keyImageButtonS"
+            app:layout_constraintTop_toTopOf="@+id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_g_e"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
@@ -251,7 +251,7 @@
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonJ"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonG"
-            app:layout_constraintTop_toTopOf="@+id/keyImageButtonS"
+            app:layout_constraintTop_toTopOf="@+id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_h_o"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
@@ -266,7 +266,7 @@
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonK"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonH"
-            app:layout_constraintTop_toTopOf="@+id/keyImageButtonS"
+            app:layout_constraintTop_toTopOf="@+id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_j_zhi"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="35dp" />
@@ -281,7 +281,7 @@
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonL"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonJ"
-            app:layout_constraintTop_toTopOf="@+id/keyImageButtonS"
+            app:layout_constraintTop_toTopOf="@+id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_k_ang"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="35dp" />
@@ -296,7 +296,7 @@
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonK"
-            app:layout_constraintTop_toTopOf="@+id/keyImageButtonS"
+            app:layout_constraintTop_toTopOf="@+id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_hsu_l_eng_er"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="35dp" />
