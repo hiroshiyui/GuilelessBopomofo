@@ -41,8 +41,9 @@
             app:keySymbolString="1"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButton2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_b" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
@@ -55,8 +56,9 @@
             app:keySymbolString="2"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButton3"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButton1"
-            app:layout_constraintTop_toTopOf="@+id/keyImageButton1"
+            app:layout_constraintTop_toTopOf="@id/keyImageButton1"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_d" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
@@ -69,6 +71,7 @@
             app:keySymbolString="3"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButton4"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButton2"
             app:layout_constraintTop_toTopOf="@id/keyImageButton1"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_tone_3"
@@ -84,6 +87,7 @@
             app:keySymbolString="4"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButton5"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButton3"
             app:layout_constraintTop_toTopOf="@id/keyImageButton1"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_tone_4"
@@ -99,6 +103,7 @@
             app:keySymbolString="5"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButton6"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButton4"
             app:layout_constraintTop_toTopOf="@id/keyImageButton1"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_zhi"
@@ -114,6 +119,7 @@
             app:keySymbolString="6"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButton7"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButton5"
             app:layout_constraintTop_toTopOf="@id/keyImageButton1"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_tone_2"
@@ -129,6 +135,7 @@
             app:keySymbolString="7"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButton8"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButton6"
             app:layout_constraintTop_toTopOf="@id/keyImageButton1"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_tone_light"
@@ -143,7 +150,8 @@
             app:keyShiftSymbolString="*"
             app:keySymbolString="8"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:layout_constraintEnd_toStartOf="@+id/keyImageButton0"
+            app:layout_constraintEnd_toStartOf="@+id/keyImageButton9"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButton7"
             app:layout_constraintTop_toTopOf="@id/keyImageButton1"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_a"
@@ -158,7 +166,8 @@
             app:keyShiftSymbolString="("
             app:keySymbolString="9"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/keyImageButton0"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButton8"
             app:layout_constraintTop_toTopOf="@id/keyImageButton1"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ai"
@@ -174,7 +183,8 @@
             app:keySymbolString="0"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/keyImageButton8"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/keyImageButton9"
             app:layout_constraintTop_toTopOf="@id/keyImageButton1"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_an"
             tools:layout_constraintTop_toTopOf="@id/keyImageButton1" />
@@ -188,6 +198,8 @@
             app:keySymbolString="q"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonW"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/keyImageButton1"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_p" />
@@ -201,6 +213,7 @@
             app:keySymbolString="w"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonE"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonQ"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonQ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_t" />
@@ -214,6 +227,7 @@
             app:keySymbolString="e"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonR"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonW"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonQ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_g" />
@@ -227,6 +241,7 @@
             app:keySymbolString="r"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonT"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonE"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonQ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_j" />
@@ -240,6 +255,7 @@
             app:keySymbolString="t"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonY"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonR"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonQ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_chi" />
@@ -253,6 +269,7 @@
             app:keySymbolString="y"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonU"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonT"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonQ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_zi" />
@@ -266,6 +283,7 @@
             app:keySymbolString="u"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonI"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonY"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonQ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_yi" />
@@ -278,7 +296,8 @@
             app:keyCodeString="KEYCODE_I"
             app:keySymbolString="i"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:layout_constraintEnd_toStartOf="@+id/keyImageButtonP"
+            app:layout_constraintEnd_toStartOf="@+id/keyImageButtonO"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonU"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonQ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_o" />
@@ -291,7 +310,8 @@
             app:keyCodeString="KEYCODE_O"
             app:keySymbolString="o"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/keyImageButtonP"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonI"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonQ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ei" />
@@ -305,7 +325,8 @@
             app:keySymbolString="p"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/keyImageButtonI"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/keyImageButtonO"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonQ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_en" />
 
@@ -318,6 +339,8 @@
             app:keySymbolString="a"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonS"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/keyImageButtonQ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_m" />
@@ -331,6 +354,7 @@
             app:keySymbolString="s"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonD"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonA"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_n" />
@@ -344,6 +368,7 @@
             app:keySymbolString="d"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonF"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonS"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_k" />
@@ -357,6 +382,7 @@
             app:keySymbolString="f"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonG"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonD"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_q" />
@@ -370,6 +396,7 @@
             app:keySymbolString="g"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonH"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonF"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_shi" />
@@ -383,6 +410,7 @@
             app:keySymbolString="h"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonJ"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonG"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ci" />
@@ -396,6 +424,7 @@
             app:keySymbolString="j"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonK"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonH"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_wu" />
@@ -408,7 +437,8 @@
             app:keyCodeString="KEYCODE_K"
             app:keySymbolString="k"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:layout_constraintEnd_toStartOf="@+id/keyImageButtonSemicolon"
+            app:layout_constraintEnd_toStartOf="@+id/keyImageButtonL"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonJ"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_e" />
@@ -421,7 +451,8 @@
             app:keyCodeString="KEYCODE_L"
             app:keySymbolString="l"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/keyImageButtonSemicolon"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonK"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ao" />
@@ -435,7 +466,8 @@
             app:keySymbolString=";"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/keyImageButtonK"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/keyImageButtonL"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ang" />
 
@@ -448,6 +480,8 @@
             app:keySymbolString="z"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonX"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/keyImageButtonA"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_f" />
@@ -461,6 +495,7 @@
             app:keySymbolString="x"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonC"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonZ"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_l" />
@@ -474,6 +509,7 @@
             app:keySymbolString="c"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonV"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonX"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_h" />
@@ -487,6 +523,7 @@
             app:keySymbolString="v"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonB"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonC"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_x" />
@@ -500,6 +537,7 @@
             app:keySymbolString="b"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonN"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonV"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ri" />
@@ -513,6 +551,7 @@
             app:keySymbolString="n"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonM"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonB"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_si" />
@@ -526,6 +565,7 @@
             app:keySymbolString="m"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonComma"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonN"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_yu" />
@@ -539,7 +579,8 @@
             app:keyShiftSymbolString="&lt;"
             app:keySymbolString=","
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:layout_constraintEnd_toStartOf="@+id/keyImageButtonSlash"
+            app:layout_constraintEnd_toStartOf="@+id/keyImageButtonPeriod"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonM"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ie" />
@@ -553,7 +594,8 @@
             app:keyShiftSymbolString="&gt;"
             app:keySymbolString="."
             app:keyTypeEnum="KEYTYPE_CHARACTER"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/keyImageButtonSlash"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonComma"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_ou" />
@@ -567,7 +609,8 @@
             app:keySymbolString="/"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/keyImageButtonComma"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/keyImageButtonPeriod"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_eng" />
 
@@ -578,6 +621,8 @@
             android:theme="@style/KeyImageButton.SpecialKeyImageButton"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonSymbol"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/keyImageButtonZ"
@@ -591,6 +636,7 @@
             app:keyCodeString="KEYCODE_PICTSYMBOLS"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonImeSwitch"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonModeSwitch"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonModeSwitch"
@@ -604,6 +650,7 @@
             android:theme="@style/KeyImageButton.SpecialKeyImageButton"
             app:keyTypeEnum="KEYTYPE_FUNCTION"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonSpace"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonSymbol"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonModeSwitch" />
@@ -616,7 +663,8 @@
             app:keyCodeString="KEYCODE_SPACE"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonMinus"
-            app:layout_constraintHorizontal_weight="3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonImeSwitch"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonModeSwitch"
             app:srcCompat="@drawable/ic_baseline_space_bar_24" />
@@ -630,6 +678,7 @@
             app:keySymbolString="-"
             app:keyTypeEnum="KEYTYPE_CHARACTER"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonPunc"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonSpace"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonModeSwitch"
@@ -644,6 +693,7 @@
             app:keySymbolString=","
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonBackspace"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonMinus"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonModeSwitch"
@@ -657,6 +707,7 @@
             app:keyCodeString="KEYCODE_DEL"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonEnter"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonPunc"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonModeSwitch"
@@ -671,7 +722,8 @@
             app:keyCodeString="KEYCODE_ENTER"
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1.5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonBackspace"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonModeSwitch" />
     </androidx.constraintlayout.widget.ConstraintLayout>
