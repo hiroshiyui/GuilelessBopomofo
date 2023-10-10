@@ -150,7 +150,7 @@
         <item name="android:background">@drawable/round_border</item>
         <item name="android:backgroundTint">@color/colorGuilelessBopomofoThemeBase3</item>
         <item name="android:backgroundTintMode">src_atop</item>
-        <item name="android:padding">8dp</item>
+        <item name="android:padding">4dp</item>
     </style>
 
     <style name="KeyButton.Popup.ImageView" parent="Theme.MaterialComponents">
