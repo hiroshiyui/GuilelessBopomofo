@@ -538,7 +538,7 @@
             app:keyTypeEnum="KEYTYPE_CONTROL"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintHorizontal_weight="1.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonBackspace"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonModeSwitch"
             tools:layout_conversion_absoluteHeight="52dp"
