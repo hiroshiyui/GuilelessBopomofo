@@ -68,11 +68,6 @@ interface Vibratable {
             }
         }
 
-        // do nothing if user set vibration strength to 0
-        if (strength == 0) {
-            return
-        }
-
         // reduces UI blocking by vibrator (if user be typing too fast)
         vibrator.cancel()
 
@@ -88,7 +83,13 @@ interface Vibratable {
         val sameHapticFeedbackToFuncButtons: Boolean =
             sharedPreferences.getBoolean("same_haptic_feedback_to_function_buttons", false)
         if (sameHapticFeedbackToFuncButtons) {
+            // might be 0
             strength = hapticFeedbackPreferenceStrength
+        }
+
+        // do nothing if user set vibration strength to 0
+        if (strength == 0) {
+            return
         }
 
         // perform vibration
