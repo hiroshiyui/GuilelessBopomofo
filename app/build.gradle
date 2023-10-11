@@ -70,7 +70,13 @@ android {
             }
         }
         workingDir("$rootDir/app/libs/libchewing")
-        commandLine('./build-android.sh')
+        commandLine('cmake', '.')
+        doLast {
+            exec {
+                workingDir("$rootDir/app/libs/libchewing")
+                commandLine('make')
+            }
+        }
     }
 
     def chewingDataFiles = ["dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat"]
