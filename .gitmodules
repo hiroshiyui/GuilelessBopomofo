@@ -1,4 +1,4 @@
 [submodule "app/libs/libchewing"]
 	path = app/libs/libchewing
-	url = git@github.com:hiroshiyui/libchewing.git
+	url = https://github.com/hiroshiyui/libchewing.git
 	branch = android
