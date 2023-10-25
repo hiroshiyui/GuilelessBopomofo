@@ -44,6 +44,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_guileless_bopomofo_keyboard_b" />
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
