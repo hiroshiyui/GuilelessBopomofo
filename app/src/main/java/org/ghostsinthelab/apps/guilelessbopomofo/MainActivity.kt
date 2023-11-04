@@ -97,7 +97,8 @@ class MainActivity : AppCompatActivity(), Vibratable {
                     radioButtonLayoutDaChen to "KB_DEFAULT",
                     radioButtonLayoutETen26 to "KB_ET26",
                     radioButtonLayoutHsu to "KB_HSU",
-                    radioButtonLayoutDvorakHsu to "KB_DVORAK_HSU"
+                    radioButtonLayoutDvorakHsu to "KB_DVORAK_HSU",
+                    radioButtonLayoutETen41 to "KB_ET"
                 )) {
                     button.setOnClickListener {
                         sharedPreferences.edit().putString("user_keyboard_layout", layout).apply()

@@ -36,6 +36,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenLayou
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDvorakLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26LayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26QwertyLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt41LayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuDvorakBothLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuDvorakLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
@@ -57,6 +58,7 @@ class KeyboardPanel(
     private lateinit var keyboardHsuQwertyLayoutBinding: KeyboardHsuQwertyLayoutBinding
     private lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
     private lateinit var keyboardEt26QwertyLayoutBinding: KeyboardEt26QwertyLayoutBinding
+    private lateinit var keyboardEt41LayoutBinding: KeyboardEt41LayoutBinding
     private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
     private lateinit var keyboardQwertyLayoutBinding: KeyboardQwertyLayoutBinding
     private lateinit var keyboardHsuDvorakLayoutBinding: KeyboardHsuDvorakLayoutBinding
@@ -222,6 +224,13 @@ class KeyboardPanel(
                     keyboardEt26LayoutBinding =
                         KeyboardEt26LayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardEt26LayoutBinding.root)
+                }
+                return
+            }
+
+            "KB_ET" -> {
+                keyboardEt41LayoutBinding = KeyboardEt41LayoutBinding.inflate(LayoutInflater.from(context)).also {
+                    this.addView(it.root)
                 }
                 return
             }

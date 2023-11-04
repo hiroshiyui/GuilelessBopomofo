@@ -139,6 +139,12 @@
             android:layout_height="wrap_content"
             android:text="@string/bopomofo_keyboard_layout_eten26" />
 
+        <RadioButton
+            android:id="@+id/radioButtonLayoutETen41"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bopomofo_keyboard_layout_eten41" />
+
     </RadioGroup>
 
     <com.google.android.material.materialswitch.MaterialSwitch
