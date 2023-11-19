@@ -603,8 +603,8 @@
 
         <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
             android:id="@+id/keyImageButtonB"
-            android:layout_width="67dp"
-            android:layout_height="51dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:theme="@style/KeyImageButton"
             app:keyCodeString="KEYCODE_B"
             app:keySymbolString="b"
