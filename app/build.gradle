@@ -118,8 +118,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'com.github.google:flexbox-layout:2.0.1'
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0'
     implementation "androidx.emoji2:emoji2:$androidx_emoji2_version"
     implementation "androidx.emoji2:emoji2-views:$androidx_emoji2_version"
     implementation "androidx.emoji2:emoji2-views-helper:$androidx_emoji2_version"
@@ -136,5 +136,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.5.1'
     androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.5.1'
     androidTestImplementation 'androidx.test:core:1.5.0'
-    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.3.0'
 }
