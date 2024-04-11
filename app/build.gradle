@@ -13,8 +13,8 @@ android {
         applicationId "org.ghostsinthelab.apps.guilelessbopomofo"
         minSdkVersion 23
         targetSdkVersion 34
-        versionCode 117
-        versionName "1.9.47"
+        versionCode 118
+        versionName "1.9.48"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
