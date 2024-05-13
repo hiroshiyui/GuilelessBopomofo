@@ -70,11 +70,11 @@ android {
             }
         }
         workingDir("$rootDir/app/libs/libchewing")
-        commandLine('cmake', '--preset', 'c99-release', '.')
+        commandLine('cmake', '--preset', 'c99-release', '-DBUILD_SHARED_LIBS=OFF', '.')
         doLast {
             exec {
                 workingDir("$rootDir/app/libs/libchewing/build")
-                commandLine('make')
+                commandLine('make', 'data', 'all_static_data')
             }
         }
     }
