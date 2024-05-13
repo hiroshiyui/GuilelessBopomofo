@@ -70,10 +70,10 @@ android {
             }
         }
         workingDir("$rootDir/app/libs/libchewing")
-        commandLine('cmake', '.')
+        commandLine('cmake', '--preset', 'c99-release', '.')
         doLast {
             exec {
-                workingDir("$rootDir/app/libs/libchewing")
+                workingDir("$rootDir/app/libs/libchewing/build")
                 commandLine('make')
             }
         }
@@ -83,7 +83,7 @@ android {
 
     task copyChewingDataFiles(type: Copy) {
         dependsOn 'prepareChewing'
-        from("$rootDir/app/libs/libchewing/data") {
+        from("$rootDir/app/libs/libchewing/build/data") {
             include(chewingDataFiles)
         }
         into("$rootDir/app/src/main/assets")

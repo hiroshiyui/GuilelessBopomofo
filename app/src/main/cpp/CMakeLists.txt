@@ -44,6 +44,7 @@ include_directories(
         ${libchewing_src_DIR}/src/
         ${libchewing_src_DIR}/src/porting_layer/include/
         ${libchewing_src_DIR}/src/porting_layer/include/sys/
+        ${libchewing_src_DIR}/build/include/
 )
 
 add_library(common STATIC
