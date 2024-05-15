@@ -108,20 +108,20 @@ dependencies {
     implementation "androidx.appcompat:appcompat-resources:$androidx_appcompat_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.preference:preference-ktx:1.2.1'
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'com.github.google:flexbox-layout:2.0.1'
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1'
     implementation "androidx.emoji2:emoji2:$androidx_emoji2_version"
     implementation "androidx.emoji2:emoji2-views:$androidx_emoji2_version"
     implementation "androidx.emoji2:emoji2-views-helper:$androidx_emoji2_version"
     implementation "androidx.emoji2:emoji2-bundled:$androidx_emoji2_version"
     implementation "org.greenrobot:eventbus:3.3.1"
     testImplementation 'junit:junit:4.13.2'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.13'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
