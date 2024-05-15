@@ -63,20 +63,20 @@ android {
         jvmTarget = '17'
     }
 
-    task prepareChewing(type: Exec) {
+    tasks.register('prepareChewing', Exec) {
         workingDir("$rootDir/app/libs/libchewing")
         commandLine('cmake', '--preset', 'c99-release', '-DBUILD_SHARED_LIBS=OFF', '.')
     }
 
     def chewingDataFiles = ["dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat"]
 
-    task buildChewingData(type: Exec) {
+    tasks.register('buildChewingData', Exec) {
         dependsOn 'prepareChewing'
         workingDir("$rootDir/app/libs/libchewing/build")
         commandLine('make', 'data', 'all_static_data')
     }
 
-    task copyChewingDataFiles(type: Copy) {
+    tasks.register('copyChewingDataFiles', Copy) {
         dependsOn 'buildChewingData'
         from("$rootDir/app/libs/libchewing/build/data") {
             include(chewingDataFiles)
@@ -86,13 +86,13 @@ android {
 
     preBuild.dependsOn('copyChewingDataFiles')
 
-    task cleanChewingDataFiles(type: Delete) {
+    tasks.register('cleanChewingDataFiles', Delete) {
         chewingDataFiles.each {
             file("$rootDir/app/src/main/assets/$it").delete()
         }
     }
 
-    task execMakeClean(type: Exec) {
+    tasks.register('execMakeClean', Exec) {
         onlyIf { file("$rootDir/app/libs/libchewing/Makefile").exists() }
         workingDir("$rootDir/app/libs/libchewing")
         commandLine('make', 'clean')
