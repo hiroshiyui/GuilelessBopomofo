@@ -64,25 +64,20 @@ android {
     }
 
     task prepareChewing(type: Exec) {
-        onlyIf {
-            files("$rootDir/app/libs/libchewing/data/dictionary.dat", "$rootDir/app/libs/libchewing/data/index_tree.dat").any { file ->
-                !file.exists()
-            }
-        }
         workingDir("$rootDir/app/libs/libchewing")
         commandLine('cmake', '--preset', 'c99-release', '-DBUILD_SHARED_LIBS=OFF', '.')
-        doLast {
-            exec {
-                workingDir("$rootDir/app/libs/libchewing/build")
-                commandLine('make', 'data', 'all_static_data')
-            }
-        }
     }
 
     def chewingDataFiles = ["dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat"]
 
-    task copyChewingDataFiles(type: Copy) {
+    task buildChewingData(type: Exec) {
         dependsOn 'prepareChewing'
+        workingDir("$rootDir/app/libs/libchewing/build")
+        commandLine('make', 'data', 'all_static_data')
+    }
+
+    task copyChewingDataFiles(type: Copy) {
+        dependsOn 'buildChewingData'
         from("$rootDir/app/libs/libchewing/build/data") {
             include(chewingDataFiles)
         }
