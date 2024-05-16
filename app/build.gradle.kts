@@ -12,7 +12,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion = "android-34"
+    compileSdk = 34
     buildToolsVersion = "34.0.0"
     namespace = "org.ghostsinthelab.apps.guilelessbopomofo"
 
@@ -32,6 +32,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        setProperty("archivesBaseName", "${applicationId}_v${versionName}")
     }
 
     buildFeatures {
@@ -51,8 +53,6 @@ android {
 
     externalNativeBuild {
         cmake {
-            path = file("src/main/cpp/CMakeLists.txt")
-            version = "3.22.1"
         }
     }
 
@@ -73,8 +73,10 @@ android {
         jvmTarget = "17"
     }
 
+    val chewingLibraryPath: String = "${rootDir}/libchewing-android-module/src/main/cpp/libs/libchewing"
+
     tasks.register<Exec>("prepareChewing") {
-        workingDir("$rootDir/app/libs/libchewing")
+        workingDir(chewingLibraryPath)
         commandLine("cmake", "--preset", "c99-release", "-DBUILD_SHARED_LIBS=OFF", ".")
     }
 
@@ -83,14 +85,14 @@ android {
 
     tasks.register<Exec>("buildChewingData") {
         dependsOn("prepareChewing")
-        workingDir("$rootDir/app/libs/libchewing/build")
+        workingDir("$chewingLibraryPath/build")
         commandLine("make", "data", "all_static_data")
     }
 
     tasks.register<Copy>("copyChewingDataFiles") {
         dependsOn("buildChewingData")
         for (chewingDataFile in chewingDataFiles) {
-            from("$rootDir/app/libs/libchewing/build/data/$chewingDataFile")
+            from("$chewingLibraryPath/build/data/$chewingDataFile")
             into("$rootDir/app/src/main/assets")
         }
     }
@@ -106,8 +108,8 @@ android {
     }
 
     tasks.register<Exec>("execMakeClean") {
-        onlyIf { file("$rootDir/app/libs/libchewing/build/Makefile").exists() }
-        workingDir("$rootDir/app/libs/libchewing/build")
+        onlyIf { file("$chewingLibraryPath/build/Makefile").exists() }
+        workingDir("$chewingLibraryPath/build")
         commandLine("make", "clean")
         isIgnoreExitValue = true
     }
@@ -134,6 +136,7 @@ dependencies {
     implementation("androidx.emoji2:emoji2-views-helper:$androidxEmoji2Version")
     implementation("androidx.emoji2:emoji2-bundled:$androidxEmoji2Version")
     implementation("org.greenrobot:eventbus:3.3.1")
+    implementation(project(":libchewing-android-module"))
     testImplementation("junit:junit:4.13.2")
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

@@ -23,7 +23,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
+import org.ghostsinthelab.apps.guilelessbopomofo.Chewing
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -52,7 +52,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
     companion object {
         fun performAction() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) { // not committed yet
-                ChewingBridge.commitPreeditBuf(ChewingBridge.context)
+                Chewing.commitPreeditBuf(Chewing.context)
                 EventBus.getDefault().post(Events.UpdateBuffers())
             } else {
                 EventBus.getDefault().post(Events.EnterKeyDownWhenBufferIsEmpty())

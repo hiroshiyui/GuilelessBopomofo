@@ -22,22 +22,22 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 class ChewingUtil {
     companion object {
         fun candWindowOpened(): Boolean {
-            if (ChewingBridge.candTotalChoice() > 0) {
+            if (Chewing.candTotalChoice() > 0) {
                 return true
             }
             return false
         }
 
         fun candWindowClosed(): Boolean {
-            if (ChewingBridge.candTotalChoice() > 0) {
+            if (Chewing.candTotalChoice() > 0) {
                 return false
             }
             return true
         }
 
         fun anyPreeditBufferIsNotEmpty(): Boolean {
-            if (ChewingBridge.bufferStringStatic()
-                    .isNotEmpty() || ChewingBridge.bopomofoStringStatic().isNotEmpty()
+            if (Chewing.bufferStringStatic()
+                    .isNotEmpty() || Chewing.bopomofoStringStatic().isNotEmpty()
             ) {
                 return true
             }
@@ -45,28 +45,28 @@ class ChewingUtil {
         }
 
         fun openSymbolCandidates() {
-            ChewingBridge.candClose()
-            ChewingBridge.handleDefault('`')
-            ChewingBridge.candOpen()
+            Chewing.candClose()
+            Chewing.handleDefault('`')
+            Chewing.candOpen()
         }
 
         fun openPuncCandidates() {
-            ChewingBridge.candClose()
-            ChewingBridge.handleDefault('`')
+            Chewing.candClose()
+            Chewing.handleDefault('`')
             // 「常用符號」
             // 選字鍵不能保證一定是 0-9，用 candChooseByIndex() 相對妥當
-            ChewingBridge.candChooseByIndex(2)
-            ChewingBridge.candOpen()
+            Chewing.candChooseByIndex(2)
+            Chewing.candOpen()
         }
 
         fun getCandidatesByPage(page: Int = 0): List<Candidate> {
-            val fromOffset = page * ChewingBridge.candChoicePerPage()
-            val toOffset = fromOffset + ChewingBridge.candChoicePerPage() - 1
+            val fromOffset = page * Chewing.candChoicePerPage()
+            val toOffset = fromOffset + Chewing.candChoicePerPage() - 1
             val candidatesInThisPage: MutableList<Candidate> = mutableListOf()
-            val selKeys = ChewingBridge.getSelKey()
+            val selKeys = Chewing.getSelKey()
 
             for (i in fromOffset..toOffset) {
-                if (ChewingBridge.candStringByIndexStatic(i).isNotBlank()) {
+                if (Chewing.candStringByIndexStatic(i).isNotBlank()) {
                     val candidate = getCandidate(index = i)
                     candidatesInThisPage.add(candidate)
                 }
@@ -82,30 +82,30 @@ class ChewingUtil {
 
         private fun getCandidate(index: Int): Candidate {
             val candidate = Candidate(index)
-            candidate.candidateString = ChewingBridge.candStringByIndexStatic(index)
+            candidate.candidateString = Chewing.candStringByIndexStatic(index)
 
             return candidate
         }
 
         fun moveToPreEditBufferOffset(offset: Int) {
             // close if any been opened candidate window first
-            ChewingBridge.candClose()
+            Chewing.candClose()
             // move to first character
-            ChewingBridge.handleHome()
+            Chewing.handleHome()
             // move to clicked character
-            repeat(offset) { ChewingBridge.handleRight() }
+            repeat(offset) { Chewing.handleRight() }
             // open candidates window
-            ChewingBridge.candOpen()
+            Chewing.candOpen()
         }
 
         // simulates [Shift] + [,]
         fun handleShiftComma() {
-            if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
-                ChewingBridge.setEasySymbolInput(1)
-                ChewingBridge.handleDefault(',')
-                ChewingBridge.setEasySymbolInput(0)
+            if (Chewing.getChiEngMode() == CHINESE_MODE) {
+                Chewing.setEasySymbolInput(1)
+                Chewing.handleDefault(',')
+                Chewing.setEasySymbolInput(0)
             } else {
-                ChewingBridge.handleDefault(',')
+                Chewing.handleDefault(',')
             }
         }
 

@@ -19,7 +19,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
+import org.ghostsinthelab.apps.guilelessbopomofo.Chewing
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
@@ -28,7 +28,7 @@ class RightKey {
     companion object {
         // by now Right key is just been implemented as physical form only.
         fun performAction() {
-            ChewingBridge.handleRight()
+            Chewing.handleRight()
             EventBus.getDefault().post(Events.DirectionKeyDown(DirectionKey.RIGHT))
         }
     }

@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <string>
-#include <chewing.h>
 #include <android/log.h>
+#include "libs/libchewing/include/chewing.h"
 
 #define LOGTAG "ChewingNativeLib"
 /*
@@ -10,7 +10,7 @@
 
 /* chewing_new2() */
 extern "C" JNIEXPORT jlong JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_chewingNew(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_chewingNew(
         JNIEnv *env,
         jobject,
         jstring data_path) {
@@ -49,7 +49,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_chewingNew(
 
 /* chewing_delete() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_delete(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_delete(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -60,7 +60,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_delete(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setChiEngMode(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setChiEngMode(
         JNIEnv *env,
         jobject,
         jint mode,
@@ -71,7 +71,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setChiEngMode(
 
 /* chewing_get_ChiEngMode() */
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getChiEngMode(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getChiEngMode(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -83,7 +83,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getChiEngMode(
 
 /* chewing_set_selKey() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setSelKey(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setSelKey(
         JNIEnv *env,
         jobject,
         jintArray selkeys,
@@ -100,7 +100,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setSelKey(
 
 /* chewing_get_selKey() */
 extern "C" JNIEXPORT jintArray JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getSelKey(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getSelKey(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -123,7 +123,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getSelKey(
 
 /* chewing_free() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_free(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_free(
         JNIEnv *env,
         jobject,
         jlong res_ptr) {
@@ -135,7 +135,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_free(
 
 /* chewing_set_maxChiSymbolLen() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setMaxChiSymbolLen(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setMaxChiSymbolLen(
         JNIEnv *env,
         jobject,
         jint len,
@@ -148,7 +148,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setMaxChiSymbolLen(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getMaxChiSymbolLen(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getMaxChiSymbolLen(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -160,7 +160,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getMaxChiSymbolLen(
 
 /* chewing_set_candPerPage() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setCandPerPage(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setCandPerPage(
         JNIEnv *env,
         jobject,
         jint candidates,
@@ -173,7 +173,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setCandPerPage(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getCandPerPage(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getCandPerPage(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -185,7 +185,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getCandPerPage(
 
 /* chewing_set_phraseChoiceRearward() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setPhraseChoiceRearward(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setPhraseChoiceRearward(
         JNIEnv *env,
         jobject,
         jboolean boolean,
@@ -198,7 +198,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setPhraseChoiceRear
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getPhraseChoiceRearward(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getPhraseChoiceRearward(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -210,7 +210,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getPhraseChoiceRear
 
 /* chewing_handle_Default() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleDefault(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleDefault(
         JNIEnv *env,
         jobject,
         jchar key,
@@ -222,7 +222,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleDefault(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleBackspace(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleBackspace(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -235,7 +235,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleBackspace(
 
 /* chewing_handle_Enter() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleEnter(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleEnter(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -247,7 +247,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleEnter(
 
 /* chewing_handle_Space() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleSpace(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleSpace(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -259,7 +259,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleSpace(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleHome(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleHome(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -269,7 +269,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleHome(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleEnd(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleEnd(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -280,7 +280,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleEnd(
 
 /* chewing_handle_Left() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleLeft(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleLeft(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -292,7 +292,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleLeft(
 
 /* chewing_handle_Right() */
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleRight(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleRight(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -304,7 +304,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleRight(
 
 /* chewing_commit_String() */
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_commitString(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_commitString(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -318,7 +318,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_commitString(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_commitStringStatic(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_commitStringStatic(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -330,7 +330,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_commitStringStatic(
 
 /* chewing_commit_preedit_buf() */
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_commitPreeditBuf(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_commitPreeditBuf(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -344,7 +344,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_commitPreeditBuf(
 
 /* chewing_cand_open() */
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candOpen(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candOpen(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -356,7 +356,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candOpen(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candClose(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candClose(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -368,7 +368,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candClose(
 
 /* chewing_cand_TotalChoice() */
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candTotalChoice(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candTotalChoice(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -383,7 +383,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candTotalChoice(
 
 /* chewing_cand_choose_by_index() */
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candChooseByIndex(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candChooseByIndex(
         JNIEnv *env,
         jobject,
         jint index,
@@ -398,7 +398,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candChooseByIndex(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candListHasPrev(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candListHasPrev(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -412,7 +412,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candListHasPrev(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candListHasNext(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candListHasNext(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -426,7 +426,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candListHasNext(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candListPrev(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candListPrev(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -439,7 +439,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candListPrev(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candListNext(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candListNext(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -452,7 +452,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candListNext(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candListFirst(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candListFirst(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -466,7 +466,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candListFirst(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candListLast(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candListLast(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -479,7 +479,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candListLast(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setKBType(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setKBType(
         JNIEnv *env, jobject,
         jint type,
         jlong chewing_ctx_ptr) {
@@ -490,7 +490,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setKBType(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getKBType(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getKBType(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -500,7 +500,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getKBType(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getKBString(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getKBString(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -511,7 +511,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getKBString(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_convKBStr2Num(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_convKBStr2Num(
         JNIEnv *env,
         jobject,
         jstring keyboard_string) {
@@ -526,7 +526,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_convKBStr2Num(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_bufferString(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferString(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -540,7 +540,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_bufferString(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_bufferStringStatic(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferStringStatic(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -551,7 +551,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_bufferStringStatic(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_bopomofoStringStatic(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bopomofoStringStatic(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -562,7 +562,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_bopomofoStringStati
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candStringByIndexStatic(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candStringByIndexStatic(
         JNIEnv *env,
         jobject,
         jint index,
@@ -574,7 +574,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candStringByIndexSt
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_cleanPreeditBuf(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_cleanPreeditBuf(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -584,7 +584,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_cleanPreeditBuf(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_cleanBopomofoBuf(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_cleanBopomofoBuf(
         JNIEnv *env,
         jobject,
         jlong chewing_ctx_ptr) {
@@ -594,7 +594,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_cleanBopomofoBuf(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_bufferLen(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferLen(
         JNIEnv *env, jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -603,7 +603,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_bufferLen(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setEasySymbolInput(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setEasySymbolInput(
         JNIEnv *env,
         jobject,
         jint mode,
@@ -613,7 +613,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setEasySymbolInput(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setSpaceAsSelection(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setSpaceAsSelection(
         JNIEnv *env,
         jobject,
         jint mode,
@@ -623,14 +623,14 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_setSpaceAsSelection
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_commitCheck(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_commitCheck(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     return chewing_commit_Check(ctx);
 }
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_bufferCheck(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferCheck(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -638,7 +638,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_bufferCheck(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getSpaceAsSelection(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getSpaceAsSelection(
         JNIEnv *env,
         jobject thiz,
         jlong chewing_ctx_ptr) {
@@ -647,7 +647,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_getSpaceAsSelection
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candTotalPage(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candTotalPage(
         JNIEnv *env,
         jobject thiz,
         jlong chewing_ctx_ptr) {
@@ -656,7 +656,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candTotalPage(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candCurrentPage(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candCurrentPage(
         JNIEnv *env,
         jobject thiz,
         jlong chewing_ctx_ptr) {
@@ -665,7 +665,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candCurrentPage(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candChoicePerPage(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candChoicePerPage(
         JNIEnv *env,
         jobject thiz,
         jlong chewing_ctx_ptr) {
@@ -674,7 +674,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candChoicePerPage(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candEnumerate(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candEnumerate(
         JNIEnv *env,
         jobject thiz,
         jlong chewing_ctx_ptr) {
@@ -683,7 +683,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candEnumerate(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candHasNext(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candHasNext(
         JNIEnv *env,
         jobject thiz,
         jlong chewing_ctx_ptr) {
@@ -692,7 +692,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candHasNext(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candString(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candString(
         JNIEnv *env,
         jobject thiz,
         jlong chewing_ctx_ptr) {
@@ -704,7 +704,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candString(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candStringStatic(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candStringStatic(
         JNIEnv *env,
         jobject thiz,
         jlong chewing_ctx_ptr) {
@@ -715,7 +715,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_candStringStatic(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_cursorCurrent(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_cursorCurrent(
         JNIEnv *env,
         jobject thiz,
         jlong chewing_ctx_ptr) {
@@ -724,7 +724,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_cursorCurrent(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleEsc(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleEsc(
         JNIEnv *env, jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -734,7 +734,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handleEsc(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handlePageUp(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handlePageUp(
         JNIEnv *env, jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
@@ -744,7 +744,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handlePageUp(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_ChewingBridge_handlePageDown(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handlePageDown(
         JNIEnv *env,
         jobject thiz,
         jlong chewing_ctx_ptr) {

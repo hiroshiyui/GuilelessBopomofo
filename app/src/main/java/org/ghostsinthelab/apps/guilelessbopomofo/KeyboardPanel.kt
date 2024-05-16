@@ -91,14 +91,14 @@ class KeyboardPanel(
 
     fun toggleMainLayoutMode() {
         Log.d(logTag, "toggleMainLayoutMode()")
-        when (ChewingBridge.getChiEngMode()) {
+        when (Chewing.getChiEngMode()) {
             SYMBOL_MODE -> {
-                ChewingBridge.setChiEngMode(CHINESE_MODE)
+                Chewing.setChiEngMode(CHINESE_MODE)
                 switchToBopomofoLayout()
             }
 
             CHINESE_MODE -> {
-                ChewingBridge.setChiEngMode(SYMBOL_MODE)
+                Chewing.setChiEngMode(SYMBOL_MODE)
                 switchToAlphabeticalLayout()
             }
         }
@@ -126,10 +126,10 @@ class KeyboardPanel(
     private fun switchToMainLayout() {
         Log.d(logTag, "switchToMainLayout()")
 
-        ChewingBridge.candClose()
-        ChewingBridge.handleEnd()
+        Chewing.candClose()
+        Chewing.handleEnd()
 
-        if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
+        if (Chewing.getChiEngMode() == CHINESE_MODE) {
             switchToBopomofoLayout()
         } else {
             switchToAlphabeticalLayout()
@@ -141,7 +141,7 @@ class KeyboardPanel(
         this.removeAllViews()
         compactLayoutBinding =
             CompactLayoutBinding.inflate(LayoutInflater.from(context))
-        if (ChewingBridge.getChiEngMode() == CHINESE_MODE) {
+        if (Chewing.getChiEngMode() == CHINESE_MODE) {
             compactLayoutBinding.textViewCurrentModeValue.text =
                 resources.getString(R.string.mode_bopomofo)
         } else {
@@ -165,8 +165,8 @@ class KeyboardPanel(
             )
 
         userKeyboardLayoutPreference?.let {
-            val newKeyboardType = ChewingBridge.convKBStr2Num(it)
-            ChewingBridge.setKBType(newKeyboardType)
+            val newKeyboardType = Chewing.convKBStr2Num(it)
+            Chewing.setKBType(newKeyboardType)
         }
 
         // Toggle to compact layout when physical keyboard is enabled:
@@ -304,14 +304,14 @@ class KeyboardPanel(
     }
 
     fun candidateSelectionDone(index: Int) {
-        ChewingBridge.candChooseByIndex(index)
+        Chewing.candChooseByIndex(index)
         finishCandidateSelection()
     }
 
     private fun finishCandidateSelection() {
         if (ChewingUtil.candWindowClosed()) {
-            ChewingBridge.candClose()
-            ChewingBridge.handleEnd()
+            Chewing.candClose()
+            Chewing.handleEnd()
             EventBus.getDefault().post(Events.UpdateBuffers())
             currentCandidatesList = 0
             candidatesRecyclerView.adapter = null
@@ -327,11 +327,11 @@ class KeyboardPanel(
 
         // switch to the target candidates list
         repeat(currentCandidatesList) {
-            ChewingBridge.candListNext()
+            Chewing.candListNext()
         }
 
         // circulate candidates list cursor
-        if (ChewingBridge.candListHasNext()) {
+        if (Chewing.candListHasNext()) {
             currentCandidatesList += 1
         } else {
             currentCandidatesList = 0
@@ -353,7 +353,7 @@ class KeyboardPanel(
                 GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)
         } else {
             val layoutManager = FlexboxLayoutManager(context)
-            candidatesRecyclerView.adapter = PagedCandidatesAdapter(ChewingBridge.candCurrentPage())
+            candidatesRecyclerView.adapter = PagedCandidatesAdapter(Chewing.candCurrentPage())
             candidatesRecyclerView.layoutManager = layoutManager
         }
     }

@@ -30,14 +30,14 @@ import org.junit.runner.RunWith
 
 // NOTICE: You have to manually enable Guileless Bopomofo from system settings first.
 @RunWith(AndroidJUnit4::class)
-class ChewingBridgeInstrumentedTest {
+class ChewingInstrumentedTest {
     private lateinit var dataPath: String
 
     @Before
     fun setupChewingEngine() {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         dataPath = appContext.dataDir.absolutePath
-        ChewingBridge.connect(dataPath)
+        Chewing.connect(dataPath)
     }
 
     @Test
@@ -55,282 +55,282 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun validChiEngMode() {
-        ChewingBridge.setChiEngMode(SYMBOL_MODE)
-        assertEquals(ChewingBridge.getChiEngMode(), SYMBOL_MODE)
+        Chewing.setChiEngMode(SYMBOL_MODE)
+        assertEquals(Chewing.getChiEngMode(), SYMBOL_MODE)
 
-        ChewingBridge.handleDefault('t')
-        ChewingBridge.handleDefault('e')
-        ChewingBridge.handleDefault('a')
+        Chewing.handleDefault('t')
+        Chewing.handleDefault('e')
+        Chewing.handleDefault('a')
         // 如果一開始 pre-edit buffer 完全無資料，SYMBOL_MODE 會直接送出字符
-        assertEquals(ChewingBridge.bufferStringStatic(), "")
+        assertEquals(Chewing.bufferStringStatic(), "")
 
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        assertEquals(ChewingBridge.getChiEngMode(), CHINESE_MODE)
+        Chewing.setChiEngMode(CHINESE_MODE)
+        assertEquals(Chewing.getChiEngMode(), CHINESE_MODE)
 
         val keys = arrayOf('x', 'm', '4', 't', '8', '6')
         for (key in keys) {
-            ChewingBridge.handleDefault(key)
+            Chewing.handleDefault(key)
         }
 
-        ChewingBridge.setChiEngMode(SYMBOL_MODE)
-        assertEquals(ChewingBridge.getChiEngMode(), SYMBOL_MODE)
+        Chewing.setChiEngMode(SYMBOL_MODE)
+        assertEquals(Chewing.getChiEngMode(), SYMBOL_MODE)
 
-        ChewingBridge.handleSpace()
-        ChewingBridge.handleDefault('g')
-        ChewingBridge.handleDefault('r')
-        ChewingBridge.handleDefault('e')
-        ChewingBridge.handleDefault('e')
-        ChewingBridge.handleDefault('n')
-        ChewingBridge.handleSpace()
-        ChewingBridge.handleDefault('t')
-        ChewingBridge.handleDefault('e')
-        ChewingBridge.handleDefault('a')
-        assertEquals(ChewingBridge.bufferStringStatic(), "綠茶 green tea")
+        Chewing.handleSpace()
+        Chewing.handleDefault('g')
+        Chewing.handleDefault('r')
+        Chewing.handleDefault('e')
+        Chewing.handleDefault('e')
+        Chewing.handleDefault('n')
+        Chewing.handleSpace()
+        Chewing.handleDefault('t')
+        Chewing.handleDefault('e')
+        Chewing.handleDefault('a')
+        assertEquals(Chewing.bufferStringStatic(), "綠茶 green tea")
     }
 
     @Test
     fun validSelKeys() {
-        ChewingBridge.setCandPerPage(10)
+        Chewing.setCandPerPage(10)
         val selKeys: IntArray =
             charArrayOf('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';').map { it.code }
                 .toIntArray()
-        ChewingBridge.setSelKey(selKeys, 10)
-        val getSelKey = ChewingBridge.getSelKey()
+        Chewing.setSelKey(selKeys, 10)
+        val getSelKey = Chewing.getSelKey()
         assertNotEquals(getSelKey[0], '1'.code)
         assertEquals(getSelKey[0], 'a'.code)
     }
 
     @Test
     fun validOpenPuncCandidates() {
-        ChewingBridge.setCandPerPage(10)
+        Chewing.setCandPerPage(10)
         val selKeys: IntArray =
             charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
                 .toIntArray()
-        ChewingBridge.setSelKey(selKeys, 10)
+        Chewing.setSelKey(selKeys, 10)
         ChewingUtil.openPuncCandidates()
         assertEquals(ChewingUtil.candWindowOpened(), true)
-        val candidateString: String = ChewingBridge.candStringByIndexStatic(0)
+        val candidateString: String = Chewing.candStringByIndexStatic(0)
         assertEquals(candidateString, "，")
     }
 
     @Test
     fun validPagedCandidates() {
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        ChewingBridge.setCandPerPage(10)
+        Chewing.setChiEngMode(CHINESE_MODE)
+        Chewing.setCandPerPage(10)
         val selKeys: IntArray =
             charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
                 .toIntArray()
-        ChewingBridge.setSelKey(selKeys, 10)
-        ChewingBridge.setPhraseChoiceRearward(false)
+        Chewing.setSelKey(selKeys, 10)
+        Chewing.setPhraseChoiceRearward(false)
 
-        ChewingBridge.handleDefault('x')
-        ChewingBridge.handleDefault('u')
-        ChewingBridge.handleDefault('/')
-        ChewingBridge.handleDefault('6')
+        Chewing.handleDefault('x')
+        Chewing.handleDefault('u')
+        Chewing.handleDefault('/')
+        Chewing.handleDefault('6')
 
-        ChewingBridge.handleDefault('m')
-        ChewingBridge.handleDefault('/')
-        ChewingBridge.handleDefault('4')
+        Chewing.handleDefault('m')
+        Chewing.handleDefault('/')
+        Chewing.handleDefault('4')
 
-        ChewingBridge.handleDefault('r')
-        ChewingBridge.handleDefault('u')
-        ChewingBridge.handleDefault('p')
-        ChewingBridge.handleSpace()
+        Chewing.handleDefault('r')
+        Chewing.handleDefault('u')
+        Chewing.handleDefault('p')
+        Chewing.handleSpace()
 
-        ChewingBridge.handleHome()
-        assertEquals(ChewingBridge.cursorCurrent(), 0)
-        ChewingBridge.handleRight()
-        assertEquals(ChewingBridge.cursorCurrent(), 1)
-        ChewingBridge.handleRight()
-        assertEquals(ChewingBridge.cursorCurrent(), 2)
-        ChewingBridge.handleLeft()
-        assertEquals(ChewingBridge.cursorCurrent(), 1)
-        ChewingBridge.handleLeft()
-        assertEquals(ChewingBridge.cursorCurrent(), 0)
+        Chewing.handleHome()
+        assertEquals(Chewing.cursorCurrent(), 0)
+        Chewing.handleRight()
+        assertEquals(Chewing.cursorCurrent(), 1)
+        Chewing.handleRight()
+        assertEquals(Chewing.cursorCurrent(), 2)
+        Chewing.handleLeft()
+        assertEquals(Chewing.cursorCurrent(), 1)
+        Chewing.handleLeft()
+        assertEquals(Chewing.cursorCurrent(), 0)
 
-        ChewingBridge.candOpen()
+        Chewing.candOpen()
         assertEquals(ChewingUtil.candWindowOpened(), true)
-        assertEquals(ChewingBridge.candTotalPage(), 1)
-        assertEquals(ChewingBridge.candTotalChoice(), 1)
-        assertEquals(ChewingBridge.candCurrentPage(), 0)
-        assertEquals(ChewingBridge.candChoicePerPage(), 10)
-        assertEquals(ChewingBridge.candListHasNext(), true)
+        assertEquals(Chewing.candTotalPage(), 1)
+        assertEquals(Chewing.candTotalChoice(), 1)
+        assertEquals(Chewing.candCurrentPage(), 0)
+        assertEquals(Chewing.candChoicePerPage(), 10)
+        assertEquals(Chewing.candListHasNext(), true)
 
-        ChewingBridge.candEnumerate()
-        assertEquals(ChewingBridge.candStringStatic(), "零用金")
+        Chewing.candEnumerate()
+        assertEquals(Chewing.candStringStatic(), "零用金")
         // ChewingEngine.candHasNext() will point to the next item in candidates enumerator
-        assertEquals(ChewingBridge.candHasNext(), 0)
+        assertEquals(Chewing.candHasNext(), 0)
 
-        ChewingBridge.candListNext()
-
-        assertEquals(ChewingUtil.candWindowOpened(), true)
-        assertEquals(ChewingBridge.candTotalPage(), 1)
-        assertEquals(ChewingBridge.candTotalChoice(), 1)
-        assertEquals(ChewingBridge.candCurrentPage(), 0)
-        assertEquals(ChewingBridge.candChoicePerPage(), 10)
-        assertEquals(ChewingBridge.candListHasNext(), true)
-
-        ChewingBridge.candEnumerate()
-        assertEquals(ChewingBridge.candStringStatic(), "零用")
-        assertEquals(ChewingBridge.candHasNext(), 0)
-
-        ChewingBridge.candListNext()
+        Chewing.candListNext()
 
         assertEquals(ChewingUtil.candWindowOpened(), true)
-        assertEquals(ChewingBridge.candTotalPage(), 9)
-        assertEquals(ChewingBridge.candTotalChoice(), 88)
-        assertEquals(ChewingBridge.candCurrentPage(), 0)
-        assertEquals(ChewingBridge.candChoicePerPage(), 10)
-        assertEquals(ChewingBridge.candListHasNext(), false)
+        assertEquals(Chewing.candTotalPage(), 1)
+        assertEquals(Chewing.candTotalChoice(), 1)
+        assertEquals(Chewing.candCurrentPage(), 0)
+        assertEquals(Chewing.candChoicePerPage(), 10)
+        assertEquals(Chewing.candListHasNext(), true)
+
+        Chewing.candEnumerate()
+        assertEquals(Chewing.candStringStatic(), "零用")
+        assertEquals(Chewing.candHasNext(), 0)
+
+        Chewing.candListNext()
+
+        assertEquals(ChewingUtil.candWindowOpened(), true)
+        assertEquals(Chewing.candTotalPage(), 9)
+        assertEquals(Chewing.candTotalChoice(), 88)
+        assertEquals(Chewing.candCurrentPage(), 0)
+        assertEquals(Chewing.candChoicePerPage(), 10)
+        assertEquals(Chewing.candListHasNext(), false)
 
         // loop the candidates list
-        ChewingBridge.candEnumerate()
-        assertEquals(ChewingBridge.candStringStatic(), "零")
-        assertEquals(ChewingBridge.candHasNext(), 1)
-        assertEquals(ChewingBridge.candStringStatic(), "玲")
-        assertEquals(ChewingBridge.candHasNext(), 1)
-        assertEquals(ChewingBridge.candStringStatic(), "靈")
+        Chewing.candEnumerate()
+        assertEquals(Chewing.candStringStatic(), "零")
+        assertEquals(Chewing.candHasNext(), 1)
+        assertEquals(Chewing.candStringStatic(), "玲")
+        assertEquals(Chewing.candHasNext(), 1)
+        assertEquals(Chewing.candStringStatic(), "靈")
 
         // switch to next page
-        ChewingBridge.handlePageDown()
-        assertEquals(ChewingBridge.candTotalPage(), 9)
-        assertEquals(ChewingBridge.candCurrentPage(), 1)
-        ChewingBridge.candEnumerate()
-        assertEquals(ChewingBridge.candStringStatic(), "苓")
-        assertEquals(ChewingBridge.candHasNext(), 1)
-        assertEquals(ChewingBridge.candStringStatic(), "伶")
+        Chewing.handlePageDown()
+        assertEquals(Chewing.candTotalPage(), 9)
+        assertEquals(Chewing.candCurrentPage(), 1)
+        Chewing.candEnumerate()
+        assertEquals(Chewing.candStringStatic(), "苓")
+        assertEquals(Chewing.candHasNext(), 1)
+        assertEquals(Chewing.candStringStatic(), "伶")
 
-        ChewingBridge.handleEsc() // should have similar effect as ChewingEngine.candClose() does
+        Chewing.handleEsc() // should have similar effect as ChewingEngine.candClose() does
         assertEquals(ChewingUtil.candWindowClosed(), true)
     }
 
     @Test
     fun validPhysicalKeyboardCandidatesSelection() {
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        ChewingBridge.setCandPerPage(10)
+        Chewing.setChiEngMode(CHINESE_MODE)
+        Chewing.setCandPerPage(10)
         val selKeys: IntArray =
             charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
                 .toIntArray()
-        ChewingBridge.setSelKey(selKeys, 10)
-        ChewingBridge.setPhraseChoiceRearward(false)
-        ChewingBridge.setSpaceAsSelection(1)
+        Chewing.setSelKey(selKeys, 10)
+        Chewing.setPhraseChoiceRearward(false)
+        Chewing.setSpaceAsSelection(1)
 
-        ChewingBridge.handleDefault('x')
-        ChewingBridge.handleDefault('u')
-        ChewingBridge.handleDefault('/')
-        ChewingBridge.handleDefault('6')
-        ChewingBridge.handleSpace()
+        Chewing.handleDefault('x')
+        Chewing.handleDefault('u')
+        Chewing.handleDefault('/')
+        Chewing.handleDefault('6')
+        Chewing.handleSpace()
         assertEquals(ChewingUtil.candWindowOpened(), true)
-        assertEquals(ChewingBridge.candTotalPage(), 9)
-        assertEquals(ChewingBridge.candTotalChoice(), 88)
-        assertEquals(ChewingBridge.candCurrentPage(), 0)
-        assertEquals(ChewingBridge.candChoicePerPage(), 10)
-        assertEquals(ChewingBridge.candListHasNext(), false)
+        assertEquals(Chewing.candTotalPage(), 9)
+        assertEquals(Chewing.candTotalChoice(), 88)
+        assertEquals(Chewing.candCurrentPage(), 0)
+        assertEquals(Chewing.candChoicePerPage(), 10)
+        assertEquals(Chewing.candListHasNext(), false)
 
         // switch to next page
-        ChewingBridge.handlePageDown()
-        assertEquals(ChewingBridge.candCurrentPage(), 1)
+        Chewing.handlePageDown()
+        assertEquals(Chewing.candCurrentPage(), 1)
 
-        ChewingBridge.candEnumerate()
-        assertEquals(ChewingBridge.candStringStatic(), "苓")
-        assertEquals(ChewingBridge.candHasNext(), 1)
-        assertEquals(ChewingBridge.candStringStatic(), "伶")
+        Chewing.candEnumerate()
+        assertEquals(Chewing.candStringStatic(), "苓")
+        assertEquals(Chewing.candHasNext(), 1)
+        assertEquals(Chewing.candStringStatic(), "伶")
 
-        ChewingBridge.handleDefault('2')
-        assertEquals(ChewingBridge.bufferStringStatic(), "伶")
+        Chewing.handleDefault('2')
+        assertEquals(Chewing.bufferStringStatic(), "伶")
     }
 
     @Test
     fun validMaxChiSymbolLen() {
-        ChewingBridge.setMaxChiSymbolLen(10)
-        assertEquals(ChewingBridge.getMaxChiSymbolLen(), 10)
+        Chewing.setMaxChiSymbolLen(10)
+        assertEquals(Chewing.getMaxChiSymbolLen(), 10)
     }
 
     @Test
     fun validCandPerPage() {
-        ChewingBridge.setCandPerPage(9)
-        assertEquals(ChewingBridge.getCandPerPage(), 9)
+        Chewing.setCandPerPage(9)
+        assertEquals(Chewing.getCandPerPage(), 9)
     }
 
     @Test
     fun validPhraseChoiceRearward() {
-        ChewingBridge.setPhraseChoiceRearward(true)
-        assertTrue(ChewingBridge.getPhraseChoiceRearward())
-        ChewingBridge.setPhraseChoiceRearward(false)
-        assertFalse(ChewingBridge.getPhraseChoiceRearward())
+        Chewing.setPhraseChoiceRearward(true)
+        assertTrue(Chewing.getPhraseChoiceRearward())
+        Chewing.setPhraseChoiceRearward(false)
+        assertFalse(Chewing.getPhraseChoiceRearward())
     }
 
     @Test
     fun validCommitPhrase() {
         // ref: https://starforcefield.wordpress.com/2012/08/13/%E6%8E%A2%E7%B4%A2%E6%96%B0%E9%85%B7%E9%9F%B3%E8%BC%B8%E5%85%A5%E6%B3%95%EF%BC%9A%E4%BD%BF%E7%94%A8libchewing/
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        ChewingBridge.setMaxChiSymbolLen(10)
-        ChewingBridge.setCandPerPage(9)
-        ChewingBridge.setPhraseChoiceRearward(false)
+        Chewing.setChiEngMode(CHINESE_MODE)
+        Chewing.setMaxChiSymbolLen(10)
+        Chewing.setCandPerPage(9)
+        Chewing.setPhraseChoiceRearward(false)
         val keys = arrayOf('x', 'm', '4', 't', '8', '6')
         for (key in keys) {
-            ChewingBridge.handleDefault(key)
+            Chewing.handleDefault(key)
         }
-        ChewingBridge.handleLeft()
-        ChewingBridge.handleLeft()
-        ChewingBridge.candOpen()
-        ChewingBridge.candTotalChoice()
-        ChewingBridge.candChooseByIndex(0)
-        ChewingBridge.commitPreeditBuf()
-        var commitString: String = ChewingBridge.commitString()
+        Chewing.handleLeft()
+        Chewing.handleLeft()
+        Chewing.candOpen()
+        Chewing.candTotalChoice()
+        Chewing.candChooseByIndex(0)
+        Chewing.commitPreeditBuf()
+        var commitString: String = Chewing.commitString()
         assertEquals(commitString, "綠茶")
 
-        ChewingBridge.handleDefault('5')
-        ChewingBridge.handleSpace()
-        ChewingBridge.candOpen()
-        ChewingBridge.candTotalChoice()
-        ChewingBridge.candChooseByIndex(12)
-        ChewingBridge.commitPreeditBuf()
-        commitString = ChewingBridge.commitString()
+        Chewing.handleDefault('5')
+        Chewing.handleSpace()
+        Chewing.candOpen()
+        Chewing.candTotalChoice()
+        Chewing.candChooseByIndex(12)
+        Chewing.commitPreeditBuf()
+        commitString = Chewing.commitString()
         assertEquals(commitString, "蜘")
     }
 
     @Test
     fun testSetPhraseChoiceRearward() { // 後方選詞
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        ChewingBridge.setMaxChiSymbolLen(10)
-        ChewingBridge.setCandPerPage(9)
-        ChewingBridge.setPhraseChoiceRearward(true)
+        Chewing.setChiEngMode(CHINESE_MODE)
+        Chewing.setMaxChiSymbolLen(10)
+        Chewing.setCandPerPage(9)
+        Chewing.setPhraseChoiceRearward(true)
         val keys = arrayOf('x', 'm', '4', 't', '8', '6')
         for (key in keys) {
-            ChewingBridge.handleDefault(key)
+            Chewing.handleDefault(key)
         }
-        ChewingBridge.candOpen()
-        ChewingBridge.candTotalChoice()
-        ChewingBridge.candChooseByIndex(0)
-        ChewingBridge.commitPreeditBuf()
-        val commitString: String = ChewingBridge.commitString()
+        Chewing.candOpen()
+        Chewing.candTotalChoice()
+        Chewing.candChooseByIndex(0)
+        Chewing.commitPreeditBuf()
+        val commitString: String = Chewing.commitString()
         assertEquals(commitString, "綠茶")
     }
 
     @Test
     fun validGetCandidatesByPage() {
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        ChewingBridge.setCandPerPage(10)
+        Chewing.setChiEngMode(CHINESE_MODE)
+        Chewing.setCandPerPage(10)
         val selKeys: IntArray =
             charArrayOf('a', 's', 'd', 'f', 'g', 'q', 'w', 'e', 'r', 't').map { it.code }
                 .toIntArray()
-        ChewingBridge.setSelKey(selKeys, 10)
-        ChewingBridge.setPhraseChoiceRearward(false)
-        ChewingBridge.setSpaceAsSelection(1)
+        Chewing.setSelKey(selKeys, 10)
+        Chewing.setPhraseChoiceRearward(false)
+        Chewing.setSpaceAsSelection(1)
 
-        ChewingBridge.handleDefault('x')
-        ChewingBridge.handleDefault('u')
-        ChewingBridge.handleDefault('/')
-        ChewingBridge.handleDefault('6')
-        ChewingBridge.handleSpace()
+        Chewing.handleDefault('x')
+        Chewing.handleDefault('u')
+        Chewing.handleDefault('/')
+        Chewing.handleDefault('6')
+        Chewing.handleSpace()
 
         assertEquals(ChewingUtil.candWindowOpened(), true)
-        assertEquals(ChewingBridge.candTotalPage(), 9)
-        assertEquals(ChewingBridge.candTotalChoice(), 88)
-        assertEquals(ChewingBridge.candCurrentPage(), 0)
-        assertEquals(ChewingBridge.candChoicePerPage(), 10)
-        assertEquals(ChewingBridge.candListHasNext(), false)
+        assertEquals(Chewing.candTotalPage(), 9)
+        assertEquals(Chewing.candTotalChoice(), 88)
+        assertEquals(Chewing.candCurrentPage(), 0)
+        assertEquals(Chewing.candChoicePerPage(), 10)
+        assertEquals(Chewing.candListHasNext(), false)
 
         var candidates = ChewingUtil.getCandidatesByPage(0)
         assertEquals(candidates[0].index, 0)
@@ -362,20 +362,20 @@ class ChewingBridgeInstrumentedTest {
 
     @Test(expected = IndexOutOfBoundsException::class)
     fun validIndexOutOfBoundsExceptionGetCandidatesByPage() {
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        ChewingBridge.setCandPerPage(10)
+        Chewing.setChiEngMode(CHINESE_MODE)
+        Chewing.setCandPerPage(10)
         val selKeys: IntArray =
             charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
                 .toIntArray()
-        ChewingBridge.setSelKey(selKeys, 10)
-        ChewingBridge.setPhraseChoiceRearward(false)
-        ChewingBridge.setSpaceAsSelection(1)
+        Chewing.setSelKey(selKeys, 10)
+        Chewing.setPhraseChoiceRearward(false)
+        Chewing.setSpaceAsSelection(1)
 
-        ChewingBridge.handleDefault('x')
-        ChewingBridge.handleDefault('u')
-        ChewingBridge.handleDefault('/')
-        ChewingBridge.handleDefault('6')
-        ChewingBridge.handleSpace()
+        Chewing.handleDefault('x')
+        Chewing.handleDefault('u')
+        Chewing.handleDefault('/')
+        Chewing.handleDefault('6')
+        Chewing.handleSpace()
 
         // last page
         val candidates = ChewingUtil.getCandidatesByPage(8)
@@ -386,130 +386,130 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun validCommitPreeditBuf() { // 測試 commitPreeditBuf() 回傳值
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        ChewingBridge.setMaxChiSymbolLen(10)
-        ChewingBridge.setCandPerPage(9)
-        ChewingBridge.setPhraseChoiceRearward(true)
+        Chewing.setChiEngMode(CHINESE_MODE)
+        Chewing.setMaxChiSymbolLen(10)
+        Chewing.setCandPerPage(9)
+        Chewing.setPhraseChoiceRearward(true)
         val keys = arrayOf('x', 'm', '4', 't', '8', '6')
         for (key in keys) {
-            ChewingBridge.handleDefault(key)
+            Chewing.handleDefault(key)
         }
-        ChewingBridge.candOpen()
-        ChewingBridge.candTotalChoice()
-        ChewingBridge.candChooseByIndex(0)
-        assertEquals(ChewingBridge.commitPreeditBuf(), 0)
-        assertEquals(ChewingBridge.commitPreeditBuf(), -1)
+        Chewing.candOpen()
+        Chewing.candTotalChoice()
+        Chewing.candChooseByIndex(0)
+        assertEquals(Chewing.commitPreeditBuf(), 0)
+        assertEquals(Chewing.commitPreeditBuf(), -1)
     }
 
     @Test
     fun validMiddlePhraseCandidate() {
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        ChewingBridge.setMaxChiSymbolLen(10)
-        ChewingBridge.setCandPerPage(9)
-        ChewingBridge.setPhraseChoiceRearward(false)
+        Chewing.setChiEngMode(CHINESE_MODE)
+        Chewing.setMaxChiSymbolLen(10)
+        Chewing.setCandPerPage(9)
+        Chewing.setPhraseChoiceRearward(false)
         // 密封膠帶 蜜蜂 交代 交待 蜂膠
         // ㄇ一ˋ
-        ChewingBridge.handleDefault('a')
-        ChewingBridge.handleDefault('u')
-        ChewingBridge.handleDefault('4')
+        Chewing.handleDefault('a')
+        Chewing.handleDefault('u')
+        Chewing.handleDefault('4')
         // ㄈㄥ
-        ChewingBridge.handleDefault('z')
-        ChewingBridge.handleDefault('/')
-        ChewingBridge.handleSpace()
+        Chewing.handleDefault('z')
+        Chewing.handleDefault('/')
+        Chewing.handleSpace()
         // ㄐㄧㄠ
-        ChewingBridge.handleDefault('r')
-        ChewingBridge.handleDefault('u')
-        ChewingBridge.handleDefault('l')
-        ChewingBridge.handleSpace()
+        Chewing.handleDefault('r')
+        Chewing.handleDefault('u')
+        Chewing.handleDefault('l')
+        Chewing.handleSpace()
         // ㄉㄞˋ
-        ChewingBridge.handleDefault('2')
-        ChewingBridge.handleDefault('9')
-        ChewingBridge.handleDefault('4')
+        Chewing.handleDefault('2')
+        Chewing.handleDefault('9')
+        Chewing.handleDefault('4')
 
         // 蜂膠
-        ChewingBridge.handleLeft()
-        ChewingBridge.handleLeft()
-        ChewingBridge.handleLeft()
-        ChewingBridge.candOpen()
-        val candidateString: String = ChewingBridge.candStringByIndexStatic(0)
+        Chewing.handleLeft()
+        Chewing.handleLeft()
+        Chewing.handleLeft()
+        Chewing.candOpen()
+        val candidateString: String = Chewing.candStringByIndexStatic(0)
         assertEquals(candidateString, "蜂膠")
-        ChewingBridge.candChooseByIndex(0)
-        ChewingBridge.commitPreeditBuf()
-        val commitString: String = ChewingBridge.commitString()
+        Chewing.candChooseByIndex(0)
+        Chewing.commitPreeditBuf()
+        val commitString: String = Chewing.commitString()
         assertEquals(commitString, "密蜂膠代")
-        assertEquals(ChewingBridge.candClose(), 0)
+        assertEquals(Chewing.candClose(), 0)
     }
 
     @Test
     fun validCandListNext() {
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        ChewingBridge.setMaxChiSymbolLen(10)
-        ChewingBridge.setCandPerPage(10)
-        ChewingBridge.setPhraseChoiceRearward(false)
+        Chewing.setChiEngMode(CHINESE_MODE)
+        Chewing.setMaxChiSymbolLen(10)
+        Chewing.setCandPerPage(10)
+        Chewing.setPhraseChoiceRearward(false)
         // 零用金 零用 零
-        ChewingBridge.handleDefault('x')
-        ChewingBridge.handleDefault('u')
-        ChewingBridge.handleDefault('/')
-        ChewingBridge.handleDefault('6')
+        Chewing.handleDefault('x')
+        Chewing.handleDefault('u')
+        Chewing.handleDefault('/')
+        Chewing.handleDefault('6')
 
-        ChewingBridge.handleDefault('m')
-        ChewingBridge.handleDefault('/')
-        ChewingBridge.handleDefault('4')
+        Chewing.handleDefault('m')
+        Chewing.handleDefault('/')
+        Chewing.handleDefault('4')
 
-        ChewingBridge.handleDefault('r')
-        ChewingBridge.handleDefault('u')
-        ChewingBridge.handleDefault('p')
-        ChewingBridge.handleSpace()
+        Chewing.handleDefault('r')
+        Chewing.handleDefault('u')
+        Chewing.handleDefault('p')
+        Chewing.handleSpace()
 
-        ChewingBridge.handleHome()
-        ChewingBridge.candOpen()
+        Chewing.handleHome()
+        Chewing.candOpen()
 
-        assertEquals(ChewingBridge.candStringByIndexStatic(0), "零用金")
-        assertEquals(ChewingBridge.candListHasNext(), true)
-        assertEquals(ChewingBridge.candListNext(), 0)
-        assertEquals(ChewingBridge.candStringByIndexStatic(0), "零用")
-        assertEquals(ChewingBridge.candListHasNext(), true)
-        assertEquals(ChewingBridge.candListNext(), 0)
-        assertEquals(ChewingBridge.candStringByIndexStatic(0), "零")
-        assertEquals(ChewingBridge.candListNext(), -1)
-        assertEquals(ChewingBridge.candListHasNext(), false)
+        assertEquals(Chewing.candStringByIndexStatic(0), "零用金")
+        assertEquals(Chewing.candListHasNext(), true)
+        assertEquals(Chewing.candListNext(), 0)
+        assertEquals(Chewing.candStringByIndexStatic(0), "零用")
+        assertEquals(Chewing.candListHasNext(), true)
+        assertEquals(Chewing.candListNext(), 0)
+        assertEquals(Chewing.candStringByIndexStatic(0), "零")
+        assertEquals(Chewing.candListNext(), -1)
+        assertEquals(Chewing.candListHasNext(), false)
 
-        ChewingBridge.candListLast()
-        assertEquals(ChewingBridge.candStringByIndexStatic(0), "零")
+        Chewing.candListLast()
+        assertEquals(Chewing.candStringByIndexStatic(0), "零")
 
-        ChewingBridge.candListFirst()
-        assertEquals(ChewingBridge.candStringByIndexStatic(0), "零用金")
-        assertEquals(ChewingBridge.candClose(), 0)
+        Chewing.candListFirst()
+        assertEquals(Chewing.candStringByIndexStatic(0), "零用金")
+        assertEquals(Chewing.candClose(), 0)
     }
 
     @Test
     fun switchToHsuLayout() {
-        val newKeyboardType = ChewingBridge.convKBStr2Num("KB_HSU")
-        ChewingBridge.setKBType(newKeyboardType)
-        val currentKeyboardType = ChewingBridge.getKBType()
-        val currentKeyboardTypeString = ChewingBridge.getKBString()
+        val newKeyboardType = Chewing.convKBStr2Num("KB_HSU")
+        Chewing.setKBType(newKeyboardType)
+        val currentKeyboardType = Chewing.getKBType()
+        val currentKeyboardTypeString = Chewing.getKBString()
         assertEquals(currentKeyboardType, 1)
         assertEquals(currentKeyboardTypeString, "KB_HSU")
 
-        ChewingBridge.handleDefault('l')
-        ChewingBridge.handleDefault('l')
-        assertEquals(ChewingBridge.bopomofoStringStatic(), "ㄌㄥ")
-        ChewingBridge.handleDefault('f')
-        assertEquals(ChewingBridge.bufferString(), "冷")
-        ChewingBridge.handleDefault('d')
-        ChewingBridge.handleDefault('x')
-        ChewingBridge.handleDefault('l')
-        ChewingBridge.handleDefault('j')
-        ChewingBridge.commitPreeditBuf()
-        assertEquals(ChewingBridge.commitString(), "冷凍")
+        Chewing.handleDefault('l')
+        Chewing.handleDefault('l')
+        assertEquals(Chewing.bopomofoStringStatic(), "ㄌㄥ")
+        Chewing.handleDefault('f')
+        assertEquals(Chewing.bufferString(), "冷")
+        Chewing.handleDefault('d')
+        Chewing.handleDefault('x')
+        Chewing.handleDefault('l')
+        Chewing.handleDefault('j')
+        Chewing.commitPreeditBuf()
+        assertEquals(Chewing.commitString(), "冷凍")
     }
 
     @Test
     fun switchToDvorakHsuLayout() {
-        val newKeyboardType = ChewingBridge.convKBStr2Num("KB_DVORAK_HSU")
-        ChewingBridge.setKBType(newKeyboardType)
-        val currentKeyboardType = ChewingBridge.getKBType()
-        val currentKeyboardTypeString = ChewingBridge.getKBString()
+        val newKeyboardType = Chewing.convKBStr2Num("KB_DVORAK_HSU")
+        Chewing.setKBType(newKeyboardType)
+        val currentKeyboardType = Chewing.getKBType()
+        val currentKeyboardTypeString = Chewing.getKBString()
         assertEquals(currentKeyboardType, 7)
         assertEquals(currentKeyboardTypeString, "KB_DVORAK_HSU")
 
@@ -519,194 +519,194 @@ class ChewingBridgeInstrumentedTest {
         assertEquals(ChewingUtil.dvorakToQwertyKeyMapping('1'), '1')
         assertEquals(ChewingUtil.dvorakToQwertyKeyMapping('!'), '!')
 
-        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
-        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
-        assertEquals(ChewingBridge.bopomofoStringStatic(), "ㄌㄥ")
+        Chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
+        Chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
+        assertEquals(Chewing.bopomofoStringStatic(), "ㄌㄥ")
         // ˇ
-        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('f'))
-        assertEquals(ChewingBridge.bufferString(), "冷")
-        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('d'))
-        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('x'))
-        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
-        assertEquals(ChewingBridge.bopomofoStringStatic(), "ㄉㄨㄥ")
+        Chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('f'))
+        assertEquals(Chewing.bufferString(), "冷")
+        Chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('d'))
+        Chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('x'))
+        Chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
+        assertEquals(Chewing.bopomofoStringStatic(), "ㄉㄨㄥ")
         // ˋ
-        ChewingBridge.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('j'))
-        ChewingBridge.commitPreeditBuf()
-        assertEquals(ChewingBridge.commitString(), "冷凍")
+        Chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('j'))
+        Chewing.commitPreeditBuf()
+        assertEquals(Chewing.commitString(), "冷凍")
     }
 
     @Test
     fun validCandidateWindowOpenClose() {
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        ChewingBridge.setMaxChiSymbolLen(10)
-        ChewingBridge.setCandPerPage(10)
-        ChewingBridge.setPhraseChoiceRearward(false)
-        ChewingBridge.setSpaceAsSelection(1)
+        Chewing.setChiEngMode(CHINESE_MODE)
+        Chewing.setMaxChiSymbolLen(10)
+        Chewing.setCandPerPage(10)
+        Chewing.setPhraseChoiceRearward(false)
+        Chewing.setSpaceAsSelection(1)
 
         // 零
-        ChewingBridge.handleDefault('x')
-        ChewingBridge.handleDefault('u')
-        ChewingBridge.handleDefault('/')
-        ChewingBridge.handleDefault('6')
+        Chewing.handleDefault('x')
+        Chewing.handleDefault('u')
+        Chewing.handleDefault('/')
+        Chewing.handleDefault('6')
 
-        ChewingBridge.handleHome()
+        Chewing.handleHome()
         // candidate window opened here
-        ChewingBridge.handleSpace()
-        assertTrue(ChewingBridge.candTotalChoice() > 0)
+        Chewing.handleSpace()
+        assertTrue(Chewing.candTotalChoice() > 0)
         assertEquals(ChewingUtil.candWindowOpened(), true)
         // candidate window closed here (after I picker the first candidate)
-        ChewingBridge.handleDefault('1')
-        assertEquals(ChewingBridge.candTotalChoice(), 0)
+        Chewing.handleDefault('1')
+        assertEquals(Chewing.candTotalChoice(), 0)
         assertEquals(ChewingUtil.candWindowClosed(), true)
     }
 
     @Test
     fun switchToEten26Layout() {
-        val newKeyboardType = ChewingBridge.convKBStr2Num("KB_ET26")
-        ChewingBridge.setKBType(newKeyboardType)
-        val currentKeyboardType = ChewingBridge.getKBType()
-        val currentKeyboardTypeString = ChewingBridge.getKBString()
+        val newKeyboardType = Chewing.convKBStr2Num("KB_ET26")
+        Chewing.setKBType(newKeyboardType)
+        val currentKeyboardType = Chewing.getKBType()
+        val currentKeyboardTypeString = Chewing.getKBString()
         assertEquals(currentKeyboardType, 5)
         assertEquals(currentKeyboardTypeString, "KB_ET26")
 
-        ChewingBridge.handleDefault('l')
-        ChewingBridge.handleDefault('l')
-        assertEquals(ChewingBridge.bopomofoStringStatic(), "ㄌㄥ")
-        ChewingBridge.handleDefault('j')
-        assertEquals(ChewingBridge.bufferString(), "冷")
-        ChewingBridge.handleDefault('d')
-        ChewingBridge.handleDefault('x')
-        ChewingBridge.handleDefault('l')
-        ChewingBridge.handleDefault('k')
-        ChewingBridge.commitPreeditBuf()
-        assertEquals(ChewingBridge.commitString(), "冷凍")
+        Chewing.handleDefault('l')
+        Chewing.handleDefault('l')
+        assertEquals(Chewing.bopomofoStringStatic(), "ㄌㄥ")
+        Chewing.handleDefault('j')
+        assertEquals(Chewing.bufferString(), "冷")
+        Chewing.handleDefault('d')
+        Chewing.handleDefault('x')
+        Chewing.handleDefault('l')
+        Chewing.handleDefault('k')
+        Chewing.commitPreeditBuf()
+        assertEquals(Chewing.commitString(), "冷凍")
     }
 
     @Test
     fun switchToDaChenLayout() {
-        val newKeyboardType = ChewingBridge.convKBStr2Num("KB_DEFAULT")
-        ChewingBridge.setKBType(newKeyboardType)
-        val currentKeyboardType = ChewingBridge.getKBType()
-        val currentKeyboardTypeString = ChewingBridge.getKBString()
+        val newKeyboardType = Chewing.convKBStr2Num("KB_DEFAULT")
+        Chewing.setKBType(newKeyboardType)
+        val currentKeyboardType = Chewing.getKBType()
+        val currentKeyboardTypeString = Chewing.getKBString()
         assertEquals(currentKeyboardType, 0)
         assertEquals(currentKeyboardTypeString, "KB_DEFAULT")
 
-        ChewingBridge.handleDefault('x')
-        ChewingBridge.handleDefault('/')
-        assertEquals(ChewingBridge.bopomofoStringStatic(), "ㄌㄥ")
-        ChewingBridge.handleDefault('3')
-        assertEquals(ChewingBridge.bufferString(), "冷")
-        ChewingBridge.handleDefault('2')
-        ChewingBridge.handleDefault('j')
-        ChewingBridge.handleDefault('/')
-        ChewingBridge.handleDefault('4')
-        ChewingBridge.commitPreeditBuf()
-        assertEquals(ChewingBridge.commitString(), "冷凍")
+        Chewing.handleDefault('x')
+        Chewing.handleDefault('/')
+        assertEquals(Chewing.bopomofoStringStatic(), "ㄌㄥ")
+        Chewing.handleDefault('3')
+        assertEquals(Chewing.bufferString(), "冷")
+        Chewing.handleDefault('2')
+        Chewing.handleDefault('j')
+        Chewing.handleDefault('/')
+        Chewing.handleDefault('4')
+        Chewing.commitPreeditBuf()
+        assertEquals(Chewing.commitString(), "冷凍")
     }
 
     @Test
     fun switchToSymbolSelectionMode() {
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        ChewingBridge.setMaxChiSymbolLen(10)
-        ChewingBridge.setCandPerPage(10)
-        ChewingBridge.setPhraseChoiceRearward(false)
-        ChewingBridge.handleDefault('`')
-        ChewingBridge.candOpen()
-        assertEquals(ChewingBridge.candTotalChoice(), 22)
-        assertEquals(ChewingBridge.candStringByIndexStatic(0), "…")
-        assertEquals(ChewingBridge.candStringByIndexStatic(1), "※")
-        assertEquals(ChewingBridge.candStringByIndexStatic(2), "常用符號")
-        assertEquals(ChewingBridge.candStringByIndexStatic(10), "雙線框")
-        assertEquals(ChewingBridge.candStringByIndexStatic(12), "線段")
-        ChewingBridge.handleDefault('1')
-        ChewingBridge.commitPreeditBuf()
-        assertEquals(ChewingBridge.commitString(), "…")
+        Chewing.setChiEngMode(CHINESE_MODE)
+        Chewing.setMaxChiSymbolLen(10)
+        Chewing.setCandPerPage(10)
+        Chewing.setPhraseChoiceRearward(false)
+        Chewing.handleDefault('`')
+        Chewing.candOpen()
+        assertEquals(Chewing.candTotalChoice(), 22)
+        assertEquals(Chewing.candStringByIndexStatic(0), "…")
+        assertEquals(Chewing.candStringByIndexStatic(1), "※")
+        assertEquals(Chewing.candStringByIndexStatic(2), "常用符號")
+        assertEquals(Chewing.candStringByIndexStatic(10), "雙線框")
+        assertEquals(Chewing.candStringByIndexStatic(12), "線段")
+        Chewing.handleDefault('1')
+        Chewing.commitPreeditBuf()
+        assertEquals(Chewing.commitString(), "…")
 
         // 換頁到「雙線框」
         // keyboardless API 版
-        ChewingBridge.handleDefault('`')
-        ChewingBridge.candChooseByIndex(10)
-        assertEquals(ChewingBridge.candTotalChoice(), 29)
-        assertEquals(ChewingBridge.candStringByIndexStatic(0), "╔")
-        ChewingBridge.candChooseByIndex(0)
-        ChewingBridge.commitPreeditBuf()
-        assertEquals(ChewingBridge.commitString(), "╔")
+        Chewing.handleDefault('`')
+        Chewing.candChooseByIndex(10)
+        assertEquals(Chewing.candTotalChoice(), 29)
+        assertEquals(Chewing.candStringByIndexStatic(0), "╔")
+        Chewing.candChooseByIndex(0)
+        Chewing.commitPreeditBuf()
+        assertEquals(Chewing.commitString(), "╔")
 
         // 模擬鍵盤操作版
-        ChewingBridge.handleDefault('`')
-        ChewingBridge.handleSpace()
-        ChewingBridge.handleDefault('1')
-        assertEquals(ChewingBridge.candTotalChoice(), 29)
-        ChewingBridge.handleDefault('1')
-        ChewingBridge.commitPreeditBuf()
-        ChewingBridge.candClose()
-        assertEquals(ChewingBridge.commitString(), "╔")
+        Chewing.handleDefault('`')
+        Chewing.handleSpace()
+        Chewing.handleDefault('1')
+        assertEquals(Chewing.candTotalChoice(), 29)
+        Chewing.handleDefault('1')
+        Chewing.commitPreeditBuf()
+        Chewing.candClose()
+        assertEquals(Chewing.commitString(), "╔")
 
         val selKeys: IntArray =
             charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
                 .toIntArray()
-        ChewingBridge.setSelKey(selKeys, 10)
+        Chewing.setSelKey(selKeys, 10)
 
-        ChewingBridge.handleDefault('`')
-        ChewingBridge.handleDefault('3')
-        ChewingBridge.handleDefault('1')
-        ChewingBridge.commitPreeditBuf()
-        assertEquals(ChewingBridge.commitString(), "，")
+        Chewing.handleDefault('`')
+        Chewing.handleDefault('3')
+        Chewing.handleDefault('1')
+        Chewing.commitPreeditBuf()
+        assertEquals(Chewing.commitString(), "，")
 
-        ChewingBridge.setSpaceAsSelection(1)
-        ChewingBridge.handleDefault('1')
-        ChewingBridge.handleDefault('l')
-        ChewingBridge.handleDefault('3')
-        ChewingBridge.handleHome()
-        ChewingBridge.handleSpace()
-        ChewingBridge.handleDefault('3')
-        ChewingBridge.commitPreeditBuf()
-        assertEquals(ChewingBridge.commitString(), "飽")
+        Chewing.setSpaceAsSelection(1)
+        Chewing.handleDefault('1')
+        Chewing.handleDefault('l')
+        Chewing.handleDefault('3')
+        Chewing.handleHome()
+        Chewing.handleSpace()
+        Chewing.handleDefault('3')
+        Chewing.commitPreeditBuf()
+        assertEquals(Chewing.commitString(), "飽")
     }
 
     @Test
     fun testCommitCheck() {
-        ChewingBridge.setChiEngMode(CHINESE_MODE)
-        ChewingBridge.setMaxChiSymbolLen(10)
-        ChewingBridge.setCandPerPage(10)
-        ChewingBridge.setPhraseChoiceRearward(false)
-        val newKeyboardType = ChewingBridge.convKBStr2Num("KB_HSU")
-        ChewingBridge.setKBType(newKeyboardType)
+        Chewing.setChiEngMode(CHINESE_MODE)
+        Chewing.setMaxChiSymbolLen(10)
+        Chewing.setCandPerPage(10)
+        Chewing.setPhraseChoiceRearward(false)
+        val newKeyboardType = Chewing.convKBStr2Num("KB_HSU")
+        Chewing.setKBType(newKeyboardType)
 
-        ChewingBridge.handleDefault('l')
-        ChewingBridge.handleDefault('w')
-        ChewingBridge.handleDefault('f')
-        ChewingBridge.handleDefault('c')
-        ChewingBridge.handleDefault('x')
-        ChewingBridge.handleDefault('f')
+        Chewing.handleDefault('l')
+        Chewing.handleDefault('w')
+        Chewing.handleDefault('f')
+        Chewing.handleDefault('c')
+        Chewing.handleDefault('x')
+        Chewing.handleDefault('f')
 
         repeat(4) {
-            ChewingBridge.handleDefault('m')
-            ChewingBridge.handleDefault('w')
-            ChewingBridge.handleSpace()
-            ChewingBridge.handleDefault('m')
-            ChewingBridge.handleDefault('e')
-            ChewingBridge.handleSpace()
+            Chewing.handleDefault('m')
+            Chewing.handleDefault('w')
+            Chewing.handleSpace()
+            Chewing.handleDefault('m')
+            Chewing.handleDefault('e')
+            Chewing.handleSpace()
         }
 
-        ChewingBridge.handleDefault('m')
-        ChewingBridge.handleDefault('w')
-        ChewingBridge.handleSpace() // 此時應該觸發送出最前端詞「老鼠」
-        assertEquals(ChewingBridge.commitCheck(), 1)
+        Chewing.handleDefault('m')
+        Chewing.handleDefault('w')
+        Chewing.handleSpace() // 此時應該觸發送出最前端詞「老鼠」
+        assertEquals(Chewing.commitCheck(), 1)
 
-        ChewingBridge.handleDefault('m')
-        ChewingBridge.handleDefault('e')
-        ChewingBridge.handleSpace()
+        Chewing.handleDefault('m')
+        Chewing.handleDefault('e')
+        Chewing.handleSpace()
 
-        assertEquals(ChewingBridge.commitStringStatic(), "老鼠")
-        assertEquals(ChewingBridge.bufferStringStatic(), "貓咪貓咪貓咪貓咪貓咪")
-        assertEquals(ChewingBridge.commitCheck(), 0)
-        ChewingBridge.commitPreeditBuf()
-        assertEquals(ChewingBridge.commitCheck(), 1)
+        assertEquals(Chewing.commitStringStatic(), "老鼠")
+        assertEquals(Chewing.bufferStringStatic(), "貓咪貓咪貓咪貓咪貓咪")
+        assertEquals(Chewing.commitCheck(), 0)
+        Chewing.commitPreeditBuf()
+        assertEquals(Chewing.commitCheck(), 1)
     }
 
     @After
     fun deleteChewingEngine() {
-        ChewingBridge.delete()
+        Chewing.delete()
     }
 }

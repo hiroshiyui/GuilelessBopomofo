@@ -25,7 +25,7 @@ import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
+import org.ghostsinthelab.apps.guilelessbopomofo.Chewing
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -54,10 +54,10 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
     companion object {
         fun performAction() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
-                ChewingBridge.handleSpace()
+                Chewing.handleSpace()
                 EventBus.getDefault().post(Events.UpdateBuffers())
                 // 空白鍵是否為選字鍵？
-                if (ChewingBridge.getSpaceAsSelection() == 1 && ChewingBridge.candTotalChoice() > 0) {
+                if (Chewing.getSpaceAsSelection() == 1 && Chewing.candTotalChoice() > 0) {
                     EventBus.getDefault().post(Events.ListCandidatesForCurrentCursor())
                 }
             } else {
