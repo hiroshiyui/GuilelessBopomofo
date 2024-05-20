@@ -22,13 +22,13 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 const val SYMBOL_MODE: Int = 0
 const val CHINESE_MODE: Int = 1
 
-object Chewing {
+object ChewingBridge {
     // Chewing context pointer, represent its address as a Long
     var context: Long = 0
 
     init {
         try {
-            System.loadLibrary("chewing-aar")
+            System.loadLibrary("libchewing_android_module")
         } catch (exception: Throwable) {
             exception.printStackTrace()
             throw ChewingInitException

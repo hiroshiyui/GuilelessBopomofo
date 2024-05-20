@@ -73,53 +73,53 @@ android {
         jvmTarget = "17"
     }
 
-    val chewingLibraryPath: String = "${rootDir}/libchewing-android-module/src/main/cpp/libs/libchewing"
-
-    tasks.register<Exec>("prepareChewing") {
-        workingDir(chewingLibraryPath)
-        commandLine("cmake", "--preset", "c99-release", "-DBUILD_SHARED_LIBS=OFF", ".")
-    }
-
-    val chewingDataFiles =
-        listOf<String>("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
-
-    tasks.register<Exec>("buildChewingData") {
-        dependsOn("prepareChewing")
-        workingDir("$chewingLibraryPath/build")
-        commandLine("make", "data", "all_static_data")
-    }
-
-    tasks.register<Copy>("copyChewingDataFiles") {
-        dependsOn("buildChewingData")
-        for (chewingDataFile in chewingDataFiles) {
-            from("$chewingLibraryPath/build/data/$chewingDataFile")
-            into("$rootDir/app/src/main/assets")
-        }
-    }
-
-    tasks.preBuild {
-        dependsOn("copyChewingDataFiles")
-    }
-
-    tasks.register<Delete>("cleanChewingDataFiles") {
-        for (chewingDataFile in chewingDataFiles) {
-            file("$rootDir/app/src/main/assets/$chewingDataFile").delete()
-        }
-    }
-
-    tasks.register<Exec>("execMakeClean") {
-        onlyIf { file("$chewingLibraryPath/build/Makefile").exists() }
-        workingDir("$chewingLibraryPath/build")
-        commandLine("make", "clean")
-        isIgnoreExitValue = true
-    }
-
-    tasks.clean {
-        dependsOn("cleanChewingDataFiles", "execMakeClean")
-    }
+//    val chewingLibraryPath: String = "${rootDir}/libchewing-android-module/src/main/cpp/libs/libchewing"
+//
+//    tasks.register<Exec>("prepareChewing") {
+//        workingDir(chewingLibraryPath)
+//        commandLine("cmake", "--preset", "c99-release", "-DBUILD_SHARED_LIBS=OFF", ".")
+//    }
+//
+//    val chewingDataFiles =
+//        listOf<String>("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
+//
+//    tasks.register<Exec>("buildChewingData") {
+//        dependsOn("prepareChewing")
+//        workingDir("$chewingLibraryPath/build")
+//        commandLine("make", "data", "all_static_data")
+//    }
+//
+//    tasks.register<Copy>("copyChewingDataFiles") {
+//        dependsOn("buildChewingData")
+//        for (chewingDataFile in chewingDataFiles) {
+//            from("$chewingLibraryPath/build/data/$chewingDataFile")
+//            into("$rootDir/app/src/main/assets")
+//        }
+//    }
+//
+//    tasks.preBuild {
+//        dependsOn("copyChewingDataFiles")
+//    }
+//
+//    tasks.register<Delete>("cleanChewingDataFiles") {
+//        for (chewingDataFile in chewingDataFiles) {
+//            file("$rootDir/app/src/main/assets/$chewingDataFile").delete()
+//        }
+//    }
+//
+//    tasks.register<Exec>("execMakeClean") {
+//        onlyIf { file("$chewingLibraryPath/build/Makefile").exists() }
+//        workingDir("$chewingLibraryPath/build")
+//        commandLine("make", "clean")
+//        isIgnoreExitValue = true
+//    }
+//
+//    tasks.clean {
+//        dependsOn("cleanChewingDataFiles", "execMakeClean")
+//    }
 }
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
     implementation("androidx.appcompat:appcompat:$androidxAppcompatVersion")
     implementation("androidx.appcompat:appcompat-resources:$androidxAppcompatVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
