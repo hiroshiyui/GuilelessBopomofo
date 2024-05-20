@@ -28,7 +28,6 @@ object Chewing {
 
     init {
         try {
-            System.loadLibrary("chewing-aar")
         } catch (exception: Throwable) {
             exception.printStackTrace()
             throw ChewingInitException

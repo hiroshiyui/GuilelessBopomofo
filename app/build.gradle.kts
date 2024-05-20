@@ -136,7 +136,6 @@ dependencies {
     implementation("androidx.emoji2:emoji2-views-helper:$androidxEmoji2Version")
     implementation("androidx.emoji2:emoji2-bundled:$androidxEmoji2Version")
     implementation("org.greenrobot:eventbus:3.3.1")
-    implementation(project(":libchewing-android-module"))
     testImplementation("junit:junit:4.13.2")
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
