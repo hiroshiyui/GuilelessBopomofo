@@ -21,7 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.miyabi_hiroshi.app.libchewing_android_module.Chewing
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge.chewing
 import org.hamcrest.CoreMatchers
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -39,8 +39,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class chewingInstrumentedTest {
     private lateinit var dataPath: String
-    private val chewing: Chewing = Chewing()
-    
+
     @Before
     fun setupChewingEngine() {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext

@@ -29,7 +29,7 @@ import android.view.MotionEvent
 import androidx.core.text.toSpannable
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.setPadding
-import org.ghostsinthelab.apps.guilelessbopomofo.Chewing
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
@@ -61,13 +61,13 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                 // 如果使用者點選最後一個字的時候很邊邊角角，
                 // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來
                 if (offset >= this.text.length) {
-                    offset = Chewing.bufferLen() - 1
+                    offset = ChewingBridge.chewing.bufferLen() - 1
                 }
             }
             CursorMovedBy.PHYSICAL_KEYBOARD -> {
-                offset = Chewing.cursorCurrent()
-                if (offset >= Chewing.bufferLen()) {
-                    offset = Chewing.bufferLen() - 1
+                offset = ChewingBridge.chewing.cursorCurrent()
+                if (offset >= ChewingBridge.chewing.bufferLen()) {
+                    offset = ChewingBridge.chewing.bufferLen() - 1
                 }
             }
         }
@@ -85,7 +85,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
 
         // Avoids IndexOutOfBoundsException early, just skip the rendering:
-        if (offset + 1 > Chewing.bufferLen()) {
+        if (offset + 1 > ChewingBridge.chewing.bufferLen()) {
             Log.d(logTag, "Avoids IndexOutOfBoundsException early, just skip the rendering")
             return
         }
@@ -110,14 +110,14 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         // chewingEngine.setMaxChiSymbolLen() 到達閾值時，
         // 會把 pre-edit buffer 開頭送到 commit buffer，
         // 所以要先丟出來：
-        if (Chewing.commitCheck() == 1) {
+        if (ChewingBridge.chewing.commitCheck() == 1) {
             EventBus.getDefault().post(Events.CommitTextInChewingCommitBuffer())
             // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
             // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
-            Chewing.handleEnd()
+            ChewingBridge.chewing.handleEnd()
         }
 
-        this@PreEditBufferTextView.text = Chewing.bufferStringStatic()
+        this@PreEditBufferTextView.text = ChewingBridge.chewing.bufferStringStatic()
     }
 
     override fun onTextChanged(

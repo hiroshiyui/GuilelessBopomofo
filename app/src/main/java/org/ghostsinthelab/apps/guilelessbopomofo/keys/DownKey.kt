@@ -20,7 +20,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.view.KeyEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.Chewing
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
@@ -28,9 +28,9 @@ import org.greenrobot.eventbus.EventBus
 class DownKey {
     companion object {
         fun performAction() {
-            if (Chewing.bufferLen() > 0) {
-                Chewing.candClose()
-                Chewing.candOpen()
+            if (ChewingBridge.chewing.bufferLen() > 0) {
+                ChewingBridge.chewing.candClose()
+                ChewingBridge.chewing.candOpen()
                 EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
             } else {
                 EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN))
