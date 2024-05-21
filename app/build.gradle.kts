@@ -1,7 +1,7 @@
-val kotlinVersion = rootProject.extra.get("kotlin_version") as String
-val androidxAppcompatVersion = rootProject.extra.get("androidx_appcompat_version") as String
-val androidxEmoji2Version = rootProject.extra.get("androidx_emoji2_version") as String
-val lifecycleVersion = rootProject.extra.get("lifecycle_version") as String
+val kotlinVersion = "1.9.24"
+val androidxAppcompatVersion = "1.6.1"
+val androidxEmoji2Version = "1.4.0"
+val lifecycleVersion = "2.8.0"
 
 plugins {
     id("com.android.application")
