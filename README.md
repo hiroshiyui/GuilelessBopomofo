@@ -26,6 +26,16 @@ A [Bopomofo](https://en.wikipedia.org/wiki/Bopomofo) software keyboard (aka inpu
 
 1. Enjoy!
 
+## About libchewing_android_app_module
+
+Considering the convenience of modularization for development and project management, this project has established the Android App Module of libchewing in a separated location at '[libchewingAndroidAppModule](https://github.com/hiroshiyui/libchewingAndroidAppModule)'.
+
+The embedded _app/libs/libchewing_android_app_module\_\*-release.aar_ is built by the 'libchewingAndroidAppModule' project.
+
+考慮到模組化能夠更方便地進行開發與專案管理，本專案將 libchewing 的 Android App Module 另外開設於 "[libchewingAndroidAppModule](https://github.com/hiroshiyui/libchewingAndroidAppModule)"。
+
+內嵌的 _app/libs/libchewing_android_app_module\_\*-release.aar_ 即是由 "libchewingAndroidAppModule" 專案建置產生。
+
 ## Acknowledgements 感謝有您
 
 * [Chewing contributors](http://chewing.im/about.html)
