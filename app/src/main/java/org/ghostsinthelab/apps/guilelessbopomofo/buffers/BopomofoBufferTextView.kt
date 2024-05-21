@@ -22,7 +22,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 import android.content.Context
 import android.util.AttributeSet
 import androidx.core.view.GestureDetectorCompat
-import org.ghostsinthelab.apps.guilelessbopomofo.Chewing
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 
 class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
     BufferTextView(context, attrs) {
@@ -40,7 +40,7 @@ class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
     }
 
     override fun update() {
-        this@BopomofoBufferTextView.text = Chewing.bopomofoStringStatic()
+        this@BopomofoBufferTextView.text = ChewingBridge.chewing.bopomofoStringStatic()
     }
 
     inner class MyGestureListener: GestureListener()

@@ -125,24 +125,24 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                     ).applicationInfo.dataDir
                 }
             setupChewingData(dataPath)
-            Chewing.connect(dataPath)
-            Chewing.context.let {
+            ChewingBridge.chewing.connect(dataPath)
+            ChewingBridge.chewing.context.let {
                 Log.d(logTag, "Chewing context ptr: $it")
             }
 
             if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
-                Chewing.setSpaceAsSelection(1)
+                ChewingBridge.chewing.setSpaceAsSelection(1)
             }
 
             if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
-                Chewing.setPhraseChoiceRearward(true)
+                ChewingBridge.chewing.setPhraseChoiceRearward(true)
             }
 
-            Chewing.setChiEngMode(CHINESE_MODE)
-            Chewing.setCandPerPage(10)
+            ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+            ChewingBridge.chewing.setCandPerPage(10)
 
             sharedPreferences.getString("user_candidate_selection_keys_option", "NUMBER_ROW")?.let {
-                Chewing.setSelKey(SelectionKeys.valueOf(it).keys, 10)
+                ChewingBridge.chewing.setSelKey(SelectionKeys.valueOf(it).keys, 10)
             }
         } catch (exception: Exception) {
             val exceptionDescription: String =
@@ -236,7 +236,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         super.onDestroy()
         Log.d(logTag, "onDestroy()")
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
-        Chewing.delete()
+        ChewingBridge.chewing.delete()
         EventBus.getDefault().unregister(this)
     }
 
@@ -355,7 +355,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         event?.let {
             when (it.keyCode) {
                 KEYCODE_SHIFT_RIGHT -> {
-                    if (Chewing.getChiEngMode() == CHINESE_MODE) {
+                    if (ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE) {
                         ChewingUtil.openPuncCandidates()
                         viewBinding.keyboardPanel.switchToLayout(Layout.CANDIDATES)
                         return true
@@ -400,7 +400,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             return
         }
 
-        if (event.keyCode == KEYCODE_GRAVE && Chewing.getChiEngMode() == CHINESE_MODE && !event.isShiftPressed) {
+        if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE && !event.isShiftPressed) {
             viewBinding.keyboardPanel.switchToLayout(Layout.SYMBOLS)
             return
         }
@@ -451,7 +451,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 }
             }
         } else {
-            Chewing.handleDefault(keyPressed)
+            ChewingBridge.chewing.handleDefault(keyPressed)
         }
 
         EventBus.getDefault().post(Events.UpdateBuffers())
@@ -512,7 +512,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCommitTextInChewingCommitBuffer(event: Events.CommitTextInChewingCommitBuffer) {
         currentInputConnection.commitText(
-            Chewing.commitString(),
+            ChewingBridge.chewing.commitString(),
             1
         )
     }
@@ -534,7 +534,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onListCandidatesForCurrentCursor(event: Events.ListCandidatesForCurrentCursor) {
         viewBinding.apply {
-            textViewPreEditBuffer.offset = Chewing.cursorCurrent()
+            textViewPreEditBuffer.offset = ChewingBridge.chewing.cursorCurrent()
             textViewPreEditBuffer.renderUnderlineSpan()
             keyboardPanel.switchToLayout(Layout.CANDIDATES)
         }
@@ -630,7 +630,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onDirectionKeyDown(event: Events.DirectionKeyDown) {
-        if (Chewing.bufferLen() > 0) {
+        if (ChewingBridge.chewing.bufferLen() > 0) {
             viewBinding.textViewPreEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedBy.PHYSICAL_KEYBOARD)
         } else {
             if (ChewingUtil.candWindowClosed()) {
@@ -767,7 +767,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             "user_enable_space_as_selection" -> {
                 sharedPreferences?.apply {
                     if (this.getBoolean("user_enable_space_as_selection", true)) {
-                        Chewing.setSpaceAsSelection(1)
+                        ChewingBridge.chewing.setSpaceAsSelection(1)
                     }
                 }
             }
@@ -775,7 +775,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             "user_phrase_choice_rearward" -> {
                 sharedPreferences?.apply {
                     if (this.getBoolean("user_phrase_choice_rearward", false)) {
-                        Chewing.setPhraseChoiceRearward(true)
+                        ChewingBridge.chewing.setPhraseChoiceRearward(true)
                     }
                 }
             }
@@ -819,7 +819,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 sharedPreferences?.apply {
                     this.getString("user_candidate_selection_keys_option", "NUMBER_ROW")
                         ?.let {
-                            Chewing.setSelKey(
+                            ChewingBridge.chewing.setSelKey(
                                 SelectionKeys.valueOf(it).keys,
                                 10
                             )
