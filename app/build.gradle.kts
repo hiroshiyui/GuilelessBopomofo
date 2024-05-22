@@ -56,8 +56,6 @@ android {
         }
     }
 
-    ndkVersion = "23.2.8568313"
-
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
