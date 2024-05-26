@@ -63,16 +63,16 @@ class ChewingInstrumentedTest {
     @Test
     fun validChiEngMode() {
         chewing.setChiEngMode(SYMBOL_MODE)
-        assertEquals(chewing.getChiEngMode(), SYMBOL_MODE)
+        assertEquals(SYMBOL_MODE, chewing.getChiEngMode())
 
         chewing.handleDefault('t')
         chewing.handleDefault('e')
         chewing.handleDefault('a')
         // 如果一開始 pre-edit buffer 完全無資料，SYMBOL_MODE 會直接送出字符
-        assertEquals(chewing.bufferStringStatic(), "")
+        assertEquals("", chewing.bufferStringStatic())
 
         chewing.setChiEngMode(CHINESE_MODE)
-        assertEquals(chewing.getChiEngMode(), CHINESE_MODE)
+        assertEquals(CHINESE_MODE, chewing.getChiEngMode())
 
         val keys = arrayOf('x', 'm', '4', 't', '8', '6')
         for (key in keys) {
@@ -80,7 +80,7 @@ class ChewingInstrumentedTest {
         }
 
         chewing.setChiEngMode(SYMBOL_MODE)
-        assertEquals(chewing.getChiEngMode(), SYMBOL_MODE)
+        assertEquals(SYMBOL_MODE, chewing.getChiEngMode())
 
         chewing.handleSpace()
         chewing.handleDefault('g')
@@ -92,7 +92,7 @@ class ChewingInstrumentedTest {
         chewing.handleDefault('t')
         chewing.handleDefault('e')
         chewing.handleDefault('a')
-        assertEquals(chewing.bufferStringStatic(), "綠茶 green tea")
+        assertEquals("綠茶 green tea", chewing.bufferStringStatic())
     }
 
     @Test
@@ -103,8 +103,8 @@ class ChewingInstrumentedTest {
                 .toIntArray()
         chewing.setSelKey(selKeys, 10)
         val getSelKey = chewing.getSelKey()
-        assertNotEquals(getSelKey[0], '1'.code)
-        assertEquals(getSelKey[0], 'a'.code)
+        assertNotEquals('1'.code, getSelKey[0])
+        assertEquals('a'.code, getSelKey[0])
     }
 
     @Test
@@ -115,9 +115,9 @@ class ChewingInstrumentedTest {
                 .toIntArray()
         chewing.setSelKey(selKeys, 10)
         ChewingUtil.openPuncCandidates()
-        assertEquals(ChewingUtil.candWindowOpened(), true)
+        assertEquals(true, ChewingUtil.candWindowOpened())
         val candidateString: String = chewing.candStringByIndexStatic(0)
-        assertEquals(candidateString, "，")
+        assertEquals("，", candidateString)
     }
 
     @Test
@@ -145,70 +145,70 @@ class ChewingInstrumentedTest {
         chewing.handleSpace()
 
         chewing.handleHome()
-        assertEquals(chewing.cursorCurrent(), 0)
+        assertEquals(0, chewing.cursorCurrent())
         chewing.handleRight()
-        assertEquals(chewing.cursorCurrent(), 1)
+        assertEquals(1, chewing.cursorCurrent())
         chewing.handleRight()
-        assertEquals(chewing.cursorCurrent(), 2)
+        assertEquals(2, chewing.cursorCurrent())
         chewing.handleLeft()
-        assertEquals(chewing.cursorCurrent(), 1)
+        assertEquals(1, chewing.cursorCurrent())
         chewing.handleLeft()
-        assertEquals(chewing.cursorCurrent(), 0)
+        assertEquals(0, chewing.cursorCurrent())
 
         chewing.candOpen()
-        assertEquals(ChewingUtil.candWindowOpened(), true)
-        assertEquals(chewing.candTotalPage(), 1)
-        assertEquals(chewing.candTotalChoice(), 1)
-        assertEquals(chewing.candCurrentPage(), 0)
-        assertEquals(chewing.candChoicePerPage(), 10)
-        assertEquals(chewing.candListHasNext(), true)
+        assertEquals(true, ChewingUtil.candWindowOpened())
+        assertEquals(1, chewing.candTotalPage())
+        assertEquals(1, chewing.candTotalChoice())
+        assertEquals(0, chewing.candCurrentPage())
+        assertEquals(10, chewing.candChoicePerPage())
+        assertEquals(true, chewing.candListHasNext())
 
         chewing.candEnumerate()
-        assertEquals(chewing.candStringStatic(), "零用金")
+        assertEquals("零用金", chewing.candStringStatic())
         // chewingEngine.candHasNext() will point to the next item in candidates enumerator
-        assertEquals(chewing.candHasNext(), 0)
+        assertEquals(0, chewing.candHasNext())
 
         chewing.candListNext()
 
-        assertEquals(ChewingUtil.candWindowOpened(), true)
-        assertEquals(chewing.candTotalPage(), 1)
-        assertEquals(chewing.candTotalChoice(), 1)
-        assertEquals(chewing.candCurrentPage(), 0)
-        assertEquals(chewing.candChoicePerPage(), 10)
-        assertEquals(chewing.candListHasNext(), true)
+        assertEquals(true, ChewingUtil.candWindowOpened())
+        assertEquals(1, chewing.candTotalPage())
+        assertEquals(1, chewing.candTotalChoice())
+        assertEquals(0, chewing.candCurrentPage())
+        assertEquals(10, chewing.candChoicePerPage())
+        assertEquals(true, chewing.candListHasNext())
 
         chewing.candEnumerate()
-        assertEquals(chewing.candStringStatic(), "零用")
-        assertEquals(chewing.candHasNext(), 0)
+        assertEquals("零用", chewing.candStringStatic())
+        assertEquals(0, chewing.candHasNext())
 
         chewing.candListNext()
 
-        assertEquals(ChewingUtil.candWindowOpened(), true)
-        assertEquals(chewing.candTotalPage(), 9)
-        assertEquals(chewing.candTotalChoice(), 88)
-        assertEquals(chewing.candCurrentPage(), 0)
-        assertEquals(chewing.candChoicePerPage(), 10)
-        assertEquals(chewing.candListHasNext(), false)
+        assertEquals(true, ChewingUtil.candWindowOpened())
+        assertEquals(9, chewing.candTotalPage())
+        assertEquals(88, chewing.candTotalChoice())
+        assertEquals(0, chewing.candCurrentPage())
+        assertEquals(10, chewing.candChoicePerPage())
+        assertEquals(false, chewing.candListHasNext())
 
         // loop the candidates list
         chewing.candEnumerate()
-        assertEquals(chewing.candStringStatic(), "零")
-        assertEquals(chewing.candHasNext(), 1)
-        assertEquals(chewing.candStringStatic(), "玲")
-        assertEquals(chewing.candHasNext(), 1)
-        assertEquals(chewing.candStringStatic(), "靈")
+        assertEquals("零", chewing.candStringStatic())
+        assertEquals(1, chewing.candHasNext())
+        assertEquals("玲", chewing.candStringStatic())
+        assertEquals(1, chewing.candHasNext())
+        assertEquals("靈", chewing.candStringStatic())
 
         // switch to next page
         chewing.handlePageDown()
-        assertEquals(chewing.candTotalPage(), 9)
-        assertEquals(chewing.candCurrentPage(), 1)
+        assertEquals(9, chewing.candTotalPage())
+        assertEquals(1, chewing.candCurrentPage())
         chewing.candEnumerate()
-        assertEquals(chewing.candStringStatic(), "苓")
-        assertEquals(chewing.candHasNext(), 1)
-        assertEquals(chewing.candStringStatic(), "伶")
+        assertEquals("苓", chewing.candStringStatic())
+        assertEquals(1, chewing.candHasNext())
+        assertEquals("伶", chewing.candStringStatic())
 
         chewing.handleEsc() // should have similar effect as chewingEngine.candClose() does
-        assertEquals(ChewingUtil.candWindowClosed(), true)
+        assertEquals(true, ChewingUtil.candWindowClosed())
     }
 
     @Test
@@ -227,36 +227,36 @@ class ChewingInstrumentedTest {
         chewing.handleDefault('/')
         chewing.handleDefault('6')
         chewing.handleSpace()
-        assertEquals(ChewingUtil.candWindowOpened(), true)
-        assertEquals(chewing.candTotalPage(), 9)
-        assertEquals(chewing.candTotalChoice(), 88)
-        assertEquals(chewing.candCurrentPage(), 0)
-        assertEquals(chewing.candChoicePerPage(), 10)
-        assertEquals(chewing.candListHasNext(), false)
+        assertEquals(true, ChewingUtil.candWindowOpened())
+        assertEquals(9, chewing.candTotalPage())
+        assertEquals(88, chewing.candTotalChoice())
+        assertEquals(0, chewing.candCurrentPage())
+        assertEquals(10, chewing.candChoicePerPage())
+        assertEquals(false, chewing.candListHasNext())
 
         // switch to next page
         chewing.handlePageDown()
-        assertEquals(chewing.candCurrentPage(), 1)
+        assertEquals(1, chewing.candCurrentPage())
 
         chewing.candEnumerate()
-        assertEquals(chewing.candStringStatic(), "苓")
-        assertEquals(chewing.candHasNext(), 1)
-        assertEquals(chewing.candStringStatic(), "伶")
+        assertEquals("苓", chewing.candStringStatic())
+        assertEquals(1, chewing.candHasNext())
+        assertEquals("伶", chewing.candStringStatic())
 
         chewing.handleDefault('2')
-        assertEquals(chewing.bufferStringStatic(), "伶")
+        assertEquals("伶", chewing.bufferStringStatic())
     }
 
     @Test
     fun validMaxChiSymbolLen() {
         chewing.setMaxChiSymbolLen(10)
-        assertEquals(chewing.getMaxChiSymbolLen(), 10)
+        assertEquals(10, chewing.getMaxChiSymbolLen())
     }
 
     @Test
     fun validCandPerPage() {
         chewing.setCandPerPage(9)
-        assertEquals(chewing.getCandPerPage(), 9)
+        assertEquals(9, chewing.getCandPerPage())
     }
 
     @Test
@@ -285,7 +285,7 @@ class ChewingInstrumentedTest {
         chewing.candChooseByIndex(0)
         chewing.commitPreeditBuf()
         var commitString: String = chewing.commitString()
-        assertEquals(commitString, "綠茶")
+        assertEquals("綠茶", commitString)
 
         chewing.handleDefault('5')
         chewing.handleSpace()
@@ -294,7 +294,7 @@ class ChewingInstrumentedTest {
         chewing.candChooseByIndex(12)
         chewing.commitPreeditBuf()
         commitString = chewing.commitString()
-        assertEquals(commitString, "蜘")
+        assertEquals("蜘", commitString)
     }
 
     @Test
@@ -312,7 +312,7 @@ class ChewingInstrumentedTest {
         chewing.candChooseByIndex(0)
         chewing.commitPreeditBuf()
         val commitString: String = chewing.commitString()
-        assertEquals(commitString, "綠茶")
+        assertEquals("綠茶", commitString)
     }
 
     @Test
@@ -332,38 +332,38 @@ class ChewingInstrumentedTest {
         chewing.handleDefault('6')
         chewing.handleSpace()
 
-        assertEquals(ChewingUtil.candWindowOpened(), true)
-        assertEquals(chewing.candTotalPage(), 9)
-        assertEquals(chewing.candTotalChoice(), 88)
-        assertEquals(chewing.candCurrentPage(), 0)
-        assertEquals(chewing.candChoicePerPage(), 10)
-        assertEquals(chewing.candListHasNext(), false)
+        assertEquals(true, ChewingUtil.candWindowOpened())
+        assertEquals(9, chewing.candTotalPage())
+        assertEquals(88, chewing.candTotalChoice())
+        assertEquals(0, chewing.candCurrentPage())
+        assertEquals(10, chewing.candChoicePerPage())
+        assertEquals(false, chewing.candListHasNext())
 
         var candidates = ChewingUtil.getCandidatesByPage(0)
-        assertEquals(candidates[0].index, 0)
-        assertEquals(candidates[0].candidateString, "零")
-        assertEquals(candidates[0].selectionKey, 'a')
+        assertEquals(0, candidates[0].index)
+        assertEquals("零", candidates[0].candidateString)
+        assertEquals('a', candidates[0].selectionKey)
 
         candidates = ChewingUtil.getCandidatesByPage(1)
-        assertEquals(candidates[0].index, 10)
-        assertEquals(candidates[0].candidateString, "苓")
-        assertEquals(candidates[0].selectionKey, 'a')
-        assertEquals(candidates[1].index, 11)
-        assertEquals(candidates[1].candidateString, "伶")
-        assertEquals(candidates[1].selectionKey, 's')
+        assertEquals(10, candidates[0].index)
+        assertEquals("苓", candidates[0].candidateString)
+        assertEquals('a', candidates[0].selectionKey)
+        assertEquals(11, candidates[1].index)
+        assertEquals("伶", candidates[1].candidateString)
+        assertEquals('s', candidates[1].selectionKey)
 
         // last page
         candidates = ChewingUtil.getCandidatesByPage(8)
-        assertEquals(candidates[0].index, 80)
-        assertEquals(candidates[0].candidateString, "衑")
-        assertEquals(candidates[0].selectionKey, 'a')
+        assertEquals(80, candidates[0].index)
+        assertEquals("衑", candidates[0].candidateString)
+        assertEquals('a', candidates[0].selectionKey)
 
-        assertEquals(candidates[1].index, 81)
-        assertEquals(candidates[1].candidateString, "閝")
-        assertEquals(candidates[1].selectionKey, 's')
+        assertEquals(81, candidates[1].index)
+        assertEquals("閝", candidates[1].candidateString)
+        assertEquals('s', candidates[1].selectionKey)
         // bounding
-        assertEquals(candidates.lastIndex, 7)
-        assertEquals(candidates[7].selectionKey, 'e')
+        assertEquals(7, candidates.lastIndex)
+        assertEquals('e', candidates[7].selectionKey)
 
     }
 
@@ -404,8 +404,8 @@ class ChewingInstrumentedTest {
         chewing.candOpen()
         chewing.candTotalChoice()
         chewing.candChooseByIndex(0)
-        assertEquals(chewing.commitPreeditBuf(), 0)
-        assertEquals(chewing.commitPreeditBuf(), -1)
+        assertEquals(0, chewing.commitPreeditBuf())
+        assertEquals(-1, chewing.commitPreeditBuf())
     }
 
     @Test
@@ -439,12 +439,12 @@ class ChewingInstrumentedTest {
         chewing.handleLeft()
         chewing.candOpen()
         val candidateString: String = chewing.candStringByIndexStatic(0)
-        assertEquals(candidateString, "蜂膠")
+        assertEquals("蜂膠", candidateString)
         chewing.candChooseByIndex(0)
         chewing.commitPreeditBuf()
         val commitString: String = chewing.commitString()
-        assertEquals(commitString, "密蜂膠代")
-        assertEquals(chewing.candClose(), 0)
+        assertEquals("密蜂膠代", commitString)
+        assertEquals(0, chewing.candClose())
     }
 
     @Test
@@ -471,22 +471,22 @@ class ChewingInstrumentedTest {
         chewing.handleHome()
         chewing.candOpen()
 
-        assertEquals(chewing.candStringByIndexStatic(0), "零用金")
-        assertEquals(chewing.candListHasNext(), true)
-        assertEquals(chewing.candListNext(), 0)
-        assertEquals(chewing.candStringByIndexStatic(0), "零用")
-        assertEquals(chewing.candListHasNext(), true)
-        assertEquals(chewing.candListNext(), 0)
-        assertEquals(chewing.candStringByIndexStatic(0), "零")
-        assertEquals(chewing.candListNext(), -1)
-        assertEquals(chewing.candListHasNext(), false)
+        assertEquals("零用金", chewing.candStringByIndexStatic(0))
+        assertEquals(true, chewing.candListHasNext())
+        assertEquals(0, chewing.candListNext())
+        assertEquals("零用", chewing.candStringByIndexStatic(0))
+        assertEquals(true, chewing.candListHasNext())
+        assertEquals(0, chewing.candListNext())
+        assertEquals("零", chewing.candStringByIndexStatic(0))
+        assertEquals(-1, chewing.candListNext())
+        assertEquals(false, chewing.candListHasNext())
 
         chewing.candListLast()
-        assertEquals(chewing.candStringByIndexStatic(0), "零")
+        assertEquals("零", chewing.candStringByIndexStatic(0))
 
         chewing.candListFirst()
-        assertEquals(chewing.candStringByIndexStatic(0), "零用金")
-        assertEquals(chewing.candClose(), 0)
+        assertEquals("零用金", chewing.candStringByIndexStatic(0))
+        assertEquals(0, chewing.candClose())
     }
 
     @Test
@@ -495,20 +495,20 @@ class ChewingInstrumentedTest {
         chewing.setKBType(newKeyboardType)
         val currentKeyboardType = chewing.getKBType()
         val currentKeyboardTypeString = chewing.getKBString()
-        assertEquals(currentKeyboardType, 1)
-        assertEquals(currentKeyboardTypeString, "KB_HSU")
+        assertEquals(1, currentKeyboardType)
+        assertEquals("KB_HSU", currentKeyboardTypeString)
 
         chewing.handleDefault('l')
         chewing.handleDefault('l')
-        assertEquals(chewing.bopomofoStringStatic(), "ㄌㄥ")
+        assertEquals("ㄌㄥ", chewing.bopomofoStringStatic())
         chewing.handleDefault('f')
-        assertEquals(chewing.bufferString(), "冷")
+        assertEquals("冷", chewing.bufferString())
         chewing.handleDefault('d')
         chewing.handleDefault('x')
         chewing.handleDefault('l')
         chewing.handleDefault('j')
         chewing.commitPreeditBuf()
-        assertEquals(chewing.commitString(), "冷凍")
+        assertEquals("冷凍", chewing.commitString())
     }
 
     @Test
@@ -517,29 +517,29 @@ class ChewingInstrumentedTest {
         chewing.setKBType(newKeyboardType)
         val currentKeyboardType = chewing.getKBType()
         val currentKeyboardTypeString = chewing.getKBString()
-        assertEquals(currentKeyboardType, 7)
-        assertEquals(currentKeyboardTypeString, "KB_DVORAK_HSU")
+        assertEquals(7, currentKeyboardType)
+        assertEquals("KB_DVORAK_HSU", currentKeyboardTypeString)
 
         // test ChewingUtil.dvorakToQwertyKeyMapping()
-        assertEquals(ChewingUtil.dvorakToQwertyKeyMapping('j'), 'c')
-        assertEquals(ChewingUtil.dvorakToQwertyKeyMapping('l'), 'p')
-        assertEquals(ChewingUtil.dvorakToQwertyKeyMapping('1'), '1')
-        assertEquals(ChewingUtil.dvorakToQwertyKeyMapping('!'), '!')
+        assertEquals('c', ChewingUtil.dvorakToQwertyKeyMapping('j'))
+        assertEquals('p', ChewingUtil.dvorakToQwertyKeyMapping('l'))
+        assertEquals('1', ChewingUtil.dvorakToQwertyKeyMapping('1'))
+        assertEquals('!', ChewingUtil.dvorakToQwertyKeyMapping('!'))
 
         chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
         chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
-        assertEquals(chewing.bopomofoStringStatic(), "ㄌㄥ")
+        assertEquals("ㄌㄥ", chewing.bopomofoStringStatic())
         // ˇ
         chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('f'))
-        assertEquals(chewing.bufferString(), "冷")
+        assertEquals("冷", chewing.bufferString())
         chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('d'))
         chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('x'))
         chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
-        assertEquals(chewing.bopomofoStringStatic(), "ㄉㄨㄥ")
+        assertEquals("ㄉㄨㄥ", chewing.bopomofoStringStatic())
         // ˋ
         chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('j'))
         chewing.commitPreeditBuf()
-        assertEquals(chewing.commitString(), "冷凍")
+        assertEquals("冷凍", chewing.commitString())
     }
 
     @Test
@@ -560,11 +560,11 @@ class ChewingInstrumentedTest {
         // candidate window opened here
         chewing.handleSpace()
         assertTrue(chewing.candTotalChoice() > 0)
-        assertEquals(ChewingUtil.candWindowOpened(), true)
+        assertEquals(true, ChewingUtil.candWindowOpened())
         // candidate window closed here (after I picker the first candidate)
         chewing.handleDefault('1')
-        assertEquals(chewing.candTotalChoice(), 0)
-        assertEquals(ChewingUtil.candWindowClosed(), true)
+        assertEquals(0, chewing.candTotalChoice())
+        assertEquals(true, ChewingUtil.candWindowClosed())
     }
 
     @Test
@@ -573,20 +573,20 @@ class ChewingInstrumentedTest {
         chewing.setKBType(newKeyboardType)
         val currentKeyboardType = chewing.getKBType()
         val currentKeyboardTypeString = chewing.getKBString()
-        assertEquals(currentKeyboardType, 5)
-        assertEquals(currentKeyboardTypeString, "KB_ET26")
+        assertEquals(5, currentKeyboardType)
+        assertEquals("KB_ET26", currentKeyboardTypeString)
 
         chewing.handleDefault('l')
         chewing.handleDefault('l')
-        assertEquals(chewing.bopomofoStringStatic(), "ㄌㄥ")
+        assertEquals("ㄌㄥ", chewing.bopomofoStringStatic())
         chewing.handleDefault('j')
-        assertEquals(chewing.bufferString(), "冷")
+        assertEquals("冷", chewing.bufferString())
         chewing.handleDefault('d')
         chewing.handleDefault('x')
         chewing.handleDefault('l')
         chewing.handleDefault('k')
         chewing.commitPreeditBuf()
-        assertEquals(chewing.commitString(), "冷凍")
+        assertEquals("冷凍", chewing.commitString())
     }
 
     @Test
@@ -595,20 +595,20 @@ class ChewingInstrumentedTest {
         chewing.setKBType(newKeyboardType)
         val currentKeyboardType = chewing.getKBType()
         val currentKeyboardTypeString = chewing.getKBString()
-        assertEquals(currentKeyboardType, 0)
-        assertEquals(currentKeyboardTypeString, "KB_DEFAULT")
+        assertEquals(0, currentKeyboardType)
+        assertEquals("KB_DEFAULT", currentKeyboardTypeString)
 
         chewing.handleDefault('x')
         chewing.handleDefault('/')
-        assertEquals(chewing.bopomofoStringStatic(), "ㄌㄥ")
+        assertEquals("ㄌㄥ", chewing.bopomofoStringStatic())
         chewing.handleDefault('3')
-        assertEquals(chewing.bufferString(), "冷")
+        assertEquals("冷", chewing.bufferString())
         chewing.handleDefault('2')
         chewing.handleDefault('j')
         chewing.handleDefault('/')
         chewing.handleDefault('4')
         chewing.commitPreeditBuf()
-        assertEquals(chewing.commitString(), "冷凍")
+        assertEquals("冷凍", chewing.commitString())
     }
 
     @Test
@@ -619,35 +619,35 @@ class ChewingInstrumentedTest {
         chewing.setPhraseChoiceRearward(false)
         chewing.handleDefault('`')
         chewing.candOpen()
-        assertEquals(chewing.candTotalChoice(), 22)
-        assertEquals(chewing.candStringByIndexStatic(0), "…")
-        assertEquals(chewing.candStringByIndexStatic(1), "※")
-        assertEquals(chewing.candStringByIndexStatic(2), "常用符號")
-        assertEquals(chewing.candStringByIndexStatic(10), "雙線框")
-        assertEquals(chewing.candStringByIndexStatic(12), "線段")
+        assertEquals(22, chewing.candTotalChoice())
+        assertEquals("…", chewing.candStringByIndexStatic(0))
+        assertEquals("※", chewing.candStringByIndexStatic(1))
+        assertEquals("常用符號", chewing.candStringByIndexStatic(2))
+        assertEquals("雙線框", chewing.candStringByIndexStatic(10))
+        assertEquals("線段", chewing.candStringByIndexStatic(12))
         chewing.handleDefault('1')
         chewing.commitPreeditBuf()
-        assertEquals(chewing.commitString(), "…")
+        assertEquals("…", chewing.commitString())
 
         // 換頁到「雙線框」
         // keyboardless API 版
         chewing.handleDefault('`')
         chewing.candChooseByIndex(10)
-        assertEquals(chewing.candTotalChoice(), 29)
-        assertEquals(chewing.candStringByIndexStatic(0), "╔")
+        assertEquals(29, chewing.candTotalChoice())
+        assertEquals("╔", chewing.candStringByIndexStatic(0))
         chewing.candChooseByIndex(0)
         chewing.commitPreeditBuf()
-        assertEquals(chewing.commitString(), "╔")
+        assertEquals("╔", chewing.commitString())
 
         // 模擬鍵盤操作版
         chewing.handleDefault('`')
         chewing.handleSpace()
         chewing.handleDefault('1')
-        assertEquals(chewing.candTotalChoice(), 29)
+        assertEquals(29, chewing.candTotalChoice())
         chewing.handleDefault('1')
         chewing.commitPreeditBuf()
         chewing.candClose()
-        assertEquals(chewing.commitString(), "╔")
+        assertEquals("╔", chewing.commitString())
 
         val selKeys: IntArray =
             charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
@@ -658,7 +658,7 @@ class ChewingInstrumentedTest {
         chewing.handleDefault('3')
         chewing.handleDefault('1')
         chewing.commitPreeditBuf()
-        assertEquals(chewing.commitString(), "，")
+        assertEquals("，", chewing.commitString())
 
         chewing.setSpaceAsSelection(1)
         chewing.handleDefault('1')
@@ -668,7 +668,7 @@ class ChewingInstrumentedTest {
         chewing.handleSpace()
         chewing.handleDefault('3')
         chewing.commitPreeditBuf()
-        assertEquals(chewing.commitString(), "飽")
+        assertEquals("飽", chewing.commitString())
     }
 
     @Test
@@ -698,18 +698,17 @@ class ChewingInstrumentedTest {
 
         chewing.handleDefault('m')
         chewing.handleDefault('w')
-        chewing.handleSpace() // 此時應該觸發送出最前端詞「老鼠」
-        assertEquals(chewing.commitCheck(), 1)
+        chewing.handleSpace() // 超出 maxChiSymbolLen，此時應該觸發送出最前端詞「老鼠」
+        assertEquals(1, chewing.commitCheck())
 
         chewing.handleDefault('m')
         chewing.handleDefault('e')
         chewing.handleSpace()
 
-        assertEquals(chewing.commitStringStatic(), "老鼠")
-        assertEquals(chewing.bufferStringStatic(), "貓咪貓咪貓咪貓咪貓咪")
-        assertEquals(chewing.commitCheck(), 0)
+        assertEquals("貓咪貓咪貓咪貓咪貓咪", chewing.bufferStringStatic())
+        assertEquals(0, chewing.commitCheck())
         chewing.commitPreeditBuf()
-        assertEquals(chewing.commitCheck(), 1)
+        assertEquals(1, chewing.commitCheck())
     }
 
     @After
