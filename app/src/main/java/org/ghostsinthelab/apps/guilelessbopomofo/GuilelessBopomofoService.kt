@@ -134,7 +134,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             }
 
             if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
-                ChewingBridge.chewing.setPhraseChoiceRearward(true)
+                ChewingBridge.chewing.setPhraseChoiceRearward(1)
             }
 
             ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
@@ -773,7 +773,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             "user_phrase_choice_rearward" -> {
                 sharedPreferences?.apply {
                     if (this.getBoolean("user_phrase_choice_rearward", false)) {
-                        ChewingBridge.chewing.setPhraseChoiceRearward(true)
+                        ChewingBridge.chewing.setPhraseChoiceRearward(1)
                     }
                 }
             }
