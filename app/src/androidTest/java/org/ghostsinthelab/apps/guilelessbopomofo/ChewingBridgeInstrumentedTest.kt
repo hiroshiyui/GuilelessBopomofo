@@ -37,7 +37,7 @@ import org.junit.runner.RunWith
 
 // NOTICE: You have to manually enable Guileless Bopomofo from system settings first.
 @RunWith(AndroidJUnit4::class)
-class chewingInstrumentedTest {
+class ChewingInstrumentedTest {
     private lateinit var dataPath: String
 
     @Before
