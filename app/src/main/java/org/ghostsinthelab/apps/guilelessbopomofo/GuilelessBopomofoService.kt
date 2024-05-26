@@ -91,7 +91,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     private lateinit var sharedPreferences: SharedPreferences
     private val chewingDataFiles =
-        listOf("dictionary.dat", "index_tree.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
+        listOf("tsi.dat", "word.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
 
     companion object {
         val defaultHapticFeedbackStrength: Int =
@@ -664,7 +664,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         }
 
         // Save app version
-        val chewingAppVersion =
+        val appVersion =
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                 @Suppress("DEPRECATION")
                 packageManager.getPackageInfo(this.packageName, 0).versionName.toByteArray()
@@ -679,16 +679,16 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         // update Chewing data files by version
         if (!chewingDataAppVersionTxt.exists()) {
-            chewingDataAppVersionTxt.appendBytes(chewingAppVersion)
+            chewingDataAppVersionTxt.appendBytes(appVersion)
         }
 
-        if (!chewingDataAppVersionTxt.readBytes().contentEquals(chewingAppVersion)) {
+        if (!chewingDataAppVersionTxt.readBytes().contentEquals(appVersion)) {
             Log.d(logTag, "Here comes a new version.")
             installChewingData(dataPath)
 
             // refresh app version
             val chewingDataAppVersionTxtOutputStream = FileOutputStream(chewingDataAppVersionTxt)
-            chewingDataAppVersionTxtOutputStream.write(chewingAppVersion)
+            chewingDataAppVersionTxtOutputStream.write(appVersion)
             chewingDataAppVersionTxtOutputStream.close()
         }
     }
