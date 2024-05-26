@@ -641,7 +641,8 @@ class ChewingInstrumentedTest {
 
         // 模擬鍵盤操作版
         chewing.handleDefault('`')
-        chewing.handleSpace()
+        // next page
+        chewing.handleRight()
         chewing.handleDefault('1')
         assertEquals(29, chewing.candTotalChoice())
         chewing.handleDefault('1')
