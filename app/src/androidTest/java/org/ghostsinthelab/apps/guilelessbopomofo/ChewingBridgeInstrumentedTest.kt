@@ -676,6 +676,8 @@ class ChewingInstrumentedTest {
     fun testCommitCheck() {
         chewing.setChiEngMode(CHINESE_MODE)
         chewing.setMaxChiSymbolLen(10)
+        assertEquals(10, chewing.getMaxChiSymbolLen())
+
         chewing.setCandPerPage(10)
         chewing.setPhraseChoiceRearward(false)
         val newKeyboardType = chewing.convKBStr2Num("KB_HSU")
@@ -688,6 +690,8 @@ class ChewingInstrumentedTest {
         chewing.handleDefault('x')
         chewing.handleDefault('f')
 
+        assertEquals("老鼠", chewing.bufferStringStatic())
+
         repeat(4) {
             chewing.handleDefault('m')
             chewing.handleDefault('w')
@@ -697,9 +701,13 @@ class ChewingInstrumentedTest {
             chewing.handleSpace()
         }
 
+        assertEquals("老鼠貓咪貓咪貓咪貓咪", chewing.bufferStringStatic())
+
         chewing.handleDefault('m')
         chewing.handleDefault('w')
         chewing.handleSpace() // 超出 maxChiSymbolLen，此時應該觸發送出最前端詞「老鼠」
+        assertEquals("貓咪貓咪貓咪貓咪貓", chewing.bufferStringStatic())
+        assertEquals("老鼠", chewing.commitStringStatic())
         assertEquals(1, chewing.commitCheck())
 
         chewing.handleDefault('m')
