@@ -116,7 +116,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         try {
             val dataPath =
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                    @Suppress("DEPRECATION")
                     packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
                 } else {
                     packageManager.getPackageInfo(
@@ -666,7 +665,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         // Save app version
         val appVersion =
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                @Suppress("DEPRECATION")
                 packageManager.getPackageInfo(this.packageName, 0).versionName.toByteArray()
             } else {
                 packageManager.getPackageInfo(
