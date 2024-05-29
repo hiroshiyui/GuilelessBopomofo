@@ -24,7 +24,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.CoreMatchers
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
