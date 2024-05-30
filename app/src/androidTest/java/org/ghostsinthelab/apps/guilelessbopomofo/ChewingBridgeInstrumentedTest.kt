@@ -19,6 +19,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.CoreMatchers
@@ -32,16 +33,41 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.io.File
+import java.io.FileOutputStream
 
 // NOTICE: You have to manually enable Guileless Bopomofo from system settings first.
 @RunWith(AndroidJUnit4::class)
-class ChewingInstrumentedTest {
-    private lateinit var dataPath: String
+class ChewingBridgeInstrumentedTest {
+    private val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+    private val dataPath: String = appContext.dataDir.absolutePath
+    private val chewingDataDir = File(dataPath)
+    private val chewingDataFiles =
+        listOf("tsi.dat", "word.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
 
     @Before
     fun setupChewingEngine() {
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        dataPath = appContext.dataDir.absolutePath
+        // Copy Chewing data files to data directory
+        for (file in chewingDataFiles) {
+            val destinationFile = File(String.format("%s/%s", chewingDataDir.absolutePath, file))
+            Log.d("ChewingInstrumentedTest", "Copying ${file}...")
+            val dataInputStream = appContext.assets.open(file)
+            val dataOutputStream = FileOutputStream(destinationFile)
+
+            try {
+                dataInputStream.copyTo(dataOutputStream)
+            } catch (e: java.lang.Exception) {
+                e.message?.let {
+                    Log.e("ChewingInstrumentedTest", it)
+                }
+            } finally {
+                Log.d("ChewingInstrumentedTest", "Closing data I/O streams")
+                dataInputStream.close()
+                dataOutputStream.close()
+            }
+        }
+
+        // Initialize Chewing
         ChewingBridge.chewing.connect(dataPath)
     }
 
@@ -724,6 +750,7 @@ class ChewingInstrumentedTest {
 
     @After
     fun deleteChewingEngine() {
+        // Close Chewing
         ChewingBridge.chewing.delete()
     }
 }
