@@ -127,10 +127,10 @@ class ChewingUtil {
             ',', '<', '.', '>', '/', '?'
         )
 
-        private val qwertyKeyMapping: Map<Char, Char> = dvorakKeysList.zip(qwertyKeysList).toMap()
+        private val dvorakToQwertyKeyMappingMap: Map<Char, Char> = dvorakKeysList.zip(qwertyKeysList).toMap()
 
         fun dvorakToQwertyKeyMapping(key: Char): Char {
-            qwertyKeyMapping[key]?.let {
+            dvorakToQwertyKeyMappingMap[key]?.let {
                 return it
             }
             // if we can't find a mapping, then return the original key as-is

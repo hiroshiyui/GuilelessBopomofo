@@ -534,6 +534,50 @@ class ChewingBridgeInstrumentedTest {
     }
 
     @Test
+    fun switchToColemakAnsiLayout() {
+        val newKeyboardType = ChewingBridge.chewing.convKBStr2Num("KB_COLEMAK_DH_ANSI")
+        ChewingBridge.chewing.setKBType(newKeyboardType)
+        val currentKeyboardType = ChewingBridge.chewing.getKBType()
+        val currentKeyboardTypeString = ChewingBridge.chewing.getKBString()
+        assertEquals(13, currentKeyboardType)
+        assertEquals("KB_COLEMAK_DH_ANSI", currentKeyboardTypeString)
+
+        ChewingBridge.chewing.handleDefault('c')
+        ChewingBridge.chewing.handleDefault('/')
+        assertEquals("ㄌㄥ", ChewingBridge.chewing.bopomofoStringStatic())
+        ChewingBridge.chewing.handleDefault('3')
+        assertEquals("冷", ChewingBridge.chewing.bufferString())
+        ChewingBridge.chewing.handleDefault('2')
+        ChewingBridge.chewing.handleDefault('n')
+        ChewingBridge.chewing.handleDefault('/')
+        ChewingBridge.chewing.handleDefault('4')
+        ChewingBridge.chewing.commitPreeditBuf()
+        assertEquals("冷凍", ChewingBridge.chewing.commitString())
+    }
+
+    @Test
+    fun switchToColemakOrtholinearLayout() {
+        val newKeyboardType = ChewingBridge.chewing.convKBStr2Num("KB_COLEMAK_DH_ORTH")
+        ChewingBridge.chewing.setKBType(newKeyboardType)
+        val currentKeyboardType = ChewingBridge.chewing.getKBType()
+        val currentKeyboardTypeString = ChewingBridge.chewing.getKBString()
+        assertEquals(14, currentKeyboardType)
+        assertEquals("KB_COLEMAK_DH_ORTH", currentKeyboardTypeString)
+
+        ChewingBridge.chewing.handleDefault('x')
+        ChewingBridge.chewing.handleDefault('/')
+        assertEquals("ㄌㄥ", ChewingBridge.chewing.bopomofoStringStatic())
+        ChewingBridge.chewing.handleDefault('3')
+        assertEquals("冷", ChewingBridge.chewing.bufferString())
+        ChewingBridge.chewing.handleDefault('2')
+        ChewingBridge.chewing.handleDefault('n')
+        ChewingBridge.chewing.handleDefault('/')
+        ChewingBridge.chewing.handleDefault('4')
+        ChewingBridge.chewing.commitPreeditBuf()
+        assertEquals("冷凍", ChewingBridge.chewing.commitString())
+    }
+
+    @Test
     fun switchToDvorakHsuLayout() {
         val newKeyboardType = ChewingBridge.chewing.convKBStr2Num("KB_DVORAK_HSU")
         ChewingBridge.chewing.setKBType(newKeyboardType)
