@@ -22,13 +22,11 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import org.hamcrest.CoreMatchers
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -81,7 +79,8 @@ class ChewingBridgeInstrumentedTest {
     @Test
     fun validDataPath() {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertThat(dataPath, CoreMatchers.containsString(appContext.packageName))
+        val dataPathContainsPackageName: Boolean = dataPath.contains(appContext.packageName)
+        assertTrue(dataPathContainsPackageName)
     }
 
     @Test
