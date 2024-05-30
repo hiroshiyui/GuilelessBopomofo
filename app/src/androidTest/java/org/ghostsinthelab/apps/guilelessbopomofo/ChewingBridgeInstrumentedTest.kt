@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2021 YOU, HUI-HONG
+ * Copyright (C) 2024 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,7 +34,6 @@ import org.junit.runner.RunWith
 import java.io.File
 import java.io.FileOutputStream
 
-// NOTICE: You have to manually enable Guileless Bopomofo from system settings first.
 @RunWith(AndroidJUnit4::class)
 class ChewingBridgeInstrumentedTest {
     private val appContext = InstrumentationRegistry.getInstrumentation().targetContext
