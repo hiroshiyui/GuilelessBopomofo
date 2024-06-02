@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
                     )
 
                 seekBarHapticFeedbackStrength.value = hapticFeedbackPreferenceStrength.toFloat()
-                seekBarHapticFeedbackStrength.addOnChangeListener { slider, value, fromUser ->
+                seekBarHapticFeedbackStrength.addOnChangeListener { _, value, _ ->
                     hapticFeedbackPreferenceStrength = value.toInt()
                     performVibration(
                         applicationContext,
@@ -269,7 +269,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         keyButtonPreferenceHeight
                     )
 
-                seekBarKeyButtonHeight.addOnChangeListener { slider, value, fromUser ->
+                seekBarKeyButtonHeight.addOnChangeListener { _, value, _ ->
                     keyButtonPreferenceHeight = value.toInt()
                     sharedPreferences.edit()
                         .putInt("user_key_button_height", keyButtonPreferenceHeight).apply()
