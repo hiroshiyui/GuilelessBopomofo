@@ -1,7 +1,7 @@
-val kotlinVersion = "1.9.24"
-val androidxAppcompatVersion = "1.6.1"
+val kotlinVersion = "2.0.0"
+val androidxAppcompatVersion = "1.7.0"
 val androidxEmoji2Version = "1.4.0"
-val lifecycleVersion = "2.8.0"
+val lifecycleVersion = "2.8.1"
 
 plugins {
     id("com.android.application")
