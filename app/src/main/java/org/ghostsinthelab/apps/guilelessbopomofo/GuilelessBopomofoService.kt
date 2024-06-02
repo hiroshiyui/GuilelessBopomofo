@@ -482,6 +482,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUpdateBuffers(event: Events.UpdateBuffers) {
+        Log.d(logTag, event.toString())
         viewBinding.apply {
             launch { textViewPreEditBuffer.update() }
             launch { textViewBopomofoBuffer.update() }
@@ -497,6 +498,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onExitKeyboardSubLayouts(event: Events.ExitKeyboardSubLayouts) {
+        Log.d(logTag, event.toString())
         viewBinding.keyboardPanel.apply {
             if (this.currentLayout in listOf(
                     Layout.SYMBOLS,
@@ -510,6 +512,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCommitTextInChewingCommitBuffer(event: Events.CommitTextInChewingCommitBuffer) {
+        Log.d(logTag, event.toString())
         currentInputConnection.commitText(
             ChewingBridge.chewing.commitString(),
             1
@@ -518,6 +521,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSwitchToNextInputMethod(event: Events.SwitchToNextInputMethod) {
+        Log.d(logTag, event.toString())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             switchToNextInputMethod(false)
         } else {
@@ -532,6 +536,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onListCandidatesForCurrentCursor(event: Events.ListCandidatesForCurrentCursor) {
+        Log.d(logTag, event.toString())
         viewBinding.apply {
             textViewPreEditBuffer.offset = ChewingBridge.chewing.cursorCurrent()
             textViewPreEditBuffer.renderUnderlineSpan()
@@ -563,11 +568,14 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onToggleKeyboardMainLayoutMode(event: Events.ToggleKeyboardMainLayoutMode) {
+        Log.d(logTag, event.toString())
         viewBinding.keyboardPanel.toggleMainLayoutMode()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEnterKeyDownWhenBufferIsEmpty(event: Events.EnterKeyDownWhenBufferIsEmpty) {
+        Log.d(logTag, event.toString())
+
         var multiLineEditText = false
 
         currentInputEditorInfo?.apply {
@@ -624,6 +632,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onDismissKeyButtonPopup(event: Events.DismissKeyButtonPopup) {
+        Log.d(logTag, event.toString())
         viewBinding.keyboardPanel.keyButtonPopup.dismiss()
     }
 
