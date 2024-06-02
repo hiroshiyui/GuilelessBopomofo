@@ -21,13 +21,13 @@ package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.core.view.GestureDetectorCompat
+import android.view.GestureDetector
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 
 class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
     BufferTextView(context, attrs) {
 
-    override lateinit var mDetector: GestureDetectorCompat
+    override var mDetector: GestureDetector
 
     init {
         // Purposes to this padding setting:
@@ -36,7 +36,7 @@ class BopomofoBufferTextView(context: Context, attrs: AttributeSet) :
         val px = convertDpToPx(2F).toInt()
         this.setPadding(px, 0, px, 0)
 
-        mDetector = GestureDetectorCompat(context, MyGestureListener())
+        mDetector = GestureDetector(context, MyGestureListener())
     }
 
     override fun update() {

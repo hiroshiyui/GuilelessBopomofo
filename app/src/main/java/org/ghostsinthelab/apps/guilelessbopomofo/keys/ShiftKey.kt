@@ -23,9 +23,9 @@ import android.content.Context
 import android.content.res.Configuration
 import android.util.AttributeSet
 import android.util.Log
+import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.content.ContextCompat
-import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
@@ -39,10 +39,10 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
     var isLocked: Boolean = false
     var isActive: Boolean = false
 
-    override lateinit var mDetector: GestureDetectorCompat
+    override var mDetector: GestureDetector
 
     init {
-        mDetector = GestureDetectorCompat(context, MyGestureListener())
+        mDetector = GestureDetector(context, MyGestureListener())
         mDetector.setOnDoubleTapListener(null)
 
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0, 0).apply {

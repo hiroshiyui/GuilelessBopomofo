@@ -23,9 +23,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.SystemClock
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.MotionEvent
-import androidx.core.view.GestureDetectorCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -42,13 +42,13 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs), CoroutineScope {
     private var backspacePressed: Boolean = false
     var lastBackspaceClickTime: Long = 0
-    override lateinit var mDetector: GestureDetectorCompat
+    override var mDetector: GestureDetector
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default
 
     init {
-        mDetector = GestureDetectorCompat(context, MyGestureListener())
+        mDetector = GestureDetector(context, MyGestureListener())
         mDetector.setOnDoubleTapListener(null)
     }
 

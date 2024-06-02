@@ -24,7 +24,6 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.MotionEvent
-import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
@@ -32,10 +31,10 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
 class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
-    override lateinit var mDetector: GestureDetectorCompat
+    override var mDetector: GestureDetector
 
     init {
-        mDetector = GestureDetectorCompat(context, MyGestureListener())
+        mDetector = GestureDetector(context, MyGestureListener())
         mDetector.setOnDoubleTapListener(null)
     }
 

@@ -25,7 +25,6 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -40,7 +39,7 @@ abstract class KeyButton(context: Context, attrs: AttributeSet) :
     override var keySymbol: String? = null
     override var keyShiftSymbol: String? = null
 
-    abstract var mDetector: GestureDetectorCompat
+    abstract var mDetector: GestureDetector
     abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

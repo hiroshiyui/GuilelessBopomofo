@@ -22,18 +22,18 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.MotionEvent
-import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
 
 class CharacterKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs) {
-    override lateinit var mDetector: GestureDetectorCompat
+    override var mDetector: GestureDetector
 
     init {
-        mDetector = GestureDetectorCompat(context, MyGestureListener())
+        mDetector = GestureDetector(context, MyGestureListener())
         mDetector.setOnDoubleTapListener(null)
     }
 

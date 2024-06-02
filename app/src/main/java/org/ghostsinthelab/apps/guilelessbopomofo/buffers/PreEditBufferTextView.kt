@@ -25,9 +25,9 @@ import android.text.Spanned
 import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.util.Log
+import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.text.toSpannable
-import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.setPadding
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
@@ -40,7 +40,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     BufferTextView(context, attrs), Vibratable {
     private val logTag = "PreEditBufferTextView"
     private lateinit var span: SpannableString
-    override lateinit var mDetector: GestureDetectorCompat
+    override var mDetector: GestureDetector
     var offset: Int = 0
 
     enum class CursorMovedBy {
@@ -49,7 +49,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     }
 
     init {
-        mDetector = GestureDetectorCompat(context, MyGestureListener())
+        mDetector = GestureDetector(context, MyGestureListener())
         mDetector.setOnDoubleTapListener(null)
     }
 

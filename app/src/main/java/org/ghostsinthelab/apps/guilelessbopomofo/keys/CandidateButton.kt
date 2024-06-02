@@ -21,8 +21,8 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.MotionEvent
-import androidx.core.view.GestureDetectorCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -31,10 +31,10 @@ import org.greenrobot.eventbus.EventBus
 class CandidateButton(context: Context, attrs: AttributeSet) :
     KeyButton(context, attrs), Vibratable {
     lateinit var candidate: Candidate
-    override lateinit var mDetector: GestureDetectorCompat
+    override var mDetector: GestureDetector
 
     init {
-        mDetector = GestureDetectorCompat(context, MyGestureListener())
+        mDetector = GestureDetector(context, MyGestureListener())
     }
 
     inner class MyGestureListener : GestureListener() {
