@@ -32,6 +32,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CompactLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardColemakAnsiLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenColemakAnsiLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDvorakLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26LayoutBinding
@@ -64,6 +66,8 @@ class KeyboardPanel(
     private lateinit var keyboardHsuDvorakLayoutBinding: KeyboardHsuDvorakLayoutBinding
     private lateinit var keyboardHsuDvorakBothLayoutBinding: KeyboardHsuDvorakBothLayoutBinding
     private lateinit var keyboardDvorakLayoutBinding: KeyboardDvorakLayoutBinding
+    private lateinit var keyboardColemakAnsiLayoutBinding: KeyboardColemakAnsiLayoutBinding
+    private lateinit var keyboardDachenColmekAnsiLayoutBinding: KeyboardDachenColemakAnsiLayoutBinding
     private lateinit var compactLayoutBinding: CompactLayoutBinding
 
     // keyButtonPopup
@@ -161,7 +165,7 @@ class KeyboardPanel(
         val userKeyboardLayoutPreference =
             sharedPreferences.getString(
                 "user_keyboard_layout",
-                GuilelessBopomofoService.defaultKeyboardLayout
+                GuilelessBopomofoService.DEFAULT_KEYBOARD_LAYOUT
             )
 
         userKeyboardLayoutPreference?.let {
@@ -184,12 +188,14 @@ class KeyboardPanel(
                     )
                 ) {
                     keyboardHsuQwertyLayoutBinding =
-                        KeyboardHsuQwertyLayoutBinding.inflate(LayoutInflater.from(context))
-                    this.addView(keyboardHsuQwertyLayoutBinding.root)
+                        KeyboardHsuQwertyLayoutBinding.inflate(LayoutInflater.from(context)).also {
+                            this.addView(it.root)
+                        }
                 } else {
                     keyboardHsuLayoutBinding =
-                        KeyboardHsuLayoutBinding.inflate(LayoutInflater.from(context))
-                    this.addView(keyboardHsuLayoutBinding.root)
+                        KeyboardHsuLayoutBinding.inflate(LayoutInflater.from(context)).also {
+                            this.addView(it.root)
+                        }
                 }
                 return
             }
@@ -201,12 +207,14 @@ class KeyboardPanel(
                     )
                 ) {
                     keyboardHsuDvorakBothLayoutBinding =
-                        KeyboardHsuDvorakBothLayoutBinding.inflate(LayoutInflater.from(context))
-                    this.addView(keyboardHsuDvorakBothLayoutBinding.root)
+                        KeyboardHsuDvorakBothLayoutBinding.inflate(LayoutInflater.from(context)).also {
+                            this.addView(it.root)
+                        }
                 } else {
                     keyboardHsuDvorakLayoutBinding =
-                        KeyboardHsuDvorakLayoutBinding.inflate(LayoutInflater.from(context))
-                    this.addView(keyboardHsuDvorakLayoutBinding.root)
+                        KeyboardHsuDvorakLayoutBinding.inflate(LayoutInflater.from(context)).also {
+                            this.addView(it.root)
+                        }
                 }
                 return
             }
@@ -218,12 +226,14 @@ class KeyboardPanel(
                     )
                 ) {
                     keyboardEt26QwertyLayoutBinding =
-                        KeyboardEt26QwertyLayoutBinding.inflate(LayoutInflater.from(context))
-                    this.addView(keyboardEt26QwertyLayoutBinding.root)
+                        KeyboardEt26QwertyLayoutBinding.inflate(LayoutInflater.from(context)).also {
+                            this.addView(it.root)
+                        }
                 } else {
                     keyboardEt26LayoutBinding =
-                        KeyboardEt26LayoutBinding.inflate(LayoutInflater.from(context))
-                    this.addView(keyboardEt26LayoutBinding.root)
+                        KeyboardEt26LayoutBinding.inflate(LayoutInflater.from(context)).also {
+                            this.addView(it.root)
+                        }
                 }
                 return
             }
@@ -235,10 +245,22 @@ class KeyboardPanel(
                 return
             }
 
+            "KB_COLEMAK_DH_ANSI" -> {
+                keyboardDachenColmekAnsiLayoutBinding = KeyboardDachenColemakAnsiLayoutBinding.inflate(LayoutInflater.from(context)).also {
+                    this.addView(it.root)
+                }
+                return
+            }
+
+            "KB_COLEMAK_DH_ORTH" -> {
+                return
+            }
+
             "KB_DEFAULT" -> {
                 keyboardDachenLayoutBinding =
-                    KeyboardDachenLayoutBinding.inflate(LayoutInflater.from(context))
-                this.addView(keyboardDachenLayoutBinding.root)
+                    KeyboardDachenLayoutBinding.inflate(LayoutInflater.from(context)).also {
+                        this.addView(it.root)
+                    }
                 return
             }
         }
@@ -248,8 +270,13 @@ class KeyboardPanel(
         Log.d(logTag, "switchToAlphabeticalLayout()")
 
         if (userIsUsingDvorakHsu()) {
+            Log.d(logTag, "switchToDvorakLayout")
             switchToDvorakLayout()
+        }  else if (userIsUsingColemak()) {
+            Log.d(logTag, "switchToColemakLayout")
+            switchToColemakLayout()
         } else {
+            Log.d(logTag, "switchToQwertyLayout")
             switchToQwertyLayout()
         }
     }
@@ -264,10 +291,10 @@ class KeyboardPanel(
         }
 
         keyboardQwertyLayoutBinding =
-            KeyboardQwertyLayoutBinding.inflate(LayoutInflater.from(context))
-
-        this.removeAllViews()
-        this.addView(keyboardQwertyLayoutBinding.root)
+            KeyboardQwertyLayoutBinding.inflate(LayoutInflater.from(context)).also {
+                this@KeyboardPanel.removeAllViews()
+                this@KeyboardPanel.addView(it.root)
+            }
     }
 
     private fun switchToDvorakLayout() {
@@ -280,17 +307,43 @@ class KeyboardPanel(
         }
 
         keyboardDvorakLayoutBinding =
-            KeyboardDvorakLayoutBinding.inflate(LayoutInflater.from(context))
+            KeyboardDvorakLayoutBinding.inflate(LayoutInflater.from(context)).also {
+                this@KeyboardPanel.removeAllViews()
+                this@KeyboardPanel.addView(it.root)
+            }
+    }
 
-        this.removeAllViews()
-        this.addView(keyboardDvorakLayoutBinding.root)
+    private fun switchToColemakLayout() {
+        Log.d(logTag, "switchToColemakLayout")
+        currentLayout = Layout.COLEMAK
+
+        if (physicalKeyboardEnabled()) {
+            switchToCompactLayout()
+            return
+        }
+
+        if (sharedPreferences.getString("user_keyboard_layout", GuilelessBopomofoService.DEFAULT_KEYBOARD_LAYOUT) == "KB_COLEMAK_DH_ANSI") {
+            keyboardColemakAnsiLayoutBinding = KeyboardColemakAnsiLayoutBinding.inflate(LayoutInflater.from(context)).also {
+                this@KeyboardPanel.removeAllViews()
+                this@KeyboardPanel.addView(it.root)
+            }
+        }
     }
 
     private fun userIsUsingDvorakHsu(): Boolean {
         return (sharedPreferences.getString(
             "user_keyboard_layout",
-            GuilelessBopomofoService.defaultKeyboardLayout
+            GuilelessBopomofoService.DEFAULT_KEYBOARD_LAYOUT
         ) == "KB_DVORAK_HSU")
+    }
+
+    private fun userIsUsingColemak(): Boolean {
+        return listOf("KB_COLEMAK_DH_ANSI", "KB_COLEMAK_DH_ORTH").any {
+            sharedPreferences.getString(
+                "user_keyboard_layout",
+                GuilelessBopomofoService.DEFAULT_KEYBOARD_LAYOUT
+            ) == it
+        }
     }
 
     private fun switchToSymbolPicker() {

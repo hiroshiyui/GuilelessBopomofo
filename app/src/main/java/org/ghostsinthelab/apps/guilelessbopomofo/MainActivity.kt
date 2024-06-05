@@ -98,7 +98,9 @@ class MainActivity : AppCompatActivity(), Vibratable {
                     radioButtonLayoutETen26 to "KB_ET26",
                     radioButtonLayoutHsu to "KB_HSU",
                     radioButtonLayoutDvorakHsu to "KB_DVORAK_HSU",
-                    radioButtonLayoutETen41 to "KB_ET"
+                    radioButtonLayoutETen41 to "KB_ET",
+                    radioButtonLayoutColemakAnsi to "KB_COLEMAK_DH_ANSI",
+                    radioButtonLayoutColemakOrtholinear to "KB_COLEMAK_DH_ORTH"
                 )) {
                     button.setOnClickListener {
                         sharedPreferences.edit().putString("user_keyboard_layout", layout).apply()
@@ -106,7 +108,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
 
                     if (sharedPreferences.getString(
                             "user_keyboard_layout",
-                            GuilelessBopomofoService.defaultKeyboardLayout
+                            GuilelessBopomofoService.DEFAULT_KEYBOARD_LAYOUT
                         ) == layout
                     ) {
                         button.isChecked = true

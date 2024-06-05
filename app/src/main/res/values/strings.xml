@@ -77,4 +77,6 @@
     <string name="text_view_setting_description_ime_switch">Toggle the input method switch key between single or double touch</string>
     <string name="switch_setting_ime_switch">Use double touch to switch to next input method?</string>
     <string name="bopomofo_keyboard_layout_eten41">E-TEN 41 Keys</string>
+    <string name="bopomofo_keyboard_layout_colemak_ansi" >Colemak-DH (ANSI)</string>
+    <string name="bopomofo_keyboard_layout_colemak_ortholinear">Colemak-DH (Ortholinear)</string>
 </resources>

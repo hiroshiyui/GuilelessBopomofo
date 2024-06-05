@@ -96,7 +96,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     companion object {
         val defaultHapticFeedbackStrength: Int =
             Vibratable.VibrationStrength.NORMAL.strength
-        const val defaultKeyboardLayout: String = "KB_DEFAULT"
+        const val DEFAULT_KEYBOARD_LAYOUT: String = "KB_DEFAULT"
         var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
     }
 
@@ -239,6 +239,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         EventBus.getDefault().unregister(this)
     }
 
+    // on key down event from **physical** keyboard
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(logTag, "onKeyDown()")
 
@@ -251,6 +252,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         event?.apply {
             if (this.isPrintingKey) {
+                // TODO: perhaps I should remap keycode here
                 onPrintingKeyDown(this)
             } else {
                 when (this.keyCode) {
@@ -391,7 +393,10 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     private fun onPrintingKeyDown(event: KeyEvent) {
         Log.d(logTag, "onPrintingKeyDown()")
-
+        Log.d(logTag, event.unicodeChar.toChar().toString())
+        Log.d(logTag,
+            KeyEvent.keyCodeFromString(event.scanCode.toString()).toString()
+        )
         // Consider keys in NumPad
         if (event.isNumPadKey()) {
             currentInputConnection.sendKeyEvent(event)
@@ -399,10 +404,15 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             return
         }
 
+        // if user pressed '`'
         if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE && !event.isShiftPressed) {
             viewBinding.keyboardPanel.switchToLayout(Layout.SYMBOLS)
             return
         }
+
+        // override (remapping) keycode/scancode here
+//        val remapKeyEvent: KeyEvent = KeyEvent(
+//            ACTION_DOWN, KeyEvent.keyCodeFromString("KEYCODE_X"))
 
         var keyPressed: Char = event.unicodeChar.toChar()
 

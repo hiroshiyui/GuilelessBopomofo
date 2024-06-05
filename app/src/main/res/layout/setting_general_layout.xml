@@ -145,6 +145,18 @@
             android:layout_height="wrap_content"
             android:text="@string/bopomofo_keyboard_layout_eten41" />
 
+        <RadioButton
+            android:id="@+id/radioButtonLayoutColemakAnsi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bopomofo_keyboard_layout_colemak_ansi" />
+
+        <RadioButton
+            android:id="@+id/radioButtonLayoutColemakOrtholinear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bopomofo_keyboard_layout_colemak_ortholinear" />
+
     </RadioGroup>
 
     <com.google.android.material.materialswitch.MaterialSwitch
