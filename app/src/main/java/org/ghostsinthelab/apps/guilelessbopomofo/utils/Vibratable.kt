@@ -36,17 +36,8 @@ interface Vibratable {
         STRONG(100)
     }
 
-    val amplitude: Int
-        get() {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                VibrationEffect.DEFAULT_AMPLITUDE
-            } else {
-                -1
-            }
-        }
-
-    val strengthRange: IntRange
-        get() = 0..150
+    val vibrationMilliSeconds: Long
+        get() = 50
 
     fun <T> performVibration(context: Context, vibrationStrength: T) {
         val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java) as Vibrator
@@ -56,15 +47,15 @@ interface Vibratable {
             return
         }
 
-        var strength by Delegates.notNull<Int>()
+        var amplitude by Delegates.notNull<Int>()
 
         when (vibrationStrength) {
             is VibrationStrength -> {
-                strength = vibrationStrength.strength
+                amplitude = vibrationStrength.strength
             }
 
             is Int -> {
-                strength = vibrationStrength.toInt()
+                amplitude = vibrationStrength.toInt()
             }
         }
 
@@ -84,21 +75,22 @@ interface Vibratable {
             sharedPreferences.getBoolean("same_haptic_feedback_to_function_buttons", false)
         if (sameHapticFeedbackToFuncButtons) {
             // might be 0
-            strength = hapticFeedbackPreferenceStrength
+            amplitude = hapticFeedbackPreferenceStrength
         }
 
         // do nothing if user set vibration strength to 0
-        if (strength == 0) {
+        if (amplitude == 0) {
             return
         }
 
         // perform vibration
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val vibrationEffect = VibrationEffect.createOneShot(strength.toLong(), amplitude)
+            val vibrationEffect = VibrationEffect.createOneShot(vibrationMilliSeconds, amplitude)
             vibrator.vibrate(vibrationEffect)
         } else {
             @Suppress("DEPRECATION")
-            vibrator.vibrate(strength.toLong())
+            // deprecated in API 26 (Android 8.0), for older devices, we just support time-based vibration. (treat amplitude as time in milliseconds)
+            vibrator.vibrate(amplitude.toLong())
         }
     }
 }

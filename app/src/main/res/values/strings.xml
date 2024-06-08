@@ -52,7 +52,7 @@
     <string name="rearward_phrase_choice_switch">Choose phrase rearward?</string>
     <string name="rearward_phrase_choice_description">If enabled, phrase will be chosen before the cursor</string>
     <string name="haptic_feedback_strength">Haptic feedback strength</string>
-    <string name="haptic_feedback_strength_description">Adjust haptic feedback strength of character keys, the effect varies on different devices</string>
+    <string name="haptic_feedback_strength_description">Adjust haptic feedback strength of character keys, the effect varies on different devices. Set this to 0 will disable haptic feedback effect.</string>
     <string name="current_mode">Current mode:</string>
     <string name="mode_bopomofo">Bopomofo</string>
     <string name="mode_english">English</string>
@@ -70,7 +70,7 @@
     <string name="bopomofo_keyboard_layout_dvorak_hsu">Hsu - Dvorak Keymap</string>
     <string name="switch_display_hsu_dvorak_both_layout">Enable Dvorak keycaps for Hsu - Dvorak Keymap layout?</string>
     <string name="user_interface_settings">User interface settings</string>
-    <string name="haptic_feedback_strength_setting">%1$dms</string>
+    <string name="haptic_feedback_strength_setting">Level: %1$d</string>
     <string name="key_button_height_setting">%1$ddp</string>
     <string name="setting_apply_same_haptic_feedback_strength_to_function_buttons">Apply same haptic feedback strength to function buttons?</string>
     <string name="text_view_setting_ime_switch">Switch Input Methods</string>
