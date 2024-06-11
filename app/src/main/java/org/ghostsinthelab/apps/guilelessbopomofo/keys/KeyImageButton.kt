@@ -37,9 +37,6 @@ abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
     val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
     override var keyCodeString: String? = null
-    override var keyType: Int? = null
-    override var keySymbol: String? = null
-    override var keyShiftSymbol: String? = null
 
     abstract var mDetector: GestureDetector
     abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable
@@ -55,9 +52,6 @@ abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0, 0).apply {
             try {
                 keyCodeString = this.getString(R.styleable.KeyImageButton_keyCodeString)
-                keyType = this.getInt(R.styleable.KeyImageButton_keyTypeEnum, -1)
-                keySymbol = this.getString(R.styleable.KeyImageButton_keySymbolString)
-                keyShiftSymbol = this.getString(R.styleable.KeyImageButton_keyShiftSymbolString)
             } finally {
                 recycle()
             }

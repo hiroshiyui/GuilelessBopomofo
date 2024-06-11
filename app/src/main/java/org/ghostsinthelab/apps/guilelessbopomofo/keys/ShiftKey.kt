@@ -48,9 +48,6 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         context.theme.obtainStyledAttributes(attrs, R.styleable.KeyImageButton, 0, 0).apply {
             try {
                 keyCodeString = this.getString(R.styleable.KeyImageButton_keyCodeString)
-                keyType = this.getInt(R.styleable.KeyImageButton_keyTypeEnum, -1)
-                keySymbol = this.getString(R.styleable.KeyImageButton_keySymbolString)
-                keyShiftSymbol = this.getString(R.styleable.KeyImageButton_keyShiftSymbolString)
             } finally {
                 recycle()
             }
