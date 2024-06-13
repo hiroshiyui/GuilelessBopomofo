@@ -23,7 +23,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
 
-class Keyboard(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
+class ImeLayout(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
     init {
         this.orientation = VERTICAL

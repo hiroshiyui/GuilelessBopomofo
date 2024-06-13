@@ -61,7 +61,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ImeLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
@@ -87,7 +87,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     SharedPreferences.OnSharedPreferenceChangeListener, KeyEventExtension {
     private val logTag = "GuilelessBopomofoSvc"
     private var imeWindowVisible: Boolean = true
-    private lateinit var viewBinding: KeyboardLayoutBinding
+    private lateinit var viewBinding: ImeLayoutBinding
 
     private lateinit var sharedPreferences: SharedPreferences
     private val chewingDataFiles =
@@ -194,7 +194,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     override fun onCreateInputView(): View {
         Log.d(logTag, "onCreateInputView()")
-        viewBinding = KeyboardLayoutBinding.inflate(this.layoutInflater)
+        viewBinding = ImeLayoutBinding.inflate(this.layoutInflater)
         return viewBinding.root
     }
 
@@ -752,7 +752,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     private fun forceViewBindingInitialized() {
         if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
             Log.d(logTag, "forceViewBindingInitialized()")
-            viewBinding = KeyboardLayoutBinding.inflate(this.layoutInflater)
+            viewBinding = ImeLayoutBinding.inflate(this.layoutInflater)
             setInputView(viewBinding.root)
         }
     }
