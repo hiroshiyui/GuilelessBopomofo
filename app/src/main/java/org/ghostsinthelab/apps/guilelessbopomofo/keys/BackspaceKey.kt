@@ -65,7 +65,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            performAction()
+            performKeyStroke()
             return true
         }
 
@@ -99,7 +99,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     private suspend fun repeatBackspace() {
         fixedRateTimer("repeatBackspace", true, 50L, 100L) {
             if (backspacePressed) {
-                performAction()
+                performKeyStroke()
             } else {
                 this@fixedRateTimer.cancel()
             }
@@ -108,7 +108,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     }
 
     companion object {
-        fun performAction() {
+        fun performKeyStroke() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.chewing.handleBackspace()
                 EventBus.getDefault().post(Events.UpdateBuffers())

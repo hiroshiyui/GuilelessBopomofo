@@ -27,7 +27,7 @@ import org.greenrobot.eventbus.EventBus
 
 class DownKey {
     companion object {
-        fun performAction() {
+        fun performKeyStroke() {
             if (ChewingBridge.chewing.bufferLen() > 0) {
                 ChewingBridge.chewing.candClose()
                 ChewingBridge.chewing.candOpen()

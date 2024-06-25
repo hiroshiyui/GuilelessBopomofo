@@ -24,7 +24,7 @@ import org.greenrobot.eventbus.EventBus
 
 class EscapeKey {
     companion object {
-        fun performAction() {
+        fun performKeyStroke() {
             EventBus.getDefault().post(Events.ExitKeyboardSubLayouts())
         }
     }

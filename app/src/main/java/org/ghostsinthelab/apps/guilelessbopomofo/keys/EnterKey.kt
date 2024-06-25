@@ -44,13 +44,13 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            performAction()
+            performKeyStroke()
             return true
         }
     }
 
     companion object {
-        fun performAction() {
+        fun performKeyStroke() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) { // not committed yet
                 ChewingBridge.chewing.commitPreeditBuf(ChewingBridge.chewing.context)
                 EventBus.getDefault().post(Events.UpdateBuffers())

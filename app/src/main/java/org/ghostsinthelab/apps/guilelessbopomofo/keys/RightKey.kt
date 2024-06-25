@@ -27,7 +27,7 @@ import org.greenrobot.eventbus.EventBus
 class RightKey {
     companion object {
         // by now Right key is just been implemented as physical form only.
-        fun performAction() {
+        fun performKeyStroke() {
             ChewingBridge.chewing.handleRight()
             EventBus.getDefault().post(Events.DirectionKeyDown(DirectionKey.RIGHT))
         }

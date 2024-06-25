@@ -45,13 +45,13 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            performAction()
+            performKeyStroke()
             return true
         }
     }
 
     companion object {
-        fun performAction() {
+        fun performKeyStroke() {
             if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
                 ChewingBridge.chewing.handleSpace()
                 EventBus.getDefault().post(Events.UpdateBuffers())

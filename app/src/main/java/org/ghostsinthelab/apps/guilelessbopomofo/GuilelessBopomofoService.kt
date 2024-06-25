@@ -270,31 +270,31 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                             viewBinding.keyboardPanel.toggleMainLayoutMode()
                             return true
                         }
-                        SpaceKey.performAction()
+                        SpaceKey.performKeyStroke()
                     }
 
                     KEYCODE_DEL -> {
-                        BackspaceKey.performAction()
+                        BackspaceKey.performKeyStroke()
                     }
 
                     KEYCODE_ENTER -> {
-                        EnterKey.performAction()
+                        EnterKey.performKeyStroke()
                     }
 
                     KEYCODE_ESCAPE -> {
-                        EscapeKey.performAction()
+                        EscapeKey.performKeyStroke()
                     }
 
                     KEYCODE_DPAD_LEFT -> {
-                        LeftKey.performAction()
+                        LeftKey.performKeyStroke()
                     }
 
                     KEYCODE_DPAD_RIGHT -> {
-                        RightKey.performAction()
+                        RightKey.performKeyStroke()
                     }
 
                     KEYCODE_DPAD_DOWN -> {
-                        DownKey.performAction()
+                        DownKey.performKeyStroke()
                     }
 
                     else -> {
@@ -323,12 +323,12 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             } else {
                 return when (it.keyCode) {
                     KEYCODE_ENTER -> {
-                        // DO NOTHING HERE, has been handled by EnterKey.performAction()
+                        // DO NOTHING HERE, has been handled by EnterKey.performKeyStroke()
                         true
                     }
 
                     KEYCODE_SPACE -> {
-                        // DO NOTHING HERE, has been handled by SpaceKey.performPhysicalAction()
+                        // DO NOTHING HERE, has been handled by SpaceKey.performKeyStroke()
                         true
                     }
 
