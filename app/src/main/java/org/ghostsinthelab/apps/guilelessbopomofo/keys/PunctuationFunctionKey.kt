@@ -26,7 +26,7 @@ import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
 import org.greenrobot.eventbus.EventBus
 
 class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
@@ -38,7 +38,7 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBu
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.NORMAL)
+            performVibration(context, Vibrable.VibrationStrength.NORMAL)
             return true
         }
 
@@ -49,7 +49,7 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBu
         }
 
         override fun onLongPress(e: MotionEvent) {
-            performVibration(context, Vibratable.VibrationStrength.STRONG)
+            performVibration(context, Vibrable.VibrationStrength.STRONG)
             ChewingUtil.openPuncCandidates()
             EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
         }

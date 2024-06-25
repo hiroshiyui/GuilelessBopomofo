@@ -25,11 +25,11 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
 import org.greenrobot.eventbus.EventBus
 
 class CandidateButton(context: Context, attrs: AttributeSet) :
-    KeyButton(context, attrs), Vibratable {
+    KeyButton(context, attrs), Vibrable {
     lateinit var candidate: Candidate
     override var mDetector: GestureDetector
 
@@ -39,7 +39,7 @@ class CandidateButton(context: Context, attrs: AttributeSet) :
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.LIGHT)
+            performVibration(context, Vibrable.VibrationStrength.LIGHT)
             return true
         }
 

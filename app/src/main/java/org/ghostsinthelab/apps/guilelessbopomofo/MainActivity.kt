@@ -30,9 +30,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
 
-class MainActivity : AppCompatActivity(), Vibratable {
+class MainActivity : AppCompatActivity(), Vibrable {
     private val logTag: String = "MainActivity"
 
     // ViewBinding

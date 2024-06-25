@@ -28,7 +28,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
 
 abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
     AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
@@ -39,7 +39,7 @@ abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
     override var keyCodeString: String? = null
 
     abstract var mDetector: GestureDetector
-    abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable
+    abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibrable
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event != null) {

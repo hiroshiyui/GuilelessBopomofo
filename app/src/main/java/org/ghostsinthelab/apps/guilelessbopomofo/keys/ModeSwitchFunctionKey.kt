@@ -24,7 +24,7 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
 import org.greenrobot.eventbus.EventBus
 
 class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
@@ -36,7 +36,7 @@ class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) : KeyImageBut
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.NORMAL)
+            performVibration(context, Vibrable.VibrationStrength.NORMAL)
             return true
         }
 

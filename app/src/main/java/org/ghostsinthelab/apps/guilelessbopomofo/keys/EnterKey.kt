@@ -26,7 +26,7 @@ import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
 import org.greenrobot.eventbus.EventBus
 
 class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
@@ -39,7 +39,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.NORMAL)
+            performVibration(context, Vibrable.VibrationStrength.NORMAL)
             return true
         }
 

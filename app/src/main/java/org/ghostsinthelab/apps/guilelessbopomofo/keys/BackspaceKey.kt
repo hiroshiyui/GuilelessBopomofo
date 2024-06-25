@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
 import org.greenrobot.eventbus.EventBus
 import kotlin.concurrent.fixedRateTimer
 import kotlin.coroutines.CoroutineContext
@@ -60,7 +60,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
             }
             lastBackspaceClickTime = SystemClock.elapsedRealtime()
 
-            performVibration(context, Vibratable.VibrationStrength.NORMAL)
+            performVibration(context, Vibrable.VibrationStrength.NORMAL)
             return true
         }
 

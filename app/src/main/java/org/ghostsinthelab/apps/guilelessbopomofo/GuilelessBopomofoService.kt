@@ -75,7 +75,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.RightKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.SpaceKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -95,9 +95,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     companion object {
         val defaultHapticFeedbackStrength: Int =
-            Vibratable.VibrationStrength.NORMAL.strength
+            Vibrable.VibrationStrength.NORMAL.strength
         const val defaultKeyboardLayout: String = "KB_DEFAULT"
-        var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
+        var userHapticFeedbackStrength: Int = Vibrable.VibrationStrength.NORMAL.strength
     }
 
     override fun onCreate() {

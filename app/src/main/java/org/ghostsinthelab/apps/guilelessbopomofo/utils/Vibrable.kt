@@ -26,14 +26,14 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import kotlin.properties.Delegates
 
-interface Vibratable {
+interface Vibrable {
     enum class VibrationStrength(val strength: Int) {
-        LIGHT(25),
-        NORMAL(50),
-        STRONG(100)
+        LIGHT(25), NORMAL(50), STRONG(100)
     }
 
     val vibrationMilliSeconds: Long
@@ -66,11 +66,9 @@ interface Vibratable {
         // just do as they wish.
         val sharedPreferences: SharedPreferences =
             context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
-        val hapticFeedbackPreferenceStrength: Int =
-            sharedPreferences.getInt(
-                "user_haptic_feedback_strength",
-                GuilelessBopomofoService.defaultHapticFeedbackStrength
-            )
+        val hapticFeedbackPreferenceStrength: Int = sharedPreferences.getInt(
+            "user_haptic_feedback_strength", GuilelessBopomofoService.defaultHapticFeedbackStrength
+        )
         val sameHapticFeedbackToFuncButtons: Boolean =
             sharedPreferences.getBoolean("same_haptic_feedback_to_function_buttons", false)
         if (sameHapticFeedbackToFuncButtons) {
@@ -84,13 +82,18 @@ interface Vibratable {
         }
 
         // perform vibration
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val vibrationEffect = VibrationEffect.createOneShot(vibrationMilliSeconds, amplitude)
-            vibrator.vibrate(vibrationEffect)
-        } else {
-            @Suppress("DEPRECATION")
-            // deprecated in API 26 (Android 8.0), for older devices, we just support time-based vibration. (treat amplitude as time in milliseconds)
-            vibrator.vibrate(amplitude.toLong())
+        runBlocking {
+            launch {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    val vibrationEffect =
+                        VibrationEffect.createOneShot(vibrationMilliSeconds, amplitude)
+                    vibrator.vibrate(vibrationEffect)
+                } else {
+                    @Suppress("DEPRECATION")
+                    // deprecated in API 26 (Android 8.0), for older devices, we just support time-based vibration. (treat amplitude as time in milliseconds)
+                    vibrator.vibrate(amplitude.toLong())
+                }
+            }
         }
     }
 }
