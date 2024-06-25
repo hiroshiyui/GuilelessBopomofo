@@ -1,7 +1,7 @@
 val kotlinVersion = "2.0.0"
 val androidxAppcompatVersion = "1.7.0"
 val androidxEmoji2Version = "1.4.0"
-val lifecycleVersion = "2.8.1"
+val lifecycleVersion = "2.8.2"
 
 plugins {
     id("com.android.application")
@@ -91,15 +91,15 @@ dependencies {
     implementation("org.greenrobot:eventbus:3.3.1")
     testImplementation("junit:junit:4.13.2")
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
-    androidTestImplementation("androidx.test.espresso:espresso-accessibility:3.5.1")
-    androidTestImplementation("androidx.test.espresso:espresso-web:3.5.1")
-    androidTestImplementation("androidx.test.espresso.idling:idling-concurrent:3.5.1")
-    androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.5.1")
-    androidTestImplementation("androidx.test:core:1.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.2.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.0")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.0")
+    androidTestImplementation("androidx.test.espresso:espresso-accessibility:3.6.0")
+    androidTestImplementation("androidx.test.espresso:espresso-web:3.6.0")
+    androidTestImplementation("androidx.test.espresso.idling:idling-concurrent:3.6.0")
+    androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.6.0")
+    androidTestImplementation("androidx.test:core:1.6.0")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
 }
 
