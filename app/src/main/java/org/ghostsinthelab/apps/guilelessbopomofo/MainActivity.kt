@@ -27,6 +27,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
@@ -53,7 +54,6 @@ class MainActivity : AppCompatActivity(), Vibrable {
         viewBinding.apply {
             textViewAppVersion.text =
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                    @Suppress("DEPRECATION")
                     applicationContext.packageManager.getPackageInfo(
                         this@MainActivity.packageName,
                         0
@@ -84,8 +84,14 @@ class MainActivity : AppCompatActivity(), Vibrable {
                         textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
                     }
 
+                val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
+
+                if (!isGuilelessBopomofoEnabled()) {
+                    Toast.makeText(applicationContext, R.string.please_enable_guileless_bopomofo_first, Toast.LENGTH_LONG).show()
+                    startImeSystemSettingActivity.launch(intent)
+                }
+
                 buttonLaunchImeSystemSettings.setOnClickListener {
-                    val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
                     startImeSystemSettingActivity.launch(intent)
                 }
 
