@@ -91,7 +91,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
     private lateinit var sharedPreferences: SharedPreferences
     private val chewingDataFiles =
-        listOf("tsi.dat", "word.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
+        listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
 
     companion object {
         val defaultHapticFeedbackStrength: Int =

@@ -40,7 +40,7 @@ class ChewingBridgeInstrumentedTest {
     private val dataPath: String = appContext.dataDir.absolutePath
     private val chewingDataDir = File(dataPath)
     private val chewingDataFiles =
-        listOf("tsi.dat", "word.dat", "pinyin.tab", "swkb.dat", "symbols.dat")
+        listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
 
     @Before
     fun setupChewingEngine() {
