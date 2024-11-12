@@ -1,7 +1,7 @@
 val kotlinVersion = "2.0.0"
 val androidxAppcompatVersion = "1.7.0"
-val androidxEmoji2Version = "1.4.0"
-val lifecycleVersion = "2.8.3"
+val androidxEmoji2Version = "1.5.0"
+val lifecycleVersion = "2.8.7"
 
 plugins {
     id("com.android.application")
@@ -12,14 +12,14 @@ plugins {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 35
     buildToolsVersion = "34.0.0"
     namespace = "org.ghostsinthelab.apps.guilelessbopomofo"
 
     defaultConfig {
         applicationId = "org.ghostsinthelab.apps.guilelessbopomofo"
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 125
         versionName = "2.1.0"
 
@@ -76,8 +76,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:$androidxAppcompatVersion")
     implementation("androidx.appcompat:appcompat-resources:$androidxAppcompatVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("com.google.android.material:material:1.12.0")
     implementation("com.github.google:flexbox-layout:2.0.1")
