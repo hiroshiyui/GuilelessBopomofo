@@ -23,6 +23,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.emoji2.bundled.BundledEmojiCompatConfig
@@ -31,6 +32,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityEngineering
 import java.io.File
 
 class EngineeringModeActivity : AppCompatActivity() {
+    private val logTag = "EngineeringModeActivity"
     // ViewBinding
     private lateinit var viewBinding: ActivityEngineeringModeBinding
 
@@ -54,10 +56,9 @@ class EngineeringModeActivity : AppCompatActivity() {
     private fun checkChewingDateFiles(): Boolean {
         val dataPath =
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                @Suppress("DEPRECATION")
-                packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
+                packageManager.getPackageInfo(this.packageName, 0).applicationInfo!!.dataDir
             } else {
-                packageManager.getPackageInfo(this.packageName, PackageManager.PackageInfoFlags.of(0)).applicationInfo.dataDir
+                packageManager.getPackageInfo(this.packageName, PackageManager.PackageInfoFlags.of(0)).applicationInfo!!.dataDir
             }
 
         val chewingDataDir = File(dataPath)
@@ -65,6 +66,7 @@ class EngineeringModeActivity : AppCompatActivity() {
 
         for (file in chewingDataFiles) {
             val destinationFile = File(String.format("%s/%s", chewingDataDir.absolutePath, file))
+            Log.d(logTag, "Destination file: $destinationFile")
             if (!destinationFile.exists()) {
                 return false
             }

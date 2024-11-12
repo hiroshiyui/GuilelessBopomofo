@@ -115,12 +115,12 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         try {
             val dataPath =
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                    packageManager.getPackageInfo(this.packageName, 0).applicationInfo.dataDir
+                    packageManager.getPackageInfo(this.packageName, 0).applicationInfo!!.dataDir
                 } else {
                     packageManager.getPackageInfo(
                         this.packageName,
                         PackageManager.PackageInfoFlags.of(0)
-                    ).applicationInfo.dataDir
+                    ).applicationInfo!!.dataDir
                 }
             setupChewingData(dataPath)
             ChewingBridge.chewing.connect(dataPath)
@@ -673,12 +673,12 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         // Save app version
         val appVersion =
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                packageManager.getPackageInfo(this.packageName, 0).versionName.toByteArray()
+                packageManager.getPackageInfo(this.packageName, 0).versionName!!.toByteArray()
             } else {
                 packageManager.getPackageInfo(
                     this.packageName,
                     PackageManager.PackageInfoFlags.of(0)
-                ).versionName.toByteArray()
+                ).versionName!!.toByteArray()
             }
         val chewingDataAppVersionTxt =
             File(String.format("%s/%s", chewingDataDir.absolutePath, "data_appversion.txt"))

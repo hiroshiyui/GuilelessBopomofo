@@ -21,7 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager.PackageInfoFlags
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), Vibrable {
                 } else { // from API Level 33 (Android 13 TIRAMISU):
                     applicationContext.packageManager.getPackageInfo(
                         this@MainActivity.packageName,
-                        PackageInfoFlags.of(0)
+                        PackageManager.PackageInfoFlags.of(0)
                     ).versionName
                 }
 
