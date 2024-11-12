@@ -21,6 +21,11 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 class ChewingUtil {
     companion object {
+        fun listOfDataFiles(): List<String> {
+            val dataFiles = listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
+            return dataFiles
+        }
+
         fun candWindowOpened(): Boolean {
             if (ChewingBridge.chewing.candTotalChoice() > 0) {
                 return true

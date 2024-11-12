@@ -61,9 +61,7 @@ class EngineeringModeActivity : AppCompatActivity() {
             }
 
         val chewingDataDir = File(dataPath)
-
-        val chewingDataFiles =
-            listOf("dictionary.dat", "index_tree.dat", "swkb.dat", "symbols.dat")
+        val chewingDataFiles = ChewingUtil.listOfDataFiles()
 
         for (file in chewingDataFiles) {
             val destinationFile = File(String.format("%s/%s", chewingDataDir.absolutePath, file))
