@@ -13,15 +13,15 @@ plugins {
 
 android {
     compileSdk = 35
-    buildToolsVersion = "34.0.0"
+    buildToolsVersion = "35.0.0"
     namespace = "org.ghostsinthelab.apps.guilelessbopomofo"
 
     defaultConfig {
         applicationId = "org.ghostsinthelab.apps.guilelessbopomofo"
         minSdk = 23
         targetSdk = 35
-        versionCode = 125
-        versionName = "2.1.0"
+        versionCode = 126
+        versionName = "2.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
