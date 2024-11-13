@@ -82,12 +82,15 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
                 MotionEvent.ACTION_DOWN -> {
                     backspacePressed = true
                 }
+
                 MotionEvent.ACTION_MOVE -> {
                     backspacePressed = true
                 }
+
                 MotionEvent.ACTION_UP -> {
                     backspacePressed = false
                 }
+
                 MotionEvent.ACTION_CANCEL -> {
                     backspacePressed = false
                 }

@@ -39,6 +39,7 @@ abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
     override var keyCodeString: String? = null
 
     abstract var mDetector: GestureDetector
+
     abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibrable
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

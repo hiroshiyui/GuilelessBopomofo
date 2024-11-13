@@ -31,6 +31,7 @@ import java.io.File
 
 class EngineeringModeActivity : AppCompatActivity() {
     private val logTag = "EngineeringModeActivity"
+
     // ViewBinding
     private lateinit var viewBinding: ActivityEngineeringModeBinding
 
@@ -43,7 +44,8 @@ class EngineeringModeActivity : AppCompatActivity() {
         viewBinding.chewingDataFilesStatus.text = checkChewingDateFiles().toString()
 
         viewBinding.testTextInputEditText.setOnLongClickListener {
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showInputMethodPicker()
             return@setOnLongClickListener true
         }

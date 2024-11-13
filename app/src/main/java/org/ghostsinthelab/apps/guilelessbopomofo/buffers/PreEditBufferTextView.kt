@@ -64,6 +64,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                     offset = ChewingBridge.chewing.bufferLen() - 1
                 }
             }
+
             CursorMovedBy.PHYSICAL_KEYBOARD -> {
                 offset = ChewingBridge.chewing.cursorCurrent()
                 if (offset >= ChewingBridge.chewing.bufferLen()) {
@@ -124,7 +125,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         text: CharSequence?,
         start: Int,
         lengthBefore: Int,
-        lengthAfter: Int
+        lengthAfter: Int,
     ) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter)
         if (lengthAfter != 0) {

@@ -29,7 +29,8 @@ import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
 import org.greenrobot.eventbus.EventBus
 
-class PunctuationFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
+class PunctuationFunctionKey(context: Context, attrs: AttributeSet) :
+    KeyImageButton(context, attrs) {
     override var mDetector: GestureDetector
 
     init {

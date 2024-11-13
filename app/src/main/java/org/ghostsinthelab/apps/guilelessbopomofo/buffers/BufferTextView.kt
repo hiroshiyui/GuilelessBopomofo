@@ -30,6 +30,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
 abstract class BufferTextView(context: Context, attrs: AttributeSet) :
     AppCompatTextView(context, attrs), DisplayMetricsComputable {
     abstract var mDetector: GestureDetector
+
     abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibrable
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

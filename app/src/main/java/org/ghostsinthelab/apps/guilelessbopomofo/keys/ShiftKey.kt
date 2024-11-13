@@ -71,9 +71,11 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                 ShiftKeyState.RELEASED -> {
                     switchToState(ShiftKeyState.PRESSED)
                 }
+
                 ShiftKeyState.PRESSED -> {
                     switchToState(ShiftKeyState.HOLD)
                 }
+
                 ShiftKeyState.HOLD -> {
                     switchToState(ShiftKeyState.RELEASED)
                 }
@@ -89,7 +91,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         lateinit var buttonStateBackgroundColors: Map<ShiftKeyState, Int>
 
-        when(currentNightMode) {
+        when (currentNightMode) {
             Configuration.UI_MODE_NIGHT_NO -> {
                 buttonStateBackgroundColors = mapOf(
                     ShiftKeyState.RELEASED to R.color.colorKeyboardSpecialKeyBackground,
@@ -97,6 +99,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                     ShiftKeyState.HOLD to R.color.colorKeyboardSpecialKeyBackgroundHold
                 )
             }
+
             Configuration.UI_MODE_NIGHT_YES -> {
                 buttonStateBackgroundColors = mapOf(
                     ShiftKeyState.RELEASED to R.color.colorKeyboardSpecialKeyBackgroundDark,
@@ -117,6 +120,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                     )
                 )
             }
+
             ShiftKeyState.PRESSED -> {
                 isActive = true
                 isLocked = false
@@ -127,6 +131,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                     )
                 )
             }
+
             ShiftKeyState.HOLD -> {
                 isActive = true
                 isLocked = true

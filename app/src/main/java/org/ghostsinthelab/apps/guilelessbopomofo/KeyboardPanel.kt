@@ -229,9 +229,10 @@ class KeyboardPanel(
             }
 
             "KB_ET" -> {
-                keyboardEt41LayoutBinding = KeyboardEt41LayoutBinding.inflate(LayoutInflater.from(context)).also {
-                    this.addView(it.root)
-                }
+                keyboardEt41LayoutBinding =
+                    KeyboardEt41LayoutBinding.inflate(LayoutInflater.from(context)).also {
+                        this.addView(it.root)
+                    }
                 return
             }
 
@@ -353,7 +354,8 @@ class KeyboardPanel(
                 GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)
         } else {
             val layoutManager = FlexboxLayoutManager(context)
-            candidatesRecyclerView.adapter = PagedCandidatesAdapter(ChewingBridge.chewing.candCurrentPage())
+            candidatesRecyclerView.adapter =
+                PagedCandidatesAdapter(ChewingBridge.chewing.candCurrentPage())
             candidatesRecyclerView.layoutManager = layoutManager
         }
     }

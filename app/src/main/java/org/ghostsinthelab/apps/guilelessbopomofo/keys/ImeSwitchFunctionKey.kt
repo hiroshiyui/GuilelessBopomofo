@@ -62,7 +62,8 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
 
         override fun onLongPress(e: MotionEvent) {
             performVibration(context, Vibrable.VibrationStrength.STRONG)
-            val imm = context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm =
+                context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
         }
 
