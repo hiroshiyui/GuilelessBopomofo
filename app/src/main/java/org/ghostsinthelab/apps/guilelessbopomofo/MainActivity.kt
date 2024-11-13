@@ -21,8 +21,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -52,18 +50,7 @@ class MainActivity : AppCompatActivity(), Vibrable {
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
 
         viewBinding.apply {
-            textViewAppVersion.text =
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                    applicationContext.packageManager.getPackageInfo(
-                        this@MainActivity.packageName,
-                        0
-                    ).versionName
-                } else { // from API Level 33 (Android 13 TIRAMISU):
-                    applicationContext.packageManager.getPackageInfo(
-                        this@MainActivity.packageName,
-                        PackageManager.PackageInfoFlags.of(0)
-                    ).versionName
-                }
+            textViewAppVersion.text = BuildConfig.VERSION_NAME
 
             imageViewAppIcon.setOnClickListener {
                 if (engineeringModeEnterCount >= engineeringModeEnterClicks || engineeringModeEnabled) {
@@ -87,7 +74,11 @@ class MainActivity : AppCompatActivity(), Vibrable {
                 val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
 
                 if (!isGuilelessBopomofoEnabled()) {
-                    Toast.makeText(applicationContext, R.string.please_enable_guileless_bopomofo_first, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        applicationContext,
+                        R.string.please_enable_guileless_bopomofo_first,
+                        Toast.LENGTH_LONG
+                    ).show()
                     startImeSystemSettingActivity.launch(intent)
                 }
 

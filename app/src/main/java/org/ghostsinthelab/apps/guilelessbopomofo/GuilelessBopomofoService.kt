@@ -21,7 +21,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.os.Build
@@ -663,15 +662,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         }
 
         // Save app version
-        val appVersion =
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                packageManager.getPackageInfo(this.packageName, 0).versionName!!.toByteArray()
-            } else {
-                packageManager.getPackageInfo(
-                    this.packageName,
-                    PackageManager.PackageInfoFlags.of(0)
-                ).versionName!!.toByteArray()
-            }
+        val appVersion = BuildConfig.VERSION_NAME.toByteArray()
+
         val chewingDataAppVersionTxt =
             File(String.format("%s/%s", chewingDataDir.absolutePath, "data_appversion.txt"))
 
@@ -755,7 +747,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             "user_display_hsu_qwerty_layout",
             "user_display_eten26_qwerty_layout",
             "user_display_dvorak_hsu_both_layout",
-            -> {
+                -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
                     viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
@@ -795,14 +787,14 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
             "user_fullscreen_when_in_landscape",
             "user_fullscreen_when_in_portrait",
-            -> {
+                -> {
                 // do nothing (onEvaluateFullscreenMode() will handle it well)
             }
 
             "user_enable_button_elevation",
             "user_key_button_height",
             "user_enable_double_touch_ime_switch",
-            -> {
+                -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
                     viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
