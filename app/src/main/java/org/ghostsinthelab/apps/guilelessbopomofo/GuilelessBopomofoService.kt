@@ -113,15 +113,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         // Initializing Chewing
         try {
-            val dataPath =
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                    packageManager.getPackageInfo(this.packageName, 0).applicationInfo!!.dataDir
-                } else {
-                    packageManager.getPackageInfo(
-                        this.packageName,
-                        PackageManager.PackageInfoFlags.of(0)
-                    ).applicationInfo!!.dataDir
-                }
+            val dataPath = applicationInfo.dataDir
             setupChewingData(dataPath)
             ChewingBridge.chewing.connect(dataPath)
             ChewingBridge.chewing.context.let {

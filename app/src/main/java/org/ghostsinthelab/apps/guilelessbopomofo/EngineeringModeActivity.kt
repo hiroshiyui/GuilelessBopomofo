@@ -54,13 +54,7 @@ class EngineeringModeActivity : AppCompatActivity() {
     }
 
     private fun checkChewingDateFiles(): Boolean {
-        val dataPath =
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                packageManager.getPackageInfo(this.packageName, 0).applicationInfo!!.dataDir
-            } else {
-                packageManager.getPackageInfo(this.packageName, PackageManager.PackageInfoFlags.of(0)).applicationInfo!!.dataDir
-            }
-
+        val dataPath = applicationInfo.dataDir
         val chewingDataDir = File(dataPath)
         val chewingDataFiles = ChewingUtil.listOfDataFiles()
 
