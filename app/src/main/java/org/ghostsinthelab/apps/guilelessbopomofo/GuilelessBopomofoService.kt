@@ -80,6 +80,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 import java.io.FileOutputStream
+import java.util.concurrent.Executor
 import kotlin.coroutines.CoroutineContext
 
 class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
@@ -105,7 +106,13 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         EventBus.getDefault().register(this)
 
         // emoji2-bundled (fonts-embedded)
-        EmojiCompat.init(BundledEmojiCompatConfig(this@GuilelessBopomofoService.applicationContext))
+        val fontLoadExecutor: Executor = Executor { }
+        val emojiCompatConfig: EmojiCompat.Config =
+            BundledEmojiCompatConfig(
+                this@GuilelessBopomofoService.applicationContext,
+                fontLoadExecutor
+            )
+        EmojiCompat.init(emojiCompatConfig)
 
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)

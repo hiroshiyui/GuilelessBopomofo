@@ -28,6 +28,7 @@ import androidx.emoji2.bundled.BundledEmojiCompatConfig
 import androidx.emoji2.text.EmojiCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityEngineeringModeBinding
 import java.io.File
+import java.util.concurrent.Executor
 
 class EngineeringModeActivity : AppCompatActivity() {
     private val logTag = "EngineeringModeActivity"
@@ -38,7 +39,13 @@ class EngineeringModeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        EmojiCompat.init(BundledEmojiCompatConfig(this@EngineeringModeActivity.applicationContext))
+        val fontLoadExecutor: Executor = Executor { }
+        val emojiCompatConfig: EmojiCompat.Config =
+            BundledEmojiCompatConfig(
+                this@EngineeringModeActivity.applicationContext,
+                fontLoadExecutor
+            )
+        EmojiCompat.init(emojiCompatConfig)
 
         viewBinding = ActivityEngineeringModeBinding.inflate(this.layoutInflater)
         viewBinding.chewingDataFilesStatus.text = checkChewingDateFiles().toString()
