@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), Vibrable {
 
                     if (sharedPreferences.getString(
                             "user_keyboard_layout",
-                            GuilelessBopomofoService.defaultKeyboardLayout
+                            GuilelessBopomofoService.DEFAULT_KB_LAYOUT
                         ) == layout
                     ) {
                         button.isChecked = true

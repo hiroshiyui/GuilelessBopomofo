@@ -161,7 +161,7 @@ class KeyboardPanel(
         val userKeyboardLayoutPreference =
             sharedPreferences.getString(
                 "user_keyboard_layout",
-                GuilelessBopomofoService.defaultKeyboardLayout
+                GuilelessBopomofoService.DEFAULT_KB_LAYOUT
             )
 
         userKeyboardLayoutPreference?.let {
@@ -290,7 +290,7 @@ class KeyboardPanel(
     private fun userIsUsingDvorakHsu(): Boolean {
         return (sharedPreferences.getString(
             "user_keyboard_layout",
-            GuilelessBopomofoService.defaultKeyboardLayout
+            GuilelessBopomofoService.DEFAULT_KB_LAYOUT
         ) == "KB_DVORAK_HSU")
     }
 

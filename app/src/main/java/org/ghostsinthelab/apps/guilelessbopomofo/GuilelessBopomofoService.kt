@@ -95,7 +95,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     companion object {
         val defaultHapticFeedbackStrength: Int =
             Vibrable.VibrationStrength.NORMAL.strength
-        const val defaultKeyboardLayout: String = "KB_DEFAULT"
+        const val DEFAULT_KB_LAYOUT: String = "KB_DEFAULT"
         var userHapticFeedbackStrength: Int = Vibrable.VibrationStrength.NORMAL.strength
     }
 
