@@ -1,0 +1,53 @@
+[versions]
+androidxAppcompatVersion = "1.7.0"
+constraintlayoutVersion = "2.2.0"
+coreKtxVersion = "1.15.0"
+coreVersion = "1.6.1"
+emoji2Version = "1.5.0"
+espressoCoreVersion = "3.6.1"
+eventbusVersion = "3.3.1"
+flexboxLayoutVersion = "2.0.1"
+gradle = "8.8.0"
+junit = "1.2.1"
+junitVersion = "4.13.2"
+kotlinGradlePlugin = "2.1.10"
+kotlinxCoroutinesAndroidVersion = "1.10.1"
+leakcanaryAndroidVersion = "2.14"
+lifecycleVersion = "2.8.7"
+materialVersion = "1.12.0"
+preferenceKtxVersion = "1.2.1"
+uiautomatorVersion = "2.3.0"
+
+[libraries]
+androidx-core = { module = "androidx.test:core", version.ref = "coreVersion" }
+androidx-espresso-idling-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espressoCoreVersion" }
+androidx-espresso-web = { module = "androidx.test.espresso:espresso-web", version.ref = "espressoCoreVersion" }
+androidx-idling-concurrent = { module = "androidx.test.espresso.idling:idling-concurrent", version.ref = "espressoCoreVersion" }
+androidx-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiautomatorVersion" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompatVersion" }
+appcompat-resources = { module = "androidx.appcompat:appcompat-resources", version.ref = "androidxAppcompatVersion" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
+emoji2 = { module = "androidx.emoji2:emoji2", version.ref = "emoji2Version" }
+emoji2-bundled = { module = "androidx.emoji2:emoji2-bundled", version.ref = "emoji2Version" }
+emoji2-views = { module = "androidx.emoji2:emoji2-views", version.ref = "emoji2Version" }
+emoji2-views-helper = { module = "androidx.emoji2:emoji2-views-helper", version.ref = "emoji2Version" }
+espresso-accessibility = { module = "androidx.test.espresso:espresso-accessibility", version.ref = "espressoCoreVersion" }
+espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espressoCoreVersion" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCoreVersion" }
+espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espressoCoreVersion" }
+eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbusVersion" }
+ext-junit = { module = "androidx.test.ext:junit", version.ref = "junit" }
+flexbox-layout = { module = "com.github.google:flexbox-layout", version.ref = "flexboxLayoutVersion" }
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+junit = { module = "junit:junit", version.ref = "junitVersion" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlinGradlePlugin" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroidVersion" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesAndroidVersion" }
+leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroidVersion" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleVersion" }
+material = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtxVersion" }
+
+[plugins]
