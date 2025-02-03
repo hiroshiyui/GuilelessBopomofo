@@ -1,4 +1,4 @@
-val kotlinVersion = "2.0.21"
+val kotlinVersion = "2.1.10"
 val androidxAppcompatVersion = "1.7.0"
 val androidxEmoji2Version = "1.5.0"
 val lifecycleVersion = "2.8.7"
@@ -83,8 +83,8 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("com.github.google:flexbox-layout:2.0.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
     implementation("androidx.emoji2:emoji2:$androidxEmoji2Version")
     implementation("androidx.emoji2:emoji2-views:$androidxEmoji2Version")
     implementation("androidx.emoji2:emoji2-views-helper:$androidxEmoji2Version")
