@@ -22,7 +22,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/CompactLayout"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageView"
@@ -39,8 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:textColor="@color/colorPrimary"
         android:text="@string/current_mode"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
