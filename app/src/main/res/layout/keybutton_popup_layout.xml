@@ -32,5 +32,5 @@
         android:contentDescription="@string/keybutton_popup_image"
         android:scaleType="fitCenter"
         android:theme="@style/KeyButton.Popup.ImageView"
-        app:srcCompat="@drawable/ic_baseline_keyboard_24" />
+        app:srcCompat="@drawable/ic_keyboard_24" />
 </RelativeLayout>

@@ -44,7 +44,7 @@
             android:id="@+id/keyButtonBackToMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_baseline_keyboard_24"
+            android:drawableStart="@drawable/ic_keyboard_24"
             android:drawablePadding="4dp"
             android:includeFontPadding="false"
             android:text="@string/back_to_main_layout"

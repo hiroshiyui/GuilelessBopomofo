@@ -18,12 +18,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 == Third party component copyright & license notices ==
 
-* 本產品於繪製軟體鍵盤場合，採用「教育部標準宋體」，係「中華民國教育部」以「姓名標示-禁止改作 3.0 台灣 (CC BY-ND 3.0 TW)」方式授權。
-    - https://language.moe.gov.tw/result.aspx?classify_sn=23&subclassify_sn=436&content_sn=48
-    - https://language.moe.gov.tw/001/Upload/Files/site_content/M0001/edusun.pdf
-    - https://creativecommons.org/licenses/by-nd/3.0/tw/deed.zh_TW
+* 本產品於繪製軟體鍵盤場合，採用 [Noto CJK fonts](https://github.com/notofonts/noto-cjk) 字體，係以 SIL Open Font License 1.1 方式授權。
+    - https://fonts.google.com/noto/use
+    - https://github.com/notofonts/noto-fonts/blob/main/LICENSE
+    - https://openfontlicense.org/
 
-* 承上，本產品之軟體鍵盤繪製原始檔、成品，基於「教育部標準宋體」者，係 YOU, HUI-HONG 以「姓名標示-禁止改作 3.0 台灣 (CC BY-ND 3.0 TW)」相同方式授權。
+* 本產品之軟體鍵盤繪製原始檔、成品，基於 Noto CJK fonts 者，係 YOU, HUI-HONG 以「姓名標示-禁止改作 3.0 台灣 (CC BY-ND 3.0 TW)」相同方式授權。
     - https://creativecommons.org/licenses/by-nd/3.0/tw/deed.zh_TW
 
 * libchewing: GNU Lesser General Public License v2.1
