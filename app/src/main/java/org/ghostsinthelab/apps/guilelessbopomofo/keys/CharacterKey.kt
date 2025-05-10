@@ -19,7 +19,6 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.GestureDetector
@@ -43,31 +42,16 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
                 context,
                 GuilelessBopomofoService.userHapticFeedbackStrength
             )
+            EventBus.getDefault().post(Events.ShowKeyButtonPopup(this@CharacterKey))
+            EventBus.getDefault().post(Events.PrintingKeyDown(this@CharacterKey))
+
             return true
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            EventBus.getDefault().post(Events.PrintingKeyDown(this@CharacterKey))
+            EventBus.getDefault().post(Events.DismissKeyButtonPopup())
+
             return true
         }
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        super.onTouchEvent(event)
-        event?.let {
-            when (it.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    EventBus.getDefault().post(Events.ShowKeyButtonPopup(this@CharacterKey))
-                }
-
-                MotionEvent.ACTION_UP -> {
-                    EventBus.getDefault().post(Events.DismissKeyButtonPopup())
-                }
-
-                else -> {}
-            }
-        }
-        return true
     }
 }
