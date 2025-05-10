@@ -29,9 +29,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
-class MainActivity : AppCompatActivity(), Vibrable {
+class MainActivity : AppCompatActivity(), Vibratable {
     private val logTag: String = "MainActivity"
 
     // ViewBinding

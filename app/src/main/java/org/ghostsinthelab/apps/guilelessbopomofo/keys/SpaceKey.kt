@@ -27,7 +27,7 @@ import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
 class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
@@ -38,9 +38,9 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         mDetector.setOnDoubleTapListener(null)
     }
 
-    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibrable {
+    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibrable.VibrationStrength.LIGHT)
+            performVibration(context, Vibratable.VibrationStrength.LIGHT)
             return true
         }
 

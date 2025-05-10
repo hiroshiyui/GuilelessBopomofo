@@ -24,7 +24,7 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
 class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
@@ -37,7 +37,7 @@ class ModeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibrable.VibrationStrength.NORMAL)
+            performVibration(context, Vibratable.VibrationStrength.NORMAL)
             return true
         }
 

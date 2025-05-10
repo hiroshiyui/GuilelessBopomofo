@@ -33,11 +33,11 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
 class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
-    BufferTextView(context, attrs), Vibrable {
+    BufferTextView(context, attrs), Vibratable {
     private val logTag = "PreEditBufferTextView"
     private lateinit var span: SpannableString
     override var mDetector: GestureDetector
@@ -143,7 +143,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
             val y = e.y
             offset = getOffsetForPosition(x, y)
             Log.d(logTag, "offset: $offset")
-            performVibration(context, Vibrable.VibrationStrength.LIGHT)
+            performVibration(context, Vibratable.VibrationStrength.LIGHT)
 
             return true
         }

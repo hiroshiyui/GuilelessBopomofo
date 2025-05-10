@@ -31,7 +31,7 @@ import kotlinx.coroutines.runBlocking
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import kotlin.properties.Delegates
 
-interface Vibrable {
+interface Vibratable {
     enum class VibrationStrength(val strength: Int) {
         LIGHT(25), NORMAL(50), STRONG(100)
     }

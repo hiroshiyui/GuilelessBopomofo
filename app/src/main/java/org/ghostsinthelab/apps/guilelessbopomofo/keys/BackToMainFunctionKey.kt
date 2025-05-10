@@ -25,7 +25,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
 class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
@@ -37,7 +37,7 @@ class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(c
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibrable.VibrationStrength.NORMAL)
+            performVibration(context, Vibratable.VibrationStrength.NORMAL)
             return true
         }
 

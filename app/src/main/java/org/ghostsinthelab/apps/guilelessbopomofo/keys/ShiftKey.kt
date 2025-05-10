@@ -27,7 +27,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.R
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override val logTag: String = "ShiftKeyImageButton"
@@ -62,7 +62,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibrable.VibrationStrength.NORMAL)
+            performVibration(context, Vibratable.VibrationStrength.NORMAL)
             return true
         }
 

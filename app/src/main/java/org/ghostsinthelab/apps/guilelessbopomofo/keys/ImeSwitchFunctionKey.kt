@@ -25,7 +25,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
 class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
@@ -38,7 +38,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibrable.VibrationStrength.NORMAL)
+            performVibration(context, Vibratable.VibrationStrength.NORMAL)
             return true
         }
 
@@ -61,7 +61,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
         }
 
         override fun onLongPress(e: MotionEvent) {
-            performVibration(context, Vibrable.VibrationStrength.STRONG)
+            performVibration(context, Vibratable.VibrationStrength.STRONG)
             val imm =
                 context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()

@@ -25,13 +25,13 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibrable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 abstract class BufferTextView(context: Context, attrs: AttributeSet) :
     AppCompatTextView(context, attrs), DisplayMetricsComputable {
     abstract var mDetector: GestureDetector
 
-    abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibrable
+    abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event != null) {
