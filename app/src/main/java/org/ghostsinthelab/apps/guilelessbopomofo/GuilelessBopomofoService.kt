@@ -611,6 +611,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         event.characterKey.getLocationInWindow(keyButtonLocation)
 
         viewBinding.keyboardPanel.apply {
+            if (keyButtonPopup.isShowing) {
+                keyButtonPopup.dismiss()
+            }
             keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(
                 event.characterKey.drawable
             )
