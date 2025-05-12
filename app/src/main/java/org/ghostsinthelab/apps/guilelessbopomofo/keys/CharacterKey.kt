@@ -36,6 +36,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
         mDetector.setOnDoubleTapListener(null)
     }
 
+    // process frequently used gestures here.
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             performVibration(
@@ -44,14 +45,19 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
             )
             EventBus.getDefault().post(Events.ShowKeyButtonPopup(this@CharacterKey))
             EventBus.getDefault().post(Events.PrintingKeyDown(this@CharacterKey))
-
             return true
         }
+    }
 
-        override fun onSingleTapUp(e: MotionEvent): Boolean {
-            EventBus.getDefault().post(Events.DismissKeyButtonPopup())
-
-            return true
+    // process detailed touch events here.
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        super.onTouchEvent(event)
+        // if user release the button, then dismiss the popup
+        event?.let {
+            if (it.action == MotionEvent.ACTION_UP) {
+                EventBus.getDefault().post(Events.DismissKeyButtonPopup())
+            }
         }
+        return true
     }
 }
