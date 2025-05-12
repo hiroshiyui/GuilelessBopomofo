@@ -24,6 +24,7 @@ import android.content.SharedPreferences
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -86,6 +87,13 @@ class KeyboardPanel(
 
         keyButtonPopup.apply {
             elevation = 8F
+        }
+    }
+
+    override fun onViewAdded(child: View?) {
+        super.onViewAdded(child)
+        if (keyButtonPopup.isShowing) {
+            keyButtonPopup.dismiss()
         }
     }
 
