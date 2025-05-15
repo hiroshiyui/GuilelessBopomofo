@@ -39,6 +39,7 @@ import android.view.KeyEvent.KEYCODE_DEL
 import android.view.KeyEvent.KEYCODE_DPAD_DOWN
 import android.view.KeyEvent.KEYCODE_DPAD_LEFT
 import android.view.KeyEvent.KEYCODE_DPAD_RIGHT
+import android.view.KeyEvent.KEYCODE_DPAD_UP
 import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.KeyEvent.KEYCODE_ESCAPE
 import android.view.KeyEvent.KEYCODE_GRAVE
@@ -73,6 +74,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.LeftKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.RightKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.SpaceKey
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.UpKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
@@ -288,6 +290,10 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
                     KEYCODE_DPAD_RIGHT -> {
                         RightKey.performKeyStroke()
+                    }
+
+                    KEYCODE_DPAD_UP -> {
+                        UpKey.performKeyStroke()
                     }
 
                     KEYCODE_DPAD_DOWN -> {
