@@ -765,6 +765,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             }
 
             "user_enable_space_as_selection" -> {
+                ChewingBridge.chewing.setSpaceAsSelection(0)
                 sharedPreferences?.apply {
                     if (this.getBoolean("user_enable_space_as_selection", true)) {
                         ChewingBridge.chewing.setSpaceAsSelection(1)
@@ -773,6 +774,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             }
 
             "user_phrase_choice_rearward" -> {
+                ChewingBridge.chewing.setPhraseChoiceRearward(0)
                 sharedPreferences?.apply {
                     if (this.getBoolean("user_phrase_choice_rearward", false)) {
                         ChewingBridge.chewing.setPhraseChoiceRearward(1)
