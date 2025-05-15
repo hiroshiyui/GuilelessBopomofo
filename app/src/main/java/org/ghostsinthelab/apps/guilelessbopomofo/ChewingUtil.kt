@@ -105,9 +105,20 @@ class ChewingUtil {
 
         // simulates [Shift] + [,]
         fun handleShiftComma() {
+            // detect the current keyboard type
+            val currentKeyboardType = ChewingBridge.chewing.getKBString()
+
+            // the location of comma in KB_DVORAK_HSU (',') is different from generic QWERTY ('w'),
+            // just workaround this:
+            val commaKeyMapping: Char = if (currentKeyboardType == "KB_DVORAK_HSU") {
+                dvorakToQwertyKeyMapping(',')
+            } else {
+                ','
+            }
+
             if (ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE) {
                 ChewingBridge.chewing.setEasySymbolInput(1)
-                ChewingBridge.chewing.handleDefault(',')
+                ChewingBridge.chewing.handleDefault(commaKeyMapping)
                 ChewingBridge.chewing.setEasySymbolInput(0)
             } else {
                 ChewingBridge.chewing.handleDefault(',')
