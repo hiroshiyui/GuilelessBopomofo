@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -88,6 +89,12 @@ class KeyboardPanel(
         keyButtonPopup.apply {
             elevation = 8F
         }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        Log.d(logTag, "onConfigurationChanged()")
+        switchToLayout(Layout.MAIN)
     }
 
     override fun onViewAdded(child: View?) {
