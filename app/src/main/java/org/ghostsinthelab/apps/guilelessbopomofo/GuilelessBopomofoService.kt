@@ -737,6 +737,17 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         return true
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        Log.d(logTag, "onConfigurationChanged()")
+        super.onConfigurationChanged(newConfig)
+        forceViewBindingInitialized()
+        // toggle main layout automatically between physical keyboard being connected and disconnected
+        viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
+        // there will be a short (time) window that InputMethod.hideSoftInput() will be called when user turn own physical keyboard on/off,
+        // so have to call showWindow() here to make the soft input visible:
+        showWindow(true)
+    }
+
     private fun forceViewBindingInitialized() {
         if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
             Log.d(logTag, "forceViewBindingInitialized()")
