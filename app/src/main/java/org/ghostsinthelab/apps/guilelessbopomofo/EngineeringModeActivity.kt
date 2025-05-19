@@ -20,6 +20,8 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
@@ -32,23 +34,61 @@ import java.util.concurrent.Executor
 
 class EngineeringModeActivity : AppCompatActivity() {
     private val logTag = "EngineeringModeActivity"
+    private lateinit var sharedPreferences: SharedPreferences
 
     // ViewBinding
     private lateinit var viewBinding: ActivityEngineeringModeBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val fontLoadExecutor: Executor = Executor { }
-        val emojiCompatConfig: EmojiCompat.Config =
-            BundledEmojiCompatConfig(
-                this@EngineeringModeActivity.applicationContext,
-                fontLoadExecutor
-            )
+        val emojiCompatConfig: EmojiCompat.Config = BundledEmojiCompatConfig(
+            this@EngineeringModeActivity.applicationContext, fontLoadExecutor
+        )
         EmojiCompat.init(emojiCompatConfig)
 
+        sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
+
         viewBinding = ActivityEngineeringModeBinding.inflate(this.layoutInflater)
-        viewBinding.chewingDataFilesStatus.text = checkChewingDateFiles().toString()
+
+        // Chewing data files status
+        val chewingDataFilesStatusText: String = if (checkChewingDateFiles()) {
+            getString(R.string.chewing_data_files_status_ok)
+        } else {
+            getString(R.string.chewing_data_files_status_error)
+        }
+        viewBinding.chewingDataFilesStatus.text = chewingDataFilesStatusText
+
+        // Hardware keyboard type
+        val hardwareKeyboardTypeText: String = when (resources.configuration.keyboard) {
+            Configuration.KEYBOARD_QWERTY -> getString(R.string.hardware_keyboard_type_qwerty)
+            Configuration.KEYBOARD_12KEY -> getString(R.string.hardware_keyboard_type_12key)
+            else -> getString(R.string.hardware_keyboard_type_unknown_or_missing)
+        }
+        viewBinding.hardwareKeyboardType.text = hardwareKeyboardTypeText
+
+        // Hardware keyboard hidden status
+        val hardwareKeyboardHiddenStatusText: String =
+            when (resources.configuration.hardKeyboardHidden) {
+                Configuration.HARDKEYBOARDHIDDEN_NO -> getString(R.string.hardware_keyboard_hidden_status_no)
+                Configuration.HARDKEYBOARDHIDDEN_YES -> getString(R.string.hardware_keyboard_hidden_status_yes)
+                Configuration.HARDKEYBOARDHIDDEN_UNDEFINED -> getString(R.string.hardware_keyboard_hidden_status_undefined)
+                else -> getString(R.string.hardware_keyboard_hidden_status_unknown)
+            }
+        viewBinding.hardwareKeyboardHiddenStatus.text = hardwareKeyboardHiddenStatusText
+
+        // User preferred hardware keyboard?
+        val userPreferredHardwareKeyboardText: String =
+            when (sharedPreferences.getBoolean("user_enable_physical_keyboard", false)) {
+                true -> getString(R.string.user_preferred_hardware_keyboard_yes)
+                false -> getString(R.string.user_preferred_hardware_keyboard_no)
+                else -> {
+                    getString(R.string.user_preferred_hardware_keyboard_unknown)
+                }
+            }
+        viewBinding.userPreferredHardwareKeyboard.text = userPreferredHardwareKeyboardText
 
         viewBinding.testTextInputEditText.setOnLongClickListener {
             val inputMethodManager =

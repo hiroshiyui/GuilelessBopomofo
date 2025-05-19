@@ -78,4 +78,19 @@
     <string name="switch_setting_ime_switch">Use double touch to switch to next input method?</string>
     <string name="bopomofo_keyboard_layout_eten41">E-TEN 41 Keys</string>
     <string name="please_enable_guileless_bopomofo_first">Please enable Guileless Bopomofo first</string>
+    <string name="labelHardwareKeyboardType">Hardware keyboard type:</string>
+    <string name="labelHardwareKeyboardHiddenStatus">Hardware keyboard hidden status:</string>
+    <string name="chewing_data_files_status_ok">OK</string>
+    <string name="chewing_data_files_status_error">error!</string>
+    <string name="hardware_keyboard_type_qwerty">QWERTY</string>
+    <string name="hardware_keyboard_type_12key">12 Keys</string>
+    <string name="hardware_keyboard_type_unknown_or_missing">Unknown or missing</string>
+    <string name="hardware_keyboard_hidden_status_no">Not hidden</string>
+    <string name="hardware_keyboard_hidden_status_yes">Hidden</string>
+    <string name="hardware_keyboard_hidden_status_undefined">Undefined hidden status</string>
+    <string name="hardware_keyboard_hidden_status_unknown">Unknown status</string>
+    <string name="labelUserPreferredHardwareKeyboard">User preferred hardware keyboard?</string>
+    <string name="user_preferred_hardware_keyboard_yes">Yes</string>
+    <string name="user_preferred_hardware_keyboard_no">No</string>
+    <string name="user_preferred_hardware_keyboard_unknown">Unknown</string>
 </resources>
