@@ -248,6 +248,13 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         forceViewBindingInitialized()
 
+        // toggle to compact layout if physical keyboard is enabled and not in compact layout
+        if (sharedPreferences.getBoolean("user_enable_physical_keyboard", false) &&
+            viewBinding.keyboardPanel.currentLayout != Layout.COMPACT
+        ) {
+            viewBinding.keyboardPanel.switchToLayout(Layout.COMPACT)
+        }
+
         event?.apply {
             if (this.isPrintingKey) {
                 onPrintingKeyDown(this)

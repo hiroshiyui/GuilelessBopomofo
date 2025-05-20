@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -46,12 +47,11 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayou
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeybuttonPopupLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.PhysicalKeyboardDetectable
 import org.greenrobot.eventbus.EventBus
 
 class KeyboardPanel(
     context: Context, attrs: AttributeSet,
-) : RelativeLayout(context, attrs), PhysicalKeyboardDetectable {
+) : RelativeLayout(context, attrs) {
     private val logTag: String = "KeyboardPanel"
 
     private var currentCandidatesList: Int = 0
@@ -79,7 +79,7 @@ class KeyboardPanel(
 
     var currentLayout: Layout = Layout.MAIN
 
-    override val sharedPreferences: SharedPreferences =
+    val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
 
     init {
@@ -126,6 +126,9 @@ class KeyboardPanel(
             Layout.SYMBOLS -> {
                 switchToSymbolPicker()
             }
+            Layout.COMPACT -> {
+                switchToCompactLayout()
+            }
 
             else -> {}
         }
@@ -146,6 +149,7 @@ class KeyboardPanel(
 
     private fun switchToCompactLayout() {
         Log.d(logTag, "switchToCompactLayout")
+        currentLayout = Layout.COMPACT
         this.removeAllViews()
         compactLayoutBinding =
             CompactLayoutBinding.inflate(LayoutInflater.from(context))
@@ -366,5 +370,13 @@ class KeyboardPanel(
                 PagedCandidatesAdapter(ChewingBridge.chewing.candCurrentPage())
             candidatesRecyclerView.layoutManager = layoutManager
         }
+    }
+
+    private fun physicalKeyboardEnabled(): Boolean {
+        return (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY) &&
+                (resources.configuration.hardKeyboardHidden != Configuration.HARDKEYBOARDHIDDEN_YES) &&
+                sharedPreferences.getBoolean(
+                    "user_enable_physical_keyboard", false
+                )
     }
 }
