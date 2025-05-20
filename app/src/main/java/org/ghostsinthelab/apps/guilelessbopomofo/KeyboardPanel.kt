@@ -126,6 +126,7 @@ class KeyboardPanel(
             Layout.SYMBOLS -> {
                 switchToSymbolPicker()
             }
+
             Layout.COMPACT -> {
                 switchToCompactLayout()
             }
@@ -151,8 +152,7 @@ class KeyboardPanel(
         Log.d(logTag, "switchToCompactLayout")
         currentLayout = Layout.COMPACT
         this.removeAllViews()
-        compactLayoutBinding =
-            CompactLayoutBinding.inflate(LayoutInflater.from(context))
+        compactLayoutBinding = CompactLayoutBinding.inflate(LayoutInflater.from(context))
         if (ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE) {
             compactLayoutBinding.textViewCurrentModeValue.text =
                 resources.getString(R.string.mode_bopomofo)
@@ -170,11 +170,9 @@ class KeyboardPanel(
         this.removeAllViews()
 
         // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
-        val userKeyboardLayoutPreference =
-            sharedPreferences.getString(
-                "user_keyboard_layout",
-                GuilelessBopomofoService.DEFAULT_KB_LAYOUT
-            )
+        val userKeyboardLayoutPreference = sharedPreferences.getString(
+            "user_keyboard_layout", GuilelessBopomofoService.DEFAULT_KB_LAYOUT
+        )
 
         userKeyboardLayoutPreference?.let {
             val newKeyboardType = ChewingBridge.chewing.convKBStr2Num(it)
@@ -191,8 +189,7 @@ class KeyboardPanel(
         when (userKeyboardLayoutPreference) {
             "KB_HSU" -> {
                 if (sharedPreferences.getBoolean(
-                        "user_display_hsu_qwerty_layout",
-                        false
+                        "user_display_hsu_qwerty_layout", false
                     )
                 ) {
                     keyboardHsuQwertyLayoutBinding =
@@ -208,8 +205,7 @@ class KeyboardPanel(
 
             "KB_DVORAK_HSU" -> {
                 if (sharedPreferences.getBoolean(
-                        "user_display_dvorak_hsu_both_layout",
-                        false
+                        "user_display_dvorak_hsu_both_layout", false
                     )
                 ) {
                     keyboardHsuDvorakBothLayoutBinding =
@@ -225,8 +221,7 @@ class KeyboardPanel(
 
             "KB_ET26" -> {
                 if (sharedPreferences.getBoolean(
-                        "user_display_eten26_qwerty_layout",
-                        false
+                        "user_display_eten26_qwerty_layout", false
                     )
                 ) {
                     keyboardEt26QwertyLayoutBinding =
@@ -301,8 +296,7 @@ class KeyboardPanel(
 
     private fun userIsUsingDvorakHsu(): Boolean {
         return (sharedPreferences.getString(
-            "user_keyboard_layout",
-            GuilelessBopomofoService.DEFAULT_KB_LAYOUT
+            "user_keyboard_layout", GuilelessBopomofoService.DEFAULT_KB_LAYOUT
         ) == "KB_DVORAK_HSU")
     }
 
@@ -373,10 +367,12 @@ class KeyboardPanel(
     }
 
     private fun physicalKeyboardEnabled(): Boolean {
-        return (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY) &&
-                (resources.configuration.hardKeyboardHidden != Configuration.HARDKEYBOARDHIDDEN_YES) &&
-                sharedPreferences.getBoolean(
-                    "user_enable_physical_keyboard", false
-                )
+        val physicalKeyboardPresented: Boolean =
+            (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY) && (resources.configuration.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
+
+        // if physical keyboard is enabled, or user enables it via preference, then use it
+        return (physicalKeyboardPresented || sharedPreferences.getBoolean(
+            "user_enable_physical_keyboard", false
+        ))
     }
 }
