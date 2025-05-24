@@ -108,12 +108,12 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     }
 
     override fun update() {
-        // chewingEngine.setMaxChiSymbolLen() 到達閾值時，
+        // chewing.setMaxChiSymbolLen() 到達閾值時，
         // 會把 pre-edit buffer 開頭送到 commit buffer，
         // 所以要先丟出來：
         if (ChewingBridge.chewing.commitCheck() == 1) {
             EventBus.getDefault().post(Events.CommitTextInChewingCommitBuffer())
-            // dirty hack (?) - 讓 chewingEngine.commitCheck() 歸 0
+            // dirty hack (?) - 讓 chewing.commitCheck() 歸 0
             // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
             ChewingBridge.chewing.handleEnd()
         }

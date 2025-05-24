@@ -358,7 +358,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             when (it.keyCode) {
                 KEYCODE_SHIFT_RIGHT -> {
                     if (ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE) {
-                        ChewingUtil.openPuncCandidates()
+                        ChewingUtil.openFrequentlyUsedCandidates()
                         viewBinding.keyboardPanel.switchToLayout(Layout.CANDIDATES)
                         return true
                     } else {
@@ -474,7 +474,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         // Detect if a candidate had been chosen by user
         viewBinding.keyboardPanel.let {
             if (it.currentLayout == Layout.CANDIDATES) {
-                if (ChewingUtil.candWindowClosed()) {
+                if (ChewingUtil.candidateWindowClosed()) {
                     it.candidateSelectionDone()
                 } else {
                     it.renderCandidatesLayout()
@@ -647,7 +647,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         if (ChewingBridge.chewing.bufferLen() > 0) {
             viewBinding.textViewPreEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedBy.PHYSICAL_KEYBOARD)
         } else {
-            if (ChewingUtil.candWindowClosed()) {
+            if (ChewingUtil.candidateWindowClosed()) {
                 when (event.direction) {
                     DirectionKey.LEFT -> {
                         sendDownUpKeyEvents(KEYCODE_DPAD_LEFT)
@@ -662,7 +662,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         // toggle to next page of candidates
         viewBinding.keyboardPanel.apply {
-            if (this.currentLayout == Layout.CANDIDATES && ChewingUtil.candWindowOpened()) {
+            if (this.currentLayout == Layout.CANDIDATES && ChewingUtil.candidateWindowOpened()) {
                 this.renderCandidatesLayout()
             }
         }

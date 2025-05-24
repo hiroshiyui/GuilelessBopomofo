@@ -316,7 +316,7 @@ class KeyboardPanel(
     }
 
     private fun finishCandidateSelection() {
-        if (ChewingUtil.candWindowClosed()) {
+        if (ChewingUtil.candidateWindowClosed()) {
             ChewingBridge.chewing.candClose()
             ChewingBridge.chewing.handleEnd()
             EventBus.getDefault().post(Events.UpdateBuffers())

@@ -51,7 +51,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
 
     companion object {
         fun performKeyStroke() {
-            if (ChewingUtil.anyPreeditBufferIsNotEmpty()) { // not committed yet
+            if (ChewingUtil.anyPreEditBufferIsNotEmpty()) { // not committed yet
                 ChewingBridge.chewing.commitPreeditBuf(ChewingBridge.chewing.context)
                 EventBus.getDefault().post(Events.UpdateBuffers())
             } else {

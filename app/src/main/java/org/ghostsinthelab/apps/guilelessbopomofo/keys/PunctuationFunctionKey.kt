@@ -51,7 +51,7 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) :
 
         override fun onLongPress(e: MotionEvent) {
             performVibration(context, Vibratable.VibrationStrength.STRONG)
-            ChewingUtil.openPuncCandidates()
+            ChewingUtil.openFrequentlyUsedCandidates()
             EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
         }
     }

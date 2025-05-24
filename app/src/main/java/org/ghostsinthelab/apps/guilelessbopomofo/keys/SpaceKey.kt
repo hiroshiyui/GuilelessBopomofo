@@ -52,7 +52,7 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
 
     companion object {
         fun performKeyStroke() {
-            if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
+            if (ChewingUtil.anyPreEditBufferIsNotEmpty()) {
                 ChewingBridge.chewing.handleSpace()
                 EventBus.getDefault().post(Events.UpdateBuffers())
                 // 空白鍵是否為選字鍵？

@@ -26,21 +26,21 @@ class ChewingUtil {
             return dataFiles
         }
 
-        fun candWindowOpened(): Boolean {
+        fun candidateWindowOpened(): Boolean {
             if (ChewingBridge.chewing.candTotalChoice() > 0) {
                 return true
             }
             return false
         }
 
-        fun candWindowClosed(): Boolean {
+        fun candidateWindowClosed(): Boolean {
             if (ChewingBridge.chewing.candTotalChoice() > 0) {
                 return false
             }
             return true
         }
 
-        fun anyPreeditBufferIsNotEmpty(): Boolean {
+        fun anyPreEditBufferIsNotEmpty(): Boolean {
             if (ChewingBridge.chewing.bufferStringStatic()
                     .isNotEmpty() || ChewingBridge.chewing.bopomofoStringStatic().isNotEmpty()
             ) {
@@ -55,7 +55,7 @@ class ChewingUtil {
             ChewingBridge.chewing.candOpen()
         }
 
-        fun openPuncCandidates() {
+        fun openFrequentlyUsedCandidates() {
             ChewingBridge.chewing.candClose()
             ChewingBridge.chewing.handleDefault('`')
             // 「常用符號」

@@ -112,7 +112,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
 
     companion object {
         fun performKeyStroke() {
-            if (ChewingUtil.anyPreeditBufferIsNotEmpty()) {
+            if (ChewingUtil.anyPreEditBufferIsNotEmpty()) {
                 ChewingBridge.chewing.handleBackspace()
                 EventBus.getDefault().post(Events.UpdateBuffers())
             } else {
