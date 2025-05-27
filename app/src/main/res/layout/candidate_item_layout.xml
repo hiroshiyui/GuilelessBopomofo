@@ -24,7 +24,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <org.ghostsinthelab.apps.guilelessbopomofo.keys.CandidateButton
+    <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CandidateButton
         android:id="@+id/buttonCandidateItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

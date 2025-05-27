@@ -17,24 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
+import android.content.Context
 import android.view.KeyEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
-import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.greenrobot.eventbus.EventBus
+import android.view.inputmethod.InputMethodManager
 
-class UpKey {
-    companion object {
-        fun performKeyStroke() {
-            if (ChewingBridge.chewing.bufferLen() > 0) {
-                ChewingBridge.chewing.candClose()
-                ChewingBridge.chewing.candOpen()
-                EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
-            } else {
-                EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_UP))
-            }
-        }
+class LeftAlt : PhysicalKeyHandler {
+    override fun onKeyDown(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+        event?.startTracking()
+        return true
+    }
+
+    override fun onKeyLongPress(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showInputMethodPicker()
+        return super.onKeyLongPress(context, keyCode, event)
     }
 }

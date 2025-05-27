@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonW"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonE"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonR"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonT"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonY"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonU"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonI"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonO"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonP"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -158,7 +158,7 @@
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonA"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonS"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -186,7 +186,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonD"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -200,7 +200,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonF"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -214,7 +214,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonG"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -228,7 +228,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonH"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -242,7 +242,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonJ"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -256,7 +256,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="35dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonK"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -270,7 +270,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="35dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -284,7 +284,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="35dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonZ"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -299,7 +299,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonX"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -313,7 +313,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonC"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -327,7 +327,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -341,7 +341,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonB"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -355,7 +355,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonN"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -369,7 +369,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.CharacterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
             android:id="@+id/keyImageButtonM"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -383,7 +383,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.PunctuationFunctionKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.PunctuationFunctionKey
             android:id="@+id/keyImageButtonPunc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -397,7 +397,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.ModeSwitchFunctionKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ModeSwitchFunctionKey
             android:id="@+id/keyImageButtonModeSwitch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -412,7 +412,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.SymbolFunctionKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.SymbolFunctionKey
             android:id="@+id/keyImageButtonSymbol"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -427,7 +427,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeSwitchFunctionKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ImeSwitchFunctionKey
             android:id="@+id/keyImageButtonImeSwitch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -441,7 +441,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.SpaceKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.SpaceKey
             android:id="@+id/keyImageButtonSpace"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -456,7 +456,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="68dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.BackspaceKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.BackspaceKey
             android:id="@+id/keyImageButtonBackspace"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -471,7 +471,7 @@
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
-        <org.ghostsinthelab.apps.guilelessbopomofo.keys.EnterKey
+        <org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.EnterKey
             android:id="@+id/keyImageButtonEnter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

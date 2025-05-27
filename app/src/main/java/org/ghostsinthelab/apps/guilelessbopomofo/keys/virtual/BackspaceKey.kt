@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2021 YOU, HUI-HONG
+ * Copyright (C) 2025 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 import kotlin.concurrent.fixedRateTimer
@@ -110,14 +111,12 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
         delay(50L)
     }
 
-    companion object {
-        fun performKeyStroke() {
-            if (ChewingUtil.anyPreEditBufferIsNotEmpty()) {
-                ChewingBridge.chewing.handleBackspace()
-                EventBus.getDefault().post(Events.UpdateBuffers())
-            } else {
-                EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_DEL))
-            }
+    private fun performKeyStroke() {
+        if (ChewingUtil.Companion.anyPreEditBufferIsNotEmpty()) {
+            ChewingBridge.chewing.handleBackspace()
+            EventBus.getDefault().post(Events.UpdateBuffers())
+        } else {
+            EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_DEL))
         }
     }
 }

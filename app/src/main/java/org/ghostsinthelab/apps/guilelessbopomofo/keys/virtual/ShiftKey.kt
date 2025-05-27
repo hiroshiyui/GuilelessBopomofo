@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2021 YOU, HUI-HONG
+ * Copyright (C) 2025 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
 import android.content.res.Configuration
@@ -27,7 +27,10 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.R
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.greenrobot.eventbus.EventBus
 
 class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override val logTag: String = "ShiftKeyImageButton"
@@ -36,8 +39,8 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
     enum class ShiftKeyState { RELEASED, PRESSED, HOLD }
 
     var currentShiftKeyState = ShiftKeyState.RELEASED
-    var isLocked: Boolean = false
     var isActive: Boolean = false
+    var isLocked: Boolean = false
 
     override var mDetector: GestureDetector
 
@@ -80,6 +83,7 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                     switchToState(ShiftKeyState.RELEASED)
                 }
             }
+
             return true
         }
     }
@@ -143,5 +147,8 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                 )
             }
         }
+
+        // notify GuilelessBopomofoService of shift key state change
+        EventBus.getDefault().post(Events.UpdateShiftKeyState(isActive, isLocked))
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2021 YOU, HUI-HONG
+ * Copyright (C) 2025 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,17 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo
+package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CandidateButton
+import android.content.Context
+import android.view.KeyEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.greenrobot.eventbus.EventBus
 
-class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val candidateButton: CandidateButton = itemView.findViewById(R.id.buttonCandidateItem)
+class Left : PhysicalKeyHandler {
+    override fun onKeyDown(
+        context: Context,
+        keyCode: Int,
+        event: KeyEvent?,
+    ): Boolean {
+        ChewingBridge.chewing.handleLeft()
+        EventBus.getDefault().post(Events.DirectionKeyDown(DirectionKey.LEFT))
 
-    fun setData(position: Int) {
-        candidateButton.text = ChewingBridge.chewing.candStringByIndexStatic(position)
-        candidateButton.candidate = Candidate(position)
+        return true
     }
 }

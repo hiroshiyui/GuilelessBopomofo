@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2021 YOU, HUI-HONG
+ * Copyright (C) 2025 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,19 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
-import android.view.inputmethod.InputMethodManager
+import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyButton
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
-class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
-    KeyImageButton(context, attrs) {
+class CandidateButton(context: Context, attrs: AttributeSet) :
+    KeyButton(context, attrs), Vibratable {
+    lateinit var candidate: Candidate
     override var mDetector: GestureDetector
 
     init {
@@ -38,37 +40,13 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.NORMAL)
+            performVibration(context, Vibratable.VibrationStrength.LIGHT)
             return true
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            if (sharedPreferences.getBoolean("user_enable_double_touch_ime_switch", false)) {
-                return true
-            } else {
-                switchNextInputMethod()
-            }
+            EventBus.getDefault().post(Events.CandidateSelectionDone(candidate.index))
             return true
-        }
-
-        override fun onDoubleTap(e: MotionEvent): Boolean {
-            if (sharedPreferences.getBoolean("user_enable_double_touch_ime_switch", false)) {
-                switchNextInputMethod()
-            } else {
-                return true
-            }
-            return true
-        }
-
-        override fun onLongPress(e: MotionEvent) {
-            performVibration(context, Vibratable.VibrationStrength.STRONG)
-            val imm =
-                context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showInputMethodPicker()
-        }
-
-        private fun switchNextInputMethod() {
-            EventBus.getDefault().post(Events.SwitchToNextInputMethod())
         }
     }
 }

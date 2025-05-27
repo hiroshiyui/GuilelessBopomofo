@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2021 YOU, HUI-HONG
+ * Copyright (C) 2025 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,18 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
-class SymbolFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
+class PunctuationFunctionKey(context: Context, attrs: AttributeSet) :
+    KeyImageButton(context, attrs) {
     override var mDetector: GestureDetector
 
     init {
@@ -42,8 +45,15 @@ class SymbolFunctionKey(context: Context, attrs: AttributeSet) : KeyImageButton(
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            EventBus.getDefault().post(Events.SwitchToLayout(Layout.SYMBOLS))
+            ChewingUtil.Companion.handleShiftComma()
+            EventBus.getDefault().post(Events.UpdateBuffers())
             return true
+        }
+
+        override fun onLongPress(e: MotionEvent) {
+            performVibration(context, Vibratable.VibrationStrength.STRONG)
+            ChewingUtil.Companion.openFrequentlyUsedCandidates()
+            EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
         }
     }
 }

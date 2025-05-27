@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2021 YOU, HUI-HONG
+ * Copyright (C) 2025 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,33 +17,48 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
 import org.greenrobot.eventbus.EventBus
 
-class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
+class CharacterKey(context: Context, attrs: AttributeSet) :
+    KeyImageButton(context, attrs) {
     override var mDetector: GestureDetector
 
     init {
         mDetector = GestureDetector(context, MyGestureListener())
+        mDetector.setOnDoubleTapListener(null)
     }
 
+    // process frequently used gestures here.
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.NORMAL)
+            performVibration(
+                context,
+                GuilelessBopomofoService.Companion.userHapticFeedbackStrength
+            )
+            EventBus.getDefault().post(Events.ShowKeyButtonPopup(this@CharacterKey))
+            EventBus.getDefault().post(Events.PrintingKeyDown(this@CharacterKey))
             return true
         }
+    }
 
-        override fun onSingleTapUp(e: MotionEvent): Boolean {
-            EventBus.getDefault().post(Events.SwitchToLayout(Layout.MAIN))
-            return true
+    // process detailed touch events here.
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        super.onTouchEvent(event)
+        // if user release the button, then dismiss the popup
+        event?.let {
+            if (it.action == MotionEvent.ACTION_UP) {
+                EventBus.getDefault().post(Events.DismissKeyButtonPopup())
+            }
         }
+        return true
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2021 YOU, HUI-HONG
+ * Copyright (C) 2025 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,19 +17,30 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
+import android.content.Context
+import android.view.KeyEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.CHINESE_MODE
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
-import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
 
-class LeftKey {
-    companion object {
-        // by now Left key is just been implemented as physical form only.
-        fun performKeyStroke() {
-            ChewingBridge.chewing.handleLeft()
-            EventBus.getDefault().post(Events.DirectionKeyDown(DirectionKey.LEFT))
+class RightShift : PhysicalKeyHandler {
+    override fun onKeyDown(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+        event?.startTracking()
+        return true
+    }
+
+    override fun onKeyLongPress(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+        if (ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE) {
+            ChewingUtil.openFrequentlyUsedCandidates()
+            EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
+            return true
+        } else {
+            return super.onKeyLongPress(context, keyCode, event)
         }
     }
 }

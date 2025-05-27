@@ -32,21 +32,13 @@ import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
 import android.view.KeyEvent.ACTION_UP
 import android.view.KeyEvent.KEYCODE_A
-import android.view.KeyEvent.KEYCODE_ALT_LEFT
-import android.view.KeyEvent.KEYCODE_BACK
 import android.view.KeyEvent.KEYCODE_C
-import android.view.KeyEvent.KEYCODE_DEL
-import android.view.KeyEvent.KEYCODE_DPAD_DOWN
 import android.view.KeyEvent.KEYCODE_DPAD_LEFT
 import android.view.KeyEvent.KEYCODE_DPAD_RIGHT
-import android.view.KeyEvent.KEYCODE_DPAD_UP
 import android.view.KeyEvent.KEYCODE_ENTER
-import android.view.KeyEvent.KEYCODE_ESCAPE
 import android.view.KeyEvent.KEYCODE_GRAVE
 import android.view.KeyEvent.KEYCODE_R
 import android.view.KeyEvent.KEYCODE_SHIFT_LEFT
-import android.view.KeyEvent.KEYCODE_SHIFT_RIGHT
-import android.view.KeyEvent.KEYCODE_SPACE
 import android.view.KeyEvent.KEYCODE_V
 import android.view.KeyEvent.KEYCODE_X
 import android.view.KeyEvent.KEYCODE_Z
@@ -66,15 +58,17 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.BackspaceKey
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.DownKey
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.EnterKey
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.EscapeKey
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.LeftKey
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.RightKey
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.ShiftKey
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.SpaceKey
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.UpKey
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Del
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Down
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Enter
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Escape
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Left
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.LeftAlt
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyHandler
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Right
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.RightShift
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Space
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Up
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
@@ -89,8 +83,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     SharedPreferences.OnSharedPreferenceChangeListener, KeyEventExtension {
     private val logTag = "GuilelessBopomofoSvc"
     private var imeWindowVisible: Boolean = true
-    private lateinit var viewBinding: ImeLayoutBinding
+    private var shiftKeyIsLocked: Boolean = false
+    private var shiftKeyIsActive: Boolean = false
 
+    private lateinit var viewBinding: ImeLayoutBinding
+    private lateinit var physicalKeyDispatcher: Map<Int, PhysicalKeyHandler>
     private lateinit var sharedPreferences: SharedPreferences
     private val chewingDataFiles = ChewingUtil.listOfDataFiles()
 
@@ -106,6 +103,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         super.onCreate()
 
         EventBus.getDefault().register(this)
+
+        // register physical key handlers
+        initializePhysicalKeyDispatcher()
 
         // emoji2-bundled (fonts-embedded)
         val fontLoadExecutor: Executor = Executor { }
@@ -248,66 +248,21 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         forceViewBindingInitialized()
 
-        event?.apply {
-            if (this.isPrintingKey) {
-                onPrintingKeyDown(this)
-            } else {
-                when (this.keyCode) {
-                    KEYCODE_BACK -> {
-                        // keep default behavior of Back key
-                        return super.onKeyDown(keyCode, event)
-                    }
-
-                    KEYCODE_ALT_LEFT, KEYCODE_SHIFT_RIGHT -> {
-                        // for onKeyLongPress()...
-                        this.startTracking()
-                        return true
-                    }
-
-                    KEYCODE_SPACE -> {
-                        if (this.isShiftPressed) {
-                            viewBinding.keyboardPanel.toggleMainLayoutMode()
-                            return true
-                        }
-                        SpaceKey.performKeyStroke()
-                    }
-
-                    KEYCODE_DEL -> {
-                        BackspaceKey.performKeyStroke()
-                    }
-
-                    KEYCODE_ENTER -> {
-                        EnterKey.performKeyStroke()
-                    }
-
-                    KEYCODE_ESCAPE -> {
-                        EscapeKey.performKeyStroke()
-                    }
-
-                    KEYCODE_DPAD_LEFT -> {
-                        LeftKey.performKeyStroke()
-                    }
-
-                    KEYCODE_DPAD_RIGHT -> {
-                        RightKey.performKeyStroke()
-                    }
-
-                    KEYCODE_DPAD_UP -> {
-                        UpKey.performKeyStroke()
-                    }
-
-                    KEYCODE_DPAD_DOWN -> {
-                        DownKey.performKeyStroke()
-                    }
-
-                    else -> {
-                        return super.onKeyDown(keyCode, event)
-                    }
-                }
+        // handles physical functional keys
+        val handler = physicalKeyDispatcher[keyCode]
+        if (handler != null) {
+            if (handler.onKeyDown(this, keyCode, event)) {
+                return true // Event was handled by our specific class
             }
         }
 
-        return true
+        // handles printing (character) keys
+        if (event != null && event.isPrintingKey) {
+            onPrintingKeyDown(event)
+            return true
+        }
+
+        return super.onKeyDown(keyCode, event)
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
@@ -320,27 +275,28 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         forceViewBindingInitialized()
 
-        event?.let {
-            if (it.isPrintingKey) {
-                onPrintingKeyUp()
-            } else {
-                return when (it.keyCode) {
-                    KEYCODE_ENTER -> {
-                        // DO NOTHING HERE, has been handled by EnterKey.performKeyStroke()
-                        true
-                    }
+        // handles physical functional keys
+        val handler = physicalKeyDispatcher[keyCode]
+        if (handler != null) {
+            if (handler.onKeyUp(this, keyCode, event)) {
+                return true // Event was handled by our specific class
+            }
+        }
 
-                    KEYCODE_SPACE -> {
-                        // DO NOTHING HERE, has been handled by SpaceKey.performKeyStroke()
-                        true
-                    }
-
-                    else -> {
-                        super.onKeyUp(keyCode, event)
+        if (event?.isPrintingKey == true) {
+            // Detect if a candidate had been chosen by user
+            viewBinding.keyboardPanel.let {
+                if (it.currentLayout == Layout.CANDIDATES) {
+                    if (ChewingUtil.candidateWindowClosed()) {
+                        it.candidateSelectionDone()
+                    } else {
+                        it.renderCandidatesLayout()
                     }
                 }
             }
+            return true
         }
+
         return super.onKeyUp(keyCode, event)
     }
 
@@ -354,29 +310,14 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         forceViewBindingInitialized()
 
-        event?.let {
-            when (it.keyCode) {
-                KEYCODE_SHIFT_RIGHT -> {
-                    if (ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE) {
-                        ChewingUtil.openFrequentlyUsedCandidates()
-                        viewBinding.keyboardPanel.switchToLayout(Layout.CANDIDATES)
-                        return true
-                    } else {
-                        return super.onKeyLongPress(keyCode, event)
-                    }
-                }
-
-                KEYCODE_ALT_LEFT -> {
-                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.showInputMethodPicker()
-                    return true
-                }
-
-                else -> {
-                    return super.onKeyLongPress(keyCode, event)
-                }
+        // handles physical functional keys
+        val handler = physicalKeyDispatcher[keyCode]
+        if (handler != null) {
+            if (handler.onKeyLongPress(this, keyCode, event)) {
+                return true // Event was handled by our specific class
             }
         }
+
         return super.onKeyLongPress(keyCode, event)
     }
 
@@ -392,6 +333,23 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         imeWindowVisible = true
     }
 
+    private fun initializePhysicalKeyDispatcher() {
+        physicalKeyDispatcher = mapOf(
+            KeyEvent.KEYCODE_DPAD_DOWN to Down(),
+            KeyEvent.KEYCODE_DPAD_UP to Up(),
+            KeyEvent.KEYCODE_DPAD_LEFT to Left(),
+            KeyEvent.KEYCODE_DPAD_RIGHT to Right(),
+            KeyEvent.KEYCODE_ALT_LEFT to LeftAlt(),
+            KeyEvent.KEYCODE_SHIFT_RIGHT to RightShift(),
+            KeyEvent.KEYCODE_ENTER to Enter(),
+            KeyEvent.KEYCODE_SPACE to Space(),
+            KeyEvent.KEYCODE_ESCAPE to Escape(),
+            KeyEvent.KEYCODE_DEL to Del(),
+            // Add more mappings here for each physical key you want to handle separately
+        )
+    }
+
+    // handles both physical and virtual printing key-down events, routes to chewing.handleDefault()
     private fun onPrintingKeyDown(event: KeyEvent) {
         Log.d(logTag, "onPrintingKeyDown()")
 
@@ -409,19 +367,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         var keyPressed: Char = event.unicodeChar.toChar()
 
-        val shiftKeyImageButton: ShiftKey? =
-            viewBinding.keyboardPanel.findViewById(
-                R.id.keyImageButtonShift
-            )
-
-        shiftKeyImageButton?.let {
-            if (it.isActive) {
-                Log.d(logTag, "Shift is active")
-                currentInputConnection.sendKeyEvent(
-                    KeyEvent(ACTION_DOWN, KEYCODE_SHIFT_LEFT)
-                )
-                keyPressed = event.getUnicodeChar(META_SHIFT_ON).toChar()
-            }
+        if (shiftKeyIsActive) {
+            currentInputConnection.sendKeyEvent(KeyEvent(ACTION_DOWN, KEYCODE_SHIFT_LEFT))
+            keyPressed = event.getUnicodeChar(META_SHIFT_ON).toChar()
         }
 
         if (event.isCtrlPressed) {
@@ -452,35 +400,19 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                     }
                 }
             }
-        } else {
-            ChewingBridge.chewing.handleDefault(keyPressed)
+            return
         }
 
+        ChewingBridge.chewing.handleDefault(keyPressed)
         EventBus.getDefault().post(Events.UpdateBuffers())
 
-        shiftKeyImageButton?.let {
-            if (it.isActive && !it.isLocked) {
-                Log.d(logTag, "Release shift key")
-                it.switchToState(ShiftKey.ShiftKeyState.RELEASED)
-                currentInputConnection.sendKeyEvent(
-                    KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT)
-                )
-            }
+        // release Shift key and make the button background color back to normal
+        if (shiftKeyIsActive && !shiftKeyIsLocked) {
+            Log.d(logTag, "Release Shift key")
+            viewBinding.keyboardPanel.releaseShiftKey()
+            currentInputConnection.sendKeyEvent(KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT))
         }
-    }
-
-    private fun onPrintingKeyUp() {
-        Log.d(logTag, "onPrintingKeyUp()")
-        // Detect if a candidate had been chosen by user
-        viewBinding.keyboardPanel.let {
-            if (it.currentLayout == Layout.CANDIDATES) {
-                if (ChewingUtil.candidateWindowClosed()) {
-                    it.candidateSelectionDone()
-                } else {
-                    it.renderCandidatesLayout()
-                }
-            }
-        }
+        return
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -567,6 +499,12 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 )
             this@GuilelessBopomofoService.onPrintingKeyDown(keyEvent)
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUpdateShiftKeyState(event: Events.UpdateShiftKeyState) {
+        shiftKeyIsActive = event.isActive
+        shiftKeyIsLocked = event.isLocked
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -666,6 +604,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 this.renderCandidatesLayout()
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onToggleForceCompactLayout(event: Events.ToggleForceCompactLayout) {
+        viewBinding.keyboardPanel.toggleCompactLayoutMode()
     }
 
     private fun setupChewingData(dataPath: String) {

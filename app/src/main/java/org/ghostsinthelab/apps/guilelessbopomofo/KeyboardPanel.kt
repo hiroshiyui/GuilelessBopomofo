@@ -47,6 +47,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayou
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeybuttonPopupLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ShiftKey
 import org.greenrobot.eventbus.EventBus
 
 class KeyboardPanel(
@@ -55,6 +56,8 @@ class KeyboardPanel(
     private val logTag: String = "KeyboardPanel"
 
     private var currentCandidatesList: Int = 0
+    private var forceCompactLayout: Boolean = false
+
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     private lateinit var keyboardHsuQwertyLayoutBinding: KeyboardHsuQwertyLayoutBinding
     private lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
@@ -110,6 +113,14 @@ class KeyboardPanel(
                 switchToAlphabeticalLayout()
             }
         }
+    }
+
+    fun toggleCompactLayoutMode() {
+        Log.d(logTag, "toggleCompactLayoutMode()")
+        forceCompactLayout = !forceCompactLayout
+        Log.d(logTag, "forceCompactLayout: ${forceCompactLayout}")
+        switchToMainLayout()
+        return
     }
 
     fun switchToLayout(layout: Layout) {
@@ -177,6 +188,11 @@ class KeyboardPanel(
         userKeyboardLayoutPreference?.let {
             val newKeyboardType = ChewingBridge.chewing.convKBStr2Num(it)
             ChewingBridge.chewing.setKBType(newKeyboardType)
+        }
+
+        if (forceCompactLayout) {
+            switchToCompactLayout()
+            return
         }
 
         // Toggle to compact layout when physical keyboard is enabled:
@@ -266,6 +282,11 @@ class KeyboardPanel(
         Log.d(logTag, "switchToQwertyLayout")
         currentLayout = Layout.QWERTY
 
+        if (forceCompactLayout) {
+            switchToCompactLayout()
+            return
+        }
+
         if (physicalKeyboardEnabled()) {
             switchToCompactLayout()
             return
@@ -281,6 +302,11 @@ class KeyboardPanel(
     private fun switchToDvorakLayout() {
         Log.d(logTag, "switchToDvorakLayout")
         currentLayout = Layout.DVORAK
+
+        if (forceCompactLayout) {
+            switchToCompactLayout()
+            return
+        }
 
         if (physicalKeyboardEnabled()) {
             switchToCompactLayout()
@@ -347,6 +373,10 @@ class KeyboardPanel(
         renderCandidatesLayout()
     }
 
+    enum class CandidateLayoutStyle {
+        LIST, GRID
+    }
+
     fun renderCandidatesLayout() {
         Log.d(logTag, "renderCandidatesLayout")
         currentLayout = Layout.CANDIDATES
@@ -354,16 +384,42 @@ class KeyboardPanel(
         this.removeAllViews()
         this.addView(candidatesLayoutBinding.root)
 
-        if (!physicalKeyboardEnabled()) {
-            candidatesRecyclerView.adapter = CandidatesAdapter()
-            candidatesRecyclerView.layoutManager =
-                GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)
-        } else {
-            val layoutManager = FlexboxLayoutManager(context)
-            candidatesRecyclerView.adapter =
-                PagedCandidatesAdapter(ChewingBridge.chewing.candCurrentPage())
-            candidatesRecyclerView.layoutManager = layoutManager
+        if (forceCompactLayout) {
+            renderCandidatesLayout(CandidateLayoutStyle.LIST)
+            return
         }
+
+        if (!physicalKeyboardEnabled()) {
+            renderCandidatesLayout(CandidateLayoutStyle.GRID)
+        } else {
+            renderCandidatesLayout(CandidateLayoutStyle.LIST)
+        }
+        return
+    }
+
+    private fun renderCandidatesLayout(candidateLayoutStyle: CandidateLayoutStyle) {
+        when (candidateLayoutStyle) {
+            CandidateLayoutStyle.LIST -> {
+                val layoutManager = FlexboxLayoutManager(context)
+                candidatesRecyclerView.adapter =
+                    PagedCandidatesAdapter(ChewingBridge.chewing.candCurrentPage())
+                candidatesRecyclerView.layoutManager = layoutManager
+                return
+            }
+
+            CandidateLayoutStyle.GRID -> {
+                candidatesRecyclerView.adapter = CandidatesAdapter()
+                candidatesRecyclerView.layoutManager =
+                    GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)
+                return
+            }
+        }
+    }
+
+    fun releaseShiftKey() {
+        Log.d(logTag, "releaseShiftKey()")
+        this.findViewById<ShiftKey>(R.id.keyImageButtonShift)?.switchToState(ShiftKey.ShiftKeyState.RELEASED)
+        return
     }
 
     private fun physicalKeyboardEnabled(): Boolean {

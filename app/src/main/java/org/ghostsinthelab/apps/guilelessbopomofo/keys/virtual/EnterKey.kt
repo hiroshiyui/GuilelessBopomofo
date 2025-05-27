@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2021 YOU, HUI-HONG
+ * Copyright (C) 2025 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,34 +17,40 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.ghostsinthelab.apps.guilelessbopomofo.keys
+package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
-class CandidateButton(context: Context, attrs: AttributeSet) :
-    KeyButton(context, attrs), Vibratable {
-    lateinit var candidate: Candidate
+class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override var mDetector: GestureDetector
 
     init {
         mDetector = GestureDetector(context, MyGestureListener())
+        mDetector.setOnDoubleTapListener(null)
     }
 
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.LIGHT)
+            performVibration(context, Vibratable.VibrationStrength.NORMAL)
             return true
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            EventBus.getDefault().post(Events.CandidateSelectionDone(candidate.index))
+            if (ChewingUtil.Companion.anyPreEditBufferIsNotEmpty()) { // not committed yet
+                ChewingBridge.chewing.commitPreeditBuf(ChewingBridge.chewing.context)
+                EventBus.getDefault().post(Events.UpdateBuffers())
+            } else {
+                EventBus.getDefault().post(Events.EnterKeyDownWhenBufferIsEmpty())
+            }
             return true
         }
     }
