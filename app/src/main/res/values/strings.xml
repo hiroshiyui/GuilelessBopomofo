@@ -93,4 +93,6 @@
     <string name="user_preferred_hardware_keyboard_yes">Yes</string>
     <string name="user_preferred_hardware_keyboard_no">No</string>
     <string name="user_preferred_hardware_keyboard_unknown">Unknown</string>
+    <string name="switchSettingDescriptionEnhancedCompatPhysicalKeyboard" >Enhanced physical keyboard compatibility?</string>
+    <string name="settingDescriptionEnhancedCompatPhysicalKeyboard">Don\'t ask what this is—it\'s terrifying.</string>
 </resources>

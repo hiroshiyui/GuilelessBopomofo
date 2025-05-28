@@ -91,6 +91,10 @@ class KeyboardPanel(
         keyButtonPopup.apply {
             elevation = 8F
         }
+
+        if (sharedPreferences.getBoolean("user_enhanced_compat_physical_keyboard", false) == true) {
+            forceCompactLayout = true
+        }
     }
 
     override fun onViewAdded(child: View?) {

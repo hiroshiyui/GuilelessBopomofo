@@ -766,6 +766,10 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 // do nothing (onEvaluateInputViewShown() will handle it well)
             }
 
+            "user_enhanced_compat_physical_keyboard" -> {
+                // do nothing
+            }
+
             "user_candidate_selection_keys_option" -> {
                 sharedPreferences?.apply {
                     this.getString("user_candidate_selection_keys_option", "NUMBER_ROW")

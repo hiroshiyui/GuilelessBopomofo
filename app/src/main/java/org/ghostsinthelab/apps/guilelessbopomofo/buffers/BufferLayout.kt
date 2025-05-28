@@ -20,27 +20,38 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.AttributeSet
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.flexbox.FlexboxLayout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
 
 class BufferLayout(context: Context, attrs: AttributeSet) : FlexboxLayout(context, attrs) {
     var mDetector: GestureDetector
+    val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
 
     init {
         mDetector = GestureDetector(context, MyGestureListener())
         mDetector.setOnDoubleTapListener(MyGestureListener())
     }
 
-    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(), GestureDetector.OnDoubleTapListener {
+    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(),
+        GestureDetector.OnDoubleTapListener {
         // double tap to toggle compact layout
         override fun onDoubleTap(e: MotionEvent): Boolean {
             Log.d("BufferLayout", "onDoubleTap")
-            EventBus.getDefault().post(Events.ToggleForceCompactLayout())
+            if (sharedPreferences.getBoolean(
+                    "user_enhanced_compat_physical_keyboard",
+                    false
+                ) == true
+            ) {
+                EventBus.getDefault().post(Events.ToggleForceCompactLayout())
+            }
             return super.onDoubleTap(e)
         }
     }

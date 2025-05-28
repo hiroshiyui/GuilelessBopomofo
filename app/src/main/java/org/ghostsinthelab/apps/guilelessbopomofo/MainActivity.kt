@@ -305,6 +305,17 @@ class MainActivity : AppCompatActivity(), Vibratable {
                     }
                 }
 
+                switchSettingEnhancedCompatPhysicalKeyboard.let {
+                    if (sharedPreferences.getBoolean("user_enhanced_compat_physical_keyboard", false)) {
+                        it.isChecked = true
+                    }
+
+                    it.setOnCheckedChangeListener { _, _ ->
+                        sharedPreferences.edit()
+                            .putBoolean("user_enhanced_compat_physical_keyboard", it.isChecked).apply()
+                    }
+                }
+
                 for ((button, keys) in
                 mapOf(
                     radioButtonNumberRow to "NUMBER_ROW",
