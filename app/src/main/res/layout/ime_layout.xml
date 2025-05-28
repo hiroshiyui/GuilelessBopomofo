@@ -30,7 +30,7 @@
     android:visibility="visible">
 
 
-    <com.google.android.flexbox.FlexboxLayout
+    <org.ghostsinthelab.apps.guilelessbopomofo.buffers.BufferLayout
         android:id="@+id/flexBoxLayoutBufferTextViews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:theme="@style/BopomofoBufferTextView" />
 
-    </com.google.android.flexbox.FlexboxLayout>
+    </org.ghostsinthelab.apps.guilelessbopomofo.buffers.BufferLayout>
 
     <View
         android:id="@+id/dividerKeyboardPanelTopBorder"
