@@ -432,6 +432,22 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onRequestHideIme(event: Events.RequestHideIme) {
+        viewBinding.keyboardPanel.apply {
+            if (this.currentLayout in listOf(
+                    Layout.MAIN,
+                    Layout.COMPACT,
+                    Layout.QWERTY,
+                    Layout.DVORAK
+                )
+            ) {
+                this@GuilelessBopomofoService.requestHideSelf(0)
+            }
+        }
+        return
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onExitKeyboardSubLayouts(event: Events.ExitKeyboardSubLayouts) {
         Log.d(logTag, event.toString())
         viewBinding.keyboardPanel.apply {
@@ -443,6 +459,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 this.switchToLayout(Layout.MAIN)
             }
         }
+        return
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

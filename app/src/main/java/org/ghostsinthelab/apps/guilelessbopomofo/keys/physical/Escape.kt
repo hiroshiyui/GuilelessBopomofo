@@ -39,6 +39,7 @@ class Escape : PhysicalKeyHandler {
             return true
         }
 
+        EventBus.getDefault().post(Events.RequestHideIme())
         EventBus.getDefault().post(Events.ExitKeyboardSubLayouts())
         return true
     }

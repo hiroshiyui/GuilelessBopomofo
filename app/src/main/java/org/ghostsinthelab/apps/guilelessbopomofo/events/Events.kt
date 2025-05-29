@@ -8,6 +8,7 @@ class Events {
     class UpdateBuffers
     class SwitchToLayout(val layout: Layout)
     class ExitKeyboardSubLayouts
+    class RequestHideIme
     class CommitTextInChewingCommitBuffer
     class SwitchToNextInputMethod
     class ListCandidatesForCurrentCursor
