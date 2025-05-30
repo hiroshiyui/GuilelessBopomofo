@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Guileless Bopomofo
+  ~ Copyright (C) 2025 YOU, HUI-HONG
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<resources>
+    <string name="app_name">素朴な注音符号入力キーボード</string>
+    <string name="display_name_bopomofo_keyboard_ime">注音符号</string>
+    <string name="libchewing_init_fail">新酷音ライブラリの初期化に失敗しました： %1$s</string>
+    <string name="test_text_input_here">Test text input here.</string>
+    <string name="chewing_data_files_status">新酷音ライブラリデータファイルの状態：</string>
+    <string name="engineering_mode_label">エンジニアリングモード</string>
+    <string name="general_settings_label">一般設定</string>
+    <string name="bopomofo_keyboard_layout">キーボード配列</string>
+    <string name="bopomofo_keyboard_layout_description">注音キーボードの配列を選択する</string>
+    <string name="bopomofo_keyboard_layout_dachen">大千式配列</string>
+    <string name="bopomofo_keyboard_layout_hsu">許氏配列</string>
+    <string name="bopomofo_keyboard_layout_eten26">倚天26キー配列</string>
+    <string name="guileless_bopomofo_inputservice_status">素朴な注音キーボードサービスの有効状態</string>
+    <string name="guileless_bopomofo_service_status">現在の素朴な注音キーボードサービスの状態：</string>
+    <string name="guileless_bopomofo_service_status_description">素朴な注音キーボードサービスの有効状態を検出する</string>
+    <string name="service_is_enabled">有効</string>
+    <string name="service_is_disabled">未有効</string>
+    <string name="launch_input_method_system_settings">キーボード管理システム設定を開く</string>
+    <string name="applcation_version_label">アプリケーションのバージョン</string>
+    <string name="fullscreen_mode_setting_title">全画面編集を使用する</string>
+    <string name="fullscreen_mode_setting_description">キーボードを全画面で動作させるか</string>
+    <string name="fullscreen_when_in_landscape_setting_switch">画面が横向きの場合、全画面モードを有効にしますか？</string>
+    <string name="fullscreen_when_in_portrait_setting_switch">画面が縦向きの場合、全画面モードを有効にしますか？</string>
+    <string name="switch_enable_keybutton_elevation">キーを立体的に表示する？</string>
+    <string name="switch_description_enable_keybutton_elevation">デフォルトのキーの平坦な外観が退屈ですか？変更しましょう！</string>
+    <string name="switch_title_enrich_key_button_elevation">キーを立体的に表示する</string>
+    <string name="back_to_main_layout">キーボードに戻る</string>
+    <string name="space_as_selection_key">スペースキーを候補選択のショートカットキーとして使用する</string>
+    <string name="space_as_selection_key_description">本機能を有効にすると、スペースキーを押すと即座に「プリエディットバッファ」の末端単語の候補一覧を表示します</string>
+    <string name="space_as_selection_key_switch_label">スペースキーを候補選択のショートカットキーとして使用する？</string>
+    <string name="rearward_phrase_choice">後方から単語を選択する</string>
+    <string name="rearward_phrase_choice_switch">後方から単語を選択する？</string>
+    <string name="rearward_phrase_choice_description">有効にすると、カーソルの前の単語を選択されます</string>
+    <string name="haptic_feedback_strength">キーの触感強度</string>
+    <string name="haptic_feedback_strength_description">文字キーの触感強度を調整する（機種により効果が異なります。設定値が0の場合、触感効果は無効になります）</string>
+    <string name="current_mode">現在のモード：</string>
+    <string name="mode_bopomofo">注音符号</string>
+    <string name="mode_english">英数字</string>
+    <string name="physical_keyboard_settings">物理キーボード設定</string>
+    <string name="enable_physical_keyboard">物理キーボードを使用する</string>
+    <string name="enable_physical_keyboard_description">物理キーボード（Bluetooth、USB、またはデバイス内蔵）を使用する際、本機能を有効にすると、ソフトウェアキーボードの表示を簡易モードに変更します</string>
+    <string name="switch_setting_description_enable_physical_keyboard">物理キーボードを使用する？</string>
+    <string name="tips_using_physical_keyboard">物理キーボード使用時、<b>左Shift</b> + <b>スペースキー</b> で注音/英数字入力モードを切り替え、<b>左Alt</b> 長押しで他の入力方式を選択できます</string>
+    <string name="physical_selection_keys">物理的な候補選択キー</string>
+    <string name="keybutton_popup_image">現在押されているキー</string>
+    <string name="key_button_height_label">キーの高さを調整する</string>
+    <string name="key_button_height_description">キーの高さを調整する（デフォルトの高さ：52dp）</string>
+    <string name="switch_display_hsu_qwerty_layout">許氏配列使用時にQWERTYキーキャップを表示しますか？</string>
+    <string name="switch_display_eten26_qwerty_layout">倚天26キー配列使用時にQWERTYキーキャップを表示しますか？</string>
+    <string name="bopomofo_keyboard_layout_dvorak_hsu">許氏配列 - Dvorakキーボード対応</string>
+    <string name="switch_display_hsu_dvorak_both_layout">許氏配列 - Dvorakキーボード対応のDvorakキーキャップを有効にしますか？</string>
+    <string name="user_interface_settings">UI設定</string>
+    <string name="haptic_feedback_strength_setting">レベル: %1$d</string>
+    <string name="key_button_height_setting">%1$ddp</string>
+    <string name="setting_apply_same_haptic_feedback_strength_to_function_buttons">機能キーに文字キーと同じ触感強度を適用しますか？</string>
+    <string name="text_view_setting_ime_switch">入力方式を切り替える</string>
+    <string name="text_view_setting_description_ime_switch">入力方式の切り替えキーの動作を調整する（単押しまたは二度押し）</string>
+    <string name="switch_setting_ime_switch">二度押しで次の入力方式に切り替えますか？</string>
+    <string name="bopomofo_keyboard_layout_eten41">倚天41キー配列</string>
+    <string name="please_enable_guileless_bopomofo_first">素朴な注音キーボードを有効にしてください</string>
+    <string name="labelHardwareKeyboardType">Hardware keyboard type:</string>
+    <string name="labelHardwareKeyboardHiddenStatus">Hardware keyboard hidden status:</string>
+    <string name="chewing_data_files_status_ok">OK</string>
+    <string name="chewing_data_files_status_error">エラー！</string>
+    <string name="hardware_keyboard_type_qwerty">QWERTY</string>
+    <string name="hardware_keyboard_type_12key">12 Keys</string>
+    <string name="hardware_keyboard_type_unknown_or_missing">Unknown or missing</string>
+    <string name="hardware_keyboard_hidden_status_no">Not hidden</string>
+    <string name="hardware_keyboard_hidden_status_yes">Hidden</string>
+    <string name="hardware_keyboard_hidden_status_undefined">Undefined hidden status</string>
+    <string name="hardware_keyboard_hidden_status_unknown">Unknown status</string>
+    <string name="labelUserPreferredHardwareKeyboard">ユーザーは物理キーボードの使用を優先しますか？</string>
+    <string name="user_preferred_hardware_keyboard_yes">はい</string>
+    <string name="user_preferred_hardware_keyboard_no">いいえ</string>
+    <string name="user_preferred_hardware_keyboard_unknown">Unknown</string>
+    <string name="switchSettingDescriptionEnhancedCompatPhysicalKeyboard" >拡張物理キーボード互換性</string>
+    <string name="settingDescriptionEnhancedCompatPhysicalKeyboard">これは何か聞かないでください、恐ろしいです。</string>
+</resources>
