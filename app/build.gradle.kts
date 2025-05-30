@@ -11,6 +11,10 @@ android {
     buildToolsVersion = "35.0.0"
     namespace = "org.ghostsinthelab.apps.guilelessbopomofo"
 
+    androidResources {
+        generateLocaleConfig = true
+    }
+
     defaultConfig {
         applicationId = "org.ghostsinthelab.apps.guilelessbopomofo"
         minSdk = 23
