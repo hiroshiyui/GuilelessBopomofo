@@ -61,25 +61,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="2dp"
         android:text="@string/guileless_bopomofo_service_status"
         app:layout_constraintEnd_toStartOf="@+id/textViewServiceStatus"
-        app:layout_constraintHorizontal_weight="8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionServiceStatus" />
 
     <TextView
         android:id="@+id/textViewServiceStatus"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:fontFamily="sans-serif-black"
         android:text="TextView"
-        android:textAlignment="textEnd"
         app:layout_constraintBottom_toBottomOf="@+id/textViewSettingLabelServiceStatus"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintStart_toEndOf="@+id/textViewSettingLabelServiceStatus"
         app:layout_constraintTop_toTopOf="@+id/textViewSettingLabelServiceStatus" />
 
     <com.google.android.material.button.MaterialButton

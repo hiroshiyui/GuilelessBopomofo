@@ -54,25 +54,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/chewing_data_files_status"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/chewingDataFilesStatus"
-        app:layout_constraintHorizontal_weight="7"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@+id/testTextInputLayout" />
 
     <TextView
         android:id="@+id/chewingDataFilesStatus"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="TextView"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/labelChewingDataFilesStatus"
         app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
-        app:layout_constraintHorizontal_weight="3"
-        app:layout_constraintStart_toEndOf="@+id/labelChewingDataFilesStatus"
         app:layout_constraintTop_toTopOf="@+id/labelChewingDataFilesStatus" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -87,25 +84,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/labelHardwareKeyboardType"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/hardwareKeyboardType"
-        app:layout_constraintHorizontal_weight="7"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@+id/labelChewingDataFilesStatus" />
 
     <TextView
         android:id="@+id/hardwareKeyboardType"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="TextView"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/labelHardwareKeyboardType"
         app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
-        app:layout_constraintHorizontal_weight="3"
-        app:layout_constraintStart_toEndOf="@+id/labelHardwareKeyboardType"
         app:layout_constraintTop_toTopOf="@+id/labelHardwareKeyboardType" />
 
     <TextView
@@ -113,25 +107,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/labelHardwareKeyboardHiddenStatus"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/hardwareKeyboardHiddenStatus"
-        app:layout_constraintHorizontal_weight="7"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@+id/labelHardwareKeyboardType" />
 
     <TextView
         android:id="@+id/hardwareKeyboardHiddenStatus"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="TextView"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/labelHardwareKeyboardHiddenStatus"
         app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
-        app:layout_constraintHorizontal_weight="3"
-        app:layout_constraintStart_toEndOf="@+id/labelHardwareKeyboardHiddenStatus"
         app:layout_constraintTop_toTopOf="@+id/labelHardwareKeyboardHiddenStatus" />
 
     <TextView
@@ -139,25 +130,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/labelUserPreferredHardwareKeyboard"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/userPreferredHardwareKeyboard"
-        app:layout_constraintHorizontal_weight="7"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@+id/labelHardwareKeyboardHiddenStatus" />
 
     <TextView
         android:id="@+id/userPreferredHardwareKeyboard"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="TextView"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/labelUserPreferredHardwareKeyboard"
         app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
-        app:layout_constraintHorizontal_weight="3"
-        app:layout_constraintStart_toEndOf="@+id/labelUserPreferredHardwareKeyboard"
         app:layout_constraintTop_toTopOf="@+id/labelUserPreferredHardwareKeyboard" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
