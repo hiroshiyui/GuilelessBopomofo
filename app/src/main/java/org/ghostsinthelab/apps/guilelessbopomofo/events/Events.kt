@@ -11,7 +11,6 @@ class Events {
     class RequestHideIme
     class CommitTextInChewingCommitBuffer
     class SwitchToNextInputMethod
-    class ListCandidatesForCurrentCursor
     class SendDownUpKeyEvents(val keycode: Int)
     class CandidateSelectionDone(val index: Int)
     class PrintingKeyDown(val characterKey: CharacterKey)

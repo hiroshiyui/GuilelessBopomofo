@@ -56,6 +56,7 @@ class KeyboardPanel(
     private val logTag: String = "KeyboardPanel"
 
     private var currentCandidatesList: Int = 0
+    private var lastChewingCursor: Int = 0
     private var forceCompactLayout: Boolean = false
 
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
@@ -362,6 +363,12 @@ class KeyboardPanel(
     private fun switchToCandidatesLayout() {
         Log.d(logTag, "switchToCandidatesLayout")
 
+        // reset candidates list to 0 (longest possible phrase) if cursor has been changed
+        if (ChewingBridge.chewing.cursorCurrent() != lastChewingCursor) {
+            currentCandidatesList = 0
+            lastChewingCursor = ChewingBridge.chewing.cursorCurrent()
+        }
+
         // switch to the target candidates list
         repeat(currentCandidatesList) {
             ChewingBridge.chewing.candListNext()
@@ -422,7 +429,8 @@ class KeyboardPanel(
 
     fun releaseShiftKey() {
         Log.d(logTag, "releaseShiftKey()")
-        this.findViewById<ShiftKey>(R.id.keyImageButtonShift)?.switchToState(ShiftKey.ShiftKeyState.RELEASED)
+        this.findViewById<ShiftKey>(R.id.keyImageButtonShift)
+            ?.switchToState(ShiftKey.ShiftKeyState.RELEASED)
         return
     }
 

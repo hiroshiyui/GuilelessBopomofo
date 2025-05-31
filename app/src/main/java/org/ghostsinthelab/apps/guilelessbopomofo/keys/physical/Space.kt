@@ -23,6 +23,7 @@ import android.content.Context
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
 
@@ -42,7 +43,9 @@ class Space : PhysicalKeyHandler {
             EventBus.getDefault().post(Events.UpdateBuffers())
             // 空白鍵是否為選字鍵？
             if (ChewingBridge.chewing.getSpaceAsSelection() == 1 && ChewingBridge.chewing.candTotalChoice() > 0) {
-                EventBus.getDefault().post(Events.ListCandidatesForCurrentCursor())
+                ChewingBridge.chewing.candClose()
+                ChewingBridge.chewing.candOpen()
+                EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
             }
         } else {
             EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE))

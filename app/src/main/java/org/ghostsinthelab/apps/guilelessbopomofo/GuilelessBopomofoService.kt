@@ -487,16 +487,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onListCandidatesForCurrentCursor(event: Events.ListCandidatesForCurrentCursor) {
-        Log.d(logTag, event.toString())
-        viewBinding.apply {
-            textViewPreEditBuffer.offset = ChewingBridge.chewing.cursorCurrent()
-            textViewPreEditBuffer.renderUnderlineSpan()
-            keyboardPanel.switchToLayout(Layout.CANDIDATES)
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSendDownUpKeyEvents(event: Events.SendDownUpKeyEvents) {
         sendDownUpKeyEvents(event.keycode)
     }
