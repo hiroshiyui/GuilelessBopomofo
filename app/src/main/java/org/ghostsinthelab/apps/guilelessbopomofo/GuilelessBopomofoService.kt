@@ -262,6 +262,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             return true
         }
 
+        // pass-through other KeyEvent, or we will make some physical keys like volume keys invalid
+        currentInputConnection.sendKeyEvent(event)
+
         return super.onKeyDown(keyCode, event)
     }
 
