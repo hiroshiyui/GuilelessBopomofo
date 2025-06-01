@@ -459,6 +459,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                     Layout.CANDIDATES
                 )
             ) {
+                // reset last cursor position
+                this.lastChewingCursor = 0
                 this.switchToLayout(Layout.MAIN)
             }
         }

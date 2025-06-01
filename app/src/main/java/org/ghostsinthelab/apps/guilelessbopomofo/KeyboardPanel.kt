@@ -55,8 +55,8 @@ class KeyboardPanel(
 ) : RelativeLayout(context, attrs) {
     private val logTag: String = "KeyboardPanel"
 
+    internal var lastChewingCursor: Int = 0
     private var currentCandidatesList: Int = 0
-    private var lastChewingCursor: Int = 0
     private var forceCompactLayout: Boolean = false
 
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding

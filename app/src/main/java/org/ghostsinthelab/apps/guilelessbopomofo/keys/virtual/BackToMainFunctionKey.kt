@@ -23,7 +23,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyButton
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -43,7 +42,7 @@ class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(c
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            EventBus.getDefault().post(Events.SwitchToLayout(Layout.MAIN))
+            EventBus.getDefault().post(Events.ExitKeyboardSubLayouts())
             return true
         }
     }
