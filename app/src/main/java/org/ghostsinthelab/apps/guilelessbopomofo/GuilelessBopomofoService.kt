@@ -363,6 +363,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             return
         }
 
+        // when user press '`', switch to symbols layout
         if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE && !event.isShiftPressed) {
             viewBinding.keyboardPanel.switchToLayout(Layout.SYMBOLS)
             return
@@ -375,6 +376,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             keyPressed = event.getUnicodeChar(META_SHIFT_ON).toChar()
         }
 
+        // common Ctrl-key handling
         if (event.isCtrlPressed) {
             currentInputConnection.apply {
                 when (event.keyCode) {
