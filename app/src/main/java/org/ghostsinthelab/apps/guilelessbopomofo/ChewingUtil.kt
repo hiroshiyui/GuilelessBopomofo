@@ -153,5 +153,16 @@ class ChewingUtil {
             // if we can't find a mapping, then return the original key as-is
             return key
         }
+
+        private val qwertyToDvorakKeyMappingMap: Map<Char, Char> =
+            qwertyKeysList.zip(dvorakKeysList).toMap()
+
+        fun qwertyToDvorakKeyMapping(key: Char): Char {
+            qwertyToDvorakKeyMappingMap[key]?.let {
+                return it
+            }
+            // if we can't find a mapping, then return the original key as-is
+            return key
+        }
     }
 }

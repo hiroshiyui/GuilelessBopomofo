@@ -408,6 +408,14 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             return
         }
 
+
+        // If in candidate selection window, the selection keys have to be mapped to DVORAK layout
+        // ** This dirty hack should be resolved in the future, in libchewing. **
+        if (ChewingBridge.chewing.getKBString() == "KB_DVORAK_HSU" && viewBinding.keyboardPanel.currentLayout == Layout.CANDIDATES ) {
+            Log.d(logTag, "DVORAK to QWERTY: $keyPressed -> ${ChewingUtil.qwertyToDvorakKeyMapping(keyPressed)}")
+            keyPressed = ChewingUtil.qwertyToDvorakKeyMapping(keyPressed)
+        }
+
         ChewingBridge.chewing.handleDefault(keyPressed)
         EventBus.getDefault().post(Events.UpdateBuffers())
 
