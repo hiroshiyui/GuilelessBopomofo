@@ -72,7 +72,7 @@ android {
     }
 }
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
+    implementation(files("libs/libchewing_android_app_module_0.9.1.6-release.aar"))
     implementation(libs.appcompat)
     implementation(libs.appcompat.resources)
     implementation(libs.constraintlayout)
