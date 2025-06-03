@@ -371,8 +371,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         }
 
         // if user is using Hsu layout, the Q key will open candidate window
-        val hsuKeyboardLayouts = listOf<String>("KB_HSU", "KB_DVORAK_HSU")
-        if (hsuKeyboardLayouts.contains(ChewingBridge.chewing.getKBString()) && event.keyCode == KEYCODE_Q) {
+        if ((ChewingBridge.chewing.getKBString() == "KB_DVORAK_HSU" && event.keyCode == KEYCODE_X) || (ChewingBridge.chewing.getKBString() == "KB_HSU" && event.keyCode == KEYCODE_Q)) {
             if (ChewingBridge.chewing.bufferLen() > 0) {
                 ChewingUtil.openCandidates()
             }
