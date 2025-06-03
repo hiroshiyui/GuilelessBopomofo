@@ -26,7 +26,6 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -52,9 +51,7 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
                 EventBus.getDefault().post(Events.UpdateBuffers())
                 // 空白鍵是否為選字鍵？
                 if (ChewingBridge.chewing.getSpaceAsSelection() == 1 && ChewingBridge.chewing.candTotalChoice() > 0) {
-                    ChewingBridge.chewing.candClose()
-                    ChewingBridge.chewing.candOpen()
-                    EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
+                    ChewingUtil.openCandidates()
                 }
             } else {
                 EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE))

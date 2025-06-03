@@ -19,6 +19,10 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
+import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.greenrobot.eventbus.EventBus
+
 class ChewingUtil {
     companion object {
         fun listOfDataFiles(): List<String> {
@@ -83,6 +87,13 @@ class ChewingUtil {
             }
 
             return candidatesInThisPage.toList()
+        }
+
+        fun openCandidates() {
+            ChewingBridge.chewing.candClose()
+            ChewingBridge.chewing.candOpen()
+            EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
+            return
         }
 
         private fun getCandidate(index: Int): Candidate {

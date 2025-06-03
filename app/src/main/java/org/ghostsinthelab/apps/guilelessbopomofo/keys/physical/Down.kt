@@ -23,7 +23,7 @@ import android.content.Context
 import android.util.Log
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
-import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
 
@@ -31,9 +31,7 @@ class Down : PhysicalKeyHandler {
     override fun onKeyDown(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
         Log.d("Down", "onKeyDown()")
         if (ChewingBridge.chewing.bufferLen() > 0) {
-            ChewingBridge.chewing.candClose()
-            ChewingBridge.chewing.candOpen()
-            EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
+            ChewingUtil.openCandidates()
         } else {
             EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN))
         }
