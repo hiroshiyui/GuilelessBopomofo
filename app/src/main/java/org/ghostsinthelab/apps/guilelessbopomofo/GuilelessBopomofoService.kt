@@ -37,6 +37,7 @@ import android.view.KeyEvent.KEYCODE_DPAD_LEFT
 import android.view.KeyEvent.KEYCODE_DPAD_RIGHT
 import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.KeyEvent.KEYCODE_GRAVE
+import android.view.KeyEvent.KEYCODE_Q
 import android.view.KeyEvent.KEYCODE_R
 import android.view.KeyEvent.KEYCODE_SHIFT_LEFT
 import android.view.KeyEvent.KEYCODE_V
@@ -366,6 +367,15 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         // when user press '`', switch to symbols layout
         if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE && !event.isShiftPressed) {
             viewBinding.keyboardPanel.switchToLayout(Layout.SYMBOLS)
+            return
+        }
+
+        // if user is using Hsu layout, the Q key will open candidate window
+        val hsuKeyboardLayouts = listOf<String>("KB_HSU", "KB_DVORAK_HSU")
+        if (hsuKeyboardLayouts.contains(ChewingBridge.chewing.getKBString()) && event.keyCode == KEYCODE_Q) {
+            if (ChewingBridge.chewing.bufferLen() > 0) {
+                ChewingUtil.openCandidates()
+            }
             return
         }
 
