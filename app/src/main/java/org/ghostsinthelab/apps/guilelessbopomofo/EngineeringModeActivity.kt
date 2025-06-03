@@ -84,9 +84,6 @@ class EngineeringModeActivity : AppCompatActivity() {
             when (sharedPreferences.getBoolean("user_enable_physical_keyboard", false)) {
                 true -> getString(R.string.user_preferred_hardware_keyboard_yes)
                 false -> getString(R.string.user_preferred_hardware_keyboard_no)
-                else -> {
-                    getString(R.string.user_preferred_hardware_keyboard_unknown)
-                }
             }
         viewBinding.userPreferredHardwareKeyboard.text = userPreferredHardwareKeyboardText
 
