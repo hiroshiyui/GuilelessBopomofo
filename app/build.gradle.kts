@@ -67,6 +67,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
     }
 
+    packaging {
+        jniLibs.keepDebugSymbols.add("**/*.so")
+    }
+
     kotlinOptions {
         jvmTarget = "17"
     }
