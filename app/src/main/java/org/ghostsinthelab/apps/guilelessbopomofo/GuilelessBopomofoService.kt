@@ -93,8 +93,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     private val chewingDataFiles = ChewingUtil.listOfDataFiles()
 
     companion object {
-        val defaultHapticFeedbackStrength: Int =
-            Vibratable.VibrationStrength.NORMAL.strength
+        val defaultHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
         const val DEFAULT_KB_LAYOUT: String = "KB_DEFAULT"
         var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
     }
@@ -110,11 +109,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         // emoji2-bundled (fonts-embedded)
         val fontLoadExecutor: Executor = Executor { }
-        val emojiCompatConfig: EmojiCompat.Config =
-            BundledEmojiCompatConfig(
-                this@GuilelessBopomofoService.applicationContext,
-                fontLoadExecutor
-            )
+        val emojiCompatConfig: EmojiCompat.Config = BundledEmojiCompatConfig(
+            this@GuilelessBopomofoService.applicationContext, fontLoadExecutor
+        )
         EmojiCompat.init(emojiCompatConfig)
 
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
@@ -146,8 +143,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         } catch (exception: Exception) {
             val exceptionDescription: String =
                 getString(R.string.libchewing_init_fail, exception.message)
-            Toast.makeText(applicationContext, exceptionDescription, Toast.LENGTH_LONG)
-                .show()
+            Toast.makeText(applicationContext, exceptionDescription, Toast.LENGTH_LONG).show()
             exception.let { e ->
                 e.printStackTrace()
                 e.message?.let { msg ->
@@ -172,8 +168,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         Log.d(logTag, "onEvaluateFullscreenMode()")
 
         if (sharedPreferences.getBoolean(
-                "user_fullscreen_when_in_landscape",
-                true
+                "user_fullscreen_when_in_landscape", true
             ) && resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         ) {
             Log.d(logTag, "Now on landscape orientation.")
@@ -181,8 +176,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         }
 
         if (sharedPreferences.getBoolean(
-                "user_fullscreen_when_in_portrait",
-                false
+                "user_fullscreen_when_in_portrait", false
             ) && resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
         ) {
             Log.d(logTag, "Now on portrait orientation.")
@@ -420,7 +414,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         // If in candidate selection window, the selection keys have to be mapped to DVORAK layout
         // ** This dirty hack should be resolved in the future, in libchewing. **
-        if (ChewingBridge.chewing.getKBString() == "KB_DVORAK_HSU" && viewBinding.keyboardPanel.currentLayout == Layout.CANDIDATES ) {
+        if (ChewingBridge.chewing.getKBString() == "KB_DVORAK_HSU" && viewBinding.keyboardPanel.currentLayout == Layout.CANDIDATES) {
             keyPressed = ChewingUtil.qwertyToDvorakKeyMapping(keyPressed)
         }
 
@@ -456,10 +450,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     fun onRequestHideIme(event: Events.RequestHideIme) {
         viewBinding.keyboardPanel.apply {
             if (this.currentLayout in listOf(
-                    Layout.MAIN,
-                    Layout.COMPACT,
-                    Layout.QWERTY,
-                    Layout.DVORAK
+                    Layout.MAIN, Layout.COMPACT, Layout.QWERTY, Layout.DVORAK
                 )
             ) {
                 this@GuilelessBopomofoService.requestHideSelf(0)
@@ -473,8 +464,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         Log.d(logTag, event.toString())
         viewBinding.keyboardPanel.apply {
             if (this.currentLayout in listOf(
-                    Layout.SYMBOLS,
-                    Layout.CANDIDATES
+                    Layout.SYMBOLS, Layout.CANDIDATES
                 )
             ) {
                 // reset last cursor position
@@ -489,8 +479,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     fun onCommitTextInChewingCommitBuffer(event: Events.CommitTextInChewingCommitBuffer) {
         Log.d(logTag, event.toString())
         currentInputConnection.commitText(
-            ChewingBridge.chewing.commitString(),
-            1
+            ChewingBridge.chewing.commitString(), 1
         )
     }
 
@@ -504,8 +493,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             val imm =
                 applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             val imeToken: IBinder? = viewBinding.root.windowToken
-            @Suppress("DEPRECATION")
-            imm.switchToNextInputMethod(imeToken, false)
+            @Suppress("DEPRECATION") imm.switchToNextInputMethod(imeToken, false)
         }
     }
 
@@ -522,11 +510,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onPrintingKeyDown(event: Events.PrintingKeyDown) {
         event.characterKey.keyCodeString?.let { keycodeString ->
-            val keyEvent =
-                KeyEvent(
-                    ACTION_DOWN,
-                    KeyEvent.keyCodeFromString(keycodeString)
-                )
+            val keyEvent = KeyEvent(
+                ACTION_DOWN, KeyEvent.keyCodeFromString(keycodeString)
+            )
             this@GuilelessBopomofoService.onPrintingKeyDown(keyEvent)
         }
     }
@@ -764,11 +750,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             "user_haptic_feedback_strength" -> {
                 // reload the value
                 sharedPreferences?.apply {
-                    userHapticFeedbackStrength =
-                        this.getInt(
-                            "user_haptic_feedback_strength",
-                            defaultHapticFeedbackStrength
-                        )
+                    userHapticFeedbackStrength = this.getInt(
+                        "user_haptic_feedback_strength", defaultHapticFeedbackStrength
+                    )
                 }
             }
 
@@ -802,13 +786,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
             "user_candidate_selection_keys_option" -> {
                 sharedPreferences?.apply {
-                    this.getString("user_candidate_selection_keys_option", "NUMBER_ROW")
-                        ?.let {
-                            ChewingBridge.chewing.setSelKey(
-                                SelectionKeys.valueOf(it).keys,
-                                10
-                            )
-                        }
+                    this.getString("user_candidate_selection_keys_option", "NUMBER_ROW")?.let {
+                        ChewingBridge.chewing.setSelKey(
+                            SelectionKeys.valueOf(it).keys, 10
+                        )
+                    }
                 }
             }
         }
