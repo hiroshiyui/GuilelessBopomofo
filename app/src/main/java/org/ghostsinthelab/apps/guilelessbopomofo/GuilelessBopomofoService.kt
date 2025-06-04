@@ -243,6 +243,12 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         forceViewBindingInitialized()
 
+        // have to make Back key work as is at very first, or some back operations will be blocked
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            super.onKeyDown(keyCode, event)
+            return true
+        }
+
         // handles physical functional keys
         val handler = physicalKeyDispatcher[keyCode]
         if (handler != null) {
