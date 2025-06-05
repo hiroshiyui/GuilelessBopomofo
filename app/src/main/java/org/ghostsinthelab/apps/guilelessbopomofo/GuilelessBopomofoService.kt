@@ -372,10 +372,10 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
         // if user is using Hsu layout, the Q key will open candidate window
         if ((ChewingBridge.chewing.getKBString() == "KB_DVORAK_HSU" && event.keyCode == KEYCODE_X) || (ChewingBridge.chewing.getKBString() == "KB_HSU" && event.keyCode == KEYCODE_Q)) {
-            if (ChewingBridge.chewing.bufferLen() > 0) {
+            if (ChewingBridge.chewing.bufferLen() > 0 && ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE) {
                 ChewingUtil.openCandidates()
+                return
             }
-            return
         }
 
         var keyPressed: Char = event.unicodeChar.toChar()
