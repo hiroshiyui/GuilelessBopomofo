@@ -84,25 +84,25 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun validChiEngMode() {
-        ChewingBridge.chewing.setChiEngMode(SYMBOL_MODE)
-        assertEquals(SYMBOL_MODE, ChewingBridge.chewing.getChiEngMode())
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
+        assertEquals(ChiEngMode.SYMBOL.mode, ChewingBridge.chewing.getChiEngMode())
 
         ChewingBridge.chewing.handleDefault('t')
         ChewingBridge.chewing.handleDefault('e')
         ChewingBridge.chewing.handleDefault('a')
-        // 如果一開始 pre-edit buffer 完全無資料，SYMBOL_MODE 會直接送出字符
+        // 如果一開始 pre-edit buffer 完全無資料，ChiEngMode.SYMBOL.mode 會直接送出字符
         assertEquals("", ChewingBridge.chewing.bufferStringStatic())
 
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
-        assertEquals(CHINESE_MODE, ChewingBridge.chewing.getChiEngMode())
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
+        assertEquals(ChiEngMode.CHINESE.mode, ChewingBridge.chewing.getChiEngMode())
 
         val keys = arrayOf('x', 'm', '4', 't', '8', '6')
         for (key in keys) {
             ChewingBridge.chewing.handleDefault(key)
         }
 
-        ChewingBridge.chewing.setChiEngMode(SYMBOL_MODE)
-        assertEquals(SYMBOL_MODE, ChewingBridge.chewing.getChiEngMode())
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
+        assertEquals(ChiEngMode.SYMBOL.mode, ChewingBridge.chewing.getChiEngMode())
 
         ChewingBridge.chewing.handleSpace()
         ChewingBridge.chewing.handleDefault('g')
@@ -144,7 +144,7 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun validPagedCandidates() {
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setCandPerPage(10)
         val selKeys: IntArray =
             charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
@@ -235,7 +235,7 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun validPhysicalKeyboardCandidatesSelection() {
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setCandPerPage(10)
         val selKeys: IntArray =
             charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
@@ -292,7 +292,7 @@ class ChewingBridgeInstrumentedTest {
     @Test
     fun validCommitPhrase() {
         // ref: https://starforcefield.wordpress.com/2012/08/13/%E6%8E%A2%E7%B4%A2%E6%96%B0%E9%85%B7%E9%9F%B3%E8%BC%B8%E5%85%A5%E6%B3%95%EF%BC%9A%E4%BD%BF%E7%94%A8libchewing/
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setMaxChiSymbolLen(10)
         ChewingBridge.chewing.setCandPerPage(9)
         ChewingBridge.chewing.setPhraseChoiceRearward(0)
@@ -321,7 +321,7 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun testSetPhraseChoiceRearward() { // 後方選詞
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setMaxChiSymbolLen(10)
         ChewingBridge.chewing.setCandPerPage(9)
         ChewingBridge.chewing.setPhraseChoiceRearward(1)
@@ -339,7 +339,7 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun validGetCandidatesByPage() {
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setCandPerPage(10)
         val selKeys: IntArray =
             charArrayOf('a', 's', 'd', 'f', 'g', 'q', 'w', 'e', 'r', 't').map { it.code }
@@ -391,7 +391,7 @@ class ChewingBridgeInstrumentedTest {
 
     @Test(expected = IndexOutOfBoundsException::class)
     fun validIndexOutOfBoundsExceptionGetCandidatesByPage() {
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setCandPerPage(10)
         val selKeys: IntArray =
             charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }
@@ -415,7 +415,7 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun validCommitPreeditBuf() { // 測試 commitPreeditBuf() 回傳值
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setMaxChiSymbolLen(10)
         ChewingBridge.chewing.setCandPerPage(9)
         ChewingBridge.chewing.setPhraseChoiceRearward(1)
@@ -432,7 +432,7 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun validMiddlePhraseCandidate() {
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setMaxChiSymbolLen(10)
         ChewingBridge.chewing.setCandPerPage(9)
         ChewingBridge.chewing.setPhraseChoiceRearward(0)
@@ -471,7 +471,7 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun validCandListNext() {
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setMaxChiSymbolLen(10)
         ChewingBridge.chewing.setCandPerPage(10)
         ChewingBridge.chewing.setPhraseChoiceRearward(0)
@@ -610,7 +610,7 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun validCandidateWindowOpenClose() {
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setMaxChiSymbolLen(10)
         ChewingBridge.chewing.setCandPerPage(10)
         ChewingBridge.chewing.setPhraseChoiceRearward(0)
@@ -679,7 +679,7 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun switchToSymbolSelectionMode() {
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setMaxChiSymbolLen(10)
         ChewingBridge.chewing.setCandPerPage(10)
         ChewingBridge.chewing.setPhraseChoiceRearward(0)
@@ -740,7 +740,7 @@ class ChewingBridgeInstrumentedTest {
 
     @Test
     fun testCommitCheck() {
-        ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setMaxChiSymbolLen(10)
         assertEquals(10, ChewingBridge.chewing.getMaxChiSymbolLen())
         ChewingBridge.chewing.setCandPerPage(10)

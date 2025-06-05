@@ -134,7 +134,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 ChewingBridge.chewing.setPhraseChoiceRearward(1)
             }
 
-            ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+            ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
             ChewingBridge.chewing.setCandPerPage(10)
 
             sharedPreferences.getString("user_candidate_selection_keys_option", "NUMBER_ROW")?.let {
@@ -365,14 +365,14 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         }
 
         // when user press '`', switch to symbols layout
-        if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE && !event.isShiftPressed) {
+        if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode && !event.isShiftPressed) {
             viewBinding.keyboardPanel.switchToLayout(Layout.SYMBOLS)
             return
         }
 
         // if user is using Hsu layout, the Q key will open candidate window
         if ((ChewingBridge.chewing.getKBString() == "KB_DVORAK_HSU" && event.keyCode == KEYCODE_X) || (ChewingBridge.chewing.getKBString() == "KB_HSU" && event.keyCode == KEYCODE_Q)) {
-            if (ChewingBridge.chewing.bufferLen() > 0 && ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE) {
+            if (ChewingBridge.chewing.bufferLen() > 0 && ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
                 ChewingUtil.openCandidates()
                 return
             }
@@ -533,6 +533,23 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     fun onToggleKeyboardMainLayoutMode(event: Events.ToggleKeyboardMainLayoutMode) {
         Log.d(logTag, event.toString())
         viewBinding.keyboardPanel.toggleMainLayoutMode()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onToggleFullOrHalfWidthMode(event: Events.ToggleFullOrHalfWidthMode) {
+        var shapeMode: String = ""
+        when (ChewingBridge.chewing.getShapeMode()) {
+            ShapeMode.HALF.mode -> {
+                ChewingBridge.chewing.setShapeMode(ShapeMode.FULL.mode)
+                shapeMode = getString(R.string.full_width_mode)
+            }
+            ShapeMode.FULL.mode -> {
+                ChewingBridge.chewing.setShapeMode(ShapeMode.HALF.mode)
+                shapeMode = getString(R.string.half_width_mode)
+            }
+        }
+        Toast.makeText(applicationContext, getString(R.string.shape_mode_changed, shapeMode), Toast.LENGTH_SHORT).show()
+        return
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

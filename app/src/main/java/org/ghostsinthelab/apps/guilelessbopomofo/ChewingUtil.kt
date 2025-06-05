@@ -127,7 +127,7 @@ class ChewingUtil {
                 ','
             }
 
-            if (ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE) {
+            if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
                 ChewingBridge.chewing.setEasySymbolInput(1)
                 ChewingBridge.chewing.handleDefault(commaKeyMapping)
                 ChewingBridge.chewing.setEasySymbolInput(0)

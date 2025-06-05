@@ -15,6 +15,7 @@ class Events {
     class CandidateSelectionDone(val index: Int)
     class PrintingKeyDown(val characterKey: CharacterKey)
     class ToggleKeyboardMainLayoutMode
+    class ToggleFullOrHalfWidthMode
     class EnterKeyDownWhenBufferIsEmpty
     class ShowKeyButtonPopup(val characterKey: CharacterKey)
     class DismissKeyButtonPopup

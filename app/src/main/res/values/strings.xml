@@ -95,4 +95,7 @@
     <string name="user_preferred_hardware_keyboard_unknown">Unknown</string>
     <string name="switchSettingDescriptionEnhancedCompatPhysicalKeyboard" >Enhanced physical keyboard compatibility?</string>
     <string name="settingDescriptionEnhancedCompatPhysicalKeyboard">Don\'t ask what this is—it\'s terrifying.</string>
+    <string name="full_width_mode">full width</string>
+    <string name="half_width_mode">half width</string>
+    <string name="shape_mode_changed">Shape mode: %1$s</string>
 </resources>

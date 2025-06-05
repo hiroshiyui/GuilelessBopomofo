@@ -37,6 +37,11 @@ class Space : PhysicalKeyHandler {
             return true
         }
 
+        if (event?.isAltPressed == true) {
+            EventBus.getDefault().post(Events.ToggleFullOrHalfWidthMode())
+            return true
+        }
+
         if (ChewingUtil.anyPreEditBufferIsNotEmpty()) {
             ChewingBridge.chewing.handleSpace()
             EventBus.getDefault().post(Events.UpdateBuffers())

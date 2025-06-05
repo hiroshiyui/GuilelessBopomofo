@@ -108,13 +108,13 @@ class KeyboardPanel(
     fun toggleMainLayoutMode() {
         Log.d(logTag, "toggleMainLayoutMode()")
         when (ChewingBridge.chewing.getChiEngMode()) {
-            SYMBOL_MODE -> {
-                ChewingBridge.chewing.setChiEngMode(CHINESE_MODE)
+            ChiEngMode.SYMBOL.mode -> {
+                ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
                 switchToBopomofoLayout()
             }
 
-            CHINESE_MODE -> {
-                ChewingBridge.chewing.setChiEngMode(SYMBOL_MODE)
+            ChiEngMode.CHINESE.mode -> {
+                ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
                 switchToAlphabeticalLayout()
             }
         }
@@ -157,7 +157,7 @@ class KeyboardPanel(
         ChewingBridge.chewing.candClose()
         ChewingBridge.chewing.handleEnd()
 
-        if (ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE) {
+        if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
             switchToBopomofoLayout()
         } else {
             switchToAlphabeticalLayout()
@@ -169,7 +169,7 @@ class KeyboardPanel(
         currentLayout = Layout.COMPACT
         this.removeAllViews()
         compactLayoutBinding = CompactLayoutBinding.inflate(LayoutInflater.from(context))
-        if (ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE) {
+        if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
             compactLayoutBinding.textViewCurrentModeValue.text =
                 resources.getString(R.string.mode_bopomofo)
         } else {

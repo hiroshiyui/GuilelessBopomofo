@@ -21,9 +21,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
 import android.content.Context
 import android.view.KeyEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.CHINESE_MODE
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
+import org.ghostsinthelab.apps.guilelessbopomofo.ChiEngMode
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
@@ -35,7 +35,7 @@ class RightShift : PhysicalKeyHandler {
     }
 
     override fun onKeyLongPress(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
-        if (ChewingBridge.chewing.getChiEngMode() == CHINESE_MODE) {
+        if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
             ChewingUtil.openFrequentlyUsedCandidates()
             EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
             return true

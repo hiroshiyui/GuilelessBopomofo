@@ -21,8 +21,13 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import com.miyabi_hiroshi.app.libchewing_android_app_module.Chewing
 
-const val SYMBOL_MODE: Int = 0
-const val CHINESE_MODE: Int = 1
+enum class ChiEngMode(val mode: Int) {
+    SYMBOL(0), CHINESE(1)
+}
+
+enum class ShapeMode(val mode: Int) {
+    HALF(0), FULL(1)
+}
 
 object ChewingBridge {
     val chewing: Chewing = Chewing()
