@@ -1,5 +1,5 @@
 [versions]
-androidxAppcompatVersion = "1.7.0"
+androidxAppcompatVersion = "1.7.1"
 constraintlayoutVersion = "2.2.1"
 coreKtxVersion = "1.16.0"
 coreVersion = "1.6.1"
@@ -13,9 +13,14 @@ junitVersion = "4.13.2"
 kotlinGradlePlugin = "2.1.21"
 kotlinxCoroutinesAndroidVersion = "1.10.2"
 leakcanaryAndroidVersion = "2.14"
-lifecycleVersion = "2.9.0"
+lifecycleVersion = "2.9.1"
 materialVersion = "1.12.0"
+mockitoAndroidVersion = "5.18.0"
+mockitoCoreVersion = "5.18.0"
 preferenceKtxVersion = "1.2.1"
+rulesVersion = "1.6.1"
+runnerVersion = "1.6.2"
+testServicesVersion = "1.5.0"
 uiautomatorVersion = "2.3.0"
 
 [libraries]
@@ -23,6 +28,9 @@ androidx-core = { module = "androidx.test:core", version.ref = "coreVersion" }
 androidx-espresso-idling-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espressoCoreVersion" }
 androidx-espresso-web = { module = "androidx.test.espresso:espresso-web", version.ref = "espressoCoreVersion" }
 androidx-idling-concurrent = { module = "androidx.test.espresso.idling:idling-concurrent", version.ref = "espressoCoreVersion" }
+androidx-rules = { group = "androidx.test", name = "rules", version.ref = "rulesVersion" }
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runnerVersion" }
+androidx-test-services = { group = "androidx.test.services", name = "test-services", version.ref = "testServicesVersion" }
 androidx-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiautomatorVersion" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompatVersion" }
 appcompat-resources = { module = "androidx.appcompat:appcompat-resources", version.ref = "androidxAppcompatVersion" }
@@ -48,6 +56,8 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroidVersion" }
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleVersion" }
 material = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+mockito-android = { group = "org.mockito", name = "mockito-android", version.ref = "mockitoAndroidVersion" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCoreVersion" }
 preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtxVersion" }
 
 [plugins]

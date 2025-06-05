@@ -23,6 +23,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
+import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.text.InputType
@@ -97,6 +98,12 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         const val DEFAULT_KB_LAYOUT: String = "KB_DEFAULT"
         var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
     }
+
+    inner class LocalBinder : Binder() {
+        fun getService(): GuilelessBopomofoService = this@GuilelessBopomofoService
+    }
+
+    private val binder = LocalBinder()
 
     override fun onCreate() {
         Log.d(logTag, "onCreate()")
@@ -543,12 +550,17 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 ChewingBridge.chewing.setShapeMode(ShapeMode.FULL.mode)
                 shapeMode = getString(R.string.full_width_mode)
             }
+
             ShapeMode.FULL.mode -> {
                 ChewingBridge.chewing.setShapeMode(ShapeMode.HALF.mode)
                 shapeMode = getString(R.string.half_width_mode)
             }
         }
-        Toast.makeText(applicationContext, getString(R.string.shape_mode_changed, shapeMode), Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            applicationContext,
+            getString(R.string.shape_mode_changed, shapeMode),
+            Toast.LENGTH_SHORT
+        ).show()
         return
     }
 
