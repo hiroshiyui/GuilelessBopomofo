@@ -76,7 +76,7 @@ android {
     }
 }
 dependencies {
-    implementation(files("libs/libchewing_android_app_module_0.9.1.7-release.aar"))
+    implementation(files("libs/libchewing_android_app_module_0.9.1.8-release.aar"))
     implementation(libs.appcompat)
     implementation(libs.appcompat.resources)
     implementation(libs.constraintlayout)
