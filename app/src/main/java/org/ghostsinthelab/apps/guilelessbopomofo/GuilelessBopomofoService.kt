@@ -136,7 +136,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
             ChewingBridge.chewing.setCandPerPage(10)
 
-            sharedPreferences.getString("user_candidate_selection_keys_option", "NUMBER_ROW")?.let {
+            sharedPreferences.getString("user_candidate_selection_keys_option", SelectionKeys.NUMBER_ROW.set)?.let {
                 ChewingBridge.chewing.setSelKey(SelectionKeys.valueOf(it).keys, 10)
             }
         } catch (exception: Exception) {
@@ -813,7 +813,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
             "user_candidate_selection_keys_option" -> {
                 sharedPreferences?.apply {
-                    this.getString("user_candidate_selection_keys_option", "NUMBER_ROW")?.let {
+                    this.getString("user_candidate_selection_keys_option", SelectionKeys.NUMBER_ROW.set)?.let {
                         ChewingBridge.chewing.setSelKey(
                             SelectionKeys.valueOf(it).keys, 10
                         )

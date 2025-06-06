@@ -29,6 +29,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 class MainActivity : AppCompatActivity(), Vibratable {
@@ -333,7 +334,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
 
                     if (sharedPreferences.getString(
                             "user_candidate_selection_keys_option",
-                            "NUMBER_ROW"
+                            SelectionKeys.NUMBER_ROW.set
                         ) == keys
                     ) {
                         button.isChecked = true
