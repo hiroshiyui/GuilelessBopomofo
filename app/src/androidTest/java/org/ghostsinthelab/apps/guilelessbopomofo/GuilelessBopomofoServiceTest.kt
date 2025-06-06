@@ -1,6 +1,6 @@
 /*
  * Guileless Bopomofo
- * Copyright (C) 2021 YOU, HUI-HONG
+ * Copyright (C) 2025 YOU, HUI-HONG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -63,9 +63,14 @@ class GuilelessBopomofoServiceTest {
         )
         Log.d("TestSetup", "Original IME ID: $originalImeId")
 
-        // launch Guileless Bopomofo App (Settings), which will let you do enable the IME first.
+        // enable Guileless Bopomofo IME
+        uiDevice.executeShellCommand("ime enable ${context.packageName}/.GuilelessBopomofoService")
+        Thread.sleep(500)
+
+        // launch Guileless Bopomofo App
         val intent = context.packageManager.getLaunchIntentForPackage(
-            PACKAGE_NAME).apply {
+            PACKAGE_NAME
+        ).apply {
             this!!.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
         context.startActivity(intent)
@@ -75,17 +80,15 @@ class GuilelessBopomofoServiceTest {
             LAUNCH_TIMEOUT
         )
 
-        // time to wait the initial manual operations been completed
-        Thread.sleep(10000)
+        Thread.sleep(1000)
 
-        // enable Guileless Bopomofo IME
+        // switch IME to Guileless Bopomofo
         val myImeId = "${context.packageName}/.GuilelessBopomofoService"
         setSystemIme(myImeId)
         Log.d("TestSetup", "System IME set to: $myImeId")
 
         uiDevice.pressHome()
-        Thread.sleep(5000)
-
+        Thread.sleep(1000)
         Log.d("TestSetup", "setUp finished.")
     }
 
