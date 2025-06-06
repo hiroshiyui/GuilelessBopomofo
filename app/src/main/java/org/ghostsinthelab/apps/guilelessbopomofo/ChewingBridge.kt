@@ -27,6 +27,14 @@ enum class ShapeMode(val mode: Int) {
     HALF(0), FULL(1)
 }
 
+enum class BopomofoKeyboards(val layout: String) {
+    KB_DEFAULT("KB_DEFAULT"),
+    KB_ET26("KB_ET26"),
+    KB_HSU("KB_HSU"),
+    KB_DVORAK_HSU("KB_DVORAK_HSU"),
+    KB_ET("KB_ET")
+}
+
 object ChewingBridge {
     val chewing: Chewing = Chewing()
 }

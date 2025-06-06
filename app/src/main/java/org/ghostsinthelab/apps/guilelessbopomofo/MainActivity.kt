@@ -91,11 +91,11 @@ class MainActivity : AppCompatActivity(), Vibratable {
 
                 for ((button, layout) in
                 mapOf(
-                    radioButtonLayoutDaChen to "KB_DEFAULT",
-                    radioButtonLayoutETen26 to "KB_ET26",
-                    radioButtonLayoutHsu to "KB_HSU",
-                    radioButtonLayoutDvorakHsu to "KB_DVORAK_HSU",
-                    radioButtonLayoutETen41 to "KB_ET"
+                    radioButtonLayoutDaChen to BopomofoKeyboards.KB_DEFAULT.layout,
+                    radioButtonLayoutETen26 to BopomofoKeyboards.KB_ET26.layout,
+                    radioButtonLayoutHsu to BopomofoKeyboards.KB_HSU.layout,
+                    radioButtonLayoutDvorakHsu to BopomofoKeyboards.KB_DVORAK_HSU.layout,
+                    radioButtonLayoutETen41 to BopomofoKeyboards.KB_ET.layout
                 )) {
                     button.setOnClickListener {
                         sharedPreferences.edit().putString("user_keyboard_layout", layout).apply()
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
 
                     if (sharedPreferences.getString(
                             "user_keyboard_layout",
-                            GuilelessBopomofoService.DEFAULT_KB_LAYOUT
+                            BopomofoKeyboards.KB_DEFAULT.layout
                         ) == layout
                     ) {
                         button.isChecked = true

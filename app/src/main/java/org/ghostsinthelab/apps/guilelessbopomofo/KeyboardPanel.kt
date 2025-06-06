@@ -187,7 +187,7 @@ class KeyboardPanel(
 
         // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
         val userKeyboardLayoutPreference = sharedPreferences.getString(
-            "user_keyboard_layout", GuilelessBopomofoService.DEFAULT_KB_LAYOUT
+            "user_keyboard_layout", BopomofoKeyboards.KB_DEFAULT.layout
         )
 
         userKeyboardLayoutPreference?.let {
@@ -327,7 +327,7 @@ class KeyboardPanel(
 
     private fun userIsUsingDvorakHsu(): Boolean {
         return (sharedPreferences.getString(
-            "user_keyboard_layout", GuilelessBopomofoService.DEFAULT_KB_LAYOUT
+            "user_keyboard_layout", BopomofoKeyboards.KB_DEFAULT.layout
         ) == "KB_DVORAK_HSU")
     }
 
