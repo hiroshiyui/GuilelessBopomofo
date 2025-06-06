@@ -1,0 +1,4 @@
+[submodule "app/src/main/cpp/libs/libchewing"]
+	path = app/src/main/cpp/libs/libchewing
+	url = https://github.com/hiroshiyui/libchewing.git
+	branch = android

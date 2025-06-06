@@ -19,8 +19,6 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import com.miyabi_hiroshi.app.libchewing_android_app_module.Chewing
-
 enum class ChiEngMode(val mode: Int) {
     SYMBOL(0), CHINESE(1)
 }
