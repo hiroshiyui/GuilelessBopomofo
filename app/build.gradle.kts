@@ -43,12 +43,18 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
+        }
+        debug {
+            isMinifyEnabled = false
         }
     }
 
@@ -68,10 +74,6 @@ android {
     compileOptions {
         targetCompatibility = JavaVersion.VERSION_17
         sourceCompatibility = JavaVersion.VERSION_17
-    }
-
-    packaging {
-        jniLibs.keepDebugSymbols.add("**/*.so")
     }
 
     kotlinOptions {
