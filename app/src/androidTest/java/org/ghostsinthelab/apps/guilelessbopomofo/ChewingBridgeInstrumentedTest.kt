@@ -790,6 +790,14 @@ class ChewingBridgeInstrumentedTest {
         assertEquals(1, ChewingBridge.chewing.commitCheck())
     }
 
+    @Test
+    fun testSetGetShapeMode() {
+        ChewingBridge.chewing.setShapeMode(0)
+        assertEquals(0, ChewingBridge.chewing.getShapeMode())
+        ChewingBridge.chewing.setShapeMode(1)
+        assertEquals(1, ChewingBridge.chewing.getShapeMode())
+    }
+
     @After
     fun deleteChewingEngine() {
         // Close Chewing
