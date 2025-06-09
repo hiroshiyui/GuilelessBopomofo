@@ -825,3 +825,40 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configHasOption(
     jint ret_jint = chewing_config_has_option(ctx, native_option);
     return ret_jint;
 }
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configGetInt(
+        JNIEnv *env, jobject thiz,
+        jstring option,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    const char *native_option = env->GetStringUTFChars(option, JNI_FALSE);
+    jint ret_jint = chewing_config_get_int(ctx, native_option);
+    return ret_jint;
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configSetInt(
+        JNIEnv *env, jobject thiz,
+        jstring option, jint value,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    const char *native_option = env->GetStringUTFChars(option, JNI_FALSE);
+    jint ret_jint = chewing_config_set_int(ctx, native_option, value);
+    return ret_jint;
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configSetStr(
+        JNIEnv *env, jobject thiz,
+        jstring option, jstring value,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    const char *native_option = env->GetStringUTFChars(option, JNI_FALSE);
+    const char *native_value = env->GetStringUTFChars(value, JNI_FALSE);
+    jint ret_jint = chewing_config_set_str(ctx, native_option, (char *) native_value);
+    return ret_jint;
+}

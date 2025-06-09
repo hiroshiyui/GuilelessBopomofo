@@ -834,6 +834,24 @@ class ChewingBridgeInstrumentedTest {
         assertEquals(0, ChewingBridge.chewing.configHasOption("chewing.invalid_option"))
     }
 
+    @Test
+    fun testChewingConfigGetSet() {
+        assertEquals(0, ChewingBridge.chewing.configGetInt("chewing.user_phrase_add_direction"))
+        ChewingBridge.chewing.configSetInt("chewing.user_phrase_add_direction", 1)
+        assertEquals(1, ChewingBridge.chewing.configGetInt("chewing.user_phrase_add_direction"))
+
+        ChewingBridge.chewing.configSetInt("chewing.candidates_per_page", 10)
+        assertEquals(10, ChewingBridge.chewing.configGetInt("chewing.candidates_per_page"))
+
+        ChewingBridge.chewing.configSetStr("chewing.selection_keys", "1234567890")
+        val getSelKey = ChewingBridge.chewing.getSelKey()
+        assertEquals('1'.code, getSelKey[0])
+        assertEquals('0'.code, getSelKey[9])
+
+        ChewingBridge.chewing.configSetStr("chewing.keyboard_type", "KB_HSU")
+        assertEquals(ChewingBridge.chewing.convKBStr2Num("KB_HSU"), ChewingBridge.chewing.getKBType())
+    }
+
     @After
     fun deleteChewingEngine() {
         // Close Chewing
