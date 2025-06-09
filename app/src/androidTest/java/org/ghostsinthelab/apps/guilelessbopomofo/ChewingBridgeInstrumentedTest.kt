@@ -801,6 +801,13 @@ class ChewingBridgeInstrumentedTest {
         assertEquals(1, ChewingBridge.chewing.getShapeMode())
     }
 
+    @Test
+    fun testVersion() {
+        val version: String = ChewingBridge.chewing.version()
+        assert(version.startsWith("0.9"))
+        assertEquals("0.9.1", version)
+    }
+
     @After
     fun deleteChewingEngine() {
         // Close Chewing

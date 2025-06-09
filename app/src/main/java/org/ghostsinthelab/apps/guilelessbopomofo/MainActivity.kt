@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
 
         viewBinding.apply {
-            textViewAppVersion.text = BuildConfig.VERSION_NAME
+            textViewAppVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME, ChewingBridge.chewing.version())
 
             imageViewAppIcon.setOnClickListener {
                 if (engineeringModeEnterCount >= engineeringModeEnterClicks || engineeringModeEnabled) {

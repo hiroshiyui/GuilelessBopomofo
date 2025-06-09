@@ -43,7 +43,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_chewingNew(
     /* build native_user_data_path */
     char user_hash_dat[] = "userhash.dat";
     /* this first 1 is for '/', the second 1 is for zero terminator */
-    unsigned int native_user_data_path_len = strlen(native_data_path) + strlen(user_hash_dat) + 1 + 1;
+    unsigned int native_user_data_path_len =
+            strlen(native_data_path) + strlen(user_hash_dat) + 1 + 1;
     char native_user_data_path[native_user_data_path_len];
     memset(native_user_data_path, '\0', native_user_data_path_len);
 
@@ -790,7 +791,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getShapeMode(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Get shape mode from context ptr: %lld",
-    (long long) ctx);
+                        (long long) ctx);
     return chewing_get_ShapeMode(ctx);
 }
 
@@ -801,4 +802,14 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_ack(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     return chewing_ack(ctx);
+}
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_version(
+        JNIEnv *env, jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    const char *chewing_version_string = chewing_version();
+    jstring ret_jstring = env->NewStringUTF(chewing_version_string);
+    return ret_jstring;
 }

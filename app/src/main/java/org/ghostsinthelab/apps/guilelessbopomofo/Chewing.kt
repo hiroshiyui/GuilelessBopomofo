@@ -65,6 +65,7 @@ class Chewing {
     external fun candStringStatic(chewingCtx: Long = context): String
     external fun candTotalChoice(chewingCtx: Long = context): Int
     external fun candTotalPage(chewingCtx: Long = context): Int
+    external fun version(chewingCtx: Long = context): String
     external fun cleanBopomofoBuf(chewingCtx: Long = context): Int
     external fun cleanPreeditBuf(chewingCtx: Long = context): Int
     external fun commitCheck(chewingCtx: Long = context): Int
