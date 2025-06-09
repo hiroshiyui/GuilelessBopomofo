@@ -319,12 +319,12 @@ class MainActivity : AppCompatActivity(), Vibratable {
 
                 for ((button, keys) in
                 mapOf(
-                    radioButtonNumberRow to "NUMBER_ROW",
-                    radioButtonHomeRow to "HOME_ROW",
-                    radioButtonHomeTabMixedMode1 to "HOME_TAB_MIXED_MODE1",
-                    radioButtonHomeTabMixedMode2 to "HOME_TAB_MIXED_MODE2",
-                    radioButtonDvorakHomeRow to "DVORAK_HOME_ROW",
-                    radioButtonDvorakMixedMode to "DVORAK_MIXED_MODE"
+                    radioButtonNumberRow to SelectionKeys.NUMBER_ROW.set,
+                    radioButtonHomeRow to SelectionKeys.HOME_ROW.set,
+                    radioButtonHomeTabMixedMode1 to SelectionKeys.HOME_TAB_MIXED_MODE1.set,
+                    radioButtonHomeTabMixedMode2 to SelectionKeys.HOME_TAB_MIXED_MODE2.set,
+                    radioButtonDvorakHomeRow to SelectionKeys.DVORAK_HOME_ROW.set,
+                    radioButtonDvorakMixedMode to SelectionKeys.DVORAK_MIXED_MODE.set,
                 )) {
                     button.setOnClickListener {
                         sharedPreferences.edit()

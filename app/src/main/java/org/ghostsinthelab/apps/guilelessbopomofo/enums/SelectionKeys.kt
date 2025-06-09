@@ -22,7 +22,7 @@ enum class SelectionKeys(val keys: IntArray, val set: String) {
         "DVORAK_HOME_ROW"
     ),
     DVORAK_MIXED_MODE(
-        charArrayOf('a', 'o', 'e', 'u', 'i', ';', 'q', 'j', 'k', 'x').map { it.code }.toIntArray(),
+        charArrayOf('a', 'o', 'e', 'u', 'i', '\'', ',', '.', 'p', 'y').map { it.code }.toIntArray(),
         "DVORAK_MIXED_MODE"
     )
 }
