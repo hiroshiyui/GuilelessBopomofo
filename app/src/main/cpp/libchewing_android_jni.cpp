@@ -783,7 +783,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setShapeMode(
     chewing_set_ShapeMode(ctx, mode);
 }
 
-extern "C" JNIEXPORT void JNICALL
+extern "C" JNIEXPORT jint JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getShapeMode(
         JNIEnv *env,
         jobject thiz,
@@ -791,5 +791,5 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getShapeMode(
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Get shape mode from context ptr: %lld",
     (long long) ctx);
-    chewing_get_ShapeMode(ctx);
+    return chewing_get_ShapeMode(ctx);
 }
