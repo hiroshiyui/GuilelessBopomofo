@@ -739,7 +739,7 @@ class ChewingBridgeInstrumentedTest {
     }
 
     @Test
-    fun testCommitCheck() {
+    fun testCommitCheckAndAck() {
         ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setMaxChiSymbolLen(10)
         assertEquals(10, ChewingBridge.chewing.getMaxChiSymbolLen())
@@ -779,6 +779,9 @@ class ChewingBridgeInstrumentedTest {
         assertEquals("貓咪貓咪貓咪貓咪貓", ChewingBridge.chewing.bufferString())
         assertEquals("老鼠", ChewingBridge.chewing.commitString())
         assertEquals(1, ChewingBridge.chewing.commitCheck())
+        // clean commit buffer
+        assertEquals(0, ChewingBridge.chewing.ack())
+        assertEquals(0, ChewingBridge.chewing.commitCheck())
 
         ChewingBridge.chewing.handleDefault('m')
         ChewingBridge.chewing.handleDefault('e')

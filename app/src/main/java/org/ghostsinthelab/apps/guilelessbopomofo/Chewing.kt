@@ -41,6 +41,7 @@ class Chewing {
     }
 
     private external fun chewingNew(dataPath: String): Long
+    external fun ack(chewingCtx: Long = context): Int
     external fun bopomofoStringStatic(chewingCtx: Long = context): String
     external fun bufferCheck(chewingCtx: Long = context): Int
     external fun bufferLen(chewingCtx: Long = context): Int

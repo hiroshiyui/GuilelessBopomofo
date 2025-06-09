@@ -793,3 +793,12 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getShapeMode(
     (long long) ctx);
     return chewing_get_ShapeMode(ctx);
 }
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_ack(
+        JNIEnv *env, jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    return chewing_ack(ctx);
+}

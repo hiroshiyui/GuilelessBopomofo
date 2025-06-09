@@ -113,9 +113,8 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         // 所以要先丟出來：
         if (ChewingBridge.chewing.commitCheck() == 1) {
             EventBus.getDefault().post(Events.CommitTextInChewingCommitBuffer())
-            // dirty hack (?) - 讓 chewing.commitCheck() 歸 0
-            // 研究 chewing_commit_Check() 之後想到的，並不是亂碰運氣
-            ChewingBridge.chewing.handleEnd()
+            // 讓 chewing.commitCheck() 歸 0 (also cleans the commit buffer)
+            ChewingBridge.chewing.ack()
         }
 
         this@PreEditBufferTextView.text = ChewingBridge.chewing.bufferStringStatic()
