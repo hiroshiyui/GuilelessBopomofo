@@ -813,3 +813,15 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_version(
     jstring ret_jstring = env->NewStringUTF(chewing_version_string);
     return ret_jstring;
 }
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configHasOption(
+        JNIEnv *env, jobject thiz,
+        jstring option,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    const char *native_option = env->GetStringUTFChars(option, JNI_FALSE);
+    jint ret_jint = chewing_config_has_option(ctx, native_option);
+    return ret_jint;
+}

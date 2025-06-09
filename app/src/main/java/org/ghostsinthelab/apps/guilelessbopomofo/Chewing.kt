@@ -65,13 +65,13 @@ class Chewing {
     external fun candStringStatic(chewingCtx: Long = context): String
     external fun candTotalChoice(chewingCtx: Long = context): Int
     external fun candTotalPage(chewingCtx: Long = context): Int
-    external fun version(chewingCtx: Long = context): String
     external fun cleanBopomofoBuf(chewingCtx: Long = context): Int
     external fun cleanPreeditBuf(chewingCtx: Long = context): Int
     external fun commitCheck(chewingCtx: Long = context): Int
     external fun commitPreeditBuf(chewingCtx: Long = context): Int
     external fun commitString(chewingCtx: Long = context): String
     external fun commitStringStatic(chewingCtx: Long = context): String
+    external fun configHasOption(option: String, chewingCtx: Long = context): Int
     external fun convKBStr2Num(keyboardString: String): Int
     external fun cursorCurrent(chewingCtx: Long = context): Int
     external fun delete(chewingCtx: Long = context)
@@ -105,6 +105,7 @@ class Chewing {
     external fun setSelKey(selKeys: IntArray, length: Int, chewingCtx: Long = context)
     external fun setSpaceAsSelection(mode: Int, chewingCtx: Long = context)
     external fun setShapeMode(mode: Int, chewingCtx: Long = context)
+    external fun version(chewingCtx: Long = context): String
 
     fun connect(dataPath: String): Long {
         context = chewingNew(dataPath)

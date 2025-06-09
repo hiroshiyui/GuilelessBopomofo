@@ -808,6 +808,32 @@ class ChewingBridgeInstrumentedTest {
         assertEquals("0.9.1", version)
     }
 
+    @Test
+    fun testChewingConfigHasOption() {
+        val validOptions = listOf<String>(
+            "chewing.user_phrase_add_direction",
+            "chewing.disable_auto_learn_phrase",
+            "chewing.auto_shift_cursor",
+            "chewing.candidates_per_page",
+            "chewing.language_mode",
+            "chewing.easy_symbol_input",
+            "chewing.esc_clear_all_buffer",
+            "chewing.keyboard_type",
+            "chewing.auto_commit_threshold",
+            "chewing.phrase_choice_rearward",
+            "chewing.selection_keys",
+            "chewing.character_form",
+            "chewing.space_is_select_key",
+            "chewing.conversion_engine",
+            "chewing.enable_fullwidth_toggle_key"
+        )
+        for (option in validOptions) {
+            assertEquals(1, ChewingBridge.chewing.configHasOption(option))
+        }
+
+        assertEquals(0, ChewingBridge.chewing.configHasOption("chewing.invalid_option"))
+    }
+
     @After
     fun deleteChewingEngine() {
         // Close Chewing
