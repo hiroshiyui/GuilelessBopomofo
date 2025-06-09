@@ -35,6 +35,12 @@ enum class BopomofoKeyboards(val layout: String) {
     KB_ET("KB_ET")
 }
 
+enum class ConversionEngines(val mode: Int) {
+    SIMPLE_CONVERSION_ENGINE(0),
+    CHEWING_CONVERSION_ENGINE(1),
+    FUZZY_CHEWING_CONVERSION_ENGINE(2)
+}
+
 object ChewingBridge {
     val chewing: Chewing = Chewing()
 }
