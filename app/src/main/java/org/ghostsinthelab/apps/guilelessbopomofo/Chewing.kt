@@ -72,6 +72,7 @@ class Chewing {
     external fun commitString(chewingCtx: Long = context): String
     external fun commitStringStatic(chewingCtx: Long = context): String
     external fun configGetInt(option: String, chewingCtx: Long = context): Int
+    external fun configGetStr(option: String, chewingCtx: Long = context): String
     external fun configHasOption(option: String, chewingCtx: Long = context): Int
     external fun configSetInt(option: String, value: Int, chewingCtx: Long = context): Int
     external fun configSetStr(option: String, value: String, chewingCtx: Long = context): Int

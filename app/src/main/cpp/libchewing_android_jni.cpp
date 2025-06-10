@@ -862,3 +862,20 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configSetStr(
     jint ret_jint = chewing_config_set_str(ctx, native_option, (char *) native_value);
     return ret_jint;
 }
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configGetStr(
+        JNIEnv *env, jobject thiz,
+        jstring option,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    const char *native_option = env->GetStringUTFChars(option, JNI_FALSE);
+    char *fetched_value;
+    chewing_config_get_str(ctx, native_option, &fetched_value);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Get config string from context ptr: %lld, value: %s",
+                        (long long) ctx, fetched_value);
+    jstring ret_jstring = env->NewStringUTF(fetched_value);
+    chewing_free(fetched_value);
+    return ret_jstring;
+}

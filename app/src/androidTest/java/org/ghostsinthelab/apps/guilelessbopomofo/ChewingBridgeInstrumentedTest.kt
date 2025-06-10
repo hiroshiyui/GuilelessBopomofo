@@ -847,9 +847,11 @@ class ChewingBridgeInstrumentedTest {
         val getSelKey = ChewingBridge.chewing.getSelKey()
         assertEquals('1'.code, getSelKey[0])
         assertEquals('0'.code, getSelKey[9])
+        assertEquals("1234567890", ChewingBridge.chewing.configGetStr("chewing.selection_keys"))
 
         ChewingBridge.chewing.configSetStr("chewing.keyboard_type", "KB_HSU")
         assertEquals(ChewingBridge.chewing.convKBStr2Num("KB_HSU"), ChewingBridge.chewing.getKBType())
+        assertEquals("KB_HSU", ChewingBridge.chewing.configGetStr("chewing.keyboard_type"))
     }
 
     @After
