@@ -531,6 +531,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onToggleKeyboardMainLayoutMode(event: Events.ToggleKeyboardMainLayoutMode) {
         Log.d(logTag, event.toString())
+        // Always reset Shift state when switching main layouts.
+        viewBinding.keyboardPanel.releaseShiftKey()
+        currentInputConnection.sendKeyEvent(KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT))
         viewBinding.keyboardPanel.toggleMainLayoutMode()
     }
 
