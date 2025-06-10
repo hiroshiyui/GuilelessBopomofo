@@ -98,4 +98,10 @@
     <string name="full_width_mode">全角モード</string>
     <string name="half_width_mode">半角モード</string>
     <string name="shape_mode_changed">全角半角変換: %1$s</string>
+    <string name="app_version">%1$s (libchewing: %2$s)</string>
+    <string name="textViewSettingsConversionEngines">注音変換漢字モードエンジン</string>
+    <string name="textViewSettingsDescriptionConversionEngines">以下のいずれかの注音変換漢字モードエンジンを選択してください。</string>
+    <string name="radioButtonSimpleConversionEngine">簡単なモード</string>
+    <string name="radioButtonChewingConversionEngine">デフォルトモード</string>
+    <string name="radioButtonFuzzyChewingConversionEngine">ぼやけたモード</string>
 </resources>

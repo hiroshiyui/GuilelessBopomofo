@@ -99,4 +99,9 @@
     <string name="half_width_mode">half width</string>
     <string name="shape_mode_changed">Shape mode: %1$s</string>
     <string name="app_version" tools:ignore="MissingTranslation">%1$s (libchewing: %2$s)</string>
+    <string name="textViewSettingsConversionEngines">Choose conversion engines</string>
+    <string name="textViewSettingsDescriptionConversionEngines">Choose a conversion engine</string>
+    <string name="radioButtonSimpleConversionEngine">Simple</string>
+    <string name="radioButtonChewingConversionEngine">Chewing</string>
+    <string name="radioButtonFuzzyChewingConversionEngine">Fuzzy Chewing</string>
 </resources>

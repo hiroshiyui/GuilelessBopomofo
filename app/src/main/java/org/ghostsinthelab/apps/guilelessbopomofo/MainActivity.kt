@@ -51,7 +51,11 @@ class MainActivity : AppCompatActivity(), Vibratable {
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
 
         viewBinding.apply {
-            textViewAppVersion.text = getString(R.string.app_version, BuildConfig.VERSION_NAME, ChewingBridge.chewing.version())
+            textViewAppVersion.text = getString(
+                R.string.app_version,
+                BuildConfig.VERSION_NAME,
+                ChewingBridge.chewing.version()
+            )
 
             imageViewAppIcon.setOnClickListener {
                 if (engineeringModeEnterCount >= engineeringModeEnterClicks || engineeringModeEnabled) {
@@ -148,6 +152,26 @@ class MainActivity : AppCompatActivity(), Vibratable {
                         sharedPreferences.edit()
                             .putBoolean("user_display_dvorak_hsu_both_layout", it.isChecked).apply()
 
+                    }
+                }
+
+                for ((button, conversionEngine) in
+                mapOf(
+                    radioButtonSimpleConversionEngine to ConversionEngines.SIMPLE_CONVERSION_ENGINE.mode,
+                    radioButtonChewingConversionEngine to ConversionEngines.CHEWING_CONVERSION_ENGINE.mode,
+                    radioButtonFuzzyChewingConversionEngine to ConversionEngines.FUZZY_CHEWING_CONVERSION_ENGINE.mode
+                )) {
+                    button.setOnClickListener {
+                        sharedPreferences.edit().putInt("user_conversion_engine", conversionEngine)
+                            .apply()
+                    }
+
+                    if (sharedPreferences.getInt(
+                            "user_conversion_engine",
+                            ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
+                        ) == conversionEngine
+                    ) {
+                        button.isChecked = true
                     }
                 }
 
@@ -307,13 +331,18 @@ class MainActivity : AppCompatActivity(), Vibratable {
                 }
 
                 switchSettingEnhancedCompatPhysicalKeyboard.let {
-                    if (sharedPreferences.getBoolean("user_enhanced_compat_physical_keyboard", false)) {
+                    if (sharedPreferences.getBoolean(
+                            "user_enhanced_compat_physical_keyboard",
+                            false
+                        )
+                    ) {
                         it.isChecked = true
                     }
 
                     it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean("user_enhanced_compat_physical_keyboard", it.isChecked).apply()
+                            .putBoolean("user_enhanced_compat_physical_keyboard", it.isChecked)
+                            .apply()
                     }
                 }
 

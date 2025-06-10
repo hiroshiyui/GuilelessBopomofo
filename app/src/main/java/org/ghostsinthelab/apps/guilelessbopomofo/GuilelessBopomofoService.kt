@@ -133,10 +133,17 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 ChewingBridge.chewing.setPhraseChoiceRearward(1)
             }
 
+            // set conversion engine (traditional, fuzzy or default (chewing))
+            sharedPreferences.getInt(
+                "user_conversion_engine", ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
+            ).let { ChewingBridge.chewing.configSetInt("chewing.conversion_engine", it) }
+
             ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
             ChewingBridge.chewing.setCandPerPage(10)
 
-            sharedPreferences.getString("user_candidate_selection_keys_option", SelectionKeys.NUMBER_ROW.set)?.let {
+            sharedPreferences.getString(
+                "user_candidate_selection_keys_option", SelectionKeys.NUMBER_ROW.set
+            )?.let {
                 ChewingBridge.chewing.setSelKey(SelectionKeys.valueOf(it).keys, 10)
             }
         } catch (exception: Exception) {
@@ -762,7 +769,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             "user_enable_space_as_selection" -> {
                 ChewingBridge.chewing.setSpaceAsSelection(0)
                 sharedPreferences?.apply {
-                    if (this.getBoolean("user_enable_space_as_selection", true)) {
+                    if (this.getBoolean(key, true)) {
                         ChewingBridge.chewing.setSpaceAsSelection(1)
                     }
                 }
@@ -771,7 +778,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             "user_phrase_choice_rearward" -> {
                 ChewingBridge.chewing.setPhraseChoiceRearward(0)
                 sharedPreferences?.apply {
-                    if (this.getBoolean("user_phrase_choice_rearward", false)) {
+                    if (this.getBoolean(key, false)) {
                         ChewingBridge.chewing.setPhraseChoiceRearward(1)
                     }
                 }
@@ -781,7 +788,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 // reload the value
                 sharedPreferences?.apply {
                     userHapticFeedbackStrength = this.getInt(
-                        "user_haptic_feedback_strength", defaultHapticFeedbackStrength
+                        key, defaultHapticFeedbackStrength
                     )
                 }
             }
@@ -816,10 +823,22 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
 
             "user_candidate_selection_keys_option" -> {
                 sharedPreferences?.apply {
-                    this.getString("user_candidate_selection_keys_option", SelectionKeys.NUMBER_ROW.set)?.let {
+                    this.getString(
+                        key, SelectionKeys.NUMBER_ROW.set
+                    )?.let {
                         ChewingBridge.chewing.setSelKey(
                             SelectionKeys.valueOf(it).keys, 10
                         )
+                    }
+                }
+            }
+
+            "user_conversion_engine" -> {
+                sharedPreferences?.apply {
+                    this.getInt(
+                        key, ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
+                    ).let {
+                        ChewingBridge.chewing.configSetInt("chewing.conversion_engine", it)
                     }
                 }
             }

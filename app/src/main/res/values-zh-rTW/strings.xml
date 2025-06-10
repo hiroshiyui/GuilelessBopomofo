@@ -99,4 +99,10 @@
     <string name="full_width_mode">全形</string>
     <string name="half_width_mode">半形</string>
     <string name="shape_mode_changed">全形半形切換： %1$s</string>
+    <string name="app_version">%1$s （新酷音函式庫版本 %2$s）</string>
+    <string name="textViewSettingsConversionEngines">選擇注音轉換漢字模式引擎</string>
+    <string name="textViewSettingsDescriptionConversionEngines">選擇以下一種注音轉換漢字模式引擎</string>
+    <string name="radioButtonSimpleConversionEngine">簡易（不自動斷詞，懷念的ㄅ半最對味）</string>
+    <string name="radioButtonChewingConversionEngine">新酷音預設（自動斷詞，但是要拼出完整聲母、介音、韻母，類似微軟新注音）</string>
+    <string name="radioButtonFuzzyChewingConversionEngine">模糊比對式（自動斷詞，不需拼出完整聲母、介音、韻母）</string>
 </resources>
