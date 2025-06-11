@@ -31,6 +31,7 @@ import androidx.core.text.toSpannable
 import androidx.core.view.setPadding
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
+import org.ghostsinthelab.apps.guilelessbopomofo.ConversionEngines
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -133,6 +134,14 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
             this.setPadding(px, 0, px, 0)
         } else {
             this.setPadding(0)
+        }
+
+        // open candidate window if conversion engine is simple and candidate window is opening
+        // (which means a new Han character is converted from Bopomofo)
+        if (ChewingBridge.chewing.configGetInt("chewing.conversion_engine") == ConversionEngines.SIMPLE_CONVERSION_ENGINE.mode) {
+            if (ChewingUtil.candidateWindowOpened()) {
+                EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
+            }
         }
     }
 
