@@ -18,9 +18,9 @@ android {
     defaultConfig {
         applicationId = "org.ghostsinthelab.apps.guilelessbopomofo"
         minSdk = 23
-        targetSdk = 35
-        versionCode = 153
-        versionName = "2.3.0"
+        targetSdk = 36
+        versionCode = 154
+        versionName = "3.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
