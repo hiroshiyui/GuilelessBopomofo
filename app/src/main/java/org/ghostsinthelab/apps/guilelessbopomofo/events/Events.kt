@@ -5,21 +5,21 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
 
 class Events {
-    class UpdateBuffers
-    class SwitchToLayout(val layout: Layout)
-    class ExitKeyboardSubLayouts
-    class RequestHideIme
-    class CommitTextInChewingCommitBuffer
-    class SwitchToNextInputMethod
-    class SendDownUpKeyEvents(val keycode: Int)
     class CandidateSelectionDone(val index: Int)
-    class PrintingKeyDown(val characterKey: CharacterKey)
-    class ToggleKeyboardMainLayoutMode
-    class ToggleFullOrHalfWidthMode
-    class EnterKeyDownWhenBufferIsEmpty
-    class ShowKeyButtonPopup(val characterKey: CharacterKey)
-    class DismissKeyButtonPopup
+    class CommitTextInChewingCommitBuffer
     class DirectionKeyDown(val direction: DirectionKey)
+    class DismissKeyButtonPopup
+    class EnterKeyDownWhenBufferIsEmpty
+    class ExitKeyboardSubLayouts
+    class PrintingKeyDown(val characterKey: CharacterKey)
+    class RequestHideIme
+    class SendDownUpKeyEvents(val keycode: Int)
+    class ShowKeyButtonPopup(val characterKey: CharacterKey)
+    class SwitchToLayout(val layout: Layout)
+    class SwitchToNextInputMethod
     class ToggleForceCompactLayout
+    class ToggleFullOrHalfWidthMode
+    class ToggleKeyboardMainLayoutMode
+    class UpdateBuffers
     class UpdateShiftKeyState(val isActive: Boolean, val isLocked: Boolean)
 }
