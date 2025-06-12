@@ -115,6 +115,54 @@ class MainActivity : AppCompatActivity(), Vibratable {
                     }
                 }
 
+                radioButtonLayoutHsu.apply {
+                    this.setOnCheckedChangeListener { _, isChecked ->
+                        if (isChecked) {
+                            switchDisplayHsuQwertyLayout.visibility = android.view.View.VISIBLE
+                        } else {
+                            switchDisplayHsuQwertyLayout.visibility = android.view.View.GONE
+                        }
+                    }
+
+                    if (this.isChecked) {
+                        switchDisplayHsuQwertyLayout.visibility = android.view.View.VISIBLE
+                    } else {
+                        switchDisplayHsuQwertyLayout.visibility = android.view.View.GONE
+                    }
+                }
+
+                radioButtonLayoutDvorakHsu.apply {
+                    this.setOnCheckedChangeListener { _, isChecked ->
+                        if (isChecked) {
+                            switchDisplayDvorakHsuBothLayout.visibility = android.view.View.VISIBLE
+                        } else {
+                            switchDisplayDvorakHsuBothLayout.visibility = android.view.View.GONE
+                        }
+                    }
+
+                    if (this.isChecked) {
+                        switchDisplayDvorakHsuBothLayout.visibility = android.view.View.VISIBLE
+                    } else {
+                        switchDisplayDvorakHsuBothLayout.visibility = android.view.View.GONE
+                    }
+                }
+
+                radioButtonLayoutETen26.apply {
+                    this.setOnCheckedChangeListener { _, isChecked ->
+                        if (isChecked) {
+                            switchDisplayEten26QwertyLayout.visibility = android.view.View.VISIBLE
+                        } else {
+                            switchDisplayEten26QwertyLayout.visibility = android.view.View.GONE
+                        }
+                    }
+
+                    if (this.isChecked) {
+                        switchDisplayEten26QwertyLayout.visibility = android.view.View.VISIBLE
+                    } else {
+                        switchDisplayEten26QwertyLayout.visibility = android.view.View.GONE
+                    }
+                }
+
                 switchDisplayHsuQwertyLayout.let {
                     if (sharedPreferences.getBoolean("user_display_hsu_qwerty_layout", false)) {
                         it.isChecked = true
