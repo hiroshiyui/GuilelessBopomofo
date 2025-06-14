@@ -28,6 +28,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -117,50 +118,26 @@ class MainActivity : AppCompatActivity(), Vibratable {
 
                 radioButtonLayoutHsu.apply {
                     this.setOnCheckedChangeListener { _, isChecked ->
-                        if (isChecked) {
-                            switchDisplayHsuQwertyLayout.visibility = android.view.View.VISIBLE
-                        } else {
-                            switchDisplayHsuQwertyLayout.visibility = android.view.View.GONE
-                        }
+                        switchDisplayHsuQwertyLayout.isGone = !isChecked
                     }
 
-                    if (this.isChecked) {
-                        switchDisplayHsuQwertyLayout.visibility = android.view.View.VISIBLE
-                    } else {
-                        switchDisplayHsuQwertyLayout.visibility = android.view.View.GONE
-                    }
+                    switchDisplayHsuQwertyLayout.isGone = !this.isChecked
                 }
 
                 radioButtonLayoutDvorakHsu.apply {
                     this.setOnCheckedChangeListener { _, isChecked ->
-                        if (isChecked) {
-                            switchDisplayDvorakHsuBothLayout.visibility = android.view.View.VISIBLE
-                        } else {
-                            switchDisplayDvorakHsuBothLayout.visibility = android.view.View.GONE
-                        }
+                        switchDisplayDvorakHsuBothLayout.isGone = !isChecked
                     }
 
-                    if (this.isChecked) {
-                        switchDisplayDvorakHsuBothLayout.visibility = android.view.View.VISIBLE
-                    } else {
-                        switchDisplayDvorakHsuBothLayout.visibility = android.view.View.GONE
-                    }
+                    switchDisplayDvorakHsuBothLayout.isGone = !this.isChecked
                 }
 
                 radioButtonLayoutETen26.apply {
                     this.setOnCheckedChangeListener { _, isChecked ->
-                        if (isChecked) {
-                            switchDisplayEten26QwertyLayout.visibility = android.view.View.VISIBLE
-                        } else {
-                            switchDisplayEten26QwertyLayout.visibility = android.view.View.GONE
-                        }
+                        switchDisplayEten26QwertyLayout.isGone = !isChecked
                     }
 
-                    if (this.isChecked) {
-                        switchDisplayEten26QwertyLayout.visibility = android.view.View.VISIBLE
-                    } else {
-                        switchDisplayEten26QwertyLayout.visibility = android.view.View.GONE
-                    }
+                    switchDisplayEten26QwertyLayout.isGone = !this.isChecked
                 }
 
                 switchDisplayHsuQwertyLayout.let {
