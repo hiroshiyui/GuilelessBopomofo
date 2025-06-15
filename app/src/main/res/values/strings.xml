@@ -104,4 +104,6 @@
     <string name="radioButtonSimpleConversionEngine">Simple</string>
     <string name="radioButtonChewingConversionEngine">Chewing</string>
     <string name="radioButtonFuzzyChewingConversionEngine">Fuzzy Chewing</string>
+    <string name="capsLockIsOn">Caps Lock is ON</string>
+    <string name="capsLockIsOff">Caps Lock is OFF</string>
 </resources>

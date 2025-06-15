@@ -59,6 +59,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.CapsLock
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Del
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Down
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Enter
@@ -352,6 +353,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             KeyEvent.KEYCODE_SPACE to Space(),
             KeyEvent.KEYCODE_ESCAPE to Escape(),
             KeyEvent.KEYCODE_DEL to Del(),
+            KeyEvent.KEYCODE_CAPS_LOCK to CapsLock(),
             // Add more mappings here for each physical key you want to handle separately
         )
     }

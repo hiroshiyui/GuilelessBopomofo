@@ -104,4 +104,6 @@
     <string name="radioButtonSimpleConversionEngine">簡単なモード</string>
     <string name="radioButtonChewingConversionEngine">デフォルトモード</string>
     <string name="radioButtonFuzzyChewingConversionEngine">ぼやけたモード</string>
+    <string name="capsLockIsOn">Caps Lockキーがオンになっています</string>
+    <string name="capsLockIsOff">Caps Lockキーがオフになっています</string>
 </resources>

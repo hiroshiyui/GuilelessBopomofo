@@ -105,4 +105,6 @@
     <string name="radioButtonSimpleConversionEngine">簡易（不自動斷詞，懷念的ㄅ半最對味）</string>
     <string name="radioButtonChewingConversionEngine">新酷音預設（自動斷詞，但是要拼出完整聲母、介音、韻母，類似微軟新注音）</string>
     <string name="radioButtonFuzzyChewingConversionEngine">模糊比對式（自動斷詞，不需拼出完整聲母、介音、韻母）</string>
+    <string name="capsLockIsOn">按到大寫鎖定鍵了</string>
+    <string name="capsLockIsOff">解除大寫鎖定</string>
 </resources>
