@@ -83,7 +83,6 @@ import kotlin.coroutines.CoroutineContext
 class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     SharedPreferences.OnSharedPreferenceChangeListener, KeyEventExtension {
     private val logTag = "GuilelessBopomofoSvc"
-    private var imeWindowVisible: Boolean = true
     private var shiftKeyIsLocked: Boolean = false
     private var shiftKeyIsActive: Boolean = false
 
@@ -242,8 +241,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(logTag, "onKeyDown()")
 
-        if (!imeWindowVisible) {
-            Log.d(logTag, "IME window is invisible, disable interrupt onKeyDown() events.")
+        if (!isInputViewShown) {
+            super.onKeyDown(keyCode, event)
             return false
         }
 
@@ -278,8 +277,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(logTag, "onKeyUp()")
 
-        if (!imeWindowVisible) {
-            Log.d(logTag, "IME window is invisible, disable interrupt onKeyUp() events.")
+        if (!isInputViewShown) {
+            super.onKeyUp(keyCode, event)
             return false
         }
 
@@ -313,8 +312,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(logTag, "onKeyLongPress()")
 
-        if (!imeWindowVisible) {
-            Log.d(logTag, "IME window is invisible, disable interrupt onKeyLongPress() events.")
+        if (!isInputViewShown) {
+            super.onKeyLongPress(keyCode, event)
             return false
         }
 
@@ -334,13 +333,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     override fun onWindowHidden() {
         super.onWindowHidden()
         Log.d(logTag, "onWindowHidden()")
-        imeWindowVisible = false
     }
 
     override fun onWindowShown() {
         super.onWindowShown()
         Log.d(logTag, "onWindowShown()")
-        imeWindowVisible = true
     }
 
     private fun initializePhysicalKeyDispatcher() {
