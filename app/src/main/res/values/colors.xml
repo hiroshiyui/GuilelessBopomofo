@@ -28,7 +28,9 @@
     <color name="colorGuilelessBopomofoThemeBase7">#CDBDB3</color>
     <color name="colorGuilelessBopomofoThemeBase8">#C49366</color>
     <color name="colorGuilelessBopomofoThemeBase9">#B46F4C</color>
-    <color name="colorGuilelessBopomofoThemeBase10">#4D4D4D</color>
+    <color name="colorCarbonBlack">#4D4D4D</color>
+    <color name="colorWarmWhite">#E6E1C8</color>
+    <color name="colorGraphite">#63686B</color>
     <!-- color settings -->
     <color name="colorPrimary">@color/colorGuilelessBopomofoThemeBase6</color>
     <color name="colorPrimaryDark">@color/colorGuilelessBopomofoThemeBase3</color>
@@ -37,11 +39,11 @@
     <color name="colorAccent">@color/colorGuilelessBopomofoThemeBase9</color>
     <color name="colorTitleText">@android:color/white</color>
     <color name="colorKeyboardPanelBackground">@color/colorGuilelessBopomofoThemeBase6</color>
-    <color name="colorKeyboardPanelBackgroundDark">@color/colorGuilelessBopomofoThemeBase10</color>
+    <color name="colorKeyboardPanelBackgroundDark">@color/colorCarbonBlack</color>
     <color name="colorKeyboardBackground">#E6E6E6</color>
-    <color name="colorKeyboardBackgroundDark">#4B4A4A</color>
-    <color name="colorButtonBackgroundDark">#1B4A64</color>
-    <color name="colorButtonForegroundDark">#FFFEF7</color>
+    <color name="colorKeyboardBackgroundDark">#464646</color>
+    <color name="colorButtonBackgroundDark">@color/colorGraphite</color>
+    <color name="colorButtonForegroundDark">@color/colorWarmWhite</color>
     <color name="colorKeyboardEnterKeyBackground">#8BC34A</color>
     <color name="colorKeyboardEnterKeyBackgroundDark">#2B9CB6</color>
     <color name="colorKeyboardSpecialKeyBackground">#C5C5C5</color>

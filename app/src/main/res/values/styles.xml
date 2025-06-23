@@ -17,9 +17,8 @@
   -->
 
 <resources>
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.Material3.Light">
-        <!-- Customize your theme here. -->
+    <!-- Base set of styles that apply to all versions. -->
+    <style name="AppBaseTheme" parent="Theme.Material3.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
@@ -28,38 +27,38 @@
         <item name="actionBarTheme">@style/ActionBar</item>
     </style>
 
-    <style name="ActionBar">
+    <style name="AppBaseTheme.Dark" parent="Theme.Material3.Dark">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTheme">@style/ActionBar</item>
+    </style>
+
+    <style name="AppBaseTheme.ActionBar" parent="AppBaseTheme">
         <item name="android:textColorPrimary">@color/colorTitleText</item>
     </style>
 
-    <style name="KeyboardPanel">
-        <item name="android:background">@color/colorKeyboardPanelBackground</item>
-    </style>
-
-    <style name="DividerKeyboardPanelTopBorder">
-        <item name="android:background">@color/colorKeyboardPanelBackground</item>
-        <item name="android:backgroundTint">@color/colorPrimaryDark</item>
-        <item name="android:backgroundTintMode">src_atop</item>
-    </style>
-
-    <style name="KeyboardTheme">
-        <item name="android:background">@color/colorKeyboardBackground</item>
-        <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
-        <item name="android:imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
-        <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
-        <item name="imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
+    <style name="AppBaseTheme.KeyboardBaseTheme" parent="AppBaseTheme">
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:singleLine">true</item>
+        <item name="android:background">@color/colorKeyboardBackground</item>
     </style>
 
-    <style name="KeyboardRow" parent="KeyboardTheme">
-        <item name="android:layout_marginTop">0dp</item>
-        <item name="android:layout_marginBottom">0dp</item>
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme" parent="AppBaseTheme.KeyboardBaseTheme">
+        <item name="android:background">@color/colorKeyboardBackgroundDark</item>
     </style>
 
-    <style name="KeyImageButton" parent="Theme.MaterialComponents.Light">
-        <item name="android:imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
-        <item name="imageButtonStyle">@style/Widget.AppCompat.ImageButton</item>
+    <style name="AppBaseTheme.KeyboardBaseTheme.KeyboardPanel" parent="AppBaseTheme.KeyboardBaseTheme">
+        <item name="android:background">@color/colorKeyboardPanelBackground</item>
+    </style>
+
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyboardPanel" parent="AppBaseTheme.KeyboardBaseTheme.KeyboardPanel">
+        <item name="android:background">@color/colorKeyboardPanelBackgroundDark</item>
+    </style>
+
+    <style name="AppBaseTheme.KeyboardBaseTheme.KeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme">
         <item name="android:minHeight">52dp</item>
         <item name="minHeight">52dp</item>
         <item name="android:scaleType">centerCrop</item>
@@ -69,18 +68,30 @@
         <item name="android:bottomRightRadius">8dp</item>
     </style>
 
-    <style name="KeyImageButton.SpecialKeyImageButton">
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton">
+        <item name="android:backgroundTint">@color/colorButtonBackgroundDark</item>
+        <item name="android:tint">@color/colorButtonForegroundDark</item>
+    </style>
+
+    <style name="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton">
         <item name="android:backgroundTint">@color/colorKeyboardSpecialKeyBackground</item>
     </style>
 
-    <style name="KeyImageButton.EnterKeyImageButton">
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton">
+        <item name="android:backgroundTint">@color/colorKeyboardSpecialKeyBackgroundDark</item>
+        <item name="android:tint">@color/colorOnPrimary</item>
+    </style>
+
+    <style name="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.EnterKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton">
         <item name="android:backgroundTint">@color/colorKeyboardEnterKeyBackground</item>
     </style>
 
-    <style name="KeyButton" parent="Theme.MaterialComponents.Light">
-        <item name="android:buttonStyle">@style/Widget.AppCompat.Button</item>
-        <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton.EnterKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.EnterKeyImageButton">
+        <item name="android:backgroundTint">@color/colorKeyboardEnterKeyBackgroundDark</item>
+        <item name="android:tint">@color/colorOnPrimary</item>
+    </style>
+
+    <style name="AppBaseTheme.KeyboardBaseTheme.KeyButton" parent="AppBaseTheme.KeyboardBaseTheme">
         <item name="android:minHeight">48dip</item>
         <item name="android:minWidth">48dip</item>
         <item name="android:fontFamily">sans-serif-black</item>
@@ -89,31 +100,85 @@
         <item name="android:bottomLeftRadius">8dp</item>
         <item name="android:topRightRadius">8dp</item>
         <item name="android:bottomRightRadius">8dp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="CandidateItem" />
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton">
+        <item name="android:backgroundTint">@color/colorButtonBackgroundDark</item>
+        <item name="android:textColor">@color/colorButtonForegroundDark</item>
+        <item name="android:drawableTint">@color/colorButtonForegroundDark</item>
+    </style>
 
-    <style name="CandidateItem.Button" parent="KeyButton">
+    <style name="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton">
+        <item name="android:background">@drawable/round_border</item>
+        <item name="android:backgroundTint">@color/colorGuilelessBopomofoThemeBase7</item>
+        <item name="android:backgroundTintMode">src_atop</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton.Popup" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup">
+        <item name="android:backgroundTint">@color/colorButtonBackgroundDark</item>
+    </style>
+
+    <style name="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup.ImageView" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton">
+        <item name="android:backgroundTint">@color/colorGuilelessBopomofoThemeBase7</item>
+        <item name="android:backgroundTintMode">src_atop</item>
+    </style>
+
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton.Popup.ImageView" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup.ImageView">
+        <item name="android:backgroundTint">@color/colorButtonBackgroundDark</item>
+    </style>
+
+    <style name="AppBaseTheme.KeyboardBaseTheme.DividerKeyboardPanelTopBorder" parent="AppBaseTheme.KeyboardBaseTheme">
+        <item name="android:background">@color/colorKeyboardPanelBackground</item>
+        <item name="android:backgroundTint">@color/colorPrimaryDark</item>
+        <item name="android:backgroundTintMode">src_atop</item>
+    </style>
+
+    <style name="AppBaseTheme.KeyboardBaseTheme.KeyboardRow" parent="AppBaseTheme.KeyboardBaseTheme">
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+    <style name="AppBaseTheme.CandidateItem" parent="AppBaseTheme" />
+
+    <style name="AppBaseTheme.CandidateItem.Button" parent="AppBaseTheme.CandidateItem">
+        <item name="android:minHeight">48dip</item>
+        <item name="android:minWidth">48dip</item>
+        <item name="android:topLeftRadius">8dp</item>
+        <item name="android:bottomLeftRadius">8dp</item>
+        <item name="android:topRightRadius">8dp</item>
+        <item name="android:bottomRightRadius">8dp</item>
         <item name="android:textSize">24sp</item>
         <item name="android:fontFamily">serif</item>
         <item name="fontFamily">serif</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="CandidateItem.SelectionKey">
+    <style name="AppBaseTheme.Dark.CandidateItem.Button" parent="AppBaseTheme.CandidateItem.Button">
+        <item name="android:textColor">@color/colorButtonForegroundDark</item>
+        <item name="android:backgroundTint">@color/colorButtonBackgroundDark</item>
+    </style>
+
+    <style name="AppBaseTheme.CandidateItem.Paged" parent="AppBaseTheme.CandidateItem">
+        <item name="android:fontFamily">serif</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="AppBaseTheme.Dark.CandidateItem.Paged" parent="AppBaseTheme.CandidateItem.Paged">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AppBaseTheme.CandidateItem.SelectionKey" parent="AppBaseTheme.CandidateItem">
         <item name="android:background">@drawable/round_border</item>
         <item name="android:fontFamily">monospace</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="CandidateItem.Paged">
-        <item name="android:fontFamily">serif</item>
-        <item name="android:textSize">20sp</item>
-    </style>
+    <style name="AppBaseTheme.Settings" parent="AppBaseTheme" />
 
-    <style name="Settings" parent="AppTheme" />
-
-    <style name="Settings.Label">
+    <style name="AppBaseTheme.Settings.Label" parent="AppBaseTheme.Settings">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">32dp</item>
@@ -121,7 +186,7 @@
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 
-    <style name="Settings.Description">
+    <style name="AppBaseTheme.Settings.Description" parent="AppBaseTheme.Settings">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">4dp</item>
@@ -129,31 +194,19 @@
         <item name="android:textAppearance">@style/TextAppearance.Material3.LabelMedium</item>
     </style>
 
-    <style name="Settings.Widget">
+    <style name="AppBaseTheme.Settings.Widget" parent="AppBaseTheme.Settings">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="Settings.PrimaryHeader">
+    <style name="AppBaseTheme.Settings.PrimaryHeader" parent="AppBaseTheme.Settings">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">@style/TextAppearance.Material3.HeadlineMedium</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="KeyButton.Popup" parent="Theme.MaterialComponents.Light">
-        <item name="android:background">@drawable/round_border</item>
-        <item name="android:backgroundTint">@color/colorGuilelessBopomofoThemeBase7</item>
-        <item name="android:backgroundTintMode">src_atop</item>
-        <item name="android:padding">4dp</item>
-    </style>
-
-    <style name="KeyButton.Popup.ImageView" parent="Theme.MaterialComponents.Light">
-        <item name="android:backgroundTint">@color/colorGuilelessBopomofoThemeBase7</item>
-        <item name="android:backgroundTintMode">src_atop</item>
-    </style>
-
-    <style name="PreEditBufferTextView" parent="Theme.AppCompat">
+    <style name="AppBaseTheme.PreEditBufferTextView" parent="AppBaseTheme">
         <item name="android:background">@color/colorPreEditBufferTextViewBackground</item>
         <item name="android:bufferType">spannable</item>
         <item name="android:fontFamily">serif</item>
@@ -161,10 +214,57 @@
         <item name="android:textSize">26sp</item>
     </style>
 
-    <style name="BopomofoBufferTextView" parent="Theme.AppCompat">
+    <style name="AppBaseTheme.BopomofoBufferTextView" parent="AppBaseTheme">
         <item name="android:background">@color/colorBopomofoBufferTextViewBackground</item>
         <item name="android:fontFamily">serif</item>
         <item name="android:textColor">@color/colorBopomofoBufferTextView</item>
         <item name="android:textSize">26sp</item>
     </style>
+
+    <!-- generic (light) theme. -->
+    <style name="AppTheme" parent="AppBaseTheme" />
+
+    <style name="ActionBar" parent="AppBaseTheme.ActionBar" />
+
+    <style name="KeyboardTheme" parent="AppBaseTheme.KeyboardBaseTheme" />
+
+    <style name="KeyboardPanel" parent="AppBaseTheme.KeyboardBaseTheme.KeyboardPanel" />
+
+    <style name="DividerKeyboardPanelTopBorder" parent="AppBaseTheme.KeyboardBaseTheme.DividerKeyboardPanelTopBorder" />
+
+    <style name="KeyboardRow" parent="AppBaseTheme.KeyboardBaseTheme.KeyboardRow" />
+
+    <style name="KeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton" />
+
+    <style name="KeyImageButton.SpecialKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton" />
+
+    <style name="KeyImageButton.EnterKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.EnterKeyImageButton" />
+
+    <style name="KeyButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton" />
+
+    <style name="CandidateItem" parent="AppBaseTheme.CandidateItem" />
+
+    <style name="CandidateItem.Button" parent="AppBaseTheme.CandidateItem.Button" />
+
+    <style name="CandidateItem.SelectionKey" parent="AppBaseTheme.CandidateItem.SelectionKey" />
+
+    <style name="CandidateItem.Paged" parent="AppBaseTheme.CandidateItem.Paged" />
+
+    <style name="Settings" parent="AppTheme" />
+
+    <style name="Settings.Label" parent="AppBaseTheme.Settings.Label" />
+
+    <style name="Settings.Description" parent="AppBaseTheme.Settings.Description" />
+
+    <style name="Settings.Widget" parent="AppBaseTheme.Settings.Widget" />
+
+    <style name="Settings.PrimaryHeader" parent="AppBaseTheme.Settings.PrimaryHeader" />
+
+    <style name="KeyButton.Popup" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup" />
+
+    <style name="KeyButton.Popup.ImageView" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup.ImageView" />
+
+    <style name="PreEditBufferTextView" parent="AppBaseTheme.PreEditBufferTextView" />
+
+    <style name="BopomofoBufferTextView" parent="AppBaseTheme.BopomofoBufferTextView" />
 </resources>
