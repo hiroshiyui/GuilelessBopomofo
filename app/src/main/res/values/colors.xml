@@ -18,40 +18,40 @@
   -->
 
 <resources>
-    <!-- color palette -->
-    <color name="colorGuilelessBopomofoThemeBase1">#D5A692</color>
-    <color name="colorGuilelessBopomofoThemeBase2">#B7A19D</color>
-    <color name="colorGuilelessBopomofoThemeBase3">#72483F</color>
-    <color name="colorGuilelessBopomofoThemeBase4">#493024</color>
-    <color name="colorGuilelessBopomofoThemeBase5">#64483F</color>
-    <color name="colorGuilelessBopomofoThemeBase6">#9F938E</color>
-    <color name="colorGuilelessBopomofoThemeBase7">#CDBDB3</color>
-    <color name="colorGuilelessBopomofoThemeBase8">#C49366</color>
-    <color name="colorGuilelessBopomofoThemeBase9">#B46F4C</color>
-    <color name="colorCarbonBlack">#4D4D4D</color>
-    <color name="colorWarmWhite">#E6E1C8</color>
-    <color name="colorGraphite">#63686B</color>
+    <!-- color palette: cocoa style -->
+    <color name="colorGuilelessBopomofoCocoaThemeBase1">#D5A692</color>
+    <color name="colorGuilelessBopomofoCocoaThemeBase2">#B7A19D</color>
+    <color name="colorGuilelessBopomofoCocoaThemeBase3">#72483F</color>
+    <color name="colorGuilelessBopomofoCocoaThemeBase4">#493024</color>
+    <color name="colorGuilelessBopomofoCocoaThemeBase5">#64483F</color>
+    <color name="colorGuilelessBopomofoCocoaThemeBase6">#9F938E</color>
+    <color name="colorGuilelessBopomofoCocoaThemeBase7">#CDBDB3</color>
+    <color name="colorGuilelessBopomofoCocoaThemeBase8">#C49366</color>
+    <color name="colorGuilelessBopomofoCocoaThemeBase9">#B46F4C</color>
+    <color name="colorGuilelessBopomofoCocoaThemeBase10">#4D4D4D</color>
+    <!-- color palette: Morandi style -->
+    <color name="colorGuilelessBopomofoMorandiThemeBase1">#ADC2C3</color>
+    <color name="colorGuilelessBopomofoMorandiThemeBase2">#A7BACA</color>
+    <color name="colorGuilelessBopomofoMorandiThemeBase3">#E0BEB9</color>
+    <color name="colorGuilelessBopomofoMorandiThemeBase4">#E1E2DE</color>
+    <color name="colorGuilelessBopomofoMorandiThemeBase5">#F7E2DF</color>
+    <color name="colorGuilelessBopomofoMorandiThemeBase6">#91ADB1</color>
+    <color name="colorGuilelessBopomofoMorandiThemeBase7">#88B6AB</color>
+    <color name="colorGuilelessBopomofoMorandiThemeBase8">#ECE5D4</color>
+    <color name="colorGuilelessBopomofoMorandiThemeBase9">#8699B0</color>
+    <color name="colorGuilelessBopomofoMorandiThemeBase10">#515251</color>
+    <!-- color palette: Midnight style -->
+    <color name="colorGuilelessBopomofoMidnightThemeBase1">#E4D0CE</color>
+    <color name="colorGuilelessBopomofoMidnightThemeBase2">#D0a4B0</color>
+    <color name="colorGuilelessBopomofoMidnightThemeBase3">#4C6684</color>
+    <color name="colorGuilelessBopomofoMidnightThemeBase4">#D3C8CA</color>
+    <color name="colorGuilelessBopomofoMidnightThemeBase5">#778587</color>
+    <color name="colorGuilelessBopomofoMidnightThemeBase6">#394B56</color>
+    <color name="colorGuilelessBopomofoMidnightThemeBase7">#7076A2</color>
+    <color name="colorGuilelessBopomofoMidnightThemeBase8">#908BA7</color>
+    <color name="colorGuilelessBopomofoMidnightThemeBase9">#303D69</color>
+    <color name="colorGuilelessBopomofoMidnightThemeBase10">#121F3A</color>
     <!-- color settings -->
-    <color name="colorPrimary">@color/colorGuilelessBopomofoThemeBase6</color>
-    <color name="colorPrimaryDark">@color/colorGuilelessBopomofoThemeBase3</color>
-    <color name="colorOnPrimary">#FFFEF7</color>
-    <color name="colorSecondary">@color/colorGuilelessBopomofoThemeBase7</color>
-    <color name="colorAccent">@color/colorGuilelessBopomofoThemeBase9</color>
-    <color name="colorTitleText">@android:color/white</color>
-    <color name="colorKeyboardPanelBackground">@color/colorGuilelessBopomofoThemeBase6</color>
-    <color name="colorKeyboardPanelBackgroundDark">@color/colorCarbonBlack</color>
-    <color name="colorKeyboardBackground">#E6E6E6</color>
-    <color name="colorKeyboardBackgroundDark">#464646</color>
-    <color name="colorButtonBackgroundDark">@color/colorGraphite</color>
-    <color name="colorButtonForegroundDark">@color/colorWarmWhite</color>
-    <color name="colorKeyboardEnterKeyBackground">#8BC34A</color>
-    <color name="colorKeyboardEnterKeyBackgroundDark">#2B9CB6</color>
-    <color name="colorKeyboardSpecialKeyBackground">#C5C5C5</color>
-    <color name="colorKeyboardSpecialKeyBackgroundPressed">#69CDDA</color>
-    <color name="colorKeyboardSpecialKeyBackgroundHold">#B2EDF4</color>
-    <color name="colorKeyboardSpecialKeyBackgroundDark">#795A48</color>
-    <color name="colorKeyboardSpecialKeyBackgroundDarkPressed">#AB8067</color>
-    <color name="colorKeyboardSpecialKeyBackgroundDarkHold">#D8A385</color>
     <color name="colorPreEditBufferTextView">#FFFFFF</color>
     <color name="colorPreEditBufferTextViewBackground">#2196F3</color>
     <color name="colorBopomofoBufferTextView">#333333</color>

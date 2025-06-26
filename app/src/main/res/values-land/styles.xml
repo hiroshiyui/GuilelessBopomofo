@@ -20,8 +20,6 @@
     <!-- generic (light) landscape theme. -->
     <style name="AppTheme" parent="AppBaseTheme" />
 
-    <style name="ActionBar" parent="AppBaseTheme.ActionBar" />
-
     <style name="KeyboardTheme" parent="AppBaseTheme.KeyboardBaseTheme" />
 
     <style name="KeyboardPanel" parent="AppBaseTheme.KeyboardBaseTheme.KeyboardPanel" />

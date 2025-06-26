@@ -21,7 +21,7 @@
     <style name="AppTheme" parent="AppBaseTheme.Dark" />
 
     <style name="MaterialButton" parent="Widget.Material3.Button">
-        <item name="android:textColor">@color/colorButtonForegroundDark</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
     <style name="KeyboardTheme" parent="AppBaseTheme.Dark.KeyboardBaseTheme" />
@@ -56,7 +56,9 @@
 
     <style name="Settings.Widget" parent="AppBaseTheme.Settings.Widget" />
 
-    <style name="Settings.PrimaryHeader" parent="AppBaseTheme.Settings.PrimaryHeader" />
+    <style name="Settings.PrimaryHeader" parent="AppBaseTheme.Dark.Settings.PrimaryHeader" />
+
+    <style name="Settings.CurrentValue" parent="AppBaseTheme.Settings.CurrentValue" />
 
     <style name="KeyButton.Popup" parent="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton.Popup" />
 

@@ -22,9 +22,10 @@ import android.content.Context
 import android.content.res.Configuration
 import android.util.AttributeSet
 import android.util.Log
+import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.MotionEvent
-import androidx.core.content.ContextCompat
+import androidx.annotation.AttrRes
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
@@ -87,63 +88,62 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
     }
 
+    private fun Context.getThemeColor(@AttrRes attrResId: Int): Int {
+        val typedValue = TypedValue()
+        theme.resolveAttribute(attrResId, typedValue, true)
+        return typedValue.data
+    }
+
     fun switchToState(state: ShiftKeyState) {
         Log.d(logTag, "Switch to state: $state")
         this.currentShiftKeyState = state
 
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+
+        val colorPrimaryContainer = context.getThemeColor(R.attr.colorPrimaryContainer)
+        val colorSecondary = context.getThemeColor(R.attr.colorSecondary)
+        val colorOnSecondaryContainer = context.getThemeColor(R.attr.colorOnSecondaryContainer)
+        val colorTertiary = context.getThemeColor(R.attr.colorTertiary)
+
         lateinit var buttonStateBackgroundColors: Map<ShiftKeyState, Int>
 
         when (currentNightMode) {
             Configuration.UI_MODE_NIGHT_NO -> {
                 buttonStateBackgroundColors = mapOf(
-                    ShiftKeyState.RELEASED to R.color.colorKeyboardSpecialKeyBackground,
-                    ShiftKeyState.PRESSED to R.color.colorKeyboardSpecialKeyBackgroundPressed,
-                    ShiftKeyState.HOLD to R.color.colorKeyboardSpecialKeyBackgroundHold
+                    ShiftKeyState.RELEASED to colorPrimaryContainer,
+                    ShiftKeyState.PRESSED to colorSecondary,
+                    ShiftKeyState.HOLD to colorOnSecondaryContainer
                 )
             }
 
             Configuration.UI_MODE_NIGHT_YES -> {
                 buttonStateBackgroundColors = mapOf(
-                    ShiftKeyState.RELEASED to R.color.colorKeyboardSpecialKeyBackgroundDark,
-                    ShiftKeyState.PRESSED to R.color.colorKeyboardSpecialKeyBackgroundDarkPressed,
-                    ShiftKeyState.HOLD to R.color.colorKeyboardSpecialKeyBackgroundDarkHold
+                    ShiftKeyState.RELEASED to colorTertiary,
+                    ShiftKeyState.PRESSED to colorSecondary,
+                    ShiftKeyState.HOLD to colorPrimaryContainer
                 )
             }
         }
+
+        val backgroundColorToSet = buttonStateBackgroundColors.getValue(state)
 
         when (state) {
             ShiftKeyState.RELEASED -> {
                 isActive = false
                 isLocked = false
-                background.setTint(
-                    ContextCompat.getColor(
-                        context,
-                        buttonStateBackgroundColors.getValue(state)
-                    )
-                )
+                background.setTint(backgroundColorToSet)
             }
 
             ShiftKeyState.PRESSED -> {
                 isActive = true
                 isLocked = false
-                background.setTint(
-                    ContextCompat.getColor(
-                        context,
-                        buttonStateBackgroundColors.getValue(state)
-                    )
-                )
+                background.setTint(backgroundColorToSet)
             }
 
             ShiftKeyState.HOLD -> {
                 isActive = true
                 isLocked = true
-                background.setTint(
-                    ContextCompat.getColor(
-                        context,
-                        buttonStateBackgroundColors.getValue(state)
-                    )
-                )
+                background.setTint(backgroundColorToSet)
             }
         }
 

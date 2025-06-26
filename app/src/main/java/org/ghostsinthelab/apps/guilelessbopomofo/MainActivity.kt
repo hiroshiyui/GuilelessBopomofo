@@ -92,7 +92,6 @@ class MainActivity : AppCompatActivity(), Vibratable {
                 }
 
                 textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
-                textViewServiceStatus.setTextColor(getColor(R.color.colorAccent))
 
                 for ((button, layout) in
                 mapOf(
