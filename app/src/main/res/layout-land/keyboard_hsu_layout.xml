@@ -41,7 +41,7 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_ao"
+            app:icon="@drawable/guileless_bopomofo_keyboard_ao"
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
@@ -55,7 +55,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonW"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonW"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_yi_ie"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_yi_ie"
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
@@ -69,7 +69,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonE"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonW"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_ri"
+            app:icon="@drawable/guileless_bopomofo_keyboard_ri"
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
@@ -83,7 +83,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonR"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonW"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_t"
+            app:icon="@drawable/guileless_bopomofo_keyboard_t"
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
@@ -97,7 +97,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonT"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonW"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_a"
+            app:icon="@drawable/guileless_bopomofo_keyboard_a"
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
@@ -111,7 +111,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonY"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonW"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_yu"
+            app:icon="@drawable/guileless_bopomofo_keyboard_yu"
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
@@ -125,7 +125,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonU"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonW"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_ai"
+            app:icon="@drawable/guileless_bopomofo_keyboard_ai"
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
@@ -139,7 +139,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonI"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonW"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_ou"
+            app:icon="@drawable/guileless_bopomofo_keyboard_ou"
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
@@ -153,7 +153,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonO"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonW"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_p"
+            app:icon="@drawable/guileless_bopomofo_keyboard_p"
             tools:layout_conversion_absoluteHeight="47dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
@@ -167,7 +167,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/keyImageButtonW"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_ci_ei"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_ci_ei"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
 
@@ -181,7 +181,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonA"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_si"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_si"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
 
@@ -195,7 +195,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonS"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_d"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_d"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
 
@@ -209,7 +209,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonD"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_f"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_f"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
 
@@ -223,7 +223,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonF"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_g_e"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_g_e"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
 
@@ -237,7 +237,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonG"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_h_o"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_h_o"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="36dp" />
 
@@ -251,7 +251,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonH"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_j_zhi"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_j_zhi"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="35dp" />
 
@@ -265,7 +265,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonJ"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_k_ang"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_k_ang"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="35dp" />
 
@@ -279,7 +279,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonK"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonA"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_l_eng_er"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_l_eng_er"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="35dp" />
 
@@ -294,7 +294,7 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/keyImageButtonA"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_zi"
+            app:icon="@drawable/guileless_bopomofo_keyboard_zi"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
@@ -308,7 +308,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonZ"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_wu"
+            app:icon="@drawable/guileless_bopomofo_keyboard_wu"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
@@ -322,7 +322,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonX"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_x_shi"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_x_shi"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
@@ -336,7 +336,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonC"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_q_chi"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_q_chi"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
@@ -350,7 +350,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonV"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_b"
+            app:icon="@drawable/guileless_bopomofo_keyboard_b"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
@@ -364,7 +364,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonB"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_n_en"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_n_en"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
@@ -378,7 +378,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonN"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_hsu_m_an"
+            app:icon="@drawable/guileless_bopomofo_keyboard_hsu_m_an"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
@@ -392,7 +392,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonM"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonZ"
-            app:srcCompat="@drawable/guileless_bopomofo_keyboard_punctuation"
+            app:icon="@drawable/guileless_bopomofo_keyboard_punctuation"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="40dp" />
 
@@ -407,7 +407,7 @@
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/keyImageButtonZ"
-            app:srcCompat="@drawable/ic_keyboard_mode_switch_eng"
+            app:icon="@drawable/ic_keyboard_mode_switch_eng"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
@@ -422,7 +422,7 @@
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonModeSwitch"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonModeSwitch"
-            app:srcCompat="@drawable/ic_keyboard_symbol_chooser_24"
+            app:icon="@drawable/ic_keyboard_symbol_chooser_24"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
@@ -430,7 +430,7 @@
             android:id="@+id/keyImageButtonImeSwitch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_keyboard_ime_switch_24"
+            app:icon="@drawable/ic_keyboard_ime_switch_24"
             android:theme="@style/KeyImageButton.SpecialKeyImageButton"
             app:layout_constraintEnd_toStartOf="@+id/keyImageButtonSpace"
             app:layout_constraintHorizontal_bias="0.5"
@@ -451,7 +451,7 @@
             app:layout_constraintHorizontal_weight="5"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonImeSwitch"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonModeSwitch"
-            app:srcCompat="@drawable/ic_keyboard_space_24"
+            app:icon="@drawable/ic_keyboard_space_24"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="68dp" />
 
@@ -466,7 +466,7 @@
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@+id/keyImageButtonSpace"
             app:layout_constraintTop_toTopOf="@id/keyImageButtonModeSwitch"
-            app:srcCompat="@drawable/ic_keyboard_backspace_24"
+            app:icon="@drawable/ic_keyboard_backspace_24"
             tools:layout_conversion_absoluteHeight="52dp"
             tools:layout_conversion_absoluteWidth="48dp" />
 
@@ -474,7 +474,7 @@
             android:id="@+id/keyImageButtonEnter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_keyboard_return_24"
+            app:icon="@drawable/ic_keyboard_return_24"
             android:theme="@style/KeyImageButton.EnterKeyImageButton"
             app:keyCodeString="KEYCODE_ENTER"
             app:layout_constraintEnd_toEndOf="parent"

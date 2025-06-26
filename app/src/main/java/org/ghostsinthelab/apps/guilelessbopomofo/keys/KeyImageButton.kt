@@ -24,13 +24,13 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageButton
+import com.google.android.material.button.MaterialButton
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
-    AppCompatImageButton(context, attrs, R.attr.imageButtonStyle),
+    MaterialButton(context, attrs, R.attr.imageButtonStyle),
     BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable, Vibratable {
     open val logTag: String = "KeyImageButton"
     val sharedPreferences: SharedPreferences =
@@ -45,7 +45,7 @@ abstract class KeyImageButton(context: Context, attrs: AttributeSet) :
         if (event != null) {
             mDetector.onTouchEvent(event)
         }
-        return true
+        return super.onTouchEvent(event)
     }
 
     init {

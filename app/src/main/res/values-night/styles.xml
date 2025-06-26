@@ -50,22 +50,28 @@
     <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton">
         <item name="android:backgroundTint">?attr/colorOnSecondary</item>
         <item name="android:tint">?attr/colorSecondary</item>
+        <item name="iconTint">?attr/colorSecondary</item>
+        <item name="iconGravity">textStart</item>
     </style>
 
     <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton">
         <item name="android:backgroundTint">?attr/colorTertiary</item>
         <item name="android:tint">?attr/colorOnTertiary</item>
+        <item name="iconTint">?attr/colorOnTertiary</item>
     </style>
 
     <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton.EnterKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.EnterKeyImageButton">
         <item name="android:backgroundTint">?attr/colorPrimary</item>
         <item name="android:tint">?attr/colorOnTertiary</item>
+        <item name="iconTint">?attr/colorOnTertiary</item>
     </style>
 
     <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton">
         <item name="android:backgroundTint">?attr/colorOnSecondary</item>
         <item name="android:textColor">?attr/colorSecondary</item>
         <item name="android:drawableTint">?attr/colorSecondary</item>
+        <item name="iconTint">?attr/colorSecondary</item>
+        <item name="iconGravity">textStart</item>
     </style>
 
     <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton.Popup" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup">

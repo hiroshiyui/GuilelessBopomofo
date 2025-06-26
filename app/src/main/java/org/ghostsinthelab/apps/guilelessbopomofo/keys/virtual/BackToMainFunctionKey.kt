@@ -37,12 +37,12 @@ class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(c
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             performVibration(context, Vibratable.VibrationStrength.NORMAL)
-            return true
+            return super.onDown(e)
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             EventBus.getDefault().post(Events.ExitKeyboardSubLayouts())
-            return true
+            return super.onSingleTapUp(e)
         }
     }
 }

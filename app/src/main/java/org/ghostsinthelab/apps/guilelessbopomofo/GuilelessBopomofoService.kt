@@ -610,7 +610,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 keyButtonPopup.dismiss()
             }
             keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(
-                event.characterKey.drawable
+                event.characterKey.icon
             )
             keyButtonPopup.let { popup ->
                 popup.height = event.characterKey.height
