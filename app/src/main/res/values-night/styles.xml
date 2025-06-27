@@ -19,12 +19,12 @@
 <resources>
 
     <style name="AppBaseTheme" parent="Theme.Material3.Dark">
-        <item name="colorPrimary">@color/colorGuilelessBopomofoMidnightThemeBase4</item>
+        <item name="colorPrimary">@color/colorGuilelessBopomofoMidnightThemeBase1</item>
         <item name="colorOnPrimary">@color/colorGuilelessBopomofoMidnightThemeBase3</item>
         <item name="colorPrimaryContainer">@color/colorGuilelessBopomofoMidnightThemeBase7</item>
         <item name="colorSecondary">@color/colorGuilelessBopomofoMidnightThemeBase2</item>
         <item name="colorOnSecondary">@color/colorGuilelessBopomofoMidnightThemeBase5</item>
-        <item name="colorSecondaryContainer">@color/colorGuilelessBopomofoMidnightThemeBase1</item>
+        <item name="colorSecondaryContainer">@color/colorGuilelessBopomofoMidnightThemeBase4</item>
         <item name="colorOnSecondaryContainer">@color/colorGuilelessBopomofoMidnightThemeBase6
         </item>
         <item name="colorTertiary">@color/colorGuilelessBopomofoMidnightThemeBase8</item>
@@ -40,61 +40,29 @@
 
     <style name="AppBaseTheme.ActionBar" parent="ThemeOverlay.AppCompat.DayNight.ActionBar" />
 
-    <style name="AppBaseTheme.Dark.KeyboardBaseTheme" parent="AppBaseTheme.KeyboardBaseTheme">
-        <item name="android:background">?attr/colorOnPrimary</item>
-    </style>
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme" parent="AppBaseTheme.KeyboardBaseTheme" />
 
-    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyboardPanel" parent="AppBaseTheme.KeyboardBaseTheme.KeyboardPanel">
-        <item name="android:background">?attr/colorOnPrimary</item>
-    </style>
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyboardPanel" parent="AppBaseTheme.KeyboardBaseTheme.KeyboardPanel" />
 
-    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton">
-        <item name="android:backgroundTint">?attr/colorOnSecondaryContainer</item>
-        <item name="android:tint">?attr/colorOnSecondary</item>
-        <item name="android:drawableTint">?attr/colorOnSecondary</item>
-        <item name="iconTint">?attr/colorOnSecondary</item>
-        <item name="iconGravity">textStart</item>
-    </style>
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton" />
 
-    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton">
-        <item name="android:backgroundTint">?attr/colorTertiary</item>
-        <item name="iconTint">?attr/colorOnTertiary</item>
-    </style>
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton" />
 
-    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton.EnterKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.EnterKeyImageButton">
-        <item name="android:backgroundTint">?attr/colorSecondary</item>
-        <item name="iconTint">?attr/colorOnSecondary</item>
-    </style>
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton.EnterKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.EnterKeyImageButton" />
 
-    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton">
-        <item name="android:textColor">?attr/colorOnSecondary</item>
-        <item name="android:drawableTint">?attr/colorOnSecondary</item>
-        <item name="iconTint">?attr/colorOnSecondary</item>
-        <item name="iconGravity">textStart</item>
-    </style>
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton" />
 
-    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton.Popup" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup">
-        <item name="android:backgroundTint">?attr/colorOnPrimary</item>
-    </style>
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton.Popup" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup" />
 
-    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton.Popup.ImageView" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup.ImageView">
-        <item name="android:backgroundTint">?attr/colorOnPrimary</item>
-    </style>
+    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton.Popup.ImageView" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup.ImageView" />
 
-    <style name="AppBaseTheme.Dark.CandidateItem.Button" parent="AppBaseTheme.CandidateItem.Button">
-        <item name="android:textColor">?attr/colorSecondary</item>
-        <item name="android:backgroundTint">?attr/colorOnSecondary</item>
-    </style>
+    <style name="AppBaseTheme.Dark.CandidateItem.Button" parent="AppBaseTheme.CandidateItem.Button" />
 
     <style name="AppBaseTheme.Dark.CandidateItem.Paged" parent="AppBaseTheme.CandidateItem.Paged">
         <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="AppBaseTheme.Dark.Settings.PrimaryHeader" parent="AppBaseTheme.Settings.PrimaryHeader" />
-
-    <style name="MaterialButton" parent="Widget.Material3.Button">
-        <item name="android:textColor">?attr/colorOnPrimary</item>
-    </style>
 
     <style name="KeyboardTheme" parent="AppBaseTheme.Dark.KeyboardBaseTheme" />
 

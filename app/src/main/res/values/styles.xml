@@ -72,10 +72,12 @@
 
     <style name="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton">
         <item name="android:backgroundTint">?attr/colorTertiary</item>
+        <item name="iconTint">?attr/colorOnTertiary</item>
     </style>
 
     <style name="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.EnterKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton">
         <item name="android:backgroundTint">?attr/colorSecondary</item>
+        <item name="iconTint">?attr/colorOnSecondary</item>
     </style>
 
     <style name="AppBaseTheme.KeyboardBaseTheme.KeyButton" parent="AppBaseTheme.KeyboardBaseTheme">
@@ -87,6 +89,7 @@
         <item name="android:bottomLeftRadius">8dp</item>
         <item name="android:topRightRadius">8dp</item>
         <item name="android:bottomRightRadius">8dp</item>
+        <item name="android:backgroundTint">?attr/colorOnSecondaryContainer</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="android:drawableTint">?attr/colorOnSecondary</item>
         <item name="iconTint">?attr/colorOnSecondary</item>
