@@ -743,10 +743,10 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
     }
 
     private fun forceViewBindingInitialized() {
+        Log.d(logTag, "forceViewBindingInitialized()")
         if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
             Log.d(logTag, "forceViewBindingInitialized()")
-            viewBinding = ImeLayoutBinding.inflate(this.layoutInflater)
-            setInputView(viewBinding.root)
+            setInputView(onCreateInputView())
         }
     }
 

@@ -71,11 +71,11 @@
     </style>
 
     <style name="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton">
-        <item name="android:backgroundTint">?attr/colorPrimaryContainer</item>
+        <item name="android:backgroundTint">?attr/colorTertiary</item>
     </style>
 
     <style name="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.EnterKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton">
-        <item name="android:backgroundTint">?attr/colorTertiary</item>
+        <item name="android:backgroundTint">?attr/colorSecondary</item>
     </style>
 
     <style name="AppBaseTheme.KeyboardBaseTheme.KeyButton" parent="AppBaseTheme.KeyboardBaseTheme">

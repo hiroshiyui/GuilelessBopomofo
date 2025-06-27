@@ -19,7 +19,6 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
-import android.content.res.Configuration
 import android.util.AttributeSet
 import android.util.Log
 import android.util.TypedValue
@@ -98,32 +97,15 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         Log.d(logTag, "Switch to state: $state")
         this.currentShiftKeyState = state
 
-        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-
-        val colorPrimaryContainer = context.getThemeColor(R.attr.colorPrimaryContainer)
+        val colorPrimary = context.getThemeColor(R.attr.colorPrimary)
         val colorSecondary = context.getThemeColor(R.attr.colorSecondary)
-        val colorOnSecondaryContainer = context.getThemeColor(R.attr.colorOnSecondaryContainer)
         val colorTertiary = context.getThemeColor(R.attr.colorTertiary)
 
-        lateinit var buttonStateBackgroundColors: Map<ShiftKeyState, Int>
-
-        when (currentNightMode) {
-            Configuration.UI_MODE_NIGHT_NO -> {
-                buttonStateBackgroundColors = mapOf(
-                    ShiftKeyState.RELEASED to colorPrimaryContainer,
-                    ShiftKeyState.PRESSED to colorSecondary,
-                    ShiftKeyState.HOLD to colorOnSecondaryContainer
-                )
-            }
-
-            Configuration.UI_MODE_NIGHT_YES -> {
-                buttonStateBackgroundColors = mapOf(
-                    ShiftKeyState.RELEASED to colorTertiary,
-                    ShiftKeyState.PRESSED to colorSecondary,
-                    ShiftKeyState.HOLD to colorPrimaryContainer
-                )
-            }
-        }
+        val buttonStateBackgroundColors: Map<ShiftKeyState, Int> = mapOf(
+            ShiftKeyState.RELEASED to colorTertiary,
+            ShiftKeyState.PRESSED to colorSecondary,
+            ShiftKeyState.HOLD to colorPrimary
+        )
 
         val backgroundColorToSet = buttonStateBackgroundColors.getValue(state)
 
