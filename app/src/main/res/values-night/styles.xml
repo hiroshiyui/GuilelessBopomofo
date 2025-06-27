@@ -19,18 +19,21 @@
 <resources>
 
     <style name="AppBaseTheme" parent="Theme.Material3.Dark">
-        <item name="colorPrimary">@color/colorGuilelessBopomofoMidnightThemeBase1</item>
-        <item name="colorOnPrimary">@color/colorGuilelessBopomofoMidnightThemeBase3</item>
-        <item name="colorPrimaryContainer">@color/colorGuilelessBopomofoMidnightThemeBase7</item>
-        <item name="colorSecondary">@color/colorGuilelessBopomofoMidnightThemeBase2</item>
-        <item name="colorOnSecondary">@color/colorGuilelessBopomofoMidnightThemeBase5</item>
-        <item name="colorSecondaryContainer">@color/colorGuilelessBopomofoMidnightThemeBase4</item>
-        <item name="colorOnSecondaryContainer">@color/colorGuilelessBopomofoMidnightThemeBase6
-        </item>
-        <item name="colorTertiary">@color/colorGuilelessBopomofoMidnightThemeBase8</item>
-        <item name="colorOnTertiary">@color/colorGuilelessBopomofoMidnightThemeBase9</item>
-        <item name="colorTertiaryContainer">@color/colorGuilelessBopomofoMidnightThemeBase10</item>
-        <item name="colorOnTertiaryContainer">@color/colorGuilelessBopomofoMidnightThemeBase6</item>
+        <!-- primary -->
+        <item name="colorPrimary">@color/colorGuilelessBopomofoWineThemeBase3</item>
+        <item name="colorOnPrimary">@color/colorGuilelessBopomofoWineThemeBase10</item>
+        <item name="colorPrimaryContainer">@color/colorGuilelessBopomofoWineThemeBase7</item>
+        <!-- secondary -->
+        <item name="colorSecondary">@color/colorGuilelessBopomofoWineThemeBase2</item>
+        <item name="colorOnSecondary">@color/colorGuilelessBopomofoWineThemeBase4</item>
+        <item name="colorSecondaryContainer">@color/colorGuilelessBopomofoWineThemeBase7</item>
+        <item name="colorOnSecondaryContainer">@color/colorGuilelessBopomofoWineThemeBase8</item>
+        <!-- tertiary -->
+        <item name="colorTertiary">@color/colorGuilelessBopomofoWineThemeBase5</item>
+        <item name="colorOnTertiary">@color/colorGuilelessBopomofoWineThemeBase4</item>
+        <item name="colorTertiaryContainer">@color/colorGuilelessBopomofoWineThemeBase8</item>
+        <item name="colorOnTertiaryContainer">@color/colorGuilelessBopomofoWineThemeBase4</item>
+        <!-- misc -->
         <item name="actionBarTheme">@style/AppBaseTheme.ActionBar</item>
         <item name="android:background">?attr/colorOnPrimary</item>
         <item name="materialButtonStyle">@style/AppBaseTheme.MaterialButton</item>

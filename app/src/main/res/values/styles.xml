@@ -19,17 +19,21 @@
 <resources>
 
     <style name="AppBaseTheme" parent="Theme.Material3.Light">
+        <!-- primary -->
         <item name="colorPrimary">@color/colorGuilelessBopomofoMorandiThemeBase6</item>
         <item name="colorOnPrimary">@color/colorGuilelessBopomofoMorandiThemeBase8</item>
         <item name="colorPrimaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase2</item>
+        <!-- secondary -->
         <item name="colorSecondary">@color/colorGuilelessBopomofoMorandiThemeBase7</item>
         <item name="colorOnSecondary">@color/colorGuilelessBopomofoMorandiThemeBase10</item>
         <item name="colorSecondaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase1</item>
         <item name="colorOnSecondaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase4</item>
+        <!-- tertiary -->
         <item name="colorTertiary">@color/colorGuilelessBopomofoMorandiThemeBase3</item>
         <item name="colorOnTertiary">@color/colorGuilelessBopomofoMorandiThemeBase10</item>
         <item name="colorTertiaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase5</item>
         <item name="colorOnTertiaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase9</item>
+        <!-- misc -->
         <item name="actionBarTheme">@style/AppBaseTheme.ActionBar</item>
         <item name="materialButtonStyle">@style/AppBaseTheme.MaterialButton</item>
     </style>
