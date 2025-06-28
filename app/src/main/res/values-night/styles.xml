@@ -55,10 +55,6 @@
 
     <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton" />
 
-    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton.Popup" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup" />
-
-    <style name="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton.Popup.ImageView" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup.ImageView" />
-
     <style name="AppBaseTheme.Dark.CandidateItem.Button" parent="AppBaseTheme.CandidateItem.Button" />
 
     <style name="AppBaseTheme.Dark.CandidateItem.Paged" parent="AppBaseTheme.CandidateItem.Paged">
@@ -102,8 +98,4 @@
     <style name="Settings.PrimaryHeader" parent="AppBaseTheme.Dark.Settings.PrimaryHeader" />
 
     <style name="Settings.CurrentValue" parent="AppBaseTheme.Settings.CurrentValue" />
-
-    <style name="KeyButton.Popup" parent="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton.Popup" />
-
-    <style name="KeyButton.Popup.ImageView" parent="AppBaseTheme.Dark.KeyboardBaseTheme.KeyButton.Popup.ImageView" />
 </resources>

@@ -62,7 +62,6 @@
     <style name="AppBaseTheme.KeyboardBaseTheme.KeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme">
         <item name="android:minHeight">52dp</item>
         <item name="minHeight">52dp</item>
-        <item name="android:scaleType">centerCrop</item>
         <item name="android:topLeftRadius">8dp</item>
         <item name="android:bottomLeftRadius">8dp</item>
         <item name="android:topRightRadius">8dp</item>
@@ -98,18 +97,6 @@
         <item name="android:drawableTint">?attr/colorOnSecondary</item>
         <item name="iconTint">?attr/colorOnSecondary</item>
         <item name="iconGravity">textStart</item>
-    </style>
-
-    <style name="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton">
-        <item name="android:background">@drawable/round_border</item>
-        <item name="android:backgroundTint">?attr/colorOnPrimary</item>
-        <item name="android:backgroundTintMode">src_atop</item>
-        <item name="android:padding">4dp</item>
-    </style>
-
-    <style name="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup.ImageView" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton">
-        <item name="android:backgroundTint">?attr/colorOnPrimary</item>
-        <item name="android:backgroundTintMode">src_atop</item>
     </style>
 
     <style name="AppBaseTheme.KeyboardBaseTheme.DividerKeyboardPanelTopBorder" parent="AppBaseTheme.KeyboardBaseTheme">
@@ -245,10 +232,6 @@
     <style name="Settings.PrimaryHeader" parent="AppBaseTheme.Settings.PrimaryHeader" />
 
     <style name="Settings.CurrentValue" parent="AppBaseTheme.Settings.CurrentValue" />
-
-    <style name="KeyButton.Popup" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup" />
-
-    <style name="KeyButton.Popup.ImageView" parent="AppBaseTheme.KeyboardBaseTheme.KeyButton.Popup.ImageView" />
 
     <style name="PreEditBufferTextView" parent="AppBaseTheme.PreEditBufferTextView" />
 

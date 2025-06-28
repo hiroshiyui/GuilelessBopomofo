@@ -26,7 +26,6 @@ import android.os.Build
 import android.os.IBinder
 import android.text.InputType
 import android.util.Log
-import android.view.Gravity
 import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
 import android.view.KeyEvent.ACTION_UP
@@ -80,8 +79,8 @@ import java.io.FileOutputStream
 import java.util.concurrent.Executor
 import kotlin.coroutines.CoroutineContext
 
-class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
-    SharedPreferences.OnSharedPreferenceChangeListener, KeyEventExtension {
+class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPreferences.OnSharedPreferenceChangeListener,
+    KeyEventExtension {
     private val logTag = "GuilelessBopomofoSvc"
     private var shiftKeyIsLocked: Boolean = false
     private var shiftKeyIsActive: Boolean = false
@@ -146,8 +145,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 ChewingBridge.chewing.setSelKey(SelectionKeys.valueOf(it).keys, 10)
             }
         } catch (exception: Exception) {
-            val exceptionDescription: String =
-                getString(R.string.libchewing_init_fail, exception.message)
+            val exceptionDescription: String = getString(R.string.libchewing_init_fail, exception.message)
             Toast.makeText(applicationContext, exceptionDescription, Toast.LENGTH_LONG).show()
             exception.let { e ->
                 e.printStackTrace()
@@ -157,8 +155,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             }
         }
 
-        userHapticFeedbackStrength =
-            sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
+        userHapticFeedbackStrength = sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
     }
 
 
@@ -500,8 +497,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             switchToNextInputMethod(false)
         } else {
             // backward compatibility, support IME switch on legacy devices
-            val imm =
-                applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             val imeToken: IBinder? = viewBinding.root.windowToken
             @Suppress("DEPRECATION") imm.switchToNextInputMethod(imeToken, false)
         }
@@ -557,9 +553,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
             }
         }
         Toast.makeText(
-            applicationContext,
-            getString(R.string.shape_mode_changed, shapeMode),
-            Toast.LENGTH_SHORT
+            applicationContext, getString(R.string.shape_mode_changed, shapeMode), Toast.LENGTH_SHORT
         ).show()
         return
     }
@@ -598,37 +592,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
                 }
             }
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onShowKeyButtonPopup(event: Events.ShowKeyButtonPopup) {
-        val keyButtonLocation = IntArray(2)
-        event.characterKey.getLocationInWindow(keyButtonLocation)
-
-        viewBinding.keyboardPanel.apply {
-            if (keyButtonPopup.isShowing) {
-                keyButtonPopup.dismiss()
-            }
-            keyButtonPopupLayoutBinding.keyButtonPopupImageView.setImageDrawable(
-                event.characterKey.icon
-            )
-            keyButtonPopup.let { popup ->
-                popup.height = event.characterKey.height
-                popup.width = event.characterKey.width
-                popup.showAtLocation(
-                    event.characterKey.rootView,
-                    Gravity.NO_GRAVITY,
-                    keyButtonLocation[0],
-                    keyButtonLocation[1] - event.characterKey.height
-                )
-            }
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDismissKeyButtonPopup(event: Events.DismissKeyButtonPopup) {
-        Log.d(logTag, event.toString())
-        viewBinding.keyboardPanel.keyButtonPopup.dismiss()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -674,8 +637,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope,
         // Save app version
         val appVersion = BuildConfig.VERSION_NAME.toByteArray()
 
-        val chewingDataAppVersionTxt =
-            File(String.format("%s/%s", chewingDataDir.absolutePath, "data_appversion.txt"))
+        val chewingDataAppVersionTxt = File(String.format("%s/%s", chewingDataDir.absolutePath, "data_appversion.txt"))
 
         // update Chewing data files by version
         if (!chewingDataAppVersionTxt.exists()) {

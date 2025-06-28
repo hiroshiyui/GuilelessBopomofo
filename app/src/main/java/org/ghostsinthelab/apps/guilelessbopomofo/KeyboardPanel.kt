@@ -24,8 +24,6 @@ import android.content.res.Configuration
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -43,7 +41,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuDvorakLa
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeybuttonPopupLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ShiftKey
@@ -70,11 +67,6 @@ class KeyboardPanel(
     private lateinit var keyboardDvorakLayoutBinding: KeyboardDvorakLayoutBinding
     private lateinit var compactLayoutBinding: CompactLayoutBinding
 
-    // keyButtonPopup
-    val keyButtonPopupLayoutBinding: KeybuttonPopupLayoutBinding =
-        KeybuttonPopupLayoutBinding.inflate(LayoutInflater.from(context))
-    val keyButtonPopup = PopupWindow(keyButtonPopupLayoutBinding.root, 1, 1, false)
-
     // candidatesRecyclerView
     private val candidatesLayoutBinding: CandidatesLayoutBinding =
         CandidatesLayoutBinding.inflate(LayoutInflater.from(context))
@@ -88,19 +80,8 @@ class KeyboardPanel(
     init {
         Log.d(logTag, "Building KeyboardLayout.")
 
-        keyButtonPopup.apply {
-            elevation = 8F
-        }
-
-        if (sharedPreferences.getBoolean("user_enhanced_compat_physical_keyboard", false) == true) {
+        if (sharedPreferences.getBoolean("user_enhanced_compat_physical_keyboard", false)) {
             forceCompactLayout = true
-        }
-    }
-
-    override fun onViewAdded(child: View?) {
-        super.onViewAdded(child)
-        if (keyButtonPopup.isShowing) {
-            keyButtonPopup.dismiss()
         }
     }
 

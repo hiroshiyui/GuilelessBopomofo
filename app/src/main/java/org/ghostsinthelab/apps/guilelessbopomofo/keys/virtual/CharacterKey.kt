@@ -43,21 +43,18 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
                 context,
                 GuilelessBopomofoService.Companion.userHapticFeedbackStrength
             )
-            EventBus.getDefault().post(Events.ShowKeyButtonPopup(this@CharacterKey))
             EventBus.getDefault().post(Events.PrintingKeyDown(this@CharacterKey))
-            return true
+            return super.onDown(e)
         }
     }
 
     // process detailed touch events here.
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        super.onTouchEvent(event)
-        // if user release the button, then dismiss the popup
         event?.let {
-            if (it.action == MotionEvent.ACTION_UP) {
-                EventBus.getDefault().post(Events.DismissKeyButtonPopup())
+            when (it.action) {
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {}
             }
         }
-        return true
+        return super.onTouchEvent(event)
     }
 }

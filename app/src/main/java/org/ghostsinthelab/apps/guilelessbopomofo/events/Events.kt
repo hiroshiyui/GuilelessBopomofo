@@ -26,13 +26,11 @@ class Events {
     class CandidateSelectionDone(val index: Int)
     class CommitTextInChewingCommitBuffer
     class DirectionKeyDown(val direction: DirectionKey)
-    class DismissKeyButtonPopup
     class EnterKeyDownWhenBufferIsEmpty
     class ExitKeyboardSubLayouts
     class PrintingKeyDown(val characterKey: CharacterKey)
     class RequestHideIme
     class SendDownUpKeyEvents(val keycode: Int)
-    class ShowKeyButtonPopup(val characterKey: CharacterKey)
     class SwitchToLayout(val layout: Layout)
     class SwitchToNextInputMethod
     class ToggleForceCompactLayout
