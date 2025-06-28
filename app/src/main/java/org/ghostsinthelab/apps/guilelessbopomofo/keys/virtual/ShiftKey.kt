@@ -113,21 +113,21 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
             ShiftKeyState.RELEASED -> {
                 isActive = false
                 isLocked = false
-                background.setTint(backgroundColorToSet)
             }
 
             ShiftKeyState.PRESSED -> {
                 isActive = true
                 isLocked = false
-                background.setTint(backgroundColorToSet)
             }
 
             ShiftKeyState.HOLD -> {
                 isActive = true
                 isLocked = true
-                background.setTint(backgroundColorToSet)
             }
         }
+
+        background.setTint(backgroundColorToSet)
+
 
         // notify GuilelessBopomofoService of shift key state change
         EventBus.getDefault().post(Events.UpdateShiftKeyState(isActive, isLocked))
