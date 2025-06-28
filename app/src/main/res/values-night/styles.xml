@@ -26,10 +26,10 @@
         <!-- secondary -->
         <item name="colorSecondary">@color/colorGuilelessBopomofoWineThemeBase2</item>
         <item name="colorOnSecondary">@color/colorGuilelessBopomofoWineThemeBase4</item>
-        <item name="colorSecondaryContainer">@color/colorGuilelessBopomofoWineThemeBase7</item>
-        <item name="colorOnSecondaryContainer">@color/colorGuilelessBopomofoWineThemeBase8</item>
+        <item name="colorSecondaryContainer">@color/colorGuilelessBopomofoWineThemeBase8</item>
+        <item name="colorOnSecondaryContainer">@color/colorGuilelessBopomofoWineThemeBase5</item>
         <!-- tertiary -->
-        <item name="colorTertiary">@color/colorGuilelessBopomofoWineThemeBase5</item>
+        <item name="colorTertiary">@color/colorGuilelessBopomofoWineThemeBase8</item>
         <item name="colorOnTertiary">@color/colorGuilelessBopomofoWineThemeBase4</item>
         <item name="colorTertiaryContainer">@color/colorGuilelessBopomofoWineThemeBase8</item>
         <item name="colorOnTertiaryContainer">@color/colorGuilelessBopomofoWineThemeBase4</item>

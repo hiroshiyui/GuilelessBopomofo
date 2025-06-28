@@ -17,17 +17,6 @@
   -->
 
 <resources>
-    <!-- color palette: cocoa style -->
-    <color name="colorGuilelessBopomofoCocoaThemeBase1">#D5A692</color>
-    <color name="colorGuilelessBopomofoCocoaThemeBase2">#B7A19D</color>
-    <color name="colorGuilelessBopomofoCocoaThemeBase3">#72483F</color>
-    <color name="colorGuilelessBopomofoCocoaThemeBase4">#493024</color>
-    <color name="colorGuilelessBopomofoCocoaThemeBase5">#64483F</color>
-    <color name="colorGuilelessBopomofoCocoaThemeBase6">#9F938E</color>
-    <color name="colorGuilelessBopomofoCocoaThemeBase7">#CDBDB3</color>
-    <color name="colorGuilelessBopomofoCocoaThemeBase8">#C49366</color>
-    <color name="colorGuilelessBopomofoCocoaThemeBase9">#B46F4C</color>
-    <color name="colorGuilelessBopomofoCocoaThemeBase10">#4D4D4D</color>
     <!-- color palette: Morandi style -->
     <color name="colorGuilelessBopomofoMorandiThemeBase1">#ADC2C3</color>
     <color name="colorGuilelessBopomofoMorandiThemeBase2">#A7BACA</color>
@@ -39,17 +28,6 @@
     <color name="colorGuilelessBopomofoMorandiThemeBase8">#ECE5D4</color>
     <color name="colorGuilelessBopomofoMorandiThemeBase9">#8699B0</color>
     <color name="colorGuilelessBopomofoMorandiThemeBase10">#515251</color>
-    <!-- color palette: Midnight style -->
-    <color name="colorGuilelessBopomofoMidnightThemeBase1">#E4D0CE</color>
-    <color name="colorGuilelessBopomofoMidnightThemeBase2">#D0a4B0</color>
-    <color name="colorGuilelessBopomofoMidnightThemeBase3">#4C6684</color>
-    <color name="colorGuilelessBopomofoMidnightThemeBase4">#D3C8CA</color>
-    <color name="colorGuilelessBopomofoMidnightThemeBase5">#778587</color>
-    <color name="colorGuilelessBopomofoMidnightThemeBase6">#394B56</color>
-    <color name="colorGuilelessBopomofoMidnightThemeBase7">#7076A2</color>
-    <color name="colorGuilelessBopomofoMidnightThemeBase8">#908BA7</color>
-    <color name="colorGuilelessBopomofoMidnightThemeBase9">#303D69</color>
-    <color name="colorGuilelessBopomofoMidnightThemeBase10">#121F3A</color>
     <!-- color palette: Wine style -->
     <color name="colorGuilelessBopomofoWineThemeBase1">#7E205D</color>
     <color name="colorGuilelessBopomofoWineThemeBase2">#D55A43</color>
