@@ -41,9 +41,6 @@
     <string name="fullscreen_mode_setting_description">是否讓鍵盤以全螢幕方式運作</string>
     <string name="fullscreen_when_in_landscape_setting_switch">當畫面橫置時，啟用全螢幕模式？</string>
     <string name="fullscreen_when_in_portrait_setting_switch">當畫面直立時，啟用全螢幕模式？</string>
-    <string name="switch_enable_keybutton_elevation">使按鍵看起來更立體？</string>
-    <string name="switch_description_enable_keybutton_elevation">預設的按鍵平坦外觀看起來太無聊了嗎？改一下！</string>
-    <string name="switch_title_enrich_key_button_elevation">使按鍵看起來更立體</string>
     <string name="back_to_main_layout">回到鍵盤</string>
     <string name="space_as_selection_key">把空白鍵當成候選字詞快速鍵</string>
     <string name="space_as_selection_key_description">如果啟用本功能，按下空白鍵會立即開啟「預編輯緩衝區」最尾端字詞的候選字詞列表</string>

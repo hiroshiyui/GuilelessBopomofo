@@ -40,9 +40,6 @@
     <string name="fullscreen_mode_setting_description">キーボードを全画面で動作させるか</string>
     <string name="fullscreen_when_in_landscape_setting_switch">画面が横向きの場合、全画面モードを有効にしますか？</string>
     <string name="fullscreen_when_in_portrait_setting_switch">画面が縦向きの場合、全画面モードを有効にしますか？</string>
-    <string name="switch_enable_keybutton_elevation">キーを立体的に表示する？</string>
-    <string name="switch_description_enable_keybutton_elevation">デフォルトのキーの平坦な外観が退屈ですか？変更しましょう！</string>
-    <string name="switch_title_enrich_key_button_elevation">キーを立体的に表示する</string>
     <string name="back_to_main_layout">キーボードに戻る</string>
     <string name="space_as_selection_key">スペースキーを候補選択のショートカットキーとして使用する</string>
     <string name="space_as_selection_key_description">本機能を有効にすると、スペースキーを押すと即座に「プリエディットバッファ」の末端単語の候補一覧を表示します</string>

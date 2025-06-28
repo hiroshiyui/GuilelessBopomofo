@@ -292,17 +292,6 @@ class MainActivity : AppCompatActivity(), Vibratable {
                     }
                 }
 
-                switchSettingKeyButtonsElevation.let {
-                    if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
-                        it.isChecked = true
-                    }
-
-                    it.setOnCheckedChangeListener { _, _ ->
-                        sharedPreferences.edit()
-                            .putBoolean("user_enable_button_elevation", it.isChecked).apply()
-                    }
-                }
-
                 var keyButtonPreferenceHeight =
                     sharedPreferences.getInt("user_key_button_height", 52)
 

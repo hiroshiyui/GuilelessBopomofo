@@ -35,7 +35,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:flexDirection="row"
-        app:flexWrap="wrap">
+        app:flexWrap="wrap"
+        android:theme="@style/BufferLayout">
 
         <org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
             android:id="@+id/textViewPreEditBuffer"
@@ -50,13 +51,6 @@
             android:theme="@style/BopomofoBufferTextView" />
 
     </org.ghostsinthelab.apps.guilelessbopomofo.buffers.BufferLayout>
-
-    <View
-        android:id="@+id/dividerKeyboardPanelTopBorder"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_weight="1"
-        android:theme="@style/DividerKeyboardPanelTopBorder" />
 
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
         android:id="@+id/keyboardPanel"

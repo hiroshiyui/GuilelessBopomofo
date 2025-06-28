@@ -54,11 +54,5 @@ abstract class KeyButton(context: Context, attrs: AttributeSet) :
                 recycle()
             }
         }
-
-        this.apply {
-            if (sharedPreferences.getBoolean("user_enable_button_elevation", false)) {
-                elevation = convertDpToPx(2F)
-            }
-        }
     }
 }

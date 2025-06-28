@@ -131,46 +131,14 @@
         app:layout_constraintTop_toBottomOf="@id/switchSettingFullscreenWhenInLandscape" />
 
     <TextView
-        android:id="@+id/textViewSettingKeyButtonsElevation"
-        style="@style/Settings.Label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/switch_title_enrich_key_button_elevation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/switchSettingFullscreenWhenInPortrait" />
-
-    <TextView
-        android:id="@+id/textViewSettingDescriptionKeyButtonsElevation"
-        style="@style/Settings.Description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/switch_description_enable_keybutton_elevation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSettingKeyButtonsElevation" />
-
-    <com.google.android.material.materialswitch.MaterialSwitch
-        android:id="@+id/switchSettingKeyButtonsElevation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/switch_enable_keybutton_elevation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionKeyButtonsElevation" />
-
-    <TextView
         android:id="@+id/textViewSettingKeyButtonHeight"
         style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:text="@string/key_button_height_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchSettingKeyButtonsElevation" />
+        app:layout_constraintTop_toBottomOf="@+id/switchSettingFullscreenWhenInPortrait" />
 
     <TextView
         android:id="@+id/textViewSettingDescriptionKeyButtonHeight"

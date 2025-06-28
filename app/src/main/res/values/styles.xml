@@ -71,6 +71,7 @@
         <item name="android:drawableTint">?attr/colorOnSecondary</item>
         <item name="iconTint">?attr/colorOnSecondary</item>
         <item name="iconGravity">textStart</item>
+        <item name="android:elevation">1dp</item>
     </style>
 
     <style name="AppBaseTheme.KeyboardBaseTheme.KeyImageButton.SpecialKeyImageButton" parent="AppBaseTheme.KeyboardBaseTheme.KeyImageButton">
@@ -97,12 +98,7 @@
         <item name="android:drawableTint">?attr/colorOnSecondary</item>
         <item name="iconTint">?attr/colorOnSecondary</item>
         <item name="iconGravity">textStart</item>
-    </style>
-
-    <style name="AppBaseTheme.KeyboardBaseTheme.DividerKeyboardPanelTopBorder" parent="AppBaseTheme.KeyboardBaseTheme">
-        <item name="android:background">?attr/colorOnPrimary</item>
-        <item name="android:backgroundTint">?attr/colorPrimary</item>
-        <item name="android:backgroundTintMode">src_atop</item>
+        <item name="android:elevation">1dp</item>
     </style>
 
     <style name="AppBaseTheme.KeyboardBaseTheme.KeyboardRow" parent="AppBaseTheme.KeyboardBaseTheme">
@@ -125,6 +121,7 @@
         <item name="android:backgroundTint">?attr/colorOnSecondaryContainer</item>
         <item name="android:tint">?attr/colorOnSecondary</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:elevation">1dp</item>
     </style>
 
     <style name="AppBaseTheme.CandidateItem.Paged" parent="AppBaseTheme.CandidateItem">
@@ -179,6 +176,10 @@
         <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
+    <style name="AppBaseTheme.BufferLayout" parent="AppBaseTheme">
+        <item name="android:elevation">4dp</item>
+    </style>
+
     <style name="AppBaseTheme.PreEditBufferTextView" parent="AppBaseTheme">
         <item name="android:background">@color/colorPreEditBufferTextViewBackground</item>
         <item name="android:bufferType">spannable</item>
@@ -200,8 +201,6 @@
     <style name="KeyboardTheme" parent="AppBaseTheme.KeyboardBaseTheme" />
 
     <style name="KeyboardPanel" parent="AppBaseTheme.KeyboardBaseTheme.KeyboardPanel" />
-
-    <style name="DividerKeyboardPanelTopBorder" parent="AppBaseTheme.KeyboardBaseTheme.DividerKeyboardPanelTopBorder" />
 
     <style name="KeyboardRow" parent="AppBaseTheme.KeyboardBaseTheme.KeyboardRow" />
 
@@ -232,6 +231,8 @@
     <style name="Settings.PrimaryHeader" parent="AppBaseTheme.Settings.PrimaryHeader" />
 
     <style name="Settings.CurrentValue" parent="AppBaseTheme.Settings.CurrentValue" />
+
+    <style name="BufferLayout" parent="AppBaseTheme.BufferLayout" />
 
     <style name="PreEditBufferTextView" parent="AppBaseTheme.PreEditBufferTextView" />
 

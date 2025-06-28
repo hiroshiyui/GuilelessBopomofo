@@ -763,7 +763,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 // do nothing (onEvaluateFullscreenMode() will handle it well)
             }
 
-            "user_enable_button_elevation",
             "user_key_button_height",
             "user_enable_double_touch_ime_switch",
                 -> {

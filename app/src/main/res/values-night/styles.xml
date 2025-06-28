@@ -67,8 +67,6 @@
 
     <style name="KeyboardPanel" parent="AppBaseTheme.Dark.KeyboardBaseTheme.KeyboardPanel" />
 
-    <style name="DividerKeyboardPanelTopBorder" parent="AppBaseTheme.KeyboardBaseTheme.DividerKeyboardPanelTopBorder" />
-
     <style name="KeyboardRow" parent="AppBaseTheme.KeyboardBaseTheme.KeyboardRow" />
 
     <style name="KeyImageButton" parent="AppBaseTheme.Dark.KeyboardBaseTheme.KeyImageButton" />
