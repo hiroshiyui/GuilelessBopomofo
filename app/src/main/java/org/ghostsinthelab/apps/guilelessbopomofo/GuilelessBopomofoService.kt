@@ -250,6 +250,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         // have to make Back key work as is at very first, or some back operations will be blocked
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.d(logTag, "Back key pressed")
+            this@GuilelessBopomofoService.requestHideSelf(0)
             return super.onKeyDown(keyCode, event)
         }
 
