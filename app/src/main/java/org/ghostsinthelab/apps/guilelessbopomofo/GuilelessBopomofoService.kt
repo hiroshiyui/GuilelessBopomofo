@@ -248,12 +248,12 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             return super.onKeyDown(keyCode, event)
         }
 
-        forceViewBindingInitialized()
-
         // have to make Back key work as is at very first, or some back operations will be blocked
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             return super.onKeyDown(keyCode, event)
         }
+
+        assureViewBindingInitialized()
 
         // handles physical functional keys
         val handler = physicalKeyDispatcher[keyCode]
@@ -282,11 +282,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             return super.onKeyUp(keyCode, event)
         }
 
-        forceViewBindingInitialized()
-
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             return super.onKeyUp(keyCode, event)
         }
+
+        assureViewBindingInitialized()
 
         // handles physical functional keys
         val handler = physicalKeyDispatcher[keyCode]
@@ -321,7 +321,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             return false
         }
 
-        forceViewBindingInitialized()
+        assureViewBindingInitialized()
 
         // handles physical functional keys
         val handler = physicalKeyDispatcher[keyCode]
@@ -703,7 +703,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     override fun onConfigurationChanged(newConfig: Configuration) {
         Log.d(logTag, "onConfigurationChanged()")
         super.onConfigurationChanged(newConfig)
-        forceViewBindingInitialized()
+        assureViewBindingInitialized()
         // toggle main layout automatically between physical keyboard being connected and disconnected
         viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
         // there will be a short (time) window that InputMethod.hideSoftInput() will be called when user turn own physical keyboard on/off,
@@ -711,10 +711,10 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         showWindow(true)
     }
 
-    private fun forceViewBindingInitialized() {
-        Log.d(logTag, "forceViewBindingInitialized()")
+    private fun assureViewBindingInitialized() {
+        Log.d(logTag, "assureViewBindingInitialized()")
         if (!this@GuilelessBopomofoService::viewBinding.isInitialized) {
-            Log.d(logTag, "forceViewBindingInitialized()")
+            Log.d(logTag, "initialize viewBinding")
             setInputView(onCreateInputView())
         }
     }
