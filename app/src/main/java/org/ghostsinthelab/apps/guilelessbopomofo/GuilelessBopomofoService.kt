@@ -104,6 +104,13 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         // register physical key handlers
         initializePhysicalKeyDispatcher()
 
+        // set Back key disposition
+        backDisposition = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            BACK_DISPOSITION_ADJUST_NOTHING
+        } else {
+            BACK_DISPOSITION_DEFAULT
+        }
+
         // emoji2-bundled (fonts-embedded)
         val fontLoadExecutor: Executor = Executor { }
         val emojiCompatConfig: EmojiCompat.Config = BundledEmojiCompatConfig(
@@ -195,24 +202,23 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     }
 
     override fun onInitializeInterface() {
-        super.onInitializeInterface()
         Log.d(logTag, "onInitializeInterface()")
+        super.onInitializeInterface()
     }
 
     override fun onEvaluateInputViewShown(): Boolean {
-        super.onEvaluateInputViewShown()
         Log.d(logTag, "onEvaluateInputViewShown()")
-        return true
+        return super.onEvaluateInputViewShown()
     }
 
     override fun onBindInput() {
-        super.onBindInput()
         Log.d(logTag, "onBindInput()")
+        super.onBindInput()
     }
 
     override fun onStartInput(attribute: EditorInfo?, restarting: Boolean) {
-        super.onStartInput(attribute, restarting)
         Log.d(logTag, "onStartInput()")
+        super.onStartInput(attribute, restarting)
     }
 
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
@@ -239,16 +245,14 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         Log.d(logTag, "onKeyDown()")
 
         if (!isInputViewShown) {
-            super.onKeyDown(keyCode, event)
-            return false
+            return super.onKeyDown(keyCode, event)
         }
 
         forceViewBindingInitialized()
 
         // have to make Back key work as is at very first, or some back operations will be blocked
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            super.onKeyDown(keyCode, event)
-            return true
+            return super.onKeyDown(keyCode, event)
         }
 
         // handles physical functional keys
@@ -275,11 +279,14 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         Log.d(logTag, "onKeyUp()")
 
         if (!isInputViewShown) {
-            super.onKeyUp(keyCode, event)
-            return false
+            return super.onKeyUp(keyCode, event)
         }
 
         forceViewBindingInitialized()
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return super.onKeyUp(keyCode, event)
+        }
 
         // handles physical functional keys
         val handler = physicalKeyDispatcher[keyCode]
