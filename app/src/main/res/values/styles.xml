@@ -35,6 +35,7 @@
         <item name="colorOnTertiaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase9</item>
         <!-- misc -->
         <item name="actionBarTheme">@style/AppBaseTheme.ActionBar</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="materialButtonStyle">@style/AppBaseTheme.MaterialButton</item>
     </style>
 
