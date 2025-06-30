@@ -208,7 +208,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     override fun onEvaluateInputViewShown(): Boolean {
         Log.d(logTag, "onEvaluateInputViewShown()")
-        return super.onEvaluateInputViewShown()
+        super.onEvaluateInputViewShown()
+        // always show the input view whether physical keyboard is connected or not
+        return true
     }
 
     override fun onBindInput() {
@@ -706,11 +708,15 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         Log.d(logTag, "onConfigurationChanged()")
         super.onConfigurationChanged(newConfig)
         assureViewBindingInitialized()
-        // toggle main layout automatically between physical keyboard being connected and disconnected
-        viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
-        // there will be a short (time) window that InputMethod.hideSoftInput() will be called when user turn own physical keyboard on/off,
-        // so have to call showWindow() here to make the soft input visible:
-        showWindow(true)
+
+        if (isInputViewShown) {
+            Log.d(logTag, "onConfigurationChanged(): refresh the input view.")
+            // toggle main layout automatically between physical keyboard being connected and disconnected
+            viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
+            // there will be a short (time) window that InputMethod.hideSoftInput() will be called when user turn own physical keyboard on/off,
+            // so have to call showWindow() here to make the soft input visible:
+            showWindow(true)
+        }
     }
 
     private fun assureViewBindingInitialized() {
