@@ -80,7 +80,7 @@ class EngineeringModeActivity : AppCompatActivity() {
 
         // User preferred hardware keyboard?
         val userPreferredHardwareKeyboardText: String =
-            when (sharedPreferences.getBoolean("user_enable_physical_keyboard", false)) {
+            when (sharedPreferences.getBoolean("user_enable_physical_keyboard", true)) {
                 true -> getString(R.string.user_preferred_hardware_keyboard_yes)
                 false -> getString(R.string.user_preferred_hardware_keyboard_no)
             }

@@ -332,7 +332,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
 
             sectionPhysicalKeyboard.apply {
                 switchSettingEnablePhysicalKeyboard.let {
-                    if (sharedPreferences.getBoolean("user_enable_physical_keyboard", false)) {
+                    if (sharedPreferences.getBoolean("user_enable_physical_keyboard", true)) {
                         it.isChecked = true
                     }
 

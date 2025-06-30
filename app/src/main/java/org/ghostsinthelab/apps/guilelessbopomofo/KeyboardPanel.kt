@@ -419,7 +419,7 @@ class KeyboardPanel(
             (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY) && (resources.configuration.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
 
         return (physicalKeyboardPresented && sharedPreferences.getBoolean(
-            "user_enable_physical_keyboard", false
+            "user_enable_physical_keyboard", true
         ))
     }
 }
