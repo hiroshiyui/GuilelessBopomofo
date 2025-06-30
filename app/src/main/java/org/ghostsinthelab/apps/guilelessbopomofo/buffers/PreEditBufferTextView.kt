@@ -76,7 +76,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     }
 
     // It just renders, presents underline for current cursor
-    fun renderUnderlineSpan() {
+    private fun renderUnderlineSpan() {
         span = this.text.toSpannable() as SpannableString
         val underlineSpans = span.getSpans(0, span.length, UnderlineSpan::class.java)
 
@@ -118,6 +118,12 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
 
         this@PreEditBufferTextView.text = ChewingBridge.chewing.bufferStringStatic()
+
+        // update cursor position
+        offset = this.length() - 1
+        if (offset >= 0) {
+            renderUnderlineSpan()
+        }
     }
 
     override fun onTextChanged(
