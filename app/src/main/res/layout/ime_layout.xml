@@ -23,7 +23,6 @@
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:layout_gravity="bottom"
-    android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:theme="@style/KeyboardPanel"
     android:visibility="visible">

@@ -69,6 +69,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Right
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.RightShift
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Space
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Up
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.EdgeToEdge
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
@@ -80,7 +81,7 @@ import java.util.concurrent.Executor
 import kotlin.coroutines.CoroutineContext
 
 class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPreferences.OnSharedPreferenceChangeListener,
-    KeyEventExtension {
+    KeyEventExtension, EdgeToEdge {
     private val logTag = "GuilelessBopomofoSvc"
     private var shiftKeyIsLocked: Boolean = false
     private var shiftKeyIsActive: Boolean = false
@@ -198,6 +199,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     override fun onCreateInputView(): View {
         Log.d(logTag, "onCreateInputView()")
         viewBinding = ImeLayoutBinding.inflate(this.layoutInflater)
+
+        applyInsetsAsPadding(viewBinding.root)
         return viewBinding.root
     }
 

@@ -23,15 +23,21 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.emoji2.bundled.BundledEmojiCompatConfig
 import androidx.emoji2.text.EmojiCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityEngineeringModeBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.EdgeToEdge
 import java.io.File
 import java.util.concurrent.Executor
 
-class EngineeringModeActivity : AppCompatActivity() {
+class EngineeringModeActivity : AppCompatActivity(), EdgeToEdge {
     private val logTag = "EngineeringModeActivity"
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -41,6 +47,7 @@ class EngineeringModeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         val fontLoadExecutor: Executor = Executor { }
         val emojiCompatConfig: EmojiCompat.Config = BundledEmojiCompatConfig(
@@ -93,6 +100,16 @@ class EngineeringModeActivity : AppCompatActivity() {
             return@setOnLongClickListener true
         }
 
+        ViewCompat.setOnApplyWindowInsetsListener(viewBinding.root) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = insets.top
+            }
+            WindowInsetsCompat.CONSUMED
+        }
+
+        val view = viewBinding.root
+        applyInsetsAsMargins(view)
         setContentView(viewBinding.root)
     }
 

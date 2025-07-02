@@ -18,7 +18,7 @@
 
 <resources>
 
-    <style name="AppBaseTheme" parent="Theme.Material3.Light">
+    <style name="AppBaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- primary -->
         <item name="colorPrimary">@color/colorGuilelessBopomofoMorandiThemeBase6</item>
         <item name="colorOnPrimary">@color/colorGuilelessBopomofoMorandiThemeBase8</item>

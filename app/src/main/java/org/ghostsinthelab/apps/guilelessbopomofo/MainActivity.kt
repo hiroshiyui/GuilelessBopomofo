@@ -25,14 +25,16 @@ import android.provider.Settings
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.EdgeToEdge
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
-class MainActivity : AppCompatActivity(), Vibratable {
+class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
     private val logTag: String = "MainActivity"
 
     // ViewBinding
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(logTag, "onCreate()")
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
 
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -385,6 +388,7 @@ class MainActivity : AppCompatActivity(), Vibratable {
         }
 
         val view = viewBinding.root
+        applyInsetsAsMargins(view)
         setContentView(view)
     }
 

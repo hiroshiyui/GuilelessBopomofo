@@ -18,7 +18,7 @@
 
 <resources>
 
-    <style name="AppBaseTheme" parent="Theme.Material3.Dark">
+    <style name="AppBaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- primary -->
         <item name="colorPrimary">@color/colorGuilelessBopomofoWineThemeBase3</item>
         <item name="colorOnPrimary">@color/colorGuilelessBopomofoWineThemeBase10</item>
