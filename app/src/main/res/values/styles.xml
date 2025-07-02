@@ -51,12 +51,12 @@
     </style>
 
     <style name="AppBaseTheme.KeyboardBaseTheme" parent="AppBaseTheme">
-        <item name="android:gravity">center_vertical|center_horizontal</item>
-        <item name="android:singleLine">true</item>
         <item name="android:background">?attr/colorOnPrimary</item>
     </style>
 
     <style name="AppBaseTheme.KeyboardBaseTheme.KeyboardPanel" parent="AppBaseTheme.KeyboardBaseTheme">
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:singleLine">true</item>
         <item name="android:background">?attr/colorOnPrimary</item>
     </style>
 

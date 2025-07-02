@@ -24,7 +24,7 @@
     android:layout_alignParentBottom="true"
     android:layout_gravity="bottom"
     android:orientation="vertical"
-    android:theme="@style/KeyboardPanel"
+    android:theme="@style/KeyboardTheme"
     android:visibility="visible">
 
 
@@ -59,7 +59,7 @@
         android:animateLayoutChanges="true"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:theme="@style/KeyboardTheme" />
+        android:theme="@style/KeyboardPanel" />
 
 
 </org.ghostsinthelab.apps.guilelessbopomofo.ImeLayout>
