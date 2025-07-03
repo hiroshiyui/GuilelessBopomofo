@@ -200,7 +200,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         Log.d(logTag, "onCreateInputView()")
         viewBinding = ImeLayoutBinding.inflate(this.layoutInflater)
 
-        applyInsetsAsPadding(viewBinding.root)
+        applyInputViewBottomEdgeWithGradient(viewBinding.root, viewBinding.imeBottomGradientSpacer)
+
         return viewBinding.root
     }
 

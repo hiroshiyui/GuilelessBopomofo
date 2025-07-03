@@ -33,9 +33,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:theme="@style/BufferLayout"
         app:flexDirection="row"
-        app:flexWrap="wrap"
-        android:theme="@style/BufferLayout">
+        app:flexWrap="wrap">
 
         <org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
             android:id="@+id/textViewPreEditBuffer"
@@ -61,5 +61,11 @@
         android:paddingBottom="4dp"
         android:theme="@style/KeyboardPanel" />
 
+    <View
+        android:id="@+id/ime_bottom_gradient_spacer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/gradient_ime_background"
+        android:visibility="gone" />
 
 </org.ghostsinthelab.apps.guilelessbopomofo.ImeLayout>

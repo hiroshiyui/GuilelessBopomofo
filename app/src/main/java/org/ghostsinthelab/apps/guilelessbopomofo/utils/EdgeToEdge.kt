@@ -18,6 +18,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.utils
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -46,6 +47,23 @@ interface EdgeToEdge {
                 systemBarInsets.right,
                 systemBarInsets.bottom
             )
+            WindowInsetsCompat.CONSUMED
+        }
+    }
+
+    fun applyInputViewBottomEdgeWithGradient(inputView: View, imeBottomGradientSpacer: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(inputView) { v, windowInsets ->
+            val systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val navigationBarHeight = systemBarsInsets.bottom
+
+            if (navigationBarHeight > 0) {
+                imeBottomGradientSpacer.let {
+                    it.updateLayoutParams {
+                        height = navigationBarHeight
+                    }
+                    it.visibility = View.VISIBLE
+                }
+            }
             WindowInsetsCompat.CONSUMED
         }
     }
