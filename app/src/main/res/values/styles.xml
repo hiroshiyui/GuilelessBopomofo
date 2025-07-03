@@ -47,7 +47,7 @@
     </style>
 
     <style name="AppBaseTheme.MaterialButtonTextAppearance" parent="TextAppearance.MaterialComponents.Button">
-        <item name="android:textStyle">bold</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="AppBaseTheme.KeyboardBaseTheme" parent="AppBaseTheme">
