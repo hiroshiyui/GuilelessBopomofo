@@ -52,6 +52,11 @@ interface EdgeToEdge {
     }
 
     fun applyInputViewBottomEdgeWithGradient(inputView: View, imeBottomGradientSpacer: View) {
+        // If Android version is lower than 15 (ICE_CREAM_SANDWICH), we don't need to do anything
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            return
+        }
+        // Set height of IME bottom spacer by listening to system bar insets, then make it visible
         ViewCompat.setOnApplyWindowInsetsListener(inputView) { v, windowInsets ->
             val systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             val navigationBarHeight = systemBarsInsets.bottom
