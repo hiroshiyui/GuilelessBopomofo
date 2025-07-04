@@ -230,6 +230,15 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         Log.d(logTag, "onStartInputView()")
+
+        val inputType = info?.inputType?.and(InputType.TYPE_MASK_CLASS)
+        // if the input type is phone or number, switch to symbol (alphanumeric) mode
+        when (inputType) {
+            InputType.TYPE_CLASS_PHONE, InputType.TYPE_CLASS_NUMBER -> {
+                ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
+            }
+        }
+
         viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
         EventBus.getDefault().post(Events.UpdateBuffers())
     }

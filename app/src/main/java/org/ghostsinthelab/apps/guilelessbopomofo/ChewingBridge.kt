@@ -18,6 +18,9 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+// ChiEngMode:
+// 0: Symbol (alphanumeric) mode
+// 1: Chinese (Bopomofo) mode
 enum class ChiEngMode(val mode: Int) {
     SYMBOL(0), CHINESE(1)
 }
