@@ -1,21 +1,4 @@
-Guileless Bopomofo
-Copyright (C) 2020-2025  YOU, HUI-HONG
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-
-== Third party component copyright & license notices ==
+# Third party component copyright & license notices
 
 * 本產品於繪製軟體鍵盤場合，採用 [Noto CJK fonts](https://github.com/notofonts/noto-cjk) 與 [PT Serif](https://www.paratype.com/fonts/pt/pt-serif) 字體，係以 SIL Open Font License 1.1 方式授權。
     - https://fonts.google.com/noto/use
