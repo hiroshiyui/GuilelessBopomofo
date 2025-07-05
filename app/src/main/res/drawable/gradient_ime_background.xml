@@ -21,7 +21,7 @@
         android:angle="270"
         android:startColor="@android:color/transparent"
         android:centerColor="#11aaaaaa"
-        android:endColor="#99555555"
-        android:centerY="0.4"
+        android:endColor="#7c666666"
+        android:centerY="0.2"
         android:type="linear" />
 </shape>
