@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Guileless Bopomofo
   ~ Copyright (C) 2025.  YOU, Hui-Hong <hiroshi@miyabi-hiroshi.com>
   ~
@@ -31,21 +30,32 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="24dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/testTextInputLayout"
+    <EditText
+        android:id="@+id/editTextTestTextInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:ems="10"
+        android:hint="@string/hintEditTextTestTextInput"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/testTextInputEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/test_text_input_here" />
-    </com.google.android.material.textfield.TextInputLayout>
+    </EditText>
+
+    <EditText
+        android:id="@+id/editTextTestNumberInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/hintEditTextTestNumberInput"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTestTextInput" />
 
     <TextView
         android:id="@+id/labelChewingDataFilesStatus"
@@ -58,7 +68,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/chewingDataFilesStatus"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@+id/testTextInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTestNumberInput" />
 
     <TextView
         android:id="@+id/chewingDataFilesStatus"

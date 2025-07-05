@@ -93,11 +93,19 @@ class EngineeringModeActivity : AppCompatActivity(), EdgeToEdge {
             }
         viewBinding.userPreferredHardwareKeyboard.text = userPreferredHardwareKeyboardText
 
-        viewBinding.testTextInputEditText.setOnLongClickListener {
+        viewBinding.let {
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.showInputMethodPicker()
-            return@setOnLongClickListener true
+
+            it.editTextTestTextInput.setOnLongClickListener {
+                inputMethodManager.showInputMethodPicker()
+                return@setOnLongClickListener true
+            }
+
+            it.editTextTestNumberInput.setOnLongClickListener {
+                inputMethodManager.showInputMethodPicker()
+                return@setOnLongClickListener true
+            }
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(viewBinding.root) { v, windowInsets ->

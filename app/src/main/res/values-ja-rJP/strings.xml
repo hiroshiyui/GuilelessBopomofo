@@ -20,7 +20,7 @@
     <string name="app_name">素朴な注音符号入力キーボード</string>
     <string name="display_name_bopomofo_keyboard_ime">注音符号</string>
     <string name="libchewing_init_fail">新酷音ライブラリの初期化に失敗しました： %1$s</string>
-    <string name="test_text_input_here">Test text input here.</string>
+    <string name="hintEditTextTestTextInput">Test text input here</string>
     <string name="chewing_data_files_status">新酷音ライブラリデータファイルの状態：</string>
     <string name="engineering_mode_label">エンジニアリングモード</string>
     <string name="general_settings_label">一般設定</string>
@@ -102,4 +102,5 @@
     <string name="radioButtonFuzzyChewingConversionEngine">ぼやけたモード</string>
     <string name="capsLockIsOn">Caps Lockキーがオンになっています</string>
     <string name="capsLockIsOff">Caps Lockキーがオフになっています</string>
+    <string name="hintEditTextTestNumberInput">Test digits input here</string>
 </resources>
