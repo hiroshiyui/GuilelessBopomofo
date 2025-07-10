@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Guileless Bopomofo
   ~ Copyright (C) 2025.  YOU, Hui-Hong <hiroshi@miyabi-hiroshi.com>
   ~
@@ -19,7 +18,6 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settingSectionUserInterfacelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -155,10 +153,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:stepSize="1"
+        android:value="52"
         android:valueFrom="40"
         android:valueTo="80"
-        android:value="52"
-        android:stepSize="1"
         app:layout_constraintEnd_toStartOf="@+id/textViewSettingKeyButtonCurrentHeight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewSettingDescriptionKeyButtonHeight" />
@@ -185,12 +183,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seekBarKeyButtonHeight" />
 
-    <TextView
-        android:id="@+id/textViewSettingDescriptionImeSwitch"
-        style="@style/Settings.Description"
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switchSettingEnableImeSwitch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/text_view_setting_description_ime_switch"
+        android:layout_marginTop="8dp"
+        android:text="@string/switch_setting_enable_ime_switch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSettingImeSwitch" />
@@ -203,6 +201,6 @@
         android:text="@string/switch_setting_ime_switch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionImeSwitch" />
+        app:layout_constraintTop_toBottomOf="@+id/switchSettingEnableImeSwitch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -317,6 +317,17 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                         )
                 }
 
+                switchSettingEnableImeSwitch.let {
+                    if (sharedPreferences.getBoolean("user_enable_ime_switch", false)) {
+                        it.isChecked = true
+                    }
+
+                    it.setOnCheckedChangeListener { _, _ ->
+                        sharedPreferences.edit()
+                            .putBoolean("user_enable_ime_switch", it.isChecked).apply()
+                    }
+                }
+
                 switchSettingImeSwitch.let {
                     if (sharedPreferences.getBoolean(
                             "user_enable_double_touch_ime_switch",

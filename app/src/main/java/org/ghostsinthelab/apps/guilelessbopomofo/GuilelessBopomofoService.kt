@@ -792,6 +792,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             }
 
             "user_key_button_height",
+            "user_enable_ime_switch",
             "user_enable_double_touch_ime_switch",
                 -> {
                 // just 'reload' the main layout

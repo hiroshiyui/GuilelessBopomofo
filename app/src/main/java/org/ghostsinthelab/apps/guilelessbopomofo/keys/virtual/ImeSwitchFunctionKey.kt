@@ -34,6 +34,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
 
     init {
         mDetector = GestureDetector(context, MyGestureListener())
+        setKeyVisibility()
     }
 
     inner class MyGestureListener : GestureListener() {
@@ -69,6 +70,15 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
 
         private fun switchNextInputMethod() {
             EventBus.getDefault().post(Events.SwitchToNextInputMethod())
+        }
+    }
+
+    private fun setKeyVisibility() {
+        val userEnableImeSwitch = sharedPreferences.getBoolean("user_enable_ime_switch", false)
+        this@ImeSwitchFunctionKey.visibility = if (userEnableImeSwitch) {
+            VISIBLE
+        } else {
+            GONE
         }
     }
 }
