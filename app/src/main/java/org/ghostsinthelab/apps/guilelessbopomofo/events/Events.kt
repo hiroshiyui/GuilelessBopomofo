@@ -23,7 +23,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
 
 class Events {
-    class CandidateSelectionDone(val index: Int)
+    class CandidateButtonSelected(val index: Int)
     class CommitTextInChewingCommitBuffer
     class DirectionKeyDown(val direction: DirectionKey)
     class EnterKeyDownWhenBufferIsEmpty

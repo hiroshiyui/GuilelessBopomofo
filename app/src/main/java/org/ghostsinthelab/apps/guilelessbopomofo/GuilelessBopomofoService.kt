@@ -533,7 +533,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onCandidateSelectionDone(event: Events.CandidateSelectionDone) {
+    fun onCandidateButtonSelected(event: Events.CandidateButtonSelected) {
         viewBinding.keyboardPanel.candidateSelectionDone(event.index)
     }
 

@@ -44,7 +44,7 @@ class CandidateButton(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            EventBus.getDefault().post(Events.CandidateSelectionDone(candidate.index))
+            EventBus.getDefault().post(Events.CandidateButtonSelected(candidate.index))
             return true
         }
     }
