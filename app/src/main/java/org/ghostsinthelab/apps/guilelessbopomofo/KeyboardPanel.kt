@@ -318,15 +318,15 @@ class KeyboardPanel(
     }
 
     fun candidateSelectionDone() {
-        finishCandidateSelection()
+        afterCandidateSelection()
     }
 
     fun candidateSelectionDone(index: Int) {
         ChewingBridge.chewing.candChooseByIndex(index)
-        finishCandidateSelection()
+        afterCandidateSelection()
     }
 
-    private fun finishCandidateSelection() {
+    private fun afterCandidateSelection() {
         if (ChewingUtil.candidateWindowClosed()) {
             ChewingBridge.chewing.candClose()
             ChewingBridge.chewing.handleEnd()
