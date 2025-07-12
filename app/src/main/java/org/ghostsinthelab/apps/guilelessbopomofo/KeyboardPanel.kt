@@ -137,6 +137,7 @@ class KeyboardPanel(
 
         ChewingBridge.chewing.candClose()
         ChewingBridge.chewing.handleEnd()
+        EventBus.getDefault().post(Events.UpdateBuffers())
 
         if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
             switchToBopomofoLayout()
@@ -330,7 +331,6 @@ class KeyboardPanel(
     private fun afterCandidateSelection() {
         if (ChewingUtil.candidateWindowClosed()) {
             ChewingBridge.chewing.candClose()
-            EventBus.getDefault().post(Events.UpdateBuffers())
             currentCandidatesList = 0
             candidatesRecyclerView.adapter = null
             switchToMainLayout()
