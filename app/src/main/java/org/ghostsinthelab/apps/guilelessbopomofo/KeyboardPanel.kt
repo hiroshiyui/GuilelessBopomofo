@@ -23,6 +23,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.util.AttributeSet
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -317,12 +318,12 @@ class KeyboardPanel(
         renderCandidatesLayout()
     }
 
-    fun candidateSelectionDone() {
+    fun candidateSelectionDone(keyEvent: KeyEvent) {
         afterCandidateSelection()
     }
 
-    fun candidateSelectionDone(index: Int) {
-        ChewingBridge.chewing.candChooseByIndex(index)
+    fun candidateSelectionDone(candidate: Candidate) {
+        ChewingBridge.chewing.candChooseByIndex(candidate.index)
         afterCandidateSelection()
     }
 

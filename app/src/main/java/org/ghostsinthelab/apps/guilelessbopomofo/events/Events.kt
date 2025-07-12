@@ -18,12 +18,13 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.events
 
+import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
 
 class Events {
-    class CandidateButtonSelected(val index: Int)
+    class CandidateButtonSelected(val candidate: Candidate)
     class CommitTextInChewingCommitBuffer
     class DirectionKeyDown(val direction: DirectionKey)
     class EnterKeyDownWhenBufferIsEmpty

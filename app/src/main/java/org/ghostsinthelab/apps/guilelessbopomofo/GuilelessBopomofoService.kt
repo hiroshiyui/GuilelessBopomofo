@@ -318,7 +318,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             viewBinding.keyboardPanel.let {
                 if (it.currentLayout == Layout.CANDIDATES) {
                     if (ChewingUtil.candidateWindowClosed()) {
-                        it.candidateSelectionDone()
+                        it.candidateSelectionDone(event)
                     } else {
                         it.renderCandidatesLayout()
                     }
@@ -534,7 +534,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCandidateButtonSelected(event: Events.CandidateButtonSelected) {
-        viewBinding.keyboardPanel.candidateSelectionDone(event.index)
+        viewBinding.keyboardPanel.candidateSelectionDone(event.candidate)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
