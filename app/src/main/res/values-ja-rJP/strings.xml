@@ -51,7 +51,7 @@
     <string name="haptic_feedback_strength_description">文字キーの触感強度を調整する（機種により効果が異なります。設定値が0の場合、触感効果は無効になります）</string>
     <string name="current_mode">現在のモード：</string>
     <string name="mode_bopomofo">注音符号</string>
-    <string name="mode_english">英数字</string>
+    <string name="mode_alphanumerical">英数字</string>
     <string name="physical_keyboard_settings">物理キーボード設定</string>
     <string name="enable_physical_keyboard">物理キーボードを使用する</string>
     <string name="enable_physical_keyboard_description">物理キーボード（Bluetooth、USB、またはデバイス内蔵）を使用する際、本機能を有効にすると、ソフトウェアキーボードの表示を簡易モードに変更します</string>

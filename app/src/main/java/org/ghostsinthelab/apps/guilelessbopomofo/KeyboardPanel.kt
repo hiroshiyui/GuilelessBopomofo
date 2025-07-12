@@ -96,7 +96,7 @@ class KeyboardPanel(
 
             ChiEngMode.CHINESE.mode -> {
                 ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
-                switchToAlphabeticalLayout()
+                switchToAlphanumericalLayout()
             }
         }
     }
@@ -141,7 +141,7 @@ class KeyboardPanel(
         if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
             switchToBopomofoLayout()
         } else {
-            switchToAlphabeticalLayout()
+            switchToAlphanumericalLayout()
         }
     }
 
@@ -155,7 +155,7 @@ class KeyboardPanel(
                 resources.getString(R.string.mode_bopomofo)
         } else {
             compactLayoutBinding.textViewCurrentModeValue.text =
-                resources.getString(R.string.mode_english)
+                resources.getString(R.string.mode_alphanumerical)
         }
         this.addView(compactLayoutBinding.root)
     }
@@ -254,8 +254,8 @@ class KeyboardPanel(
         }
     }
 
-    private fun switchToAlphabeticalLayout() {
-        Log.d(logTag, "switchToAlphabeticalLayout()")
+    private fun switchToAlphanumericalLayout() {
+        Log.d(logTag, "switchToAlphanumericalLayout()")
 
         if (userIsUsingDvorakHsu()) {
             switchToDvorakLayout()

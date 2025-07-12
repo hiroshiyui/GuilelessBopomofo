@@ -52,7 +52,7 @@
     <string name="haptic_feedback_strength_description">調整字符鍵的按鍵觸感力道，實際效果依不同機種而有差異。設定值若為 0 則會關閉按鍵觸感效果。</string>
     <string name="current_mode">目前模式：</string>
     <string name="mode_bopomofo">注音</string>
-    <string name="mode_english">英數</string>
+    <string name="mode_alphanumerical">英數</string>
     <string name="physical_keyboard_settings">實體鍵盤設定</string>
     <string name="enable_physical_keyboard">使用實體鍵盤</string>
     <string name="enable_physical_keyboard_description">使用實體鍵盤（藍牙、USB 或是裝置內建），如果啟用本功能，介面會由原本顯示軟體鍵盤改為只顯示精簡外觀</string>
