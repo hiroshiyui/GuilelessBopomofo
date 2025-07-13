@@ -135,8 +135,6 @@ class KeyboardPanel(
     private fun switchToMainLayout() {
         Log.d(logTag, "switchToMainLayout()")
 
-        EventBus.getDefault().post(Events.UpdateBuffers())
-
         if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
             switchToBopomofoLayout()
         } else {
@@ -318,11 +316,13 @@ class KeyboardPanel(
     }
 
     fun candidateSelectionDone(keyEvent: KeyEvent) {
+        EventBus.getDefault().post(Events.UpdateBuffers())
         afterCandidateSelection()
     }
 
     fun candidateSelectionDone(candidate: Candidate) {
         ChewingBridge.chewing.candChooseByIndex(candidate.index)
+        EventBus.getDefault().post(Events.UpdateBuffers())
         afterCandidateSelection()
     }
 
