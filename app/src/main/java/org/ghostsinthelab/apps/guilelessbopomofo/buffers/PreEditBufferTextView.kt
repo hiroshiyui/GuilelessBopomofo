@@ -109,7 +109,23 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
     }
 
+    fun updateCursorPosition() {
+        Cursor().syncOffsetWithCursor()
+        renderUnderlineSpan()
+    }
+
+    fun updateCursorPositionToBegin() {
+        Cursor().moveToBegin()
+        renderUnderlineSpan()
+    }
+
+    fun updateCursorPositionToEnd() {
+        Cursor().moveToEnd()
+        renderUnderlineSpan()
+    }
+
     override fun update() {
+        Log.d(logTag, "offset: ${offset}, cursor: ${ChewingBridge.chewing.cursorCurrent()}")
         // chewing.setMaxChiSymbolLen() 到達閾值時，
         // 會把 pre-edit buffer 開頭送到 commit buffer，
         // 所以要先丟出來：
@@ -120,8 +136,6 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
 
         this@PreEditBufferTextView.text = ChewingBridge.chewing.bufferStringStatic()
-
-        Cursor().moveToEnd()
         renderUnderlineSpan()
     }
 
@@ -185,6 +199,22 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
             // move to end
             ChewingBridge.chewing.handleEnd()
             offset = ChewingBridge.chewing.cursorCurrent() - 1
+        }
+
+        fun moveToBegin() {
+            ChewingBridge.chewing.candClose()
+            ChewingBridge.chewing.handleHome()
+            offset = 0
+        }
+
+        fun syncOffsetWithCursor() {
+            offset = ChewingBridge.chewing.cursorCurrent()
+            if (offset < 0) {
+                offset = 0
+            }
+            if (offset >= ChewingBridge.chewing.bufferLen()) {
+                offset = ChewingBridge.chewing.bufferLen() - 1
+            }
         }
     }
 }

@@ -315,14 +315,17 @@ class KeyboardPanel(
         renderCandidatesLayout()
     }
 
+    // from physical keyboard
     fun candidateSelectionDone(keyEvent: KeyEvent) {
         EventBus.getDefault().post(Events.UpdateBuffers())
         afterCandidateSelection()
     }
 
+    // from virtual keyboard
     fun candidateSelectionDone(candidate: Candidate) {
         ChewingBridge.chewing.candChooseByIndex(candidate.index)
         EventBus.getDefault().post(Events.UpdateBuffers())
+        EventBus.getDefault().post(Events.UpdateCursorPositionToEnd())
         afterCandidateSelection()
     }
 

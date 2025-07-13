@@ -60,8 +60,10 @@ import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.CapsLock
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Del
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Down
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.End
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Enter
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Escape
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Home
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Left
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.LeftAlt
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyHandler
@@ -374,6 +376,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             KeyEvent.KEYCODE_ESCAPE to Escape(),
             KeyEvent.KEYCODE_DEL to Del(),
             KeyEvent.KEYCODE_CAPS_LOCK to CapsLock(),
+            KeyEvent.KEYCODE_MOVE_END to End(),
+            KeyEvent.KEYCODE_MOVE_HOME to Home(),
             // Add more mappings here for each physical key you want to handle separately
         )
     }
@@ -451,6 +455,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         ChewingBridge.chewing.handleDefault(keyPressed)
         EventBus.getDefault().post(Events.UpdateBuffers())
+        EventBus.getDefault().post(Events.UpdateCursorPosition())
 
         // release Shift key and make the button background color back to normal
         if (shiftKeyIsActive && !shiftKeyIsLocked) {
@@ -468,6 +473,24 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             launch { textViewPreEditBuffer.update() }
             launch { textViewBopomofoBuffer.update() }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUpdateCursorPosition(event: Events.UpdateCursorPosition) {
+        Log.d(logTag, event.toString())
+        viewBinding.textViewPreEditBuffer.updateCursorPosition()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUpdateCursorPositionToBegin(event: Events.UpdateCursorPositionToBegin) {
+        Log.d(logTag, event.toString())
+        viewBinding.textViewPreEditBuffer.updateCursorPositionToBegin()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUpdateCursorPositionToEnd(event: Events.UpdateCursorPositionToEnd) {
+        Log.d(logTag, event.toString())
+        viewBinding.textViewPreEditBuffer.updateCursorPositionToEnd()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

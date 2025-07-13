@@ -37,7 +37,7 @@
         android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="@string/hintEditTextTestTextInput"
-        android:inputType="text"
+        android:inputType="text|textMultiLine"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintTop_toTopOf="parent">
