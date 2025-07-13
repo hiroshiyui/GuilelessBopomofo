@@ -31,7 +31,7 @@ class Del : PhysicalKeyHandler {
         keyCode: Int,
         event: KeyEvent?,
     ): Boolean {
-        if (ChewingUtil.anyPreEditBufferIsNotEmpty()) {
+        if (ChewingUtil.anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.handleBackspace()
             EventBus.getDefault().post(Events.UpdateBuffers())
         } else {

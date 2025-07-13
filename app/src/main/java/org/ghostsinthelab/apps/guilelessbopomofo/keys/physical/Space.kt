@@ -41,7 +41,7 @@ class Space : PhysicalKeyHandler {
             return true
         }
 
-        if (ChewingUtil.anyPreEditBufferIsNotEmpty()) {
+        if (ChewingUtil.anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.handleSpace()
             EventBus.getDefault().post(Events.UpdateBuffers())
             // 空白鍵是否為選字鍵？

@@ -43,13 +43,9 @@ class ChewingUtil {
             return true
         }
 
-        fun anyPreEditBufferIsNotEmpty(): Boolean {
-            if (ChewingBridge.chewing.bufferStringStatic()
-                    .isNotEmpty() || ChewingBridge.chewing.bopomofoStringStatic().isNotEmpty()
-            ) {
-                return true
-            }
-            return false
+        fun anyBufferIsNotEmpty(): Boolean {
+            return ChewingBridge.chewing.bufferStringStatic()
+                .isNotEmpty() || ChewingBridge.chewing.bopomofoStringStatic().isNotEmpty()
         }
 
         fun openSymbolCandidates() {
