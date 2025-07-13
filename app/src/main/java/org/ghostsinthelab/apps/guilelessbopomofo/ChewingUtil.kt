@@ -30,17 +30,11 @@ class ChewingUtil {
         }
 
         fun candidateWindowOpened(): Boolean {
-            if (ChewingBridge.chewing.candTotalChoice() > 0) {
-                return true
-            }
-            return false
+            return ChewingBridge.chewing.candTotalChoice() > 0
         }
 
         fun candidateWindowClosed(): Boolean {
-            if (ChewingBridge.chewing.candTotalChoice() > 0) {
-                return false
-            }
-            return true
+            return ChewingBridge.chewing.candTotalChoice() <= 0
         }
 
         fun anyBufferIsNotEmpty(): Boolean {

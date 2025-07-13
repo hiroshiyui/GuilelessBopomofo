@@ -315,27 +315,30 @@ class KeyboardPanel(
         renderCandidatesLayout()
     }
 
-    // from physical keyboard
-    fun candidateSelectionDone(keyEvent: KeyEvent) {
-        EventBus.getDefault().post(Events.UpdateBuffers())
-        afterCandidateSelection()
-    }
-
-    // from virtual keyboard
-    fun candidateSelectionDone(candidate: Candidate) {
-        ChewingBridge.chewing.candChooseByIndex(candidate.index)
-        EventBus.getDefault().post(Events.UpdateBuffers())
-        EventBus.getDefault().post(Events.UpdateCursorPositionToEnd())
-        afterCandidateSelection()
-    }
-
-    private fun afterCandidateSelection() {
+    fun candidateKeySelected(keyEvent: KeyEvent) {
         if (ChewingUtil.candidateWindowClosed()) {
             ChewingBridge.chewing.candClose()
             currentCandidatesList = 0
             candidatesRecyclerView.adapter = null
+            EventBus.getDefault().post(Events.UpdateBuffers())
             switchToMainLayout()
         } else {
+            // enter to candidate sublist
+            renderCandidatesLayout()
+        }
+    }
+
+    fun candidateButtonSelected(candidate: Candidate) {
+        ChewingBridge.chewing.candChooseByIndex(candidate.index)
+        if (ChewingUtil.candidateWindowClosed()) {
+            ChewingBridge.chewing.candClose()
+            currentCandidatesList = 0
+            candidatesRecyclerView.adapter = null
+            EventBus.getDefault().post(Events.UpdateBuffers())
+            EventBus.getDefault().post(Events.UpdateCursorPositionToEnd())
+            switchToMainLayout()
+        } else {
+            // enter to candidate sublist
             renderCandidatesLayout()
         }
     }

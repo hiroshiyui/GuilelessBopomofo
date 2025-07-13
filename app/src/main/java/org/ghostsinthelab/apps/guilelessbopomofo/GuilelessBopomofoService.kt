@@ -320,7 +320,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             viewBinding.keyboardPanel.let {
                 if (it.currentLayout == Layout.CANDIDATES) {
                     if (ChewingUtil.candidateWindowClosed()) {
-                        it.candidateSelectionDone(event)
+                        it.candidateKeySelected(event)
                     } else {
                         it.renderCandidatesLayout()
                     }
@@ -521,9 +521,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                     Layout.SYMBOLS, Layout.CANDIDATES
                 )
             ) {
+                ChewingBridge.chewing.candClose()
                 // reset last cursor position
                 this.lastChewingCursor = 0
                 this.switchToLayout(Layout.MAIN)
+
             }
         }
         return
@@ -557,7 +559,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCandidateButtonSelected(event: Events.CandidateButtonSelected) {
-        viewBinding.keyboardPanel.candidateSelectionDone(event.candidate)
+        viewBinding.keyboardPanel.candidateButtonSelected(event.candidate)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

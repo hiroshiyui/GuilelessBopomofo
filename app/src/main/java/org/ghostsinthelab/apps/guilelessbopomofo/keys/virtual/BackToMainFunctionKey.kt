@@ -42,6 +42,7 @@ class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(c
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             EventBus.getDefault().post(Events.ExitKeyboardSubLayouts())
+            EventBus.getDefault().post(Events.UpdateCursorPositionToEnd())
             return super.onSingleTapUp(e)
         }
     }

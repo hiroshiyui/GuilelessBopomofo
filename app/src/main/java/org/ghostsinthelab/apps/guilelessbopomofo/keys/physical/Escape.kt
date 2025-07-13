@@ -33,13 +33,14 @@ class Escape : PhysicalKeyHandler {
     ): Boolean {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
 
-        if (event?.isAltPressed == true && sharedPreferences.getBoolean("user_enhanced_compat_physical_keyboard", false) == true) {
+        if (event?.isAltPressed == true && sharedPreferences.getBoolean("user_enhanced_compat_physical_keyboard", false)) {
             EventBus.getDefault().post(Events.ToggleForceCompactLayout())
             return true
         }
 
         EventBus.getDefault().post(Events.RequestHideIme())
         EventBus.getDefault().post(Events.ExitKeyboardSubLayouts())
+        EventBus.getDefault().post(Events.UpdateCursorPosition())
         return true
     }
 }
