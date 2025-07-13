@@ -56,7 +56,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     fun cursorMovedBy(source: CursorMovedBy) {
         when (source) {
             CursorMovedBy.TOUCH -> {
-                ChewingUtil.moveToPreEditBufferOffset(offset)
+                Cursor().moveToOffset(offset)
 
                 // 如果使用者點選最後一個字的時候很邊邊角角，
                 // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來
@@ -83,6 +83,11 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         // clear the existent underlines first
         underlineSpans?.forEach {
             span.removeSpan(it)
+        }
+
+        // invalid offset, skip it.
+        if (offset < 0) {
+            return
         }
 
         // Avoids IndexOutOfBoundsException early, just skip the rendering:
@@ -119,11 +124,8 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
 
         this@PreEditBufferTextView.text = ChewingBridge.chewing.bufferStringStatic()
 
-        // update cursor position
-        offset = this.length() - 1
-        if (offset >= 0) {
-            renderUnderlineSpan()
-        }
+        Cursor().moveToEnd()
+        renderUnderlineSpan()
     }
 
     override fun onTextChanged(
@@ -165,6 +167,27 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
             this@PreEditBufferTextView.cursorMovedBy(CursorMovedBy.TOUCH)
             EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
             return true
+        }
+    }
+
+    inner class Cursor {
+        fun moveToOffset(offset: Int) {
+            // close if any been opened candidate window first
+            ChewingBridge.chewing.candClose()
+            // move to first character
+            ChewingBridge.chewing.handleHome()
+            // move to clicked character
+            repeat(offset) { ChewingBridge.chewing.handleRight() }
+            // open candidates window
+            ChewingBridge.chewing.candOpen()
+        }
+
+        fun moveToEnd() {
+            // close if any been opened candidate window first
+            ChewingBridge.chewing.candClose()
+            // move to end
+            ChewingBridge.chewing.handleEnd()
+            offset = ChewingBridge.chewing.cursorCurrent() - 1
         }
     }
 }

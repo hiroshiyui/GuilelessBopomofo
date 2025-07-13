@@ -102,17 +102,6 @@ class ChewingUtil {
             return candidate
         }
 
-        fun moveToPreEditBufferOffset(offset: Int) {
-            // close if any been opened candidate window first
-            ChewingBridge.chewing.candClose()
-            // move to first character
-            ChewingBridge.chewing.handleHome()
-            // move to clicked character
-            repeat(offset) { ChewingBridge.chewing.handleRight() }
-            // open candidates window
-            ChewingBridge.chewing.candOpen()
-        }
-
         // simulates [Shift] + [,]
         fun handleShiftComma() {
             // detect the current keyboard type

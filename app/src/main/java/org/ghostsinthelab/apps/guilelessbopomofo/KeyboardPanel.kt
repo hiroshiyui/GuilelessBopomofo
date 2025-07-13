@@ -135,8 +135,6 @@ class KeyboardPanel(
     private fun switchToMainLayout() {
         Log.d(logTag, "switchToMainLayout()")
 
-        ChewingBridge.chewing.candClose()
-        ChewingBridge.chewing.handleEnd()
         EventBus.getDefault().post(Events.UpdateBuffers())
 
         if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
