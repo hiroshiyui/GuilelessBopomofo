@@ -43,8 +43,8 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     override var mDetector: GestureDetector
     var offset: Int = 0
 
-    enum class CursorMovedBy {
-        TOUCH,
+    enum class CursorMovedFrom {
+        TOUCHSCREEN,
         PHYSICAL_KEYBOARD
     }
 
@@ -53,9 +53,9 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         mDetector.setOnDoubleTapListener(null)
     }
 
-    fun cursorMovedBy(source: CursorMovedBy) {
+    fun cursorMovedBy(source: CursorMovedFrom) {
         when (source) {
-            CursorMovedBy.TOUCH -> {
+            CursorMovedFrom.TOUCHSCREEN -> {
                 Cursor().moveToOffset(offset)
 
                 // 如果使用者點選最後一個字的時候很邊邊角角，
@@ -65,7 +65,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                 }
             }
 
-            CursorMovedBy.PHYSICAL_KEYBOARD -> {
+            CursorMovedFrom.PHYSICAL_KEYBOARD -> {
                 offset = ChewingBridge.chewing.cursorCurrent()
                 if (offset >= ChewingBridge.chewing.bufferLen()) {
                     offset = ChewingBridge.chewing.bufferLen() - 1
@@ -85,14 +85,11 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
             span.removeSpan(it)
         }
 
-        // invalid offset, skip it.
+        // Avoids IndexOutOfBoundsException early, just skip the rendering:
         if (offset < 0) {
             return
         }
-
-        // Avoids IndexOutOfBoundsException early, just skip the rendering:
         if (offset + 1 > ChewingBridge.chewing.bufferLen()) {
-            Log.d(logTag, "Avoids IndexOutOfBoundsException early, just skip the rendering")
             return
         }
 
@@ -164,7 +161,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            this@PreEditBufferTextView.cursorMovedBy(CursorMovedBy.TOUCH)
+            this@PreEditBufferTextView.cursorMovedBy(CursorMovedFrom.TOUCHSCREEN)
             EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
             return true
         }

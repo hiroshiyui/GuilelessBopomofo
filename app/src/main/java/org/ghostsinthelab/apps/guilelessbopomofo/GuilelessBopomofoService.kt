@@ -621,7 +621,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onDirectionKeyDown(event: Events.DirectionKeyDown) {
         if (ChewingBridge.chewing.bufferLen() > 0) {
-            viewBinding.textViewPreEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedBy.PHYSICAL_KEYBOARD)
+            viewBinding.textViewPreEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedFrom.PHYSICAL_KEYBOARD)
         } else {
             if (ChewingUtil.candidateWindowClosed()) {
                 when (event.direction) {
