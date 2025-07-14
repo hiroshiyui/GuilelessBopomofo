@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 import android.content.Context
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
@@ -31,6 +32,15 @@ class Right : PhysicalKeyHandler {
         keyCode: Int,
         event: KeyEvent?,
     ): Boolean {
+        // simulate Ctrl-Right as End key
+        event?.let { event ->
+            if (event.isCtrlPressed && ChewingUtil.candidateWindowClosed()) {
+                ChewingBridge.chewing.handleEnd()
+                EventBus.getDefault().post(Events.UpdateCursorPosition())
+                return true
+            }
+        }
+
         ChewingBridge.chewing.handleRight()
         EventBus.getDefault().post(Events.DirectionKeyDown(DirectionKey.RIGHT))
 
