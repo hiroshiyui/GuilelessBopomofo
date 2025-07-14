@@ -28,6 +28,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.core.text.toSpannable
 import androidx.core.view.setPadding
+import androidx.core.view.updatePadding
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.ConversionEngines
@@ -42,6 +43,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
     private lateinit var span: SpannableString
     override var mDetector: GestureDetector
     var offset: Int = 0
+    val paddingPx = convertDpToPx(12F).toInt()
 
     enum class CursorMovedFrom {
         TOUCHSCREEN,
@@ -72,11 +74,13 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                 }
             }
         }
-        renderUnderlineSpan()
+
+        renderCursorUnderlineSpan()
+        renderPaddingEnd()
     }
 
     // It just renders, presents underline for current cursor
-    private fun renderUnderlineSpan() {
+    private fun renderCursorUnderlineSpan() {
         span = this.text.toSpannable() as SpannableString
         val underlineSpans = span.getSpans(0, span.length, UnderlineSpan::class.java)
 
@@ -109,19 +113,31 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
     }
 
+    private fun renderPaddingEnd() {
+        // if the cursor is larger or equal to the buffer length, make the padding end a bit wider,
+        // in order to make user aware of the cursor is at the end of the buffer
+        if (ChewingBridge.chewing.bufferLen() > 0 && ChewingBridge.chewing.cursorCurrent() >= ChewingBridge.chewing.bufferLen()) {
+            Log.d(logTag, "Expand paddingEnd")
+            this@PreEditBufferTextView.updatePadding(right = paddingPx + convertDpToPx(12F).toInt())
+        } else {
+            Log.d(logTag, "Shrink paddingEnd")
+            this@PreEditBufferTextView.updatePadding(right = paddingPx)
+        }
+    }
+
     fun updateCursorPosition() {
         Cursor().syncOffsetWithCursor()
-        renderUnderlineSpan()
+        renderCursorUnderlineSpan()
     }
 
     fun updateCursorPositionToBegin() {
         Cursor().moveToBegin()
-        renderUnderlineSpan()
+        renderCursorUnderlineSpan()
     }
 
     fun updateCursorPositionToEnd() {
         Cursor().moveToEnd()
-        renderUnderlineSpan()
+        renderCursorUnderlineSpan()
     }
 
     override fun update() {
@@ -136,7 +152,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         }
 
         this@PreEditBufferTextView.text = ChewingBridge.chewing.bufferStringStatic()
-        renderUnderlineSpan()
+        renderCursorUnderlineSpan()
     }
 
     override fun onTextChanged(
@@ -148,8 +164,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
         super.onTextChanged(text, start, lengthBefore, lengthAfter)
         if (lengthAfter != 0) {
             // improve character click accuracy, leave text far from edges
-            val px = convertDpToPx(12F).toInt()
-            this.setPadding(px, 0, px, 0)
+            this.setPadding(paddingPx, 0, paddingPx, 0)
         } else {
             this.setPadding(0)
         }
