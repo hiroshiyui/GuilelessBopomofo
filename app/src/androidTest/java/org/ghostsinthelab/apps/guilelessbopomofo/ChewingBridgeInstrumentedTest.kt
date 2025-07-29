@@ -667,6 +667,7 @@ class ChewingBridgeInstrumentedTest {
         ChewingBridge.chewing.handleDefault('x')
         ChewingBridge.chewing.handleDefault('/')
         assertEquals("ㄌㄥ", ChewingBridge.chewing.bopomofoStringStatic())
+        assertEquals("ㄌㄥ", ChewingBridge.chewing.bopomofoString())
         ChewingBridge.chewing.handleDefault('3')
         assertEquals("冷", ChewingBridge.chewing.bufferString())
         ChewingBridge.chewing.handleDefault('2')

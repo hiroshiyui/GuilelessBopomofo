@@ -559,6 +559,19 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferString(
     return ret_jstring;
 }
 
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bopomofoString(
+        JNIEnv *env,
+        jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    char *bopomofo_string = chewing_bopomofo_String(ctx);
+    jstring ret_jstring = env->NewStringUTF(bopomofo_string);
+    chewing_free(bopomofo_string);
+    return ret_jstring;
+}
+
 extern "C" JNIEXPORT jstring JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferStringStatic(
         JNIEnv *env,
