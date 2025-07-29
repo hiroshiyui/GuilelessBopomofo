@@ -117,7 +117,7 @@ android {
         }
     }
 
-    tasks.register<Exec>("rustupTargetAddAarch64LinuxAndroid") {
+    tasks.register<Exec>("installRustup") {
         onlyIf {
             try {
                 val result = exec {
@@ -129,10 +129,14 @@ android {
                 return@onlyIf false
             }
         }
-        commandLine("rustup", "target", "add", "aarch64-linux-android")
+        commandLine(
+            "curl", "--proto", "'=https'", "--tlsv1.2", "-sSf", "https://sh.rustup.rs", "|", "sh", "-s", "--", "--default-toolchain",
+            "none"
+        )
     }
 
-    tasks.register<Exec>("rustupTargetAddArmv7LinuxAndroideabi") {
+    tasks.register<Exec>("installSpecifiedRustToolchain") {
+        dependsOn("installRustup")
         onlyIf {
             try {
                 val result = exec {
@@ -144,46 +148,14 @@ android {
                 return@onlyIf false
             }
         }
-        commandLine("rustup", "target", "add", "armv7-linux-androideabi")
-    }
-
-    tasks.register<Exec>("rustupTargetAddI686LinuxAndroid") {
-        onlyIf {
-            try {
-                val result = exec {
-                    isIgnoreExitValue = true
-                    commandLine("rustup", "-V")
-                }
-                result.exitValue != 0
-            } catch (e: Exception) {
-                return@onlyIf false
-            }
-        }
-        commandLine("rustup", "target", "add", "i686-linux-android")
-    }
-
-    tasks.register<Exec>("rustupTargetAddX64LinuxAndroid") {
-        onlyIf {
-            try {
-                val result = exec {
-                    isIgnoreExitValue = true
-                    commandLine("rustup", "-V")
-                }
-                result.exitValue != 0
-            } catch (e: Exception) {
-                return@onlyIf false
-            }
-        }
-        commandLine("rustup", "target", "add", "x86_64-linux-android")
+        // follows rust-toolchain.toml
+        commandLine("rustup", "install")
     }
 
     tasks.preBuild {
         dependsOn(
-            "copyChewingDataFiles",
-            "rustupTargetAddAarch64LinuxAndroid",
-            "rustupTargetAddArmv7LinuxAndroideabi",
-            "rustupTargetAddI686LinuxAndroid",
-            "rustupTargetAddX64LinuxAndroid"
+            "installSpecifiedRustToolchain",
+            "copyChewingDataFiles"
         )
     }
 
