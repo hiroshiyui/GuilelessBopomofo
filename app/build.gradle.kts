@@ -177,11 +177,16 @@ android {
         delete("$chewingLibraryPath/build")
     }
 
+    tasks.register<Delete>("deleteAppDotCxxDirectory") {
+        delete("$rootDir/app/.cxx")
+    }
+
     tasks.clean {
         dependsOn(
             "cleanChewingDataFiles",
             "execMakeClean",
             "deleteChewingBuildDirectory",
+            "deleteAppDotCxxDirectory"
         )
     }
 }
