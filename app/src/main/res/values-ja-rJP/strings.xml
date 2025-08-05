@@ -49,7 +49,7 @@
     <string name="rearward_phrase_choice_description">有効にすると、カーソルの前の単語を選択されます</string>
     <string name="haptic_feedback_strength">キーの触感強度</string>
     <string name="haptic_feedback_strength_description">文字キーの触感強度を調整する（機種により効果が異なります。設定値が0の場合、触感効果は無効になります）</string>
-    <string name="current_mode">現在のモード：</string>
+    <string name="current_mode">モード：</string>
     <string name="mode_bopomofo">注音符号</string>
     <string name="mode_alphanumerical">英数字</string>
     <string name="physical_keyboard_settings">物理キーボード設定</string>
@@ -91,8 +91,8 @@
     <string name="user_preferred_hardware_keyboard_unknown">Unknown</string>
     <string name="switchSettingDescriptionEnhancedCompatPhysicalKeyboard" >拡張物理キーボード互換性</string>
     <string name="settingDescriptionEnhancedCompatPhysicalKeyboard">これは何か聞かないでください、恐ろしいです。</string>
-    <string name="full_width_mode">全角モード</string>
-    <string name="half_width_mode">半角モード</string>
+    <string name="full_width_mode">全角</string>
+    <string name="half_width_mode">半角</string>
     <string name="shape_mode_changed">全角半角変換: %1$s</string>
     <string name="app_version">%1$s (libchewing: %2$s)</string>
     <string name="textViewSettingsConversionEngines">注音変換漢字モードエンジン</string>
@@ -104,4 +104,5 @@
     <string name="capsLockIsOff">Caps Lockキーがオフになっています</string>
     <string name="hintEditTextTestNumberInput">Test digits input here</string>
     <string name="switch_setting_enable_ime_switch">入力ソース切り替えボタンを表示しますか？</string>
+    <string name="textViewCurrentWidthModeValue">(width mode)</string>
 </resources>

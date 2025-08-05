@@ -49,7 +49,7 @@
     <string name="rearward_phrase_choice_description">If enabled, phrase will be chosen before the cursor</string>
     <string name="haptic_feedback_strength">Haptic feedback strength</string>
     <string name="haptic_feedback_strength_description">Adjust haptic feedback strength of character keys, the effect varies on different devices. Set this to 0 will disable haptic feedback effect.</string>
-    <string name="current_mode">Current mode:</string>
+    <string name="current_mode">Mode:</string>
     <string name="mode_bopomofo">Bopomofo</string>
     <string name="mode_alphanumerical">Alphanumerical</string>
     <string name="physical_keyboard_settings">Physical keyboard settings</string>
@@ -91,8 +91,8 @@
     <string name="user_preferred_hardware_keyboard_unknown">Unknown</string>
     <string name="switchSettingDescriptionEnhancedCompatPhysicalKeyboard" >Enhanced physical keyboard compatibility?</string>
     <string name="settingDescriptionEnhancedCompatPhysicalKeyboard">Don\'t ask what this is—it\'s terrifying.</string>
-    <string name="full_width_mode">full width</string>
-    <string name="half_width_mode">half width</string>
+    <string name="full_width_mode">Full width</string>
+    <string name="half_width_mode">Half width</string>
     <string name="shape_mode_changed">Shape mode: %1$s</string>
     <string name="app_version" tools:ignore="MissingTranslation">%1$s (libchewing: %2$s)</string>
     <string name="textViewSettingsConversionEngines">Choose conversion engines</string>
@@ -104,4 +104,5 @@
     <string name="capsLockIsOff">Caps Lock is OFF</string>
     <string name="hintEditTextTestNumberInput">Test digits input here</string>
     <string name="switch_setting_enable_ime_switch">Show the IME switching key-button?</string>
+    <string name="textViewCurrentWidthModeValue">(width mode)</string>
 </resources>

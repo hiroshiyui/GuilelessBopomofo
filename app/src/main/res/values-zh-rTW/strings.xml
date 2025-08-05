@@ -50,7 +50,7 @@
     <string name="rearward_phrase_choice_description">如果啟用本功能，會從游標處向前選詞</string>
     <string name="haptic_feedback_strength">按鍵觸感力道</string>
     <string name="haptic_feedback_strength_description">調整字符鍵的按鍵觸感力道，實際效果依不同機種而有差異。設定值若為 0 則會關閉按鍵觸感效果。</string>
-    <string name="current_mode">目前模式：</string>
+    <string name="current_mode">模式：</string>
     <string name="mode_bopomofo">注音</string>
     <string name="mode_alphanumerical">英數</string>
     <string name="physical_keyboard_settings">實體鍵盤設定</string>
@@ -105,4 +105,5 @@
     <string name="capsLockIsOff">解除大寫鎖定</string>
     <string name="hintEditTextTestNumberInput">請在此測試輸入數字</string>
     <string name="switch_setting_enable_ime_switch">顯示輸入法切換按鍵？</string>
+    <string name="textViewCurrentWidthModeValue">(width mode)</string>
 </resources>

@@ -601,9 +601,15 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 shapeMode = getString(R.string.half_width_mode)
             }
         }
-        Toast.makeText(
-            applicationContext, getString(R.string.shape_mode_changed, shapeMode), Toast.LENGTH_SHORT
-        ).show()
+
+        if (viewBinding.keyboardPanel.currentLayout == Layout.COMPACT) {
+            viewBinding.keyboardPanel.setShapeMode(shapeMode)
+        } else {
+            Toast.makeText(
+                applicationContext, getString(R.string.shape_mode_changed, shapeMode), Toast.LENGTH_SHORT
+            ).show()
+        }
+
         return
     }
 

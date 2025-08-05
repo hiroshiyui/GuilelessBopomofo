@@ -154,6 +154,17 @@ class KeyboardPanel(
             compactLayoutBinding.textViewCurrentModeValue.text =
                 resources.getString(R.string.mode_alphanumerical)
         }
+
+        when (ChewingBridge.chewing.getShapeMode()) {
+            ShapeMode.HALF.mode -> {
+                compactLayoutBinding.textViewCurrentWidthModeValue.text = resources.getString(R.string.half_width_mode)
+            }
+
+            ShapeMode.FULL.mode -> {
+                compactLayoutBinding.textViewCurrentWidthModeValue.text = resources.getString(R.string.full_width_mode)
+            }
+        }
+
         this.addView(compactLayoutBinding.root)
     }
 
@@ -415,6 +426,11 @@ class KeyboardPanel(
         Log.d(logTag, "releaseShiftKey()")
         this.findViewById<ShiftKey>(R.id.keyImageButtonShift)
             ?.switchToState(ShiftKey.ShiftKeyState.RELEASED)
+        return
+    }
+
+    fun setShapeMode(mode: String) {
+        compactLayoutBinding.textViewCurrentWidthModeValue.text = mode
         return
     }
 
