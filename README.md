@@ -18,7 +18,7 @@ Please only download and install this software from the two marketplaces mention
 
 ## Usage 使用
 
-### Soft keyboard 軟體鍵盤
+### Bopomofo keyboard layouts 注音鍵盤排列
 
 以防您不知道：「大千」就是市面上最常見的那種一列一列將注音符號依序排列的鍵盤。
 
@@ -62,7 +62,3 @@ Please only download and install this software from the two marketplaces mention
 * [StarForcefield](https://starforcefield.wordpress.com/) 他寫的[新酷音範例程式](https://starforcefield.wordpress.com/2012/08/13/%e6%8e%a2%e7%b4%a2%e6%96%b0%e9%85%b7%e9%9f%b3%e8%bc%b8%e5%85%a5%e6%b3%95%ef%bc%9a%e4%bd%bf%e7%94%a8libchewing/)文章，啟發了我驗證跨平台編譯、執行 PoC 程式的可行性與效用
 * [Weizhong Yang (zonble)](https://github.com/zonble) 如果沒有他推坑我實作支援實體鍵盤，我其實本來不想要做，您各位能爽爽用（或不爽卻湊合著、忍著用）實體鍵盤，請先謝謝他
 * My dear friends, my family, and my wife.
-
-## One more thing 如有本文說明未竟之處……
-
-請參閱 [Wiki](https://github.com/hiroshiyui/GuilelessBopomofo/wiki) 文件。
