@@ -14,25 +14,38 @@ A [Bopomofo](https://en.wikipedia.org/wiki/Bopomofo) software keyboard (aka inpu
 
 Please only download and install this software from the two marketplaces mentioned above, or through [the APK packages released by this project](https://github.com/hiroshiyui/GuilelessBopomofo/releases), to ensure your information security.
 
-請只在以上兩處市集，或透過[本專案釋出之 APK 安裝套件包](https://github.com/hiroshiyui/GuilelessBopomofo/releases)取得、安裝本軟體，或從本處自行下載原始碼編譯、建置，以保障您的資訊安全。
+請只在以上兩處市集，或透過[本專案釋出之 APK 安裝套件包](https://github.com/hiroshiyui/GuilelessBopomofo/releases)取得、安裝本軟體，以保障您的資訊安全。
 
 ## Usage 使用
 
 ### Bopomofo keyboard layouts 注音鍵盤排列
 
+In case you don't know: "Dachen" is the most common keyboard layout, which arranges Bopomofo symbols sequentially in columns.
+
+As for "Hsu's Bopomofo Layout" and "E-Ten 26-Keys", they are more ergonomic Bopomofo keyboard layouts. One of the reasons I developed this input method editor is that I want to use a consistent Hsu's Bopomofo Layout on both my computer and my phone.
+
 以防您不知道：「大千」就是市面上最常見的那種一列一列將注音符號依序排列的鍵盤。
 
-至於「許氏鍵盤」與「倚天26鍵」都是比較符合人體工學的注音鍵盤排列，不過我知道 99% 慣用「大千」鍵盤的人，在雙手跟我一樣發生病變、疼痛不堪、懷疑敲鍵盤的職涯就此終止之前，都不會考慮嘗試改用的，所以我就說說而已。
-
-我之所以開發這個輸入法編輯器，原因之一，就是我想在電腦上、手機上使用一致的許氏鍵盤。
+至於「許氏鍵盤」與「倚天26鍵」都是比較符合人體工學的注音鍵盤排列，我之所以開發這個輸入法編輯器，原因之一，就是我想在電腦上、手機上使用一致的許氏鍵盤。
 
 ### Physical keyboard 實體鍵盤
 
+Several common hotkeys:
+  * <kbd>Left Shift</kbd> + <kbd>Space</kbd>: Switch between Bopomofo and Alphanumeric input modes.
+  * <kbd>Alt</kbd> + <kbd>Space</kbd>: Switch between full-width and half-width character input modes.
+  * Long press <kbd>Left Alt</kbd>: Switch to other input methods.
+  * Long press <kbd>Right Shift</kbd>: Open the common punctuation candidate list. Use left/right arrow keys to switch pages.
+  * The <kbd>`</kbd> key (top-left of the keyboard): Open the symbol candidate list for various categories. Use left/right arrow keys to switch pages.
+
+Some Android devices may not detect a physical keyboard correctly, even though the keys still work. For this reason, the "_Enhanced physical keyboard compatibility_" option forces the UI to switch to a compact layout suitable for physical keyboards. Here's a hidden feature for this mode: if you enable this forced mode, you can double-tap the empty space in the top-most composition buffer area to toggle between the full software keyboard and the compact layout.
+
+If your physical keyboard still doesn't work after enabling both "_Use physical keyboard_" and "_Enhanced physical keyboard compatibility_", it is highly likely an issue with either your keyboard or your device (phone/tablet). Please try a different keyboard or device to cross-test.
+
 幾個常用控制鍵：
-  * 左 <kbd>Shift</kbd> + <kbd>空白鍵</kbd>：切換注音與英數字輸入模式
+  * <kbd>左 Shift</kbd> + <kbd>空白鍵</kbd>：切換注音與英數字輸入模式
   * <kbd>Alt</kbd> + <kbd>空白鍵</kbd>：切換全形與半形
-  * 長按左 <kbd>Alt</kbd>：切換其他輸入法
-  * 長按右 <kbd>Shift</kbd>：開啟常用標點符號候選清單，按左右鍵換頁
+  * 長按 <kbd>左 Alt</kbd>：切換其他輸入法
+  * 長按 <kbd>右 Shift</kbd>：開啟常用標點符號候選清單，按左右鍵換頁
   * 鍵盤左上方的 <kbd>`</kbd> 鍵：開啟各種類別的符號候選清單，按左右鍵換頁
 
 有些奇怪的 Android 機種，是無法正常偵測到實體鍵盤的，但是鍵盤按鍵卻還可以作用，所以「啟用增強型實體鍵盤支援模式」就是強制把介面切換為搭配實體鍵盤的精簡外觀。這個模式的密技是這樣的：如果啟用這個強制模式，那麼在最上排的緩衝區的空白處，連點兩下，可以切換完整軟體鍵盤與精簡外觀的介面。
@@ -42,15 +55,13 @@ Please only download and install this software from the two marketplaces mention
 ## Build 組建
 
 1. Get source code:
-
-        git clone --recursive https://github.com/hiroshiyui/GuilelessBopomofo.git
-
+    ```bash
+    git clone --recursive https://github.com/hiroshiyui/GuilelessBopomofo.git
+    ```
 1. Build it:
     * Import this project into Android Studio, then run **"Buile -> Make Project"**, or...
     * execute `./gradlew :app:assembleDebug` or `./gradlew :app:assembleRelease` from shell command line
-
 1. Locate the generated APK files from `./app/build/outputs/apk/`
-
 1. Enjoy!
 
 ## Acknowledgements 感謝有您
