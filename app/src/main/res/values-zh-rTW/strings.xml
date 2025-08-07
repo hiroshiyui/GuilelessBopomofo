@@ -57,7 +57,7 @@
     <string name="enable_physical_keyboard">使用實體鍵盤</string>
     <string name="enable_physical_keyboard_description">使用實體鍵盤（藍牙、USB 或是裝置內建），如果啟用本功能，介面會由原本顯示軟體鍵盤改為只顯示精簡外觀</string>
     <string name="switch_setting_description_enable_physical_keyboard">使用實體鍵盤？</string>
-    <string name="tips_using_physical_keyboard">使用實體鍵盤時，按下 <b>左 Shift</b> + <b>空白鍵</b> 可切換注音與英數字輸入模式；長按 <b>左 Alt</b> 可選擇切換其他輸入法；按下 <b>Alt</b> + <b>Space</b> 切換全形、半形。</string>
+    <string name="tips_using_physical_keyboard">使用實體鍵盤時，按下 <b>左 Shift</b> + <b>空白鍵</b> 可切換注音與英數字輸入模式；按下 <b>左 Alt</b> + <b>I</b> 可選擇切換其他輸入法；按下 <b>Alt</b> + <b>Space</b> 切換全形、半形。</string>
     <string name="physical_selection_keys">實體候選字詞選擇鍵</string>
     <string name="keybutton_popup_image">現在按下的按鍵</string>
     <string name="key_button_height_label">調整按鍵高度</string>

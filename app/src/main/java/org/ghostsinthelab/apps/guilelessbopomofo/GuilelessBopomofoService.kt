@@ -35,6 +35,7 @@ import android.view.KeyEvent.KEYCODE_DPAD_LEFT
 import android.view.KeyEvent.KEYCODE_DPAD_RIGHT
 import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.KeyEvent.KEYCODE_GRAVE
+import android.view.KeyEvent.KEYCODE_I
 import android.view.KeyEvent.KEYCODE_Q
 import android.view.KeyEvent.KEYCODE_R
 import android.view.KeyEvent.KEYCODE_SHIFT_LEFT
@@ -396,6 +397,13 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         // when user press '`', switch to symbols layout
         if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode && !event.isShiftPressed) {
             viewBinding.keyboardPanel.switchToLayout(Layout.SYMBOLS)
+            return
+        }
+
+        // when user press Alt + I, then show IME picker
+        if (event.keyCode == KEYCODE_I && event.isAltPressed) {
+            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showInputMethodPicker()
             return
         }
 

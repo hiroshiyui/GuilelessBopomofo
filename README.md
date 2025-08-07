@@ -33,7 +33,7 @@ As for "Hsu's Bopomofo Layout" and "E-Ten 26-Keys", they are more ergonomic Bopo
 Several common hotkeys:
   * <kbd>Left Shift</kbd> + <kbd>Space</kbd>: Switch between Bopomofo and Alphanumeric input modes.
   * <kbd>Alt</kbd> + <kbd>Space</kbd>: Switch between full-width and half-width character input modes.
-  * Long press <kbd>Left Alt</kbd>: Switch to other input methods.
+  * <kbd>Alt</kbd> + <kbd>I</kbd>: Switch to other input methods.
   * Long press <kbd>Right Shift</kbd>: Open the common punctuation candidate list. Use left/right arrow keys to switch pages.
   * The <kbd>`</kbd> key (top-left of the keyboard): Open the symbol candidate list for various categories. Use left/right arrow keys to switch pages.
 
@@ -44,7 +44,7 @@ If your physical keyboard still doesn't work after enabling both "_Use physical 
 幾個常用控制鍵：
   * <kbd>左 Shift</kbd> + <kbd>空白鍵</kbd>：切換注音與英數字輸入模式
   * <kbd>Alt</kbd> + <kbd>空白鍵</kbd>：切換全形與半形
-  * 長按 <kbd>左 Alt</kbd>：切換其他輸入法
+  * <kbd>Alt</kbd> + <kbd>I</kbd>：切換其他輸入法
   * 長按 <kbd>右 Shift</kbd>：開啟常用標點符號候選清單，按左右鍵換頁
   * 鍵盤左上方的 <kbd>`</kbd> 鍵：開啟各種類別的符號候選清單，按左右鍵換頁
 

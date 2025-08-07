@@ -20,17 +20,10 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
 import android.content.Context
 import android.view.KeyEvent
-import android.view.inputmethod.InputMethodManager
 
 class LeftAlt : PhysicalKeyHandler {
     override fun onKeyDown(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
         event?.startTracking()
         return true
-    }
-
-    override fun onKeyLongPress(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showInputMethodPicker()
-        return super.onKeyLongPress(context, keyCode, event)
     }
 }
