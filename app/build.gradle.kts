@@ -106,15 +106,20 @@ android {
     tasks.register<Exec>("buildChewingData") {
         dependsOn("prepareChewing")
         workingDir("$chewingLibraryPath/build")
-        commandLine("make", "data", "all_static_data")
+        commandLine("make", "dict_chewing", "misc")
     }
 
     tasks.register<Copy>("copyChewingDataFiles") {
         dependsOn("buildChewingData")
-        for (chewingDataFile in chewingDataFiles) {
-            from("$chewingLibraryPath/build/data/$chewingDataFile")
-            into("$rootDir/app/src/main/assets")
+        from("$chewingLibraryPath/build/data/dict/chewing") {
+            include("tsi.dat")
+            include("word.dat")
         }
+        from("$chewingLibraryPath/build/data/misc") {
+            include("swkb.dat")
+            include("symbols.dat")
+        }
+        into("$rootDir/app/src/main/assets")
     }
 
     tasks.register<Exec>("installRustup") {
