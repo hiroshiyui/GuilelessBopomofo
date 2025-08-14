@@ -19,8 +19,8 @@ android {
         applicationId = "org.ghostsinthelab.apps.guilelessbopomofo"
         minSdk = 23
         targetSdk = 36
-        versionCode = 180
-        versionName = "3.5.4"
+        versionCode = 181
+        versionName = "3.5.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
