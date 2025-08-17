@@ -9,7 +9,7 @@ A [Bopomofo](https://en.wikipedia.org/wiki/Bopomofo) software keyboard (aka inpu
 
 樸實注音鍵盤是 Android 平台上的[注音符號](https://zh.wikipedia.org/wiki/%E6%B3%A8%E9%9F%B3%E7%AC%A6%E8%99%9F)軟體鍵盤（輸入法編輯器），藉由[新酷音輸入法](http://chewing.im/)程式庫的輔助，提供自動選字處理機能。
 
-<a href='https://play.google.com/store/apps/details?id=org.ghostsinthelab.apps.guilelessbopomofo&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Google Play立即下載' src='https://play.google.com/intl/en_us/badges/static/images/badges/zh-tw_badge_web_generic.png'/></a>
+<a href='https://play.google.com/store/apps/details?id=org.ghostsinthelab.apps.guilelessbopomofo&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Google Play立即下載' src='./media/GetItOnGooglePlay_Badge_Web_color_Chinese-TW.png'/></a>
 <a href='https://f-droid.org/zh_Hant/packages/org.ghostsinthelab.apps.guilelessbopomofo/'><img alt="F-Droid立即下載" src="./media/badge_get-it-on-zh-tw.png"/></a>
 
 Please only download and install this software from the two marketplaces mentioned above, or through [the APK packages released by this project](https://github.com/hiroshiyui/GuilelessBopomofo/releases), to ensure your information security.
