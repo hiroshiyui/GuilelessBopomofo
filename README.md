@@ -34,8 +34,8 @@ Several common hotkeys:
   * <kbd>Left Shift</kbd> + <kbd>Space</kbd>: Switch between Bopomofo and Alphanumeric input modes.
   * <kbd>Alt</kbd> + <kbd>Space</kbd>: Switch between full-width and half-width character input modes.
   * <kbd>Alt</kbd> + <kbd>I</kbd>: Switch to other input methods.
-  * Long press <kbd>Right Shift</kbd>: Open the common punctuation candidate list. Use left/right arrow keys to switch pages.
-  * The <kbd>`</kbd> key (top-left of the keyboard): Open the symbol candidate list for various categories. Use left/right arrow keys to switch pages.
+  * Long press <kbd>Right Shift</kbd>: Open the common punctuation candidate list. Use <kbd>←</kbd><kbd>→</kbd> arrow keys to switch pages.
+  * The <kbd>`</kbd> key (top-left of the keyboard): Open the symbol candidate list for various categories. Use <kbd>←</kbd><kbd>→</kbd> arrow keys to switch pages.
 
 Some Android devices may not detect a physical keyboard correctly, even though the keys still work. For this reason, the "_Enhanced physical keyboard compatibility_" option forces the UI to switch to a compact layout suitable for physical keyboards. Here's a hidden feature for this mode: if you enable this forced mode, you can double-tap the empty space in the top-most composition buffer area to toggle between the full software keyboard and the compact layout.
 
@@ -45,8 +45,8 @@ If your physical keyboard still doesn't work after enabling both "_Use physical 
   * <kbd>左 Shift</kbd> + <kbd>空白鍵</kbd>：切換注音與英數字輸入模式
   * <kbd>Alt</kbd> + <kbd>空白鍵</kbd>：切換全形與半形
   * <kbd>Alt</kbd> + <kbd>I</kbd>：切換其他輸入法
-  * 長按 <kbd>右 Shift</kbd>：開啟常用標點符號候選清單，按左右鍵換頁
-  * 鍵盤左上方的 <kbd>`</kbd> 鍵：開啟各種類別的符號候選清單，按左右鍵換頁
+  * 長按 <kbd>右 Shift</kbd>：開啟常用標點符號候選清單，按 <kbd>←</kbd><kbd>→</kbd> 鍵換頁
+  * 鍵盤左上方的 <kbd>`</kbd> 鍵：開啟各種類別的符號候選清單，按 <kbd>←</kbd><kbd>→</kbd> 鍵換頁
 
 有些奇怪的 Android 機種，是無法正常偵測到實體鍵盤的，但是鍵盤按鍵卻還可以作用，所以「啟用增強型實體鍵盤支援模式」就是強制把介面切換為搭配實體鍵盤的精簡外觀。這個模式的密技是這樣的：如果啟用這個強制模式，那麼在最上排的緩衝區的空白處，連點兩下，可以切換完整軟體鍵盤與精簡外觀的介面。
 
