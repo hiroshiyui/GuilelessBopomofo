@@ -22,7 +22,6 @@ import android.content.Context
 import android.util.Log
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
 
@@ -33,9 +32,7 @@ class Up : PhysicalKeyHandler {
         event: KeyEvent?,
     ): Boolean {
         Log.d("Up", "onKeyDown()")
-        if (ChewingBridge.chewing.bufferLen() > 0) {
-            ChewingUtil.openCandidates()
-        } else {
+        if (ChewingBridge.chewing.bufferLen() == 0) {
             EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_UP))
         }
         return true
