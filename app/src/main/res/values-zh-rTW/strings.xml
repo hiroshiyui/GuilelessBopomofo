@@ -90,8 +90,6 @@
     <string name="user_preferred_hardware_keyboard_yes">是</string>
     <string name="user_preferred_hardware_keyboard_no">否</string>
     <string name="user_preferred_hardware_keyboard_unknown">未知</string>
-    <string name="switchSettingDescriptionEnhancedCompatPhysicalKeyboard" >啟用增強型實體鍵盤支援模式？</string>
-    <string name="settingDescriptionEnhancedCompatPhysicalKeyboard">不要問這是什麼，很可怕。</string>
     <string name="full_width_mode">全形</string>
     <string name="half_width_mode">半形</string>
     <string name="shape_mode_changed">全形半形切換： %1$s</string>

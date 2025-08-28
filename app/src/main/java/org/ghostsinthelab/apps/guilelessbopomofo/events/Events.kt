@@ -34,7 +34,6 @@ class Events {
     class SendDownUpKeyEvents(val keycode: Int)
     class SwitchToLayout(val layout: Layout)
     class SwitchToNextInputMethod
-    class ToggleForceCompactLayout
     class ToggleFullOrHalfWidthMode
     class ToggleKeyboardMainLayoutMode
     class UpdateBuffers

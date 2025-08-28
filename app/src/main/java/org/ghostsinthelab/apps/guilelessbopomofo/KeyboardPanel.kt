@@ -54,7 +54,6 @@ class KeyboardPanel(
 
     internal var lastChewingCursor: Int = 0
     private var currentCandidatesList: Int = 0
-    private var forceCompactLayout: Boolean = false
 
     private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
     private lateinit var keyboardHsuQwertyLayoutBinding: KeyboardHsuQwertyLayoutBinding
@@ -80,10 +79,6 @@ class KeyboardPanel(
 
     init {
         Log.d(logTag, "Building KeyboardLayout.")
-
-        if (sharedPreferences.getBoolean("user_enhanced_compat_physical_keyboard", false)) {
-            forceCompactLayout = true
-        }
     }
 
     fun toggleMainLayoutMode() {
@@ -99,14 +94,6 @@ class KeyboardPanel(
                 switchToAlphanumericalLayout()
             }
         }
-    }
-
-    fun toggleCompactLayoutMode() {
-        Log.d(logTag, "toggleCompactLayoutMode()")
-        forceCompactLayout = !forceCompactLayout
-        Log.d(logTag, "forceCompactLayout: ${forceCompactLayout}")
-        switchToMainLayout()
-        return
     }
 
     fun switchToLayout(layout: Layout) {
@@ -182,11 +169,6 @@ class KeyboardPanel(
         userKeyboardLayoutPreference?.let {
             val newKeyboardType = ChewingBridge.chewing.convKBStr2Num(it)
             ChewingBridge.chewing.setKBType(newKeyboardType)
-        }
-
-        if (forceCompactLayout) {
-            switchToCompactLayout()
-            return
         }
 
         // Toggle to compact layout when physical keyboard is enabled:
@@ -276,11 +258,6 @@ class KeyboardPanel(
         Log.d(logTag, "switchToQwertyLayout")
         currentLayout = Layout.QWERTY
 
-        if (forceCompactLayout) {
-            switchToCompactLayout()
-            return
-        }
-
         if (physicalKeyboardEnabled()) {
             switchToCompactLayout()
             return
@@ -296,11 +273,6 @@ class KeyboardPanel(
     private fun switchToDvorakLayout() {
         Log.d(logTag, "switchToDvorakLayout")
         currentLayout = Layout.DVORAK
-
-        if (forceCompactLayout) {
-            switchToCompactLayout()
-            return
-        }
 
         if (physicalKeyboardEnabled()) {
             switchToCompactLayout()
@@ -389,11 +361,6 @@ class KeyboardPanel(
 
         this.removeAllViews()
         this.addView(candidatesLayoutBinding.root)
-
-        if (forceCompactLayout) {
-            renderCandidatesLayout(CandidateLayoutStyle.LIST)
-            return
-        }
 
         if (!physicalKeyboardEnabled()) {
             renderCandidatesLayout(CandidateLayoutStyle.GRID)

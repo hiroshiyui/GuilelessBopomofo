@@ -64,25 +64,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionEnablePhysicalKeyboard" />
 
-    <com.google.android.material.materialswitch.MaterialSwitch
-        android:id="@+id/switchSettingEnhancedCompatPhysicalKeyboard"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/switchSettingDescriptionEnhancedCompatPhysicalKeyboard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionEnhancedCompatPhysicalKeyboard" />
-
     <TextView
         android:id="@+id/textViewSelectionKeysOption"
         style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="@string/physical_selection_keys"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchSettingEnhancedCompatPhysicalKeyboard" />
+        app:layout_constraintTop_toBottomOf="@+id/switchSettingEnablePhysicalKeyboard" />
 
     <RadioGroup
         android:id="@+id/radioGroupSelectionKeysOption"
@@ -153,17 +144,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/imageViewInfo"
         app:layout_constraintTop_toTopOf="@id/imageViewInfo" />
-
-    <TextView
-        android:id="@+id/textViewSettingDescriptionEnhancedCompatPhysicalKeyboard"
-        style="@style/Settings.Description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/settingDescriptionEnhancedCompatPhysicalKeyboard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchSettingEnablePhysicalKeyboard" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

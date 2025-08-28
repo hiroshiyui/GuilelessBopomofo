@@ -674,11 +674,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onToggleForceCompactLayout(event: Events.ToggleForceCompactLayout) {
-        viewBinding.keyboardPanel.toggleCompactLayoutMode()
-    }
-
     private fun setupChewingData(dataPath: String) {
         // Get app data directory
         val chewingDataDir = File(dataPath)
@@ -833,10 +828,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
             "user_enable_physical_keyboard" -> {
                 // do nothing (onEvaluateInputViewShown() will handle it well)
-            }
-
-            "user_enhanced_compat_physical_keyboard" -> {
-                // do nothing
             }
 
             "user_candidate_selection_keys_option" -> {

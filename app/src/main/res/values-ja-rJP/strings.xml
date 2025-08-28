@@ -89,8 +89,6 @@
     <string name="user_preferred_hardware_keyboard_yes">はい</string>
     <string name="user_preferred_hardware_keyboard_no">いいえ</string>
     <string name="user_preferred_hardware_keyboard_unknown">Unknown</string>
-    <string name="switchSettingDescriptionEnhancedCompatPhysicalKeyboard" >拡張物理キーボード互換性</string>
-    <string name="settingDescriptionEnhancedCompatPhysicalKeyboard">これは何か聞かないでください、恐ろしいです。</string>
     <string name="full_width_mode">全角</string>
     <string name="half_width_mode">半角</string>
     <string name="shape_mode_changed">全角半角変換: %1$s</string>

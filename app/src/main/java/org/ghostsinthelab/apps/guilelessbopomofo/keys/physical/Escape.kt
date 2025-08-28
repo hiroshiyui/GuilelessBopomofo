@@ -19,9 +19,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.view.KeyEvent
-import androidx.appcompat.app.AppCompatActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
 
@@ -31,13 +29,6 @@ class Escape : PhysicalKeyHandler {
         keyCode: Int,
         event: KeyEvent?,
     ): Boolean {
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
-
-        if (event?.isAltPressed == true && sharedPreferences.getBoolean("user_enhanced_compat_physical_keyboard", false)) {
-            EventBus.getDefault().post(Events.ToggleForceCompactLayout())
-            return true
-        }
-
         EventBus.getDefault().post(Events.RequestHideIme())
         EventBus.getDefault().post(Events.ExitKeyboardSubLayouts())
         EventBus.getDefault().post(Events.UpdateCursorPosition())
