@@ -36,7 +36,6 @@ import android.view.KeyEvent.KEYCODE_DPAD_RIGHT
 import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.KeyEvent.KEYCODE_GRAVE
 import android.view.KeyEvent.KEYCODE_I
-import android.view.KeyEvent.KEYCODE_Q
 import android.view.KeyEvent.KEYCODE_R
 import android.view.KeyEvent.KEYCODE_SHIFT_LEFT
 import android.view.KeyEvent.KEYCODE_V
@@ -405,14 +404,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
             return
-        }
-
-        // if user is using Hsu layout, the Q key will open candidate window
-        if ((ChewingBridge.chewing.getKBString() == "KB_DVORAK_HSU" && event.keyCode == KEYCODE_X) || (ChewingBridge.chewing.getKBString() == "KB_HSU" && event.keyCode == KEYCODE_Q)) {
-            if (ChewingBridge.chewing.bufferLen() > 0 && ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
-                ChewingUtil.openCandidates()
-                return
-            }
         }
 
         var keyPressed: Char = event.unicodeChar.toChar()
