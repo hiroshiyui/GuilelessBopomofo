@@ -51,6 +51,7 @@ import androidx.emoji2.text.EmojiCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ImeLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
@@ -233,6 +234,10 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         super.onStartInputView(info, restarting)
         Log.d(logTag, "onStartInputView()")
 
+        // detect if physical keyboard is presented
+        physicalKeyboardPresented =
+            (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY) && (resources.configuration.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
+
         val inputType = info?.inputType?.and(InputType.TYPE_MASK_CLASS)
         // if the input type is phone or number, switch to symbol (alphanumeric) mode
         when (inputType) {
@@ -284,6 +289,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         // handles printing (character) keys
         if (event != null && event.isPrintingKey) {
+            // if a printing key has been pressed, assume that user have a physical keyboard connected anyway...
+            physicalKeyboardPresented = true
             onPrintingKeyDown(event)
             return true
         }
@@ -363,6 +370,12 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         Log.d(logTag, "onWindowShown()")
     }
 
+    override fun onFinishInputView(finishingInput: Boolean) {
+        super.onFinishInputView(finishingInput)
+        physicalKeyboardPresented = false
+        Log.d(logTag, "onFinishInputView()")
+    }
+
     private fun initializePhysicalKeyDispatcher() {
         physicalKeyDispatcher = mapOf(
             KeyEvent.KEYCODE_DPAD_DOWN to Down(),
@@ -385,6 +398,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     // handles both physical and virtual printing key-down events, routes to chewing.handleDefault()
     private fun onPrintingKeyDown(event: KeyEvent) {
         Log.d(logTag, "onPrintingKeyDown()")
+
+        // Switch to compact layout if physical keyboard is present and current layout is not compact
+        if (physicalKeyboardPresented && viewBinding.keyboardPanel.currentLayout != Layout.COMPACT) {
+            viewBinding.keyboardPanel.switchToCompactLayout()
+        }
 
         // Consider keys in NumPad
         if (event.isNumPadKey()) {
@@ -754,6 +772,10 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             // there will be a short (time) window that InputMethod.hideSoftInput() will be called when user turn own physical keyboard on/off,
             // so have to call showWindow() here to make the soft input visible:
             showWindow(true)
+        }
+
+        if (physicalKeyboardPresented) {
+            viewBinding.keyboardPanel.switchToCompactLayout()
         }
     }
 

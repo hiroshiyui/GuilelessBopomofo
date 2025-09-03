@@ -345,17 +345,6 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
             }
 
             sectionPhysicalKeyboard.apply {
-                switchSettingEnablePhysicalKeyboard.let {
-                    if (sharedPreferences.getBoolean("user_enable_physical_keyboard", true)) {
-                        it.isChecked = true
-                    }
-
-                    it.setOnCheckedChangeListener { _, _ ->
-                        sharedPreferences.edit()
-                            .putBoolean("user_enable_physical_keyboard", it.isChecked).apply()
-                    }
-                }
-
                 for ((button, keys) in
                 mapOf(
                     radioButtonNumberRow to SelectionKeys.NUMBER_ROW.set,

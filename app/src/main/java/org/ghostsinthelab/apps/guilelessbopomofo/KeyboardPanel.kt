@@ -20,7 +20,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.util.AttributeSet
 import android.util.Log
 import android.view.KeyEvent
@@ -30,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CompactLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenLayoutBinding
@@ -129,7 +129,7 @@ class KeyboardPanel(
         }
     }
 
-    private fun switchToCompactLayout() {
+    fun switchToCompactLayout() {
         Log.d(logTag, "switchToCompactLayout")
         currentLayout = Layout.COMPACT
         this.removeAllViews()
@@ -172,7 +172,7 @@ class KeyboardPanel(
         }
 
         // Toggle to compact layout when physical keyboard is enabled:
-        if (physicalKeyboardEnabled()) {
+        if (physicalKeyboardPresented) {
             switchToCompactLayout()
             return
         }
@@ -258,7 +258,7 @@ class KeyboardPanel(
         Log.d(logTag, "switchToQwertyLayout")
         currentLayout = Layout.QWERTY
 
-        if (physicalKeyboardEnabled()) {
+        if (physicalKeyboardPresented) {
             switchToCompactLayout()
             return
         }
@@ -274,7 +274,7 @@ class KeyboardPanel(
         Log.d(logTag, "switchToDvorakLayout")
         currentLayout = Layout.DVORAK
 
-        if (physicalKeyboardEnabled()) {
+        if (physicalKeyboardPresented) {
             switchToCompactLayout()
             return
         }
@@ -362,10 +362,10 @@ class KeyboardPanel(
         this.removeAllViews()
         this.addView(candidatesLayoutBinding.root)
 
-        if (!physicalKeyboardEnabled()) {
-            renderCandidatesLayout(CandidateLayoutStyle.GRID)
-        } else {
+        if (physicalKeyboardPresented) {
             renderCandidatesLayout(CandidateLayoutStyle.LIST)
+        } else {
+            renderCandidatesLayout(CandidateLayoutStyle.GRID)
         }
         return
     }
@@ -399,14 +399,5 @@ class KeyboardPanel(
     fun setShapeMode(mode: String) {
         compactLayoutBinding.textViewCurrentWidthModeValue.text = mode
         return
-    }
-
-    private fun physicalKeyboardEnabled(): Boolean {
-        val physicalKeyboardPresented: Boolean =
-            (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY) && (resources.configuration.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
-
-        return (physicalKeyboardPresented && sharedPreferences.getBoolean(
-            "user_enable_physical_keyboard", true
-        ))
     }
 }
