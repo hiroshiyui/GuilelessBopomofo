@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.appSharedPreferences
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CompactLayoutBinding
@@ -74,7 +75,7 @@ class KeyboardPanel(
 
     var currentLayout: Layout = Layout.MAIN
 
-    val sharedPreferences: SharedPreferences = context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences(appSharedPreferences, AppCompatActivity.MODE_PRIVATE)
 
     init {
         Log.d(logTag, "Building KeyboardLayout.")

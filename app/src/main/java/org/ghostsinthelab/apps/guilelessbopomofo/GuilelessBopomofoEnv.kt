@@ -20,4 +20,5 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 object GuilelessBopomofoEnv {
     var physicalKeyboardPresented: Boolean = false
+    val appSharedPreferences: String = "GuilelessBopomofoService"
 }
