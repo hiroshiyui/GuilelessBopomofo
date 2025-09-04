@@ -25,7 +25,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.appSharedPreferences
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED_PREFERENCES
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.RegisteredSharedPreferences
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
@@ -34,7 +34,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 abstract class KeyImageButton(context: Context, attrs: AttributeSet) : MaterialButton(context, attrs, R.attr.imageButtonStyle),
     BehaveLikeKey<KeyImageButton>, DisplayMetricsComputable, Vibratable {
     open val logTag: String = "KeyImageButton"
-    val sharedPreferences: SharedPreferences = context.getSharedPreferences(appSharedPreferences, AppCompatActivity.MODE_PRIVATE)
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences(APP_SHARED_PREFERENCES, AppCompatActivity.MODE_PRIVATE)
     override var keyCodeString: String? = null
     abstract var mDetector: GestureDetector
     abstract class GestureListener : GestureDetector.SimpleOnGestureListener(), Vibratable

@@ -51,7 +51,7 @@ import androidx.emoji2.text.EmojiCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.appSharedPreferences
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED_PREFERENCES
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ImeLayoutBinding
@@ -124,7 +124,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         )
         EmojiCompat.init(emojiCompatConfig)
 
-        sharedPreferences = getSharedPreferences(appSharedPreferences, MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(APP_SHARED_PREFERENCES, MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
         // Initializing Chewing

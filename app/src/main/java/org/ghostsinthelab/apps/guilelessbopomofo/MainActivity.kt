@@ -29,7 +29,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.appSharedPreferences
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED_PREFERENCES
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.RegisteredSharedPreferences
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
         Log.d(logTag, "onCreate()")
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        sharedPreferences = getSharedPreferences(appSharedPreferences, MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(APP_SHARED_PREFERENCES, MODE_PRIVATE)
 
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
 
