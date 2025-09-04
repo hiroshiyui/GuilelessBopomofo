@@ -84,7 +84,6 @@
     <string name="hardware_keyboard_hidden_status_yes">隱藏中</string>
     <string name="hardware_keyboard_hidden_status_undefined">未定義的隱藏狀態</string>
     <string name="hardware_keyboard_hidden_status_unknown">未知的狀態</string>
-    <string name="labelUserPreferredHardwareKeyboard">使用者偏好使用硬體鍵盤？</string>
     <string name="user_preferred_hardware_keyboard_yes">是</string>
     <string name="user_preferred_hardware_keyboard_no">否</string>
     <string name="user_preferred_hardware_keyboard_unknown">未知</string>

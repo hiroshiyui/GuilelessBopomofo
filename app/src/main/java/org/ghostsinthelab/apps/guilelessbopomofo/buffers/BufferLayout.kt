@@ -19,18 +19,14 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.buffers
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.AttributeSet
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.flexbox.FlexboxLayout
 
 class BufferLayout(context: Context, attrs: AttributeSet) : FlexboxLayout(context, attrs) {
     var mDetector: GestureDetector
-    val sharedPreferences: SharedPreferences =
-        context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
 
     init {
         mDetector = GestureDetector(context, MyGestureListener())

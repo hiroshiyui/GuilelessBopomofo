@@ -19,7 +19,6 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -39,7 +38,6 @@ import java.util.concurrent.Executor
 
 class EngineeringModeActivity : AppCompatActivity(), EdgeToEdge {
     private val logTag = "EngineeringModeActivity"
-    private lateinit var sharedPreferences: SharedPreferences
 
     // ViewBinding
     private lateinit var viewBinding: ActivityEngineeringModeBinding
@@ -54,8 +52,6 @@ class EngineeringModeActivity : AppCompatActivity(), EdgeToEdge {
             this@EngineeringModeActivity.applicationContext, fontLoadExecutor
         )
         EmojiCompat.init(emojiCompatConfig)
-
-        sharedPreferences = getSharedPreferences("GuilelessBopomofoService", MODE_PRIVATE)
 
         viewBinding = ActivityEngineeringModeBinding.inflate(this.layoutInflater)
 
@@ -76,26 +72,16 @@ class EngineeringModeActivity : AppCompatActivity(), EdgeToEdge {
         viewBinding.hardwareKeyboardType.text = hardwareKeyboardTypeText
 
         // Hardware keyboard hidden status
-        val hardwareKeyboardHiddenStatusText: String =
-            when (resources.configuration.hardKeyboardHidden) {
-                Configuration.HARDKEYBOARDHIDDEN_NO -> getString(R.string.hardware_keyboard_hidden_status_no)
-                Configuration.HARDKEYBOARDHIDDEN_YES -> getString(R.string.hardware_keyboard_hidden_status_yes)
-                Configuration.HARDKEYBOARDHIDDEN_UNDEFINED -> getString(R.string.hardware_keyboard_hidden_status_undefined)
-                else -> getString(R.string.hardware_keyboard_hidden_status_unknown)
-            }
+        val hardwareKeyboardHiddenStatusText: String = when (resources.configuration.hardKeyboardHidden) {
+            Configuration.HARDKEYBOARDHIDDEN_NO -> getString(R.string.hardware_keyboard_hidden_status_no)
+            Configuration.HARDKEYBOARDHIDDEN_YES -> getString(R.string.hardware_keyboard_hidden_status_yes)
+            Configuration.HARDKEYBOARDHIDDEN_UNDEFINED -> getString(R.string.hardware_keyboard_hidden_status_undefined)
+            else -> getString(R.string.hardware_keyboard_hidden_status_unknown)
+        }
         viewBinding.hardwareKeyboardHiddenStatus.text = hardwareKeyboardHiddenStatusText
 
-        // User preferred hardware keyboard?
-        val userPreferredHardwareKeyboardText: String =
-            when (sharedPreferences.getBoolean("user_enable_physical_keyboard", true)) {
-                true -> getString(R.string.user_preferred_hardware_keyboard_yes)
-                false -> getString(R.string.user_preferred_hardware_keyboard_no)
-            }
-        viewBinding.userPreferredHardwareKeyboard.text = userPreferredHardwareKeyboardText
-
         viewBinding.let {
-            val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
             it.editTextTestTextInput.setOnLongClickListener {
                 inputMethodManager.showInputMethodPicker()

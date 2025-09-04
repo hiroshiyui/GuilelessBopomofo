@@ -56,6 +56,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ImeLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.RegisteredSharedPreferences
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.CapsLock
@@ -134,24 +135,24 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 Log.d(logTag, "Chewing context ptr: $it")
             }
 
-            if (sharedPreferences.getBoolean("user_enable_space_as_selection", true)) {
+            if (sharedPreferences.getBoolean(RegisteredSharedPreferences.USER_ENABLE_SPACE_AS_SELECTION.key, true)) {
                 ChewingBridge.chewing.setSpaceAsSelection(1)
             }
 
-            if (sharedPreferences.getBoolean("user_phrase_choice_rearward", false)) {
+            if (sharedPreferences.getBoolean(RegisteredSharedPreferences.USER_PHRASE_CHOICE_REARWARD.key, false)) {
                 ChewingBridge.chewing.setPhraseChoiceRearward(1)
             }
 
             // set conversion engine (traditional, fuzzy or default (chewing))
             sharedPreferences.getInt(
-                "user_conversion_engine", ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
+                RegisteredSharedPreferences.USER_CONVERSION_ENGINE.key, ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
             ).let { ChewingBridge.chewing.configSetInt("chewing.conversion_engine", it) }
 
             ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
             ChewingBridge.chewing.setCandPerPage(10)
 
             sharedPreferences.getString(
-                "user_candidate_selection_keys_option", SelectionKeys.NUMBER_ROW.set
+                RegisteredSharedPreferences.USER_CANDIDATE_SELECTION_KEYS_OPTION.key, SelectionKeys.NUMBER_ROW.set
             )?.let {
                 ChewingBridge.chewing.setSelKey(SelectionKeys.valueOf(it).keys, 10)
             }
@@ -166,7 +167,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             }
         }
 
-        userHapticFeedbackStrength = sharedPreferences.getInt("user_haptic_feedback_strength", defaultHapticFeedbackStrength)
+        userHapticFeedbackStrength =
+            sharedPreferences.getInt(RegisteredSharedPreferences.USER_HAPTIC_FEEDBACK_STRENGTH.key, defaultHapticFeedbackStrength)
     }
 
 
@@ -181,7 +183,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         Log.d(logTag, "onEvaluateFullscreenMode()")
 
         if (sharedPreferences.getBoolean(
-                "user_fullscreen_when_in_landscape", true
+                RegisteredSharedPreferences.USER_FULLSCREEN_WHEN_IN_LANDSCAPE.key, true
             ) && resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         ) {
             Log.d(logTag, "Now on landscape orientation.")
@@ -189,7 +191,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         }
 
         if (sharedPreferences.getBoolean(
-                "user_fullscreen_when_in_portrait", false
+                RegisteredSharedPreferences.USER_FULLSCREEN_WHEN_IN_PORTRAIT.key, false
             ) && resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
         ) {
             Log.d(logTag, "Now on portrait orientation.")
@@ -790,10 +792,10 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     // triggered if any sharedPreference has been changed
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
-            "user_keyboard_layout",
-            "user_display_hsu_qwerty_layout",
-            "user_display_eten26_qwerty_layout",
-            "user_display_dvorak_hsu_both_layout",
+            RegisteredSharedPreferences.USER_KEYBOARD_LAYOUT.key,
+            RegisteredSharedPreferences.USER_DISPLAY_HSU_QWERTY_LAYOUT.key,
+            RegisteredSharedPreferences.USER_DISPLAY_ETEN26_QWERTY_LAYOUT.key,
+            RegisteredSharedPreferences.USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT.key,
                 -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
@@ -801,7 +803,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 }
             }
 
-            "user_enable_space_as_selection" -> {
+            RegisteredSharedPreferences.USER_ENABLE_SPACE_AS_SELECTION.key -> {
                 ChewingBridge.chewing.setSpaceAsSelection(0)
                 sharedPreferences?.apply {
                     if (this.getBoolean(key, true)) {
@@ -810,7 +812,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 }
             }
 
-            "user_phrase_choice_rearward" -> {
+            RegisteredSharedPreferences.USER_PHRASE_CHOICE_REARWARD.key -> {
                 ChewingBridge.chewing.setPhraseChoiceRearward(0)
                 sharedPreferences?.apply {
                     if (this.getBoolean(key, false)) {
@@ -819,7 +821,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 }
             }
 
-            "user_haptic_feedback_strength" -> {
+            RegisteredSharedPreferences.USER_HAPTIC_FEEDBACK_STRENGTH.key -> {
                 // reload the value
                 sharedPreferences?.apply {
                     userHapticFeedbackStrength = this.getInt(
@@ -828,19 +830,19 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 }
             }
 
-            "same_haptic_feedback_to_function_buttons" -> {
+            RegisteredSharedPreferences.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS.key -> {
                 // do nothing
             }
 
-            "user_fullscreen_when_in_landscape",
-            "user_fullscreen_when_in_portrait",
+            RegisteredSharedPreferences.USER_FULLSCREEN_WHEN_IN_LANDSCAPE.key,
+            RegisteredSharedPreferences.USER_FULLSCREEN_WHEN_IN_PORTRAIT.key,
                 -> {
                 // do nothing (onEvaluateFullscreenMode() will handle it well)
             }
 
-            "user_key_button_height",
-            "user_enable_ime_switch",
-            "user_enable_double_touch_ime_switch",
+            RegisteredSharedPreferences.USER_KEY_BUTTON_HEIGHT.key,
+            RegisteredSharedPreferences.USER_ENABLE_IME_SWITCH.key,
+            RegisteredSharedPreferences.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH.key,
                 -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
@@ -848,11 +850,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 }
             }
 
-            "user_enable_physical_keyboard" -> {
-                // do nothing (onEvaluateInputViewShown() will handle it well)
-            }
-
-            "user_candidate_selection_keys_option" -> {
+            RegisteredSharedPreferences.USER_CANDIDATE_SELECTION_KEYS_OPTION.key -> {
                 sharedPreferences?.apply {
                     this.getString(
                         key, SelectionKeys.NUMBER_ROW.set
@@ -864,7 +862,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 }
             }
 
-            "user_conversion_engine" -> {
+            RegisteredSharedPreferences.USER_CONVERSION_ENGINE.key -> {
                 sharedPreferences?.apply {
                     this.getInt(
                         key, ConversionEngines.CHEWING_CONVERSION_ENGINE.mode

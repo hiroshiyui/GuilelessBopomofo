@@ -23,6 +23,7 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.RegisteredSharedPreferences
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -44,7 +45,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            if (sharedPreferences.getBoolean("user_enable_double_touch_ime_switch", false)) {
+            if (sharedPreferences.getBoolean(RegisteredSharedPreferences.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH.key, false)) {
                 return true
             } else {
                 switchNextInputMethod()
@@ -53,7 +54,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
         }
 
         override fun onDoubleTap(e: MotionEvent): Boolean {
-            if (sharedPreferences.getBoolean("user_enable_double_touch_ime_switch", false)) {
+            if (sharedPreferences.getBoolean(RegisteredSharedPreferences.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH.key, false)) {
                 switchNextInputMethod()
             } else {
                 return true
@@ -74,7 +75,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
     }
 
     private fun setKeyVisibility() {
-        val userEnableImeSwitch = sharedPreferences.getBoolean("user_enable_ime_switch", false)
+        val userEnableImeSwitch = sharedPreferences.getBoolean(RegisteredSharedPreferences.USER_ENABLE_IME_SWITCH.key, false)
         this@ImeSwitchFunctionKey.visibility = if (userEnableImeSwitch) {
             VISIBLE
         } else {

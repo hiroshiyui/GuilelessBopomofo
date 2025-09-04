@@ -136,28 +136,4 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
         app:layout_constraintTop_toTopOf="@+id/labelHardwareKeyboardHiddenStatus" />
 
-    <TextView
-        android:id="@+id/labelUserPreferredHardwareKeyboard"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/labelUserPreferredHardwareKeyboard"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/userPreferredHardwareKeyboard"
-        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@+id/labelHardwareKeyboardHiddenStatus" />
-
-    <TextView
-        android:id="@+id/userPreferredHardwareKeyboard"
-        style="@style/Settings.CurrentValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/labelUserPreferredHardwareKeyboard"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
-        app:layout_constraintTop_toTopOf="@+id/labelUserPreferredHardwareKeyboard" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

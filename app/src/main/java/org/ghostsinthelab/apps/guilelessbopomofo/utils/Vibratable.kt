@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.RegisteredSharedPreferences
 import kotlin.properties.Delegates
 
 interface Vibratable {
@@ -66,10 +67,10 @@ interface Vibratable {
         val sharedPreferences: SharedPreferences =
             context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
         val hapticFeedbackPreferenceStrength: Int = sharedPreferences.getInt(
-            "user_haptic_feedback_strength", GuilelessBopomofoService.defaultHapticFeedbackStrength
+            RegisteredSharedPreferences.USER_HAPTIC_FEEDBACK_STRENGTH.key, GuilelessBopomofoService.defaultHapticFeedbackStrength
         )
         val sameHapticFeedbackToFuncButtons: Boolean =
-            sharedPreferences.getBoolean("same_haptic_feedback_to_function_buttons", false)
+            sharedPreferences.getBoolean(RegisteredSharedPreferences.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS.key, false)
         if (sameHapticFeedbackToFuncButtons) {
             // might be 0
             amplitude = hapticFeedbackPreferenceStrength

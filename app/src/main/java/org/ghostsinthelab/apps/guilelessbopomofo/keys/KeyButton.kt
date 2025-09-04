@@ -22,7 +22,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
@@ -31,8 +30,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 abstract class KeyButton(context: Context, attrs: AttributeSet) :
     MaterialButton(context, attrs, R.attr.buttonStyle), BehaveLikeKey<KeyButton>,
     DisplayMetricsComputable {
-    private val sharedPreferences =
-        context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
     override var keyCodeString: String? = null
 
     abstract var mDetector: GestureDetector

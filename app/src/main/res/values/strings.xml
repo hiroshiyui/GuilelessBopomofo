@@ -83,7 +83,6 @@
     <string name="hardware_keyboard_hidden_status_yes">Hidden</string>
     <string name="hardware_keyboard_hidden_status_undefined">Undefined hidden status</string>
     <string name="hardware_keyboard_hidden_status_unknown">Unknown status</string>
-    <string name="labelUserPreferredHardwareKeyboard">User preferred hardware keyboard?</string>
     <string name="user_preferred_hardware_keyboard_yes">Yes</string>
     <string name="user_preferred_hardware_keyboard_no">No</string>
     <string name="user_preferred_hardware_keyboard_unknown">Unknown</string>

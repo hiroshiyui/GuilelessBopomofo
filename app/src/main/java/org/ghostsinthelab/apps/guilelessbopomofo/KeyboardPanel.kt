@@ -43,6 +43,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBi
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.RegisteredSharedPreferences
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ShiftKey
 import org.greenrobot.eventbus.EventBus
@@ -68,14 +69,12 @@ class KeyboardPanel(
     private lateinit var compactLayoutBinding: CompactLayoutBinding
 
     // candidatesRecyclerView
-    private val candidatesLayoutBinding: CandidatesLayoutBinding =
-        CandidatesLayoutBinding.inflate(LayoutInflater.from(context))
+    private val candidatesLayoutBinding: CandidatesLayoutBinding = CandidatesLayoutBinding.inflate(LayoutInflater.from(context))
     private val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
 
     var currentLayout: Layout = Layout.MAIN
 
-    val sharedPreferences: SharedPreferences =
-        context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences("GuilelessBopomofoService", AppCompatActivity.MODE_PRIVATE)
 
     init {
         Log.d(logTag, "Building KeyboardLayout.")
@@ -135,11 +134,9 @@ class KeyboardPanel(
         this.removeAllViews()
         compactLayoutBinding = CompactLayoutBinding.inflate(LayoutInflater.from(context))
         if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
-            compactLayoutBinding.textViewCurrentModeValue.text =
-                resources.getString(R.string.mode_bopomofo)
+            compactLayoutBinding.textViewCurrentModeValue.text = resources.getString(R.string.mode_bopomofo)
         } else {
-            compactLayoutBinding.textViewCurrentModeValue.text =
-                resources.getString(R.string.mode_alphanumerical)
+            compactLayoutBinding.textViewCurrentModeValue.text = resources.getString(R.string.mode_alphanumerical)
         }
 
         when (ChewingBridge.chewing.getShapeMode()) {
@@ -163,7 +160,7 @@ class KeyboardPanel(
 
         // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
         val userKeyboardLayoutPreference = sharedPreferences.getString(
-            "user_keyboard_layout", BopomofoKeyboards.KB_DEFAULT.layout
+            RegisteredSharedPreferences.USER_KEYBOARD_LAYOUT.key, BopomofoKeyboards.KB_DEFAULT.layout
         )
 
         userKeyboardLayoutPreference?.let {
@@ -181,15 +178,13 @@ class KeyboardPanel(
         when (userKeyboardLayoutPreference) {
             "KB_HSU" -> {
                 if (sharedPreferences.getBoolean(
-                        "user_display_hsu_qwerty_layout", false
+                        RegisteredSharedPreferences.USER_DISPLAY_HSU_QWERTY_LAYOUT.key, false
                     )
                 ) {
-                    keyboardHsuQwertyLayoutBinding =
-                        KeyboardHsuQwertyLayoutBinding.inflate(LayoutInflater.from(context))
+                    keyboardHsuQwertyLayoutBinding = KeyboardHsuQwertyLayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardHsuQwertyLayoutBinding.root)
                 } else {
-                    keyboardHsuLayoutBinding =
-                        KeyboardHsuLayoutBinding.inflate(LayoutInflater.from(context))
+                    keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardHsuLayoutBinding.root)
                 }
                 return
@@ -197,15 +192,13 @@ class KeyboardPanel(
 
             "KB_DVORAK_HSU" -> {
                 if (sharedPreferences.getBoolean(
-                        "user_display_dvorak_hsu_both_layout", false
+                        RegisteredSharedPreferences.USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT.key, false
                     )
                 ) {
-                    keyboardHsuDvorakBothLayoutBinding =
-                        KeyboardHsuDvorakBothLayoutBinding.inflate(LayoutInflater.from(context))
+                    keyboardHsuDvorakBothLayoutBinding = KeyboardHsuDvorakBothLayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardHsuDvorakBothLayoutBinding.root)
                 } else {
-                    keyboardHsuDvorakLayoutBinding =
-                        KeyboardHsuDvorakLayoutBinding.inflate(LayoutInflater.from(context))
+                    keyboardHsuDvorakLayoutBinding = KeyboardHsuDvorakLayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardHsuDvorakLayoutBinding.root)
                 }
                 return
@@ -213,31 +206,27 @@ class KeyboardPanel(
 
             "KB_ET26" -> {
                 if (sharedPreferences.getBoolean(
-                        "user_display_eten26_qwerty_layout", false
+                        RegisteredSharedPreferences.USER_DISPLAY_ETEN26_QWERTY_LAYOUT.key, false
                     )
                 ) {
-                    keyboardEt26QwertyLayoutBinding =
-                        KeyboardEt26QwertyLayoutBinding.inflate(LayoutInflater.from(context))
+                    keyboardEt26QwertyLayoutBinding = KeyboardEt26QwertyLayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardEt26QwertyLayoutBinding.root)
                 } else {
-                    keyboardEt26LayoutBinding =
-                        KeyboardEt26LayoutBinding.inflate(LayoutInflater.from(context))
+                    keyboardEt26LayoutBinding = KeyboardEt26LayoutBinding.inflate(LayoutInflater.from(context))
                     this.addView(keyboardEt26LayoutBinding.root)
                 }
                 return
             }
 
             "KB_ET" -> {
-                keyboardEt41LayoutBinding =
-                    KeyboardEt41LayoutBinding.inflate(LayoutInflater.from(context)).also {
-                        this.addView(it.root)
-                    }
+                keyboardEt41LayoutBinding = KeyboardEt41LayoutBinding.inflate(LayoutInflater.from(context)).also {
+                    this.addView(it.root)
+                }
                 return
             }
 
             "KB_DEFAULT" -> {
-                keyboardDachenLayoutBinding =
-                    KeyboardDachenLayoutBinding.inflate(LayoutInflater.from(context))
+                keyboardDachenLayoutBinding = KeyboardDachenLayoutBinding.inflate(LayoutInflater.from(context))
                 this.addView(keyboardDachenLayoutBinding.root)
                 return
             }
@@ -263,8 +252,7 @@ class KeyboardPanel(
             return
         }
 
-        keyboardQwertyLayoutBinding =
-            KeyboardQwertyLayoutBinding.inflate(LayoutInflater.from(context))
+        keyboardQwertyLayoutBinding = KeyboardQwertyLayoutBinding.inflate(LayoutInflater.from(context))
 
         this.removeAllViews()
         this.addView(keyboardQwertyLayoutBinding.root)
@@ -279,8 +267,7 @@ class KeyboardPanel(
             return
         }
 
-        keyboardDvorakLayoutBinding =
-            KeyboardDvorakLayoutBinding.inflate(LayoutInflater.from(context))
+        keyboardDvorakLayoutBinding = KeyboardDvorakLayoutBinding.inflate(LayoutInflater.from(context))
 
         this.removeAllViews()
         this.addView(keyboardDvorakLayoutBinding.root)
@@ -288,7 +275,7 @@ class KeyboardPanel(
 
     private fun userIsUsingDvorakHsu(): Boolean {
         return (sharedPreferences.getString(
-            "user_keyboard_layout", BopomofoKeyboards.KB_DEFAULT.layout
+            RegisteredSharedPreferences.USER_KEYBOARD_LAYOUT.key, BopomofoKeyboards.KB_DEFAULT.layout
         ) == "KB_DVORAK_HSU")
     }
 
@@ -374,16 +361,14 @@ class KeyboardPanel(
         when (candidateLayoutStyle) {
             CandidateLayoutStyle.LIST -> {
                 val layoutManager = FlexboxLayoutManager(context)
-                candidatesRecyclerView.adapter =
-                    PagedCandidatesAdapter(ChewingBridge.chewing.candCurrentPage())
+                candidatesRecyclerView.adapter = PagedCandidatesAdapter(ChewingBridge.chewing.candCurrentPage())
                 candidatesRecyclerView.layoutManager = layoutManager
                 return
             }
 
             CandidateLayoutStyle.GRID -> {
                 candidatesRecyclerView.adapter = CandidatesAdapter()
-                candidatesRecyclerView.layoutManager =
-                    GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)
+                candidatesRecyclerView.layoutManager = GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)
                 return
             }
         }
@@ -391,8 +376,7 @@ class KeyboardPanel(
 
     fun releaseShiftKey() {
         Log.d(logTag, "releaseShiftKey()")
-        this.findViewById<ShiftKey>(R.id.keyImageButtonShift)
-            ?.switchToState(ShiftKey.ShiftKeyState.RELEASED)
+        this.findViewById<ShiftKey>(R.id.keyImageButtonShift)?.switchToState(ShiftKey.ShiftKeyState.RELEASED)
         return
     }
 
