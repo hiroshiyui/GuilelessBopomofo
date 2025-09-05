@@ -30,6 +30,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED_PREFERENCES
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CompactLayoutBinding
@@ -44,7 +48,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBi
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
-import org.ghostsinthelab.apps.guilelessbopomofo.enums.RegisteredSharedPreferences
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ShiftKey
 import org.greenrobot.eventbus.EventBus
@@ -161,7 +164,7 @@ class KeyboardPanel(
 
         // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
         val userKeyboardLayoutPreference = sharedPreferences.getString(
-            RegisteredSharedPreferences.USER_KEYBOARD_LAYOUT.key, BopomofoKeyboards.KB_DEFAULT.layout
+            USER_KEYBOARD_LAYOUT, BopomofoKeyboards.KB_DEFAULT.layout
         )
 
         userKeyboardLayoutPreference?.let {
@@ -179,7 +182,7 @@ class KeyboardPanel(
         when (userKeyboardLayoutPreference) {
             "KB_HSU" -> {
                 if (sharedPreferences.getBoolean(
-                        RegisteredSharedPreferences.USER_DISPLAY_HSU_QWERTY_LAYOUT.key, false
+                        USER_DISPLAY_HSU_QWERTY_LAYOUT, false
                     )
                 ) {
                     keyboardHsuQwertyLayoutBinding = KeyboardHsuQwertyLayoutBinding.inflate(LayoutInflater.from(context))
@@ -193,7 +196,7 @@ class KeyboardPanel(
 
             "KB_DVORAK_HSU" -> {
                 if (sharedPreferences.getBoolean(
-                        RegisteredSharedPreferences.USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT.key, false
+                        USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT, false
                     )
                 ) {
                     keyboardHsuDvorakBothLayoutBinding = KeyboardHsuDvorakBothLayoutBinding.inflate(LayoutInflater.from(context))
@@ -207,7 +210,7 @@ class KeyboardPanel(
 
             "KB_ET26" -> {
                 if (sharedPreferences.getBoolean(
-                        RegisteredSharedPreferences.USER_DISPLAY_ETEN26_QWERTY_LAYOUT.key, false
+                        USER_DISPLAY_ETEN26_QWERTY_LAYOUT, false
                     )
                 ) {
                     keyboardEt26QwertyLayoutBinding = KeyboardEt26QwertyLayoutBinding.inflate(LayoutInflater.from(context))
@@ -276,7 +279,7 @@ class KeyboardPanel(
 
     private fun userIsUsingDvorakHsu(): Boolean {
         return (sharedPreferences.getString(
-            RegisteredSharedPreferences.USER_KEYBOARD_LAYOUT.key, BopomofoKeyboards.KB_DEFAULT.layout
+            USER_KEYBOARD_LAYOUT, BopomofoKeyboards.KB_DEFAULT.layout
         ) == "KB_DVORAK_HSU")
     }
 

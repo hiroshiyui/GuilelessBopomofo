@@ -26,8 +26,8 @@ import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED_PREFERENCES
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT
 import org.ghostsinthelab.apps.guilelessbopomofo.R
-import org.ghostsinthelab.apps.guilelessbopomofo.enums.RegisteredSharedPreferences
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.DisplayMetricsComputable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
@@ -56,7 +56,7 @@ abstract class KeyImageButton(context: Context, attrs: AttributeSet) : MaterialB
         }
 
         this.apply {
-            val keyButtonPreferenceHeight = sharedPreferences.getInt(RegisteredSharedPreferences.USER_KEY_BUTTON_HEIGHT.key, 52)
+            val keyButtonPreferenceHeight = sharedPreferences.getInt(USER_KEY_BUTTON_HEIGHT, 52)
             minimumHeight = convertDpToPx(keyButtonPreferenceHeight.toFloat()).toInt()
         }
     }

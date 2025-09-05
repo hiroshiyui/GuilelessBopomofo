@@ -30,8 +30,22 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED_PREFERENCES
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDIDATE_SELECTION_KEYS_OPTION
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_IME_SWITCH
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_SPACE_AS_SELECTION
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_LANDSCAPE
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_PORTRAIT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_HAPTIC_FEEDBACK_STRENGTH
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEYBOARD_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.enums.RegisteredSharedPreferences
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EdgeToEdge
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -100,11 +114,11 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                     radioButtonLayoutETen41 to BopomofoKeyboards.KB_ET.layout
                 )) {
                     button.setOnClickListener {
-                        sharedPreferences.edit().putString(RegisteredSharedPreferences.USER_KEYBOARD_LAYOUT.key, layout).apply()
+                        sharedPreferences.edit().putString(USER_KEYBOARD_LAYOUT, layout).apply()
                     }
 
                     if (sharedPreferences.getString(
-                            RegisteredSharedPreferences.USER_KEYBOARD_LAYOUT.key, BopomofoKeyboards.KB_DEFAULT.layout
+                            USER_KEYBOARD_LAYOUT, BopomofoKeyboards.KB_DEFAULT.layout
                         ) == layout
                     ) {
                         button.isChecked = true
@@ -136,24 +150,24 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                 }
 
                 switchDisplayHsuQwertyLayout.let {
-                    if (sharedPreferences.getBoolean(RegisteredSharedPreferences.USER_DISPLAY_HSU_QWERTY_LAYOUT.key, false)) {
+                    if (sharedPreferences.getBoolean(USER_DISPLAY_HSU_QWERTY_LAYOUT, false)) {
                         it.isChecked = true
                     }
 
                     it.setOnCheckedChangeListener { _, _ ->
-                        sharedPreferences.edit().putBoolean(RegisteredSharedPreferences.USER_DISPLAY_HSU_QWERTY_LAYOUT.key, it.isChecked)
+                        sharedPreferences.edit().putBoolean(USER_DISPLAY_HSU_QWERTY_LAYOUT, it.isChecked)
                             .apply()
 
                     }
                 }
 
                 switchDisplayEten26QwertyLayout.let {
-                    if (sharedPreferences.getBoolean(RegisteredSharedPreferences.USER_DISPLAY_ETEN26_QWERTY_LAYOUT.key, false)) {
+                    if (sharedPreferences.getBoolean(USER_DISPLAY_ETEN26_QWERTY_LAYOUT, false)) {
                         it.isChecked = true
                     }
 
                     it.setOnCheckedChangeListener { _, _ ->
-                        sharedPreferences.edit().putBoolean(RegisteredSharedPreferences.USER_DISPLAY_ETEN26_QWERTY_LAYOUT.key, it.isChecked)
+                        sharedPreferences.edit().putBoolean(USER_DISPLAY_ETEN26_QWERTY_LAYOUT, it.isChecked)
                             .apply()
 
                     }
@@ -161,7 +175,7 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
 
                 switchDisplayDvorakHsuBothLayout.let {
                     if (sharedPreferences.getBoolean(
-                            RegisteredSharedPreferences.USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT.key, false
+                            USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT, false
                         )
                     ) {
                         it.isChecked = true
@@ -169,7 +183,7 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
 
                     it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit().putBoolean(
-                            RegisteredSharedPreferences.USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT.key, it.isChecked
+                            USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT, it.isChecked
                         ).apply()
 
                     }
@@ -181,11 +195,11 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                     radioButtonFuzzyChewingConversionEngine to ConversionEngines.FUZZY_CHEWING_CONVERSION_ENGINE.mode
                 )) {
                     button.setOnClickListener {
-                        sharedPreferences.edit().putInt(RegisteredSharedPreferences.USER_CONVERSION_ENGINE.key, conversionEngine).apply()
+                        sharedPreferences.edit().putInt(USER_CONVERSION_ENGINE, conversionEngine).apply()
                     }
 
                     if (sharedPreferences.getInt(
-                            RegisteredSharedPreferences.USER_CONVERSION_ENGINE.key, ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
+                            USER_CONVERSION_ENGINE, ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
                         ) == conversionEngine
                     ) {
                         button.isChecked = true
@@ -193,23 +207,23 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                 }
 
                 switchSettingSpaceAsSelection.let {
-                    if (sharedPreferences.getBoolean(RegisteredSharedPreferences.USER_ENABLE_SPACE_AS_SELECTION.key, true)) {
+                    if (sharedPreferences.getBoolean(USER_ENABLE_SPACE_AS_SELECTION, true)) {
                         it.isChecked = true
                     }
 
                     it.setOnCheckedChangeListener { _, _ ->
-                        sharedPreferences.edit().putBoolean(RegisteredSharedPreferences.USER_ENABLE_SPACE_AS_SELECTION.key, it.isChecked)
+                        sharedPreferences.edit().putBoolean(USER_ENABLE_SPACE_AS_SELECTION, it.isChecked)
                             .apply()
                     }
                 }
 
                 switchRearwardPhraseChoice.let {
-                    if (sharedPreferences.getBoolean(RegisteredSharedPreferences.USER_PHRASE_CHOICE_REARWARD.key, false)) {
+                    if (sharedPreferences.getBoolean(USER_PHRASE_CHOICE_REARWARD, false)) {
                         it.isChecked = true
                     }
 
                     it.setOnCheckedChangeListener { _, _ ->
-                        sharedPreferences.edit().putBoolean(RegisteredSharedPreferences.USER_PHRASE_CHOICE_REARWARD.key, it.isChecked)
+                        sharedPreferences.edit().putBoolean(USER_PHRASE_CHOICE_REARWARD, it.isChecked)
                             .apply()
                     }
                 }
@@ -217,7 +231,7 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
 
             sectionUserInterface.apply {
                 var hapticFeedbackPreferenceStrength = sharedPreferences.getInt(
-                    RegisteredSharedPreferences.USER_HAPTIC_FEEDBACK_STRENGTH.key, GuilelessBopomofoService.defaultHapticFeedbackStrength
+                    USER_HAPTIC_FEEDBACK_STRENGTH, GuilelessBopomofoService.defaultHapticFeedbackStrength
                 )
 
                 textViewSettingHapticFeedbaclCurrentStrength.text = String.format(
@@ -232,7 +246,7 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                     )
 
                     sharedPreferences.edit().putInt(
-                        RegisteredSharedPreferences.USER_HAPTIC_FEEDBACK_STRENGTH.key, hapticFeedbackPreferenceStrength
+                        USER_HAPTIC_FEEDBACK_STRENGTH, hapticFeedbackPreferenceStrength
                     ).apply()
                     textViewSettingHapticFeedbaclCurrentStrength.text = String.format(
                         resources.getString(R.string.haptic_feedback_strength_setting), hapticFeedbackPreferenceStrength
@@ -241,7 +255,7 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
 
                 switchSettingApplySameHapticFeedbackStrengthToFunctionButtons.let {
                     if (sharedPreferences.getBoolean(
-                            RegisteredSharedPreferences.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS.key, false
+                            SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS, false
                         )
                     ) {
                         it.isChecked = true
@@ -249,33 +263,33 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
 
                     it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit()
-                            .putBoolean(RegisteredSharedPreferences.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS.key, it.isChecked).apply()
+                            .putBoolean(SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS, it.isChecked).apply()
                     }
                 }
 
                 switchSettingFullscreenWhenInLandscape.let {
-                    if (sharedPreferences.getBoolean(RegisteredSharedPreferences.USER_FULLSCREEN_WHEN_IN_LANDSCAPE.key, true)) {
+                    if (sharedPreferences.getBoolean(USER_FULLSCREEN_WHEN_IN_LANDSCAPE, true)) {
                         it.isChecked = true
                     }
 
                     it.setOnCheckedChangeListener { _, _ ->
-                        sharedPreferences.edit().putBoolean(RegisteredSharedPreferences.USER_FULLSCREEN_WHEN_IN_LANDSCAPE.key, it.isChecked)
+                        sharedPreferences.edit().putBoolean(USER_FULLSCREEN_WHEN_IN_LANDSCAPE, it.isChecked)
                             .apply()
                     }
                 }
 
                 switchSettingFullscreenWhenInPortrait.let {
-                    if (sharedPreferences.getBoolean(RegisteredSharedPreferences.USER_FULLSCREEN_WHEN_IN_PORTRAIT.key, false)) {
+                    if (sharedPreferences.getBoolean(USER_FULLSCREEN_WHEN_IN_PORTRAIT, false)) {
                         it.isChecked = true
                     }
 
                     it.setOnCheckedChangeListener { _, _ ->
-                        sharedPreferences.edit().putBoolean(RegisteredSharedPreferences.USER_FULLSCREEN_WHEN_IN_PORTRAIT.key, it.isChecked)
+                        sharedPreferences.edit().putBoolean(USER_FULLSCREEN_WHEN_IN_PORTRAIT, it.isChecked)
                             .apply()
                     }
                 }
 
-                var keyButtonPreferenceHeight = sharedPreferences.getInt(RegisteredSharedPreferences.USER_KEY_BUTTON_HEIGHT.key, 52)
+                var keyButtonPreferenceHeight = sharedPreferences.getInt(USER_KEY_BUTTON_HEIGHT, 52)
 
                 seekBarKeyButtonHeight.value = keyButtonPreferenceHeight.toFloat()
 
@@ -285,7 +299,7 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
 
                 seekBarKeyButtonHeight.addOnChangeListener { _, value, _ ->
                     keyButtonPreferenceHeight = value.toInt()
-                    sharedPreferences.edit().putInt(RegisteredSharedPreferences.USER_KEY_BUTTON_HEIGHT.key, keyButtonPreferenceHeight)
+                    sharedPreferences.edit().putInt(USER_KEY_BUTTON_HEIGHT, keyButtonPreferenceHeight)
                         .apply()
                     textViewSettingKeyButtonCurrentHeight.text = String.format(
                         resources.getString(R.string.key_button_height_setting), keyButtonPreferenceHeight
@@ -293,25 +307,25 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                 }
 
                 switchSettingEnableImeSwitch.let {
-                    if (sharedPreferences.getBoolean(RegisteredSharedPreferences.USER_ENABLE_IME_SWITCH.key, false)) {
+                    if (sharedPreferences.getBoolean(USER_ENABLE_IME_SWITCH, false)) {
                         it.isChecked = true
                     }
 
                     it.setOnCheckedChangeListener { _, _ ->
-                        sharedPreferences.edit().putBoolean(RegisteredSharedPreferences.USER_ENABLE_IME_SWITCH.key, it.isChecked).apply()
+                        sharedPreferences.edit().putBoolean(USER_ENABLE_IME_SWITCH, it.isChecked).apply()
                     }
                 }
 
                 switchSettingImeSwitch.let {
                     if (sharedPreferences.getBoolean(
-                            RegisteredSharedPreferences.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH.key, false
+                            USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, false
                         )
                     ) {
                         it.isChecked = true
                     }
 
                     it.setOnCheckedChangeListener { _, _ ->
-                        sharedPreferences.edit().putBoolean(RegisteredSharedPreferences.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH.key, it
+                        sharedPreferences.edit().putBoolean(USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, it
                             .isChecked).apply()
                     }
                 }
@@ -327,11 +341,11 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                     radioButtonDvorakMixedMode to SelectionKeys.DVORAK_MIXED_MODE.set,
                 )) {
                     button.setOnClickListener {
-                        sharedPreferences.edit().putString(RegisteredSharedPreferences.USER_CANDIDATE_SELECTION_KEYS_OPTION.key, keys).apply()
+                        sharedPreferences.edit().putString(USER_CANDIDATE_SELECTION_KEYS_OPTION, keys).apply()
                     }
 
                     if (sharedPreferences.getString(
-                            RegisteredSharedPreferences.USER_CANDIDATE_SELECTION_KEYS_OPTION.key, SelectionKeys.NUMBER_ROW.set
+                            USER_CANDIDATE_SELECTION_KEYS_OPTION, SelectionKeys.NUMBER_ROW.set
                         ) == keys
                     ) {
                         button.isChecked = true
