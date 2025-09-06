@@ -46,8 +46,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.emoji2.bundled.BundledEmojiCompatConfig
-import androidx.emoji2.text.EmojiCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -96,7 +94,6 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 import java.io.FileOutputStream
-import java.util.concurrent.Executor
 import kotlin.coroutines.CoroutineContext
 
 class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPreferences.OnSharedPreferenceChangeListener,
@@ -130,13 +127,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         } else {
             BACK_DISPOSITION_DEFAULT
         }
-
-        // emoji2-bundled (fonts-embedded)
-        val fontLoadExecutor: Executor = Executor { }
-        val emojiCompatConfig: EmojiCompat.Config = BundledEmojiCompatConfig(
-            this@GuilelessBopomofoService.applicationContext, fontLoadExecutor
-        )
-        EmojiCompat.init(emojiCompatConfig)
 
         sharedPreferences = getSharedPreferences(APP_SHARED_PREFERENCES, MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)

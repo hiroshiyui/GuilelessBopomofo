@@ -3,7 +3,6 @@ androidxAppcompatVersion = "1.7.1"
 constraintlayoutVersion = "2.2.1"
 coreKtxVersion = "1.16.0"
 coreVersion = "1.7.0"
-emoji2Version = "1.5.0"
 espressoCoreVersion = "3.7.0"
 eventbusVersion = "3.3.1"
 flexboxLayoutVersion = "2.0.1"
@@ -36,10 +35,6 @@ appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAp
 appcompat-resources = { module = "androidx.appcompat:appcompat-resources", version.ref = "androidxAppcompatVersion" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayoutVersion" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
-emoji2 = { module = "androidx.emoji2:emoji2", version.ref = "emoji2Version" }
-emoji2-bundled = { module = "androidx.emoji2:emoji2-bundled", version.ref = "emoji2Version" }
-emoji2-views = { module = "androidx.emoji2:emoji2-views", version.ref = "emoji2Version" }
-emoji2-views-helper = { module = "androidx.emoji2:emoji2-views-helper", version.ref = "emoji2Version" }
 espresso-accessibility = { module = "androidx.test.espresso:espresso-accessibility", version.ref = "espressoCoreVersion" }
 espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espressoCoreVersion" }
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCoreVersion" }

@@ -29,12 +29,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
-import androidx.emoji2.bundled.BundledEmojiCompatConfig
-import androidx.emoji2.text.EmojiCompat
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityEngineeringModeBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EdgeToEdge
 import java.io.File
-import java.util.concurrent.Executor
 
 class EngineeringModeActivity : AppCompatActivity(), EdgeToEdge {
     private val logTag = "EngineeringModeActivity"
@@ -46,12 +43,6 @@ class EngineeringModeActivity : AppCompatActivity(), EdgeToEdge {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        val fontLoadExecutor: Executor = Executor { }
-        val emojiCompatConfig: EmojiCompat.Config = BundledEmojiCompatConfig(
-            this@EngineeringModeActivity.applicationContext, fontLoadExecutor
-        )
-        EmojiCompat.init(emojiCompatConfig)
 
         viewBinding = ActivityEngineeringModeBinding.inflate(this.layoutInflater)
 
