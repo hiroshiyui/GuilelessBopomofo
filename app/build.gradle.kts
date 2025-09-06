@@ -51,8 +51,7 @@ android {
             isShrinkResources = true
 
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
             ndk {
                 debugSymbolLevel = "FULL"
@@ -95,18 +94,11 @@ android {
         workingDir(chewingLibraryPath)
         // This is just for task 'buildChewingData', other definitions are in cpp/CMakeLists.txt
         commandLine(
-            "cmake",
-            "-B",
-            "build/",
-            "-DBUILD_INFO=false",
-            "-DBUILD_TESTING=false",
-            "-DWITH_SQLITE3=false",
-            "-DCMAKE_BUILD_TYPE=Release"
+            "cmake", "-B", "build/", "-DBUILD_INFO=false", "-DBUILD_TESTING=false", "-DWITH_SQLITE3=false", "-DCMAKE_BUILD_TYPE=Release"
         )
     }
 
-    val chewingDataFiles =
-        listOf<String>("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
+    val chewingDataFiles = listOf<String>("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
 
     tasks.register<Exec>("buildChewingData") {
         dependsOn("prepareChewing")
@@ -140,8 +132,7 @@ android {
             }
         }
         commandLine(
-            "curl", "--proto", "'=https'", "--tlsv1.2", "-sSf", "https://sh.rustup.rs", "|", "sh", "-s", "--", "--default-toolchain",
-            "none"
+            "curl", "--proto", "'=https'", "--tlsv1.2", "-sSf", "https://sh.rustup.rs", "|", "sh", "-s", "--", "--default-toolchain", "none"
         )
     }
 
@@ -164,8 +155,7 @@ android {
 
     tasks.preBuild {
         dependsOn(
-            "installSpecifiedRustToolchain",
-            "copyChewingDataFiles"
+            "installSpecifiedRustToolchain", "copyChewingDataFiles"
         )
     }
 
@@ -193,10 +183,7 @@ android {
 
     tasks.clean {
         dependsOn(
-            "cleanChewingDataFiles",
-            "execMakeClean",
-            "deleteChewingBuildDirectory",
-            "deleteAppDotCxxDirectory"
+            "cleanChewingDataFiles", "execMakeClean", "deleteChewingBuildDirectory", "deleteAppDotCxxDirectory"
         )
     }
 }
