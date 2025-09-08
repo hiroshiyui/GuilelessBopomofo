@@ -9,12 +9,15 @@ A [Bopomofo](https://en.wikipedia.org/wiki/Bopomofo) software keyboard (aka inpu
 
 樸實注音鍵盤是 Android 平台上的[注音符號](https://zh.wikipedia.org/wiki/%E6%B3%A8%E9%9F%B3%E7%AC%A6%E8%99%9F)軟體鍵盤（輸入法編輯器），藉由[新酷音輸入法](http://chewing.im/)程式庫的輔助，提供自動選字處理機能。
 
-<a href='https://play.google.com/store/apps/details?id=org.ghostsinthelab.apps.guilelessbopomofo&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Google Play立即下載' src='./media/GetItOnGooglePlay_Badge_Web_color_Chinese-TW.png'/></a>
 <a href='https://f-droid.org/zh_Hant/packages/org.ghostsinthelab.apps.guilelessbopomofo/'><img alt="F-Droid立即下載" src="./media/badge_get-it-on-zh-tw.png"/></a>
 
-Please only download and install this software from the two App marketplaces mentioned above, or through [the APK packages released by this project](https://github.com/hiroshiyui/GuilelessBopomofo/releases), to ensure your information security.
+Please only download and install this software from the F-Droid App repository mentioned above, or through [the APK packages released by this project](https://github.com/hiroshiyui/GuilelessBopomofo/releases), to ensure your information security.
 
-請只在以上兩處 App 市集，或透過[本專案釋出之 APK 安裝套件包](https://github.com/hiroshiyui/GuilelessBopomofo/releases)取得、安裝本軟體，以保障您的資訊安全。
+請只在以上所示的 F-Droid App 發行庫，或透過[本專案釋出之 APK 安裝套件包](https://github.com/hiroshiyui/GuilelessBopomofo/releases)取得、安裝本軟體，以保障您的資訊安全。
+
+<strong>NOTICE:</strong> From 2025.09.08, this App is _not_ available on Google Play anymore.
+
+<strong>敬請注意：</strong>自 2025.09.08 開始，本軟體<strong>不再</strong>於 Google Play 上架。
 
 ## Usage 使用
 
