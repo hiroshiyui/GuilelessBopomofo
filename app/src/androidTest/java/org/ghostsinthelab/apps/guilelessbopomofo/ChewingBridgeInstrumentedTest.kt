@@ -389,6 +389,33 @@ class ChewingBridgeInstrumentedTest {
 
     }
 
+    @Test
+    fun validSetEasySymbolInput() {
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
+
+        val newKeyboardType = ChewingBridge.chewing.convKBStr2Num("KB_DEFAULT")
+        ChewingBridge.chewing.setKBType(newKeyboardType)
+        val currentKeyboardType = ChewingBridge.chewing.getKBType()
+        val currentKeyboardTypeString = ChewingBridge.chewing.getKBString()
+        assertEquals(0, currentKeyboardType)
+        assertEquals("KB_DEFAULT", currentKeyboardTypeString)
+
+        ChewingBridge.chewing.handleDefault(',')
+        ChewingBridge.chewing.handleSpace()
+        ChewingBridge.chewing.commitPreeditBuf()
+        assertEquals("ㄝ", ChewingBridge.chewing.commitString())
+
+        ChewingBridge.chewing.setEasySymbolInput(1)
+        assertEquals(1, ChewingBridge.chewing.getEasySymbolInput())
+
+        // Shift-, -> '<' (in QWERTY)
+        ChewingBridge.chewing.handleDefault('<')
+        assertEquals("，", ChewingBridge.chewing.bufferString())
+
+        ChewingBridge.chewing.setEasySymbolInput(0)
+        assertEquals(0, ChewingBridge.chewing.getEasySymbolInput())
+    }
+
     @Test(expected = IndexOutOfBoundsException::class)
     fun validIndexOutOfBoundsExceptionGetCandidatesByPage() {
         ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)

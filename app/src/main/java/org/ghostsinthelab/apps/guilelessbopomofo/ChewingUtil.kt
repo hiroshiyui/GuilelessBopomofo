@@ -100,9 +100,9 @@ class ChewingUtil {
             // the location of comma in KB_DVORAK_HSU (',') is different from generic QWERTY ('w'),
             // just workaround this:
             val commaKeyMapping: Char = if (currentKeyboardType == "KB_DVORAK_HSU") {
-                dvorakToQwertyKeyMapping(',')
+                dvorakToQwertyKeyMapping('<')
             } else {
-                ','
+                '<'
             }
 
             if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
