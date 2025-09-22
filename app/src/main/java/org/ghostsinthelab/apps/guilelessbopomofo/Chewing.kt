@@ -82,6 +82,7 @@ class Chewing {
     external fun free(resourcePtr: Long)
     external fun getCandPerPage(chewingCtx: Long = context): Int
     external fun getChiEngMode(chewingCtx: Long = context): Int
+    external fun getEasySymbolInput(chewingCtx: Long = context): Int
     external fun getKBString(chewingCtx: Long = context): String
     external fun getKBType(chewingCtx: Long = context): Int
     external fun getMaxChiSymbolLen(chewingCtx: Long = context): Int
