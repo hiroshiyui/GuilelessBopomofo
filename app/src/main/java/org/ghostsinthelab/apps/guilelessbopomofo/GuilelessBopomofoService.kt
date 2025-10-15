@@ -65,6 +65,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_HAPTI
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.deviceIsEmulator
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ImeLayoutBinding
@@ -115,6 +116,10 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     override fun onCreate() {
         Log.d(logTag, "onCreate()")
         super.onCreate()
+
+        if (Build.MANUFACTURER == "Google" && Build.BOARD.startsWith("goldfish_")) {
+            deviceIsEmulator = true
+        }
 
         EventBus.getDefault().register(this)
 
@@ -243,7 +248,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         // detect if physical keyboard is presented
         physicalKeyboardPresented =
-            (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY) && (resources.configuration.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
+            (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY) && (resources.configuration.hardKeyboardHidden ==
+                    Configuration.HARDKEYBOARDHIDDEN_NO) && (!deviceIsEmulator)
 
         val inputType = info?.inputType?.and(InputType.TYPE_MASK_CLASS)
         // if the input type is phone or number, switch to symbol (alphanumeric) mode

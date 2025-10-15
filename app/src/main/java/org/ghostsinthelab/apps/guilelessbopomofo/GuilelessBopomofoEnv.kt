@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 object GuilelessBopomofoEnv {
     const val APP_SHARED_PREFERENCES: String = "GuilelessBopomofoService"
     var physicalKeyboardPresented: Boolean = false
+    var deviceIsEmulator: Boolean = false
 
     // Put registered shared preferences keys here:
     const val SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS : String = "same_haptic_feedback_to_function_buttons"
