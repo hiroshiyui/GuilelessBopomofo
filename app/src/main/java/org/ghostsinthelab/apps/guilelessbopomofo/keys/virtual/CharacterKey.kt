@@ -41,7 +41,7 @@ class CharacterKey(context: Context, attrs: AttributeSet) :
         override fun onDown(e: MotionEvent): Boolean {
             performVibration(
                 context,
-                GuilelessBopomofoService.Companion.userHapticFeedbackStrength
+                GuilelessBopomofoService.userHapticFeedbackStrength
             )
             EventBus.getDefault().post(Events.PrintingKeyDown(this@CharacterKey))
             return super.onDown(e)

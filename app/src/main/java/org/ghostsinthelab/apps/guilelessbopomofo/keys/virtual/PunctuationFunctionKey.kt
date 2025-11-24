@@ -44,14 +44,14 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            ChewingUtil.Companion.handleShiftComma()
+            ChewingUtil.handleShiftComma()
             EventBus.getDefault().post(Events.UpdateBufferViews())
             return true
         }
 
         override fun onLongPress(e: MotionEvent) {
             performVibration(context, Vibratable.VibrationStrength.STRONG)
-            ChewingUtil.Companion.openFrequentlyUsedCandidates()
+            ChewingUtil.openFrequentlyUsedCandidates()
             EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
         }
     }

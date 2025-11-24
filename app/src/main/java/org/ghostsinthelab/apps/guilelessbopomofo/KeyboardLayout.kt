@@ -28,6 +28,6 @@ class KeyboardLayout(context: Context, attrs: AttributeSet) : LinearLayout(conte
     init {
         this.orientation = VERTICAL
         this.layoutParams =
-            LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
     }
 }

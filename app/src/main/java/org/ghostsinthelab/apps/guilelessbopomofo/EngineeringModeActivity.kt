@@ -72,7 +72,7 @@ class EngineeringModeActivity : AppCompatActivity(), EdgeToEdge {
         viewBinding.hardwareKeyboardHiddenStatus.text = hardwareKeyboardHiddenStatusText
 
         viewBinding.let {
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
             it.editTextTestTextInput.setOnLongClickListener {
                 inputMethodManager.showInputMethodPicker()

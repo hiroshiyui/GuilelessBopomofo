@@ -111,7 +111,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     }
 
     private fun performKeyStroke() {
-        if (ChewingUtil.Companion.anyBufferIsNotEmpty()) {
+        if (ChewingUtil.anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.handleBackspace()
             EventBus.getDefault().post(Events.UpdateBufferViews())
         } else {

@@ -432,7 +432,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         // when user press Alt + I, then show IME picker
         if (event.keyCode == KEYCODE_I && event.isAltPressed) {
-            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
             return
         }
@@ -575,7 +575,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             switchToNextInputMethod(false)
         } else {
             // backward compatibility, support IME switch on legacy devices
-            val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = applicationContext.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             val imeToken: IBinder? = viewBinding.root.windowToken
             @Suppress("DEPRECATION") imm.switchToNextInputMethod(imeToken, false)
         }

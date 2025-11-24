@@ -26,7 +26,7 @@ import androidx.core.view.updateLayoutParams
 
 interface EdgeToEdge {
 
-    fun applyInsetsAsMargins(view: android.view.View) {
+    fun applyInsetsAsMargins(view: View) {
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
             val systemBarInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
@@ -38,7 +38,7 @@ interface EdgeToEdge {
         }
     }
 
-    fun applyInsetsAsPadding(view: android.view.View) {
+    fun applyInsetsAsPadding(view: View) {
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
             val systemBarInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(

@@ -55,7 +55,4 @@ class Space : PhysicalKeyHandler {
         return true
     }
 
-    override fun onKeyUp(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
-        return super.onKeyUp(context, keyCode, event)
-    }
 }

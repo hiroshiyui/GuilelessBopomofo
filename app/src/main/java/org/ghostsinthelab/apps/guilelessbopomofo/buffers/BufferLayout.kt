@@ -33,7 +33,7 @@ class BufferLayout(context: Context, attrs: AttributeSet) : FlexboxLayout(contex
         mDetector.setOnDoubleTapListener(MyGestureListener())
     }
 
-    inner class MyGestureListener : GestureDetector.SimpleOnGestureListener(),
+    class MyGestureListener : GestureDetector.SimpleOnGestureListener(),
         GestureDetector.OnDoubleTapListener {
         // double tap to toggle compact layout
         override fun onDoubleTap(e: MotionEvent): Boolean {

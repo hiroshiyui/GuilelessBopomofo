@@ -45,7 +45,7 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            if (ChewingUtil.Companion.anyBufferIsNotEmpty()) {
+            if (ChewingUtil.anyBufferIsNotEmpty()) {
                 ChewingBridge.chewing.handleSpace()
                 EventBus.getDefault().post(Events.UpdateBufferViews())
                 // 空白鍵是否為選字鍵？
