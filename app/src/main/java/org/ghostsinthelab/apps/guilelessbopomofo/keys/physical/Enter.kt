@@ -36,7 +36,7 @@ class Enter : PhysicalKeyHandler {
 
         if (ChewingUtil.anyBufferIsNotEmpty()) { // not committed yet
             ChewingBridge.chewing.commitPreeditBuf(ChewingBridge.chewing.context)
-            EventBus.getDefault().post(Events.UpdateBuffers())
+            EventBus.getDefault().post(Events.UpdateBufferViews())
         } else {
             EventBus.getDefault().post(Events.EnterKeyDownWhenBufferIsEmpty())
         }

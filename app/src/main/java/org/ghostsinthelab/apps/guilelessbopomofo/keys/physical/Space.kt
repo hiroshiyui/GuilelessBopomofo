@@ -43,7 +43,7 @@ class Space : PhysicalKeyHandler {
 
         if (ChewingUtil.anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.handleSpace()
-            EventBus.getDefault().post(Events.UpdateBuffers())
+            EventBus.getDefault().post(Events.UpdateBufferViews())
             // 空白鍵是否為選字鍵？
             if (ChewingBridge.chewing.getSpaceAsSelection() == 1 && ChewingBridge.chewing.candTotalChoice() > 0) {
                 ChewingUtil.openCandidates()

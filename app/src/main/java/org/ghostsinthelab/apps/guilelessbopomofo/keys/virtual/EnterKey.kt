@@ -46,7 +46,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             if (ChewingUtil.Companion.anyBufferIsNotEmpty()) { // not committed yet
                 ChewingBridge.chewing.commitPreeditBuf(ChewingBridge.chewing.context)
-                EventBus.getDefault().post(Events.UpdateBuffers())
+                EventBus.getDefault().post(Events.UpdateBufferViews())
             } else {
                 EventBus.getDefault().post(Events.EnterKeyDownWhenBufferIsEmpty())
             }

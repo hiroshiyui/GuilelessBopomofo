@@ -36,7 +36,7 @@ class Events {
     class SwitchToNextInputMethod
     class ToggleFullOrHalfWidthMode
     class ToggleKeyboardMainLayoutMode
-    class UpdateBuffers
+    class UpdateBufferViews
     class UpdateCursorPosition
     class UpdateCursorPositionToBegin
     class UpdateCursorPositionToEnd

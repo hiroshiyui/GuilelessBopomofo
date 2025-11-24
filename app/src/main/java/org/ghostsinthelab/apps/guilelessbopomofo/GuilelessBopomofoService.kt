@@ -260,7 +260,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         }
 
         viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
-        EventBus.getDefault().post(Events.UpdateBuffers())
+        EventBus.getDefault().post(Events.UpdateBufferViews())
     }
 
     override fun onFinishInput() {
@@ -420,7 +420,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         // Consider keys in NumPad
         if (event.isNumPadKey()) {
             currentInputConnection.sendKeyEvent(event)
-            EventBus.getDefault().post(Events.UpdateBuffers())
+            EventBus.getDefault().post(Events.UpdateBufferViews())
             return
         }
 
@@ -476,7 +476,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             return
         }
 
-
         // If in candidate selection window, the selection keys have to be mapped to DVORAK layout
         // ** This dirty hack should be resolved in the future, in libchewing. **
         if (ChewingBridge.chewing.getKBString() == "KB_DVORAK_HSU" && viewBinding.keyboardPanel.currentLayout == Layout.CANDIDATES) {
@@ -484,7 +483,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         }
 
         ChewingBridge.chewing.handleDefault(keyPressed)
-        EventBus.getDefault().post(Events.UpdateBuffers())
+        EventBus.getDefault().post(Events.UpdateBufferViews())
         EventBus.getDefault().post(Events.UpdateCursorPosition())
 
         // release Shift key and make the button background color back to normal
@@ -497,7 +496,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onUpdateBuffers(event: Events.UpdateBuffers) {
+    fun onUpdateBufferViews(event: Events.UpdateBufferViews) {
         Log.d(logTag, event.toString())
         viewBinding.apply {
             launch { textViewPreEditBuffer.update() }

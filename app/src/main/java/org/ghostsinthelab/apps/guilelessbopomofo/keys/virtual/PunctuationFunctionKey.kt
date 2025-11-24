@@ -45,7 +45,7 @@ class PunctuationFunctionKey(context: Context, attrs: AttributeSet) :
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             ChewingUtil.Companion.handleShiftComma()
-            EventBus.getDefault().post(Events.UpdateBuffers())
+            EventBus.getDefault().post(Events.UpdateBufferViews())
             return true
         }
 

@@ -86,6 +86,7 @@ class KeyboardPanel(
 
     fun toggleMainLayoutMode() {
         Log.d(logTag, "toggleMainLayoutMode()")
+
         when (ChewingBridge.chewing.getChiEngMode()) {
             ChiEngMode.SYMBOL.mode -> {
                 ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
@@ -294,7 +295,7 @@ class KeyboardPanel(
             ChewingBridge.chewing.candClose()
             currentCandidatesList = 0
             candidatesRecyclerView.adapter = null
-            EventBus.getDefault().post(Events.UpdateBuffers())
+            EventBus.getDefault().post(Events.UpdateBufferViews())
             switchToMainLayout()
         } else {
             // enter to candidate sublist
@@ -308,7 +309,7 @@ class KeyboardPanel(
             ChewingBridge.chewing.candClose()
             currentCandidatesList = 0
             candidatesRecyclerView.adapter = null
-            EventBus.getDefault().post(Events.UpdateBuffers())
+            EventBus.getDefault().post(Events.UpdateBufferViews())
             EventBus.getDefault().post(Events.UpdateCursorPositionToEnd())
             switchToMainLayout()
         } else {
