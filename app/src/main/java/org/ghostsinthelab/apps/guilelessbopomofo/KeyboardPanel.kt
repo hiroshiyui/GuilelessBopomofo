@@ -95,8 +95,6 @@ class KeyboardPanel(
 
             ChiEngMode.CHINESE.mode -> {
                 ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
-                ChewingBridge.chewing.cleanBopomofoBuf()
-                EventBus.getDefault().post(Events.UpdateBufferViews())
                 switchToAlphanumericalLayout()
             }
         }
