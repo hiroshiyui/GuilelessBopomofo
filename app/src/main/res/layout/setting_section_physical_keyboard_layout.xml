@@ -80,19 +80,6 @@
             android:fontFamily="monospace"
             android:text="hjkl;yuiop" />
 
-        <RadioButton
-            android:id="@+id/radioButtonDvorakHomeRow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:text="aoeuidhtns" />
-
-        <RadioButton
-            android:id="@+id/radioButtonDvorakMixedMode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:text="aoeui',.py" />
     </RadioGroup>
 
     <androidx.appcompat.widget.AppCompatImageView

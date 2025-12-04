@@ -33,7 +33,6 @@ enum class BopomofoKeyboards(val layout: String) {
     KB_DEFAULT("KB_DEFAULT"),
     KB_ET26("KB_ET26"),
     KB_HSU("KB_HSU"),
-    KB_DVORAK_HSU("KB_DVORAK_HSU"),
     KB_ET("KB_ET")
 }
 

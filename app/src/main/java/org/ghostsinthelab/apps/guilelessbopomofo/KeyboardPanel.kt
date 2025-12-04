@@ -30,7 +30,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED_PREFERENCES
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEYBOARD_LAYOUT
@@ -38,12 +37,9 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKe
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CompactLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDvorakLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26LayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26QwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt41LayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuDvorakBothLayoutBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuDvorakLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardHsuQwertyLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardQwertyLayoutBinding
@@ -67,9 +63,6 @@ class KeyboardPanel(
     private lateinit var keyboardEt41LayoutBinding: KeyboardEt41LayoutBinding
     private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
     private lateinit var keyboardQwertyLayoutBinding: KeyboardQwertyLayoutBinding
-    private lateinit var keyboardHsuDvorakLayoutBinding: KeyboardHsuDvorakLayoutBinding
-    private lateinit var keyboardHsuDvorakBothLayoutBinding: KeyboardHsuDvorakBothLayoutBinding
-    private lateinit var keyboardDvorakLayoutBinding: KeyboardDvorakLayoutBinding
     private lateinit var compactLayoutBinding: CompactLayoutBinding
 
     // candidatesRecyclerView
@@ -95,7 +88,7 @@ class KeyboardPanel(
 
             ChiEngMode.CHINESE.mode -> {
                 ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
-                switchToAlphanumericalLayout()
+                switchToQwertyLayout()
             }
         }
     }
@@ -129,7 +122,7 @@ class KeyboardPanel(
         if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
             switchToBopomofoLayout()
         } else {
-            switchToAlphanumericalLayout()
+            switchToQwertyLayout()
         }
     }
 
@@ -195,20 +188,6 @@ class KeyboardPanel(
                 return
             }
 
-            "KB_DVORAK_HSU" -> {
-                if (sharedPreferences.getBoolean(
-                        USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT, false
-                    )
-                ) {
-                    keyboardHsuDvorakBothLayoutBinding = KeyboardHsuDvorakBothLayoutBinding.inflate(LayoutInflater.from(context))
-                    this.addView(keyboardHsuDvorakBothLayoutBinding.root)
-                } else {
-                    keyboardHsuDvorakLayoutBinding = KeyboardHsuDvorakLayoutBinding.inflate(LayoutInflater.from(context))
-                    this.addView(keyboardHsuDvorakLayoutBinding.root)
-                }
-                return
-            }
-
             "KB_ET26" -> {
                 if (sharedPreferences.getBoolean(
                         USER_DISPLAY_ETEN26_QWERTY_LAYOUT, false
@@ -238,16 +217,6 @@ class KeyboardPanel(
         }
     }
 
-    private fun switchToAlphanumericalLayout() {
-        Log.d(logTag, "switchToAlphanumericalLayout()")
-
-        if (userIsUsingDvorakHsu()) {
-            switchToDvorakLayout()
-        } else {
-            switchToQwertyLayout()
-        }
-    }
-
     private fun switchToQwertyLayout() {
         Log.d(logTag, "switchToQwertyLayout")
         currentLayout = Layout.QWERTY
@@ -261,27 +230,6 @@ class KeyboardPanel(
 
         this.removeAllViews()
         this.addView(keyboardQwertyLayoutBinding.root)
-    }
-
-    private fun switchToDvorakLayout() {
-        Log.d(logTag, "switchToDvorakLayout")
-        currentLayout = Layout.DVORAK
-
-        if (physicalKeyboardPresented) {
-            switchToCompactLayout()
-            return
-        }
-
-        keyboardDvorakLayoutBinding = KeyboardDvorakLayoutBinding.inflate(LayoutInflater.from(context))
-
-        this.removeAllViews()
-        this.addView(keyboardDvorakLayoutBinding.root)
-    }
-
-    private fun userIsUsingDvorakHsu(): Boolean {
-        return (sharedPreferences.getString(
-            USER_KEYBOARD_LAYOUT, BopomofoKeyboards.KB_DEFAULT.layout
-        ) == "KB_DVORAK_HSU")
     }
 
     private fun switchToSymbolPicker() {

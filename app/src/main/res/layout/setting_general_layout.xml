@@ -18,6 +18,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settingSectionGeneralLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -124,12 +125,6 @@
             android:text="@string/bopomofo_keyboard_layout_hsu" />
 
         <RadioButton
-            android:id="@+id/radioButtonLayoutDvorakHsu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bopomofo_keyboard_layout_dvorak_hsu" />
-
-        <RadioButton
             android:id="@+id/radioButtonLayoutETen26"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -162,16 +157,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/switchDisplayHsuQwertyLayout" />
-
-    <com.google.android.material.materialswitch.MaterialSwitch
-        android:id="@+id/switchDisplayDvorakHsuBothLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/switch_display_hsu_dvorak_both_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/switchDisplayEten26QwertyLayout" />
 
     <TextView
         android:id="@+id/textViewSettingSpaceAsSelection"
@@ -239,11 +224,10 @@
         style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:text="@string/textViewSettingsConversionEngines"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchDisplayDvorakHsuBothLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/switchDisplayEten26QwertyLayout" />
 
     <TextView
         android:id="@+id/textViewSettingsDescriptionConversionEngines"

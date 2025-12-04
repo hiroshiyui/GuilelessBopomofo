@@ -18,7 +18,6 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
@@ -53,7 +52,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDIDATE_SELECTION_KEYS_OPTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
@@ -476,12 +474,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             return
         }
 
-        // If in candidate selection window, the selection keys have to be mapped to DVORAK layout
-        // ** This dirty hack should be resolved in the future, in libchewing. **
-        if (ChewingBridge.chewing.getKBString() == "KB_DVORAK_HSU" && viewBinding.keyboardPanel.currentLayout == Layout.CANDIDATES) {
-            keyPressed = ChewingUtil.qwertyToDvorakKeyMapping(keyPressed)
-        }
-
         ChewingBridge.chewing.handleDefault(keyPressed)
         EventBus.getDefault().post(Events.UpdateBufferViews())
         EventBus.getDefault().post(Events.UpdateCursorPosition())
@@ -533,7 +525,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     fun onRequestHideIme(event: Events.RequestHideIme) {
         viewBinding.keyboardPanel.apply {
             if (this.currentLayout in listOf(
-                    Layout.MAIN, Layout.COMPACT, Layout.QWERTY, Layout.DVORAK
+                    Layout.MAIN, Layout.COMPACT, Layout.QWERTY
                 )
             ) {
                 this@GuilelessBopomofoService.requestHideSelf(0)
@@ -805,7 +797,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             USER_KEYBOARD_LAYOUT,
             USER_DISPLAY_HSU_QWERTY_LAYOUT,
             USER_DISPLAY_ETEN26_QWERTY_LAYOUT,
-            USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT,
                 -> {
                 // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {

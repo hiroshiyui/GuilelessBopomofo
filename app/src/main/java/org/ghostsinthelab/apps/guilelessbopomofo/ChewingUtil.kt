@@ -38,8 +38,7 @@ class ChewingUtil {
         }
 
         fun anyBufferIsNotEmpty(): Boolean {
-            return ChewingBridge.chewing.bufferStringStatic()
-                .isNotEmpty() || ChewingBridge.chewing.bopomofoStringStatic().isNotEmpty()
+            return ChewingBridge.chewing.bufferStringStatic().isNotEmpty() || ChewingBridge.chewing.bopomofoStringStatic().isNotEmpty()
         }
 
         fun openSymbolCandidates() {
@@ -94,64 +93,14 @@ class ChewingUtil {
 
         // simulates [Shift] + [,]
         fun handleShiftComma() {
-            // detect the current keyboard type
-            val currentKeyboardType = ChewingBridge.chewing.getKBString()
-
-            // the location of comma in KB_DVORAK_HSU (',') is different from generic QWERTY ('w'),
-            // just workaround this:
-            val commaKeyMapping: Char = if (currentKeyboardType == "KB_DVORAK_HSU") {
-                dvorakToQwertyKeyMapping('<')
-            } else {
-                '<'
-            }
-
             if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
                 ChewingBridge.chewing.setEasySymbolInput(1)
-                ChewingBridge.chewing.handleDefault(commaKeyMapping)
+                ChewingBridge.chewing.handleDefault('<')
                 ChewingBridge.chewing.setEasySymbolInput(0)
             } else {
                 ChewingBridge.chewing.handleDefault(',')
             }
         }
 
-        private val dvorakKeysList: List<Char> = listOf(
-            '\'', '\"', ',', '<', '.', '>', 'p', 'P', 'y', 'Y', 'f', 'F', 'g', 'G',
-            'c', 'C', 'r', 'R', 'l', 'L', '/', '?', '=', '+', '\\', '|',
-            'a', 'A', 'o', 'O', 'e', 'E', 'u', 'U', 'i', 'I', 'd', 'D', 'h', 'H',
-            't', 'T', 'n', 'N', 's', 'S', '-', '_',
-            ';', ':', 'q', 'Q', 'j', 'J', 'k', 'K', 'x', 'X', 'b', 'B', 'm', 'M',
-            'w', 'W', 'v', 'V', 'z', 'Z'
-        )
-
-        private val qwertyKeysList: List<Char> = listOf(
-            'q', 'Q', 'w', 'W', 'e', 'E', 'r', 'R', 't', 'T', 'y', 'Y', 'u', 'U',
-            'i', 'I', 'o', 'O', 'p', 'P', '[', '{', ']', '}', '\\', '|',
-            'a', 'A', 's', 'S', 'd', 'D', 'f', 'F', 'g', 'G', 'h', 'H', 'j', 'J',
-            'k', 'K', 'l', 'L', ';', ':', '\'', '\"',
-            'z', 'Z', 'x', 'X', 'c', 'C', 'v', 'V', 'b', 'B', 'n', 'N', 'm', 'M',
-            ',', '<', '.', '>', '/', '?'
-        )
-
-        private val dvorakToQwertyKeyMappingMap: Map<Char, Char> =
-            dvorakKeysList.zip(qwertyKeysList).toMap()
-
-        fun dvorakToQwertyKeyMapping(key: Char): Char {
-            dvorakToQwertyKeyMappingMap[key]?.let {
-                return it
-            }
-            // if we can't find a mapping, then return the original key as-is
-            return key
-        }
-
-        private val qwertyToDvorakKeyMappingMap: Map<Char, Char> =
-            qwertyKeysList.zip(dvorakKeysList).toMap()
-
-        fun qwertyToDvorakKeyMapping(key: Char): Char {
-            qwertyToDvorakKeyMappingMap[key]?.let {
-                return it
-            }
-            // if we can't find a mapping, then return the original key as-is
-            return key
-        }
     }
 }

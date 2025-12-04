@@ -27,7 +27,6 @@ object GuilelessBopomofoEnv {
     const val SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS : String = "same_haptic_feedback_to_function_buttons"
     const val USER_CANDIDATE_SELECTION_KEYS_OPTION : String = "user_candidate_selection_keys_option"
     const val USER_CONVERSION_ENGINE : String = "user_conversion_engine"
-    const val USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT : String = "user_display_dvorak_hsu_both_layout"
     const val USER_DISPLAY_ETEN26_QWERTY_LAYOUT : String = "user_display_eten26_qwerty_layout"
     const val USER_DISPLAY_HSU_QWERTY_LAYOUT : String = "user_display_hsu_qwerty_layout"
     const val USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH : String = "user_enable_double_touch_ime_switch"

@@ -33,7 +33,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDIDATE_SELECTION_KEYS_OPTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
@@ -110,7 +109,6 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                     radioButtonLayoutDaChen to BopomofoKeyboards.KB_DEFAULT.layout,
                     radioButtonLayoutETen26 to BopomofoKeyboards.KB_ET26.layout,
                     radioButtonLayoutHsu to BopomofoKeyboards.KB_HSU.layout,
-                    radioButtonLayoutDvorakHsu to BopomofoKeyboards.KB_DVORAK_HSU.layout,
                     radioButtonLayoutETen41 to BopomofoKeyboards.KB_ET.layout
                 )) {
                     button.setOnClickListener {
@@ -131,14 +129,6 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                     }
 
                     switchDisplayHsuQwertyLayout.isGone = !this.isChecked
-                }
-
-                radioButtonLayoutDvorakHsu.apply {
-                    this.setOnCheckedChangeListener { _, isChecked ->
-                        switchDisplayDvorakHsuBothLayout.isGone = !isChecked
-                    }
-
-                    switchDisplayDvorakHsuBothLayout.isGone = !this.isChecked
                 }
 
                 radioButtonLayoutETen26.apply {
@@ -169,22 +159,6 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                     it.setOnCheckedChangeListener { _, _ ->
                         sharedPreferences.edit().putBoolean(USER_DISPLAY_ETEN26_QWERTY_LAYOUT, it.isChecked)
                             .apply()
-
-                    }
-                }
-
-                switchDisplayDvorakHsuBothLayout.let {
-                    if (sharedPreferences.getBoolean(
-                            USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT, false
-                        )
-                    ) {
-                        it.isChecked = true
-                    }
-
-                    it.setOnCheckedChangeListener { _, _ ->
-                        sharedPreferences.edit().putBoolean(
-                            USER_DISPLAY_DVORAK_HSU_BOTH_LAYOUT, it.isChecked
-                        ).apply()
 
                     }
                 }
@@ -336,9 +310,7 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                     radioButtonNumberRow to SelectionKeys.NUMBER_ROW.set,
                     radioButtonHomeRow to SelectionKeys.HOME_ROW.set,
                     radioButtonHomeTabMixedMode1 to SelectionKeys.HOME_TAB_MIXED_MODE1.set,
-                    radioButtonHomeTabMixedMode2 to SelectionKeys.HOME_TAB_MIXED_MODE2.set,
-                    radioButtonDvorakHomeRow to SelectionKeys.DVORAK_HOME_ROW.set,
-                    radioButtonDvorakMixedMode to SelectionKeys.DVORAK_MIXED_MODE.set,
+                    radioButtonHomeTabMixedMode2 to SelectionKeys.HOME_TAB_MIXED_MODE2.set
                 )) {
                     button.setOnClickListener {
                         sharedPreferences.edit().putString(USER_CANDIDATE_SELECTION_KEYS_OPTION, keys).apply()

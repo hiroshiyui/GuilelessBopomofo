@@ -34,13 +34,5 @@ enum class SelectionKeys(val keys: IntArray, val set: String) {
     HOME_TAB_MIXED_MODE2(
         charArrayOf('h', 'j', 'k', 'l', ';', 'y', 'u', 'i', 'o', 'p').map { it.code }.toIntArray(),
         "HOME_TAB_MIXED_MODE2"
-    ),
-    DVORAK_HOME_ROW(
-        charArrayOf('a', 'o', 'e', 'u', 'i', 'd', 'h', 't', 'n', 's').map { it.code }.toIntArray(),
-        "DVORAK_HOME_ROW"
-    ),
-    DVORAK_MIXED_MODE(
-        charArrayOf('a', 'o', 'e', 'u', 'i', '\'', ',', '.', 'p', 'y').map { it.code }.toIntArray(),
-        "DVORAK_MIXED_MODE"
     )
 }

@@ -605,37 +605,6 @@ class ChewingBridgeInstrumentedTest {
     }
 
     @Test
-    fun switchToDvorakHsuLayout() {
-        val newKeyboardType = ChewingBridge.chewing.convKBStr2Num("KB_DVORAK_HSU")
-        ChewingBridge.chewing.setKBType(newKeyboardType)
-        val currentKeyboardType = ChewingBridge.chewing.getKBType()
-        val currentKeyboardTypeString = ChewingBridge.chewing.getKBString()
-        assertEquals(7, currentKeyboardType)
-        assertEquals("KB_DVORAK_HSU", currentKeyboardTypeString)
-
-        // test ChewingUtil.dvorakToQwertyKeyMapping()
-        assertEquals('c', ChewingUtil.dvorakToQwertyKeyMapping('j'))
-        assertEquals('p', ChewingUtil.dvorakToQwertyKeyMapping('l'))
-        assertEquals('1', ChewingUtil.dvorakToQwertyKeyMapping('1'))
-        assertEquals('!', ChewingUtil.dvorakToQwertyKeyMapping('!'))
-
-        ChewingBridge.chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
-        ChewingBridge.chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
-        assertEquals("ㄌㄥ", ChewingBridge.chewing.bopomofoStringStatic())
-        // ˇ
-        ChewingBridge.chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('f'))
-        assertEquals("冷", ChewingBridge.chewing.bufferString())
-        ChewingBridge.chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('d'))
-        ChewingBridge.chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('x'))
-        ChewingBridge.chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('l'))
-        assertEquals("ㄉㄨㄥ", ChewingBridge.chewing.bopomofoStringStatic())
-        // ˋ
-        ChewingBridge.chewing.handleDefault(ChewingUtil.dvorakToQwertyKeyMapping('j'))
-        ChewingBridge.chewing.commitPreeditBuf()
-        assertEquals("冷凍", ChewingBridge.chewing.commitString())
-    }
-
-    @Test
     fun validCandidateWindowOpenClose() {
         ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setMaxChiSymbolLen(10)
