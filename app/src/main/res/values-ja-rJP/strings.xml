@@ -98,4 +98,43 @@
     <string name="hintEditTextTestNumberInput">Test digits input here</string>
     <string name="switch_setting_enable_ime_switch">入力ソース切り替えボタンを表示しますか？</string>
     <string name="textViewCurrentWidthModeValue">(width mode)</string>
+    <string name="physical_bopomofo_keyboard_layout">物理キーボード配列</string>
+    <string name="bopomofo_keyboard_layout_ibm">IBM式配列</string>
+    <string name="bopomofo_keyboard_layout_gin_yieh">精業式配列</string>
+    <string name="bopomofo_keyboard_layout_dvorak">Dvorak 大千式配列</string>
+    <string name="bopomofo_keyboard_layout_dvorak_hsu">Dvorak 許氏配列</string>
+    <string name="bopomofo_keyboard_layout_dachen26">大千26キー配列</string>
+    <string name="bopomofo_keyboard_layout_hanyu_pinyin">漢語拼音</string>
+    <string name="bopomofo_keyboard_layout_thl_pinyin">台湾華語ラテン文字化</string>
+    <string name="bopomofo_keyboard_layout_mps2_pinyin">注音符号第二形式</string>
+    <string name="bopomofo_keyboard_layout_carpalx">CarpalX配列</string>
+    <string name="bopomofo_keyboard_layout_colemak_dh_ansi">Colemak-DH ANSI配列</string>
+    <string name="bopomofo_keyboard_layout_colemak_dh_orth">Colemak-DH Ortholinear配列</string>
+    <string name="bopomofo_keyboard_layout_colemak">Colemak配列</string>
+    <string name="bopomofo_keyboard_layout_workman">Workman配列</string>
+    <string-array name="on_screen_bopomofo_keyboard_layouts">
+        <item>@string/bopomofo_keyboard_layout_dachen</item>
+        <item>@string/bopomofo_keyboard_layout_hsu</item>
+        <item>@string/bopomofo_keyboard_layout_eten26</item>
+        <item>@string/bopomofo_keyboard_layout_eten41</item>
+    </string-array>
+    <string-array name="physical_bopomofo_keyboard_layouts">
+        <item>@string/bopomofo_keyboard_layout_dachen</item>
+        <item>@string/bopomofo_keyboard_layout_hsu</item>
+        <item>@string/bopomofo_keyboard_layout_ibm</item>
+        <item>@string/bopomofo_keyboard_layout_gin_yieh</item>
+        <item>@string/bopomofo_keyboard_layout_eten41</item>
+        <item>@string/bopomofo_keyboard_layout_eten26</item>
+        <item>@string/bopomofo_keyboard_layout_dvorak</item>
+        <item>@string/bopomofo_keyboard_layout_dvorak_hsu</item>
+        <item>@string/bopomofo_keyboard_layout_dachen26</item>
+        <item>@string/bopomofo_keyboard_layout_hanyu_pinyin</item>
+        <item>@string/bopomofo_keyboard_layout_thl_pinyin</item>
+        <item>@string/bopomofo_keyboard_layout_mps2_pinyin</item>
+        <item>@string/bopomofo_keyboard_layout_carpalx</item>
+        <item>@string/bopomofo_keyboard_layout_colemak_dh_ansi</item>
+        <item>@string/bopomofo_keyboard_layout_colemak_dh_orth</item>
+        <item>@string/bopomofo_keyboard_layout_workman</item>
+        <item>@string/bopomofo_keyboard_layout_colemak</item>
+    </string-array>
 </resources>

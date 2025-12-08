@@ -24,6 +24,8 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,9 +43,10 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABL
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_LANDSCAPE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_PORTRAIT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_HAPTIC_FEEDBACK_STRENGTH
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EdgeToEdge
@@ -105,38 +108,37 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
 
                 textViewServiceStatus.text = currentGuilelessBopomofoServiceStatus()
 
-                for ((button, layout) in mapOf(
-                    radioButtonLayoutDaChen to BopomofoKeyboards.KB_DEFAULT.layout,
-                    radioButtonLayoutETen26 to BopomofoKeyboards.KB_ET26.layout,
-                    radioButtonLayoutHsu to BopomofoKeyboards.KB_HSU.layout,
-                    radioButtonLayoutETen41 to BopomofoKeyboards.KB_ET.layout
-                )) {
-                    button.setOnClickListener {
-                        sharedPreferences.edit().putString(USER_KEYBOARD_LAYOUT, layout).apply()
+                val keyboardLayouts = resources.getStringArray(R.array.on_screen_bopomofo_keyboard_layouts)
+                val layoutMap = mapOf(
+                    keyboardLayouts[0] to BopomofoSoftKeyboards.KB_DEFAULT.layout,
+                    keyboardLayouts[1] to BopomofoSoftKeyboards.KB_HSU.layout,
+                    keyboardLayouts[2] to BopomofoSoftKeyboards.KB_ET26.layout,
+                    keyboardLayouts[3] to BopomofoSoftKeyboards.KB_ET.layout
+                )
+
+                val adapter = ArrayAdapter(
+                    this@MainActivity,
+                    android.R.layout.simple_dropdown_item_1line,
+                    keyboardLayouts
+                )
+                (onScreenBopomofoKeyboardLayoutDropdownMenu.editText as? AutoCompleteTextView)?.let { autoCompleteTextView ->
+                    autoCompleteTextView.setAdapter(adapter)
+                    val currentLayout = sharedPreferences.getString(
+                        USER_SOFT_KEYBOARD_LAYOUT, BopomofoSoftKeyboards.KB_DEFAULT.layout
+                    )
+                    val currentLayoutName = layoutMap.entries.find { it.value == currentLayout }?.key
+                    autoCompleteTextView.setText(currentLayoutName, false)
+
+                    autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
+                        val selectedLayout = layoutMap[keyboardLayouts[position]]
+                        sharedPreferences.edit().putString(USER_SOFT_KEYBOARD_LAYOUT, selectedLayout).apply()
+
+                        switchDisplayHsuQwertyLayout.isGone = selectedLayout != BopomofoSoftKeyboards.KB_HSU.layout
+                        switchDisplayEten26QwertyLayout.isGone = selectedLayout != BopomofoSoftKeyboards.KB_ET26.layout
                     }
 
-                    if (sharedPreferences.getString(
-                            USER_KEYBOARD_LAYOUT, BopomofoKeyboards.KB_DEFAULT.layout
-                        ) == layout
-                    ) {
-                        button.isChecked = true
-                    }
-                }
-
-                radioButtonLayoutHsu.apply {
-                    this.setOnCheckedChangeListener { _, isChecked ->
-                        switchDisplayHsuQwertyLayout.isGone = !isChecked
-                    }
-
-                    switchDisplayHsuQwertyLayout.isGone = !this.isChecked
-                }
-
-                radioButtonLayoutETen26.apply {
-                    this.setOnCheckedChangeListener { _, isChecked ->
-                        switchDisplayEten26QwertyLayout.isGone = !isChecked
-                    }
-
-                    switchDisplayEten26QwertyLayout.isGone = !this.isChecked
+                    switchDisplayHsuQwertyLayout.isGone = currentLayout != BopomofoSoftKeyboards.KB_HSU.layout
+                    switchDisplayEten26QwertyLayout.isGone = currentLayout != BopomofoSoftKeyboards.KB_ET26.layout
                 }
 
                 switchDisplayHsuQwertyLayout.let {
@@ -306,11 +308,56 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
             }
 
             sectionPhysicalKeyboard.apply {
+                // set up physical keyboard layout dropdown menu
+                val physicalKeyboardLayouts = resources.getStringArray(R.array.physical_bopomofo_keyboard_layouts)
+                val layoutMap = mapOf(
+                    physicalKeyboardLayouts[0] to BopomofoPhysicalKeyboards.KB_DEFAULT.layout,
+                    physicalKeyboardLayouts[1] to BopomofoPhysicalKeyboards.KB_HSU.layout,
+                    physicalKeyboardLayouts[2] to BopomofoPhysicalKeyboards.KB_IBM.layout,
+                    physicalKeyboardLayouts[3] to BopomofoPhysicalKeyboards.KB_GIN_YIEH.layout,
+                    physicalKeyboardLayouts[4] to BopomofoPhysicalKeyboards.KB_ET.layout,
+                    physicalKeyboardLayouts[5] to BopomofoPhysicalKeyboards.KB_ET26.layout,
+                    physicalKeyboardLayouts[6] to BopomofoPhysicalKeyboards.KB_DVORAK.layout,
+                    physicalKeyboardLayouts[7] to BopomofoPhysicalKeyboards.KB_DVORAK_HSU.layout,
+                    physicalKeyboardLayouts[8] to BopomofoPhysicalKeyboards.KB_DACHEN_CP26.layout,
+                    physicalKeyboardLayouts[9] to BopomofoPhysicalKeyboards.KB_HANYU_PINYIN.layout,
+                    physicalKeyboardLayouts[10] to BopomofoPhysicalKeyboards.KB_THL_PINYIN.layout,
+                    physicalKeyboardLayouts[11] to BopomofoPhysicalKeyboards.KB_MPS2_PINYIN.layout,
+                    physicalKeyboardLayouts[12] to BopomofoPhysicalKeyboards.KB_CARPALX.layout,
+                    physicalKeyboardLayouts[13] to BopomofoPhysicalKeyboards.KB_COLEMAK_DH_ANSI.layout,
+                    physicalKeyboardLayouts[14] to BopomofoPhysicalKeyboards.KB_COLEMAK_DH_ORTH.layout,
+                    physicalKeyboardLayouts[15] to BopomofoPhysicalKeyboards.KB_WORKMAN.layout,
+                    physicalKeyboardLayouts[16] to BopomofoPhysicalKeyboards.KB_COLEMAK.layout
+                )
+
+                val adapter = ArrayAdapter(
+                    this@MainActivity,
+                    android.R.layout.simple_dropdown_item_1line,
+                    physicalKeyboardLayouts
+                )
+
+                (physicalBopomofoKeyboardLayoutDropdownMenu.editText as? AutoCompleteTextView)?.let { autoCompleteTextView ->
+                    autoCompleteTextView.setAdapter(adapter)
+                    val currentLayout = sharedPreferences.getString(
+                        USER_PHYSICAL_KEYBOARD_LAYOUT, BopomofoPhysicalKeyboards.KB_DEFAULT.layout
+                    )
+                    val currentLayoutName = layoutMap.entries.find { it.value == currentLayout }?.key
+                    autoCompleteTextView.setText(currentLayoutName, false)
+
+                    autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
+                        sharedPreferences.edit()
+                            .putString(USER_PHYSICAL_KEYBOARD_LAYOUT, layoutMap[physicalKeyboardLayouts[position]])
+                            .apply()
+                    }
+                }
+
+                // set up physical keyboard candidates selection keys radio buttons
                 for ((button, keys) in mapOf(
                     radioButtonNumberRow to SelectionKeys.NUMBER_ROW.set,
                     radioButtonHomeRow to SelectionKeys.HOME_ROW.set,
                     radioButtonHomeTabMixedMode1 to SelectionKeys.HOME_TAB_MIXED_MODE1.set,
-                    radioButtonHomeTabMixedMode2 to SelectionKeys.HOME_TAB_MIXED_MODE2.set
+                    radioButtonHomeTabMixedMode2 to SelectionKeys.HOME_TAB_MIXED_MODE2.set,
+                    radioButtonDvorakHomeRow to SelectionKeys.DVORAK_HOME_ROW.set,
                 )) {
                     button.setOnClickListener {
                         sharedPreferences.edit().putString(USER_CANDIDATE_SELECTION_KEYS_OPTION, keys).apply()

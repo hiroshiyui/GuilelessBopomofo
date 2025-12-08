@@ -103,40 +103,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSettingBopomofoKeyboardLayout" />
 
-    <RadioGroup
-        android:id="@+id/radioGroupSettingBopomofoKeyboardLayout"
-        style="@style/Settings.Widget"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/on_screen_bopomofo_keyboard_layout_dropdown_menu"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSettingDescriptionBopomofoKeyboardLayout">
 
-        <RadioButton
-            android:id="@+id/radioButtonLayoutDaChen"
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/bopomofo_keyboard_layout_dachen" />
+            android:inputType="none"
+            android:text="@string/bopomofo_keyboard_layout_dachen"
+            app:simpleItems="@array/on_screen_bopomofo_keyboard_layouts" />
 
-        <RadioButton
-            android:id="@+id/radioButtonLayoutHsu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bopomofo_keyboard_layout_hsu" />
-
-        <RadioButton
-            android:id="@+id/radioButtonLayoutETen26"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bopomofo_keyboard_layout_eten26" />
-
-        <RadioButton
-            android:id="@+id/radioButtonLayoutETen41"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bopomofo_keyboard_layout_eten41" />
-
-    </RadioGroup>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchDisplayHsuQwertyLayout"
@@ -146,7 +130,7 @@
         android:text="@string/switch_display_hsu_qwerty_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/radioGroupSettingBopomofoKeyboardLayout" />
+        app:layout_constraintTop_toBottomOf="@id/on_screen_bopomofo_keyboard_layout_dropdown_menu" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchDisplayEten26QwertyLayout"

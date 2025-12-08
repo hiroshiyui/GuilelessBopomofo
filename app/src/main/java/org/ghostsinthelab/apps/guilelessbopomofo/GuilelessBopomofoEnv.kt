@@ -35,7 +35,8 @@ object GuilelessBopomofoEnv {
     const val USER_FULLSCREEN_WHEN_IN_LANDSCAPE : String = "user_fullscreen_when_in_landscape"
     const val USER_FULLSCREEN_WHEN_IN_PORTRAIT : String = "user_fullscreen_when_in_portrait"
     const val USER_HAPTIC_FEEDBACK_STRENGTH : String = "user_haptic_feedback_strength"
-    const val USER_KEYBOARD_LAYOUT : String = "user_keyboard_layout"
+    const val USER_SOFT_KEYBOARD_LAYOUT : String = "user_keyboard_layout"
+    const val USER_PHYSICAL_KEYBOARD_LAYOUT : String = "user_physical_keyboard_layout"
     const val USER_KEY_BUTTON_HEIGHT : String = "user_key_button_height"
     const val USER_PHRASE_CHOICE_REARWARD : String = "user_phrase_choice_rearward"
 }

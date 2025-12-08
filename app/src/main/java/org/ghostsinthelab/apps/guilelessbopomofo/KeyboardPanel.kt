@@ -32,7 +32,8 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED_PREFERENCES
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEYBOARD_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CompactLayoutBinding
@@ -157,23 +158,34 @@ class KeyboardPanel(
         this.removeAllViews()
 
         // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
-        val userKeyboardLayoutPreference = sharedPreferences.getString(
-            USER_KEYBOARD_LAYOUT, BopomofoKeyboards.KB_DEFAULT.layout
-        )
-
-        userKeyboardLayoutPreference?.let {
-            val newKeyboardType = ChewingBridge.chewing.convKBStr2Num(it)
-            ChewingBridge.chewing.setKBType(newKeyboardType)
-        }
 
         // Toggle to compact layout when physical keyboard is enabled:
         if (physicalKeyboardPresented) {
+            // get user preferred physical Bopomofo keyboard layout
+            val userPhysicalKeyboardLayoutPreference = sharedPreferences.getString(
+                USER_PHYSICAL_KEYBOARD_LAYOUT, BopomofoPhysicalKeyboards.KB_DEFAULT.layout
+            )
+
+            userPhysicalKeyboardLayoutPreference?.let {
+                val newPhysicalKeyboardType = ChewingBridge.chewing.convKBStr2Num(it)
+                ChewingBridge.chewing.setKBType(newPhysicalKeyboardType)
+            }
+
             switchToCompactLayout()
             return
         }
 
         // Or we will use soft, on-screen keyboard:
-        when (userKeyboardLayoutPreference) {
+        val userSoftKeyboardLayoutPreference = sharedPreferences.getString(
+            USER_SOFT_KEYBOARD_LAYOUT, BopomofoSoftKeyboards.KB_DEFAULT.layout
+        )
+
+        userSoftKeyboardLayoutPreference?.let {
+            val newSoftKeyboardType = ChewingBridge.chewing.convKBStr2Num(it)
+            ChewingBridge.chewing.setKBType(newSoftKeyboardType)
+        }
+
+        when (userSoftKeyboardLayoutPreference) {
             "KB_HSU" -> {
                 if (sharedPreferences.getBoolean(
                         USER_DISPLAY_HSU_QWERTY_LAYOUT, false

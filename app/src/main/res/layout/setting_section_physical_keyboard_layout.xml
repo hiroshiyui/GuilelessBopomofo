@@ -38,10 +38,11 @@
         style="@style/Settings.Label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="@string/physical_selection_keys"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHeadingPhysicalKeyboardSettings" />
+        app:layout_constraintTop_toBottomOf="@+id/physicalBopomofoKeyboardLayoutDropdownMenu" />
 
     <RadioGroup
         android:id="@+id/radioGroupSelectionKeysOption"
@@ -80,6 +81,13 @@
             android:fontFamily="monospace"
             android:text="hjkl;yuiop" />
 
+        <RadioButton
+            android:id="@+id/radioButtonDvorakHomeRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="aoeuidhtns" />
+
     </RadioGroup>
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -99,6 +107,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/imageViewInfo"
         app:layout_constraintTop_toTopOf="@id/imageViewInfo" />
+
+    <TextView
+        android:id="@+id/textViewSettingPhysicalBopomofoKeyboardLayout"
+        style="@style/Settings.Label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/physical_bopomofo_keyboard_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHeadingPhysicalKeyboardSettings" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/physicalBopomofoKeyboardLayoutDropdownMenu"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingPhysicalBopomofoKeyboardLayout">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:text="@string/bopomofo_keyboard_layout_dachen"
+            app:simpleItems="@array/physical_bopomofo_keyboard_layouts" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

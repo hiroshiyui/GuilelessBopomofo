@@ -60,9 +60,10 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABL
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_LANDSCAPE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_PORTRAIT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_HAPTIC_FEEDBACK_STRENGTH
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.deviceIsEmulator
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
@@ -474,6 +475,12 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             return
         }
 
+        // If in candidate selection window, the selection keys have to be mapped to DVORAK layout
+        // ** This dirty hack should be resolved in the future, in libchewing. **
+        if (ChewingBridge.chewing.getKBString() == "KB_DVORAK_HSU" && viewBinding.keyboardPanel.currentLayout == Layout.CANDIDATES) {
+            keyPressed = ChewingUtil.qwertyToDvorakKeyMapping(keyPressed)
+        }
+
         ChewingBridge.chewing.handleDefault(keyPressed)
         EventBus.getDefault().post(Events.UpdateBufferViews())
         EventBus.getDefault().post(Events.UpdateCursorPosition())
@@ -794,7 +801,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     // triggered if any sharedPreference has been changed
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
-            USER_KEYBOARD_LAYOUT,
+            USER_SOFT_KEYBOARD_LAYOUT,
+            USER_PHYSICAL_KEYBOARD_LAYOUT,
             USER_DISPLAY_HSU_QWERTY_LAYOUT,
             USER_DISPLAY_ETEN26_QWERTY_LAYOUT,
                 -> {

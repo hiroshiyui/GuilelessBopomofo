@@ -29,11 +29,31 @@ enum class ShapeMode(val mode: Int) {
     HALF(0), FULL(1)
 }
 
-enum class BopomofoKeyboards(val layout: String) {
+enum class BopomofoSoftKeyboards(val layout: String) {
     KB_DEFAULT("KB_DEFAULT"),
-    KB_ET26("KB_ET26"),
     KB_HSU("KB_HSU"),
-    KB_ET("KB_ET")
+    KB_ET("KB_ET"),
+    KB_ET26("KB_ET26"),
+}
+
+enum class BopomofoPhysicalKeyboards(val layout: String) {
+    KB_DEFAULT("KB_DEFAULT"),
+    KB_HSU("KB_HSU"),
+    KB_IBM("KB_IBM"),
+    KB_GIN_YIEH("KB_GIN_YIEH"),
+    KB_ET("KB_ET"),
+    KB_ET26("KB_ET26"),
+    KB_DVORAK("KB_DVORAK"),
+    KB_DVORAK_HSU("KB_DVORAK_HSU"),
+    KB_DACHEN_CP26("KB_DACHEN_CP26"),
+    KB_HANYU_PINYIN("KB_HANYU_PINYIN"),
+    KB_THL_PINYIN("KB_THL_PINYIN"),
+    KB_MPS2_PINYIN("KB_MPS2_PINYIN"),
+    KB_CARPALX("KB_CARPALX"),
+    KB_COLEMAK_DH_ANSI("KB_COLEMAK_DH_ANSI"),
+    KB_COLEMAK_DH_ORTH("KB_COLEMAK_DH_ORTH"),
+    KB_WORKMAN("KB_WORKMAN"),
+    KB_COLEMAK("KB_COLEMAK"),
 }
 
 enum class ConversionEngines(val mode: Int) {
