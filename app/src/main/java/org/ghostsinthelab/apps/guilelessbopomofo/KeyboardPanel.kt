@@ -89,7 +89,7 @@ class KeyboardPanel(
 
             ChiEngMode.CHINESE.mode -> {
                 ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
-                switchToQwertyLayout()
+                switchToAlphanumericalLayout()
             }
         }
     }
@@ -123,7 +123,7 @@ class KeyboardPanel(
         if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
             switchToBopomofoLayout()
         } else {
-            switchToQwertyLayout()
+            switchToAlphanumericalLayout()
         }
     }
 
@@ -229,7 +229,7 @@ class KeyboardPanel(
         }
     }
 
-    private fun switchToQwertyLayout() {
+    private fun switchToAlphanumericalLayout() {
         Log.d(logTag, "switchToQwertyLayout")
         currentLayout = Layout.QWERTY
 
