@@ -153,11 +153,6 @@ class KeyboardPanel(
 
     private fun switchToBopomofoLayout() {
         Log.d(logTag, "switchToBopomofoLayout()")
-        currentLayout = Layout.MAIN
-
-        this.removeAllViews()
-
-        // 不同注音鍵盤排列的抽換 support different Bopomofo keyboard layouts
 
         // Toggle to compact layout when physical keyboard is enabled:
         if (physicalKeyboardPresented) {
@@ -175,7 +170,10 @@ class KeyboardPanel(
             return
         }
 
-        // Or we will use soft, on-screen keyboard:
+        currentLayout = Layout.MAIN
+        this.removeAllViews()
+
+        // 不同注音排列螢幕鍵盤的抽換 support different on-screen Bopomofo keyboard layouts
         val userSoftKeyboardLayoutPreference = sharedPreferences.getString(
             USER_SOFT_KEYBOARD_LAYOUT, BopomofoSoftKeyboards.KB_DEFAULT.layout
         )
@@ -231,13 +229,13 @@ class KeyboardPanel(
 
     private fun switchToAlphanumericalLayout() {
         Log.d(logTag, "switchToQwertyLayout")
-        currentLayout = Layout.QWERTY
 
         if (physicalKeyboardPresented) {
             switchToCompactLayout()
             return
         }
 
+        currentLayout = Layout.QWERTY
         keyboardQwertyLayoutBinding = KeyboardQwertyLayoutBinding.inflate(LayoutInflater.from(context))
 
         this.removeAllViews()
