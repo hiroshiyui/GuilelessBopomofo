@@ -130,6 +130,17 @@ class KeyboardPanel(
     fun switchToCompactLayout() {
         Log.d(logTag, "switchToCompactLayout")
         currentLayout = Layout.COMPACT
+
+        // get user preferred physical Bopomofo keyboard layout
+        val userPhysicalKeyboardLayoutPreference = sharedPreferences.getString(
+            USER_PHYSICAL_KEYBOARD_LAYOUT, BopomofoPhysicalKeyboards.KB_DEFAULT.layout
+        )
+
+        userPhysicalKeyboardLayoutPreference?.let {
+            val newPhysicalKeyboardType = ChewingBridge.chewing.convKBStr2Num(it)
+            ChewingBridge.chewing.setKBType(newPhysicalKeyboardType)
+        }
+
         this.removeAllViews()
         compactLayoutBinding = CompactLayoutBinding.inflate(LayoutInflater.from(context))
         if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
@@ -156,16 +167,6 @@ class KeyboardPanel(
 
         // Toggle to compact layout when physical keyboard is enabled:
         if (physicalKeyboardPresented) {
-            // get user preferred physical Bopomofo keyboard layout
-            val userPhysicalKeyboardLayoutPreference = sharedPreferences.getString(
-                USER_PHYSICAL_KEYBOARD_LAYOUT, BopomofoPhysicalKeyboards.KB_DEFAULT.layout
-            )
-
-            userPhysicalKeyboardLayoutPreference?.let {
-                val newPhysicalKeyboardType = ChewingBridge.chewing.convKBStr2Num(it)
-                ChewingBridge.chewing.setKBType(newPhysicalKeyboardType)
-            }
-
             switchToCompactLayout()
             return
         }
