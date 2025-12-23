@@ -23,6 +23,10 @@ enum class SelectionKeys(val keys: IntArray, val set: String) {
         charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }.toIntArray(),
         "NUMBER_ROW"
     ),
+    TAB_ROW(
+        charArrayOf('q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p').map { it.code }.toIntArray(),
+        "TAB_ROW"
+    ),
     HOME_ROW(
         charArrayOf('a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';').map { it.code }.toIntArray(),
         "HOME_ROW"

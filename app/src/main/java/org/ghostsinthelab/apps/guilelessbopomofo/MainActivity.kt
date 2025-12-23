@@ -354,6 +354,7 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                 // set up physical keyboard candidates selection keys radio buttons
                 for ((button, keys) in mapOf(
                     radioButtonNumberRow to SelectionKeys.NUMBER_ROW.set,
+                    radioButtonTabRow to SelectionKeys.TAB_ROW.set,
                     radioButtonHomeRow to SelectionKeys.HOME_ROW.set,
                     radioButtonHomeTabMixedMode1 to SelectionKeys.HOME_TAB_MIXED_MODE1.set,
                     radioButtonHomeTabMixedMode2 to SelectionKeys.HOME_TAB_MIXED_MODE2.set,

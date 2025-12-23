@@ -86,6 +86,8 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Right
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.RightShift
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Space
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Up
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeDown
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeUp
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EdgeToEdge
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -403,6 +405,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             KeyEvent.KEYCODE_CAPS_LOCK to CapsLock(),
             KeyEvent.KEYCODE_MOVE_END to End(),
             KeyEvent.KEYCODE_MOVE_HOME to Home(),
+            KeyEvent.KEYCODE_VOLUME_UP to VolumeUp(),
+            KeyEvent.KEYCODE_VOLUME_DOWN to VolumeDown(),
             // Add more mappings here for each physical key you want to handle separately
         )
     }
