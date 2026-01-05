@@ -832,8 +832,8 @@ class ChewingBridgeInstrumentedTest {
     @Test
     fun testVersion() {
         val version: String = ChewingBridge.chewing.version()
-        assert(version.startsWith("0.10"))
-        assertEquals("0.10.3", version)
+        assert(version.startsWith("0.11"))
+        assertEquals("0.11.0-alpha.5", version)
     }
 
     @Test
