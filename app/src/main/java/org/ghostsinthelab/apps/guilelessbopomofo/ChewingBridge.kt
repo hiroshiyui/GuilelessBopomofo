@@ -34,6 +34,7 @@ enum class BopomofoSoftKeyboards(val layout: String) {
     KB_HSU("KB_HSU"),
     KB_ET("KB_ET"),
     KB_ET26("KB_ET26"),
+    KB_DACHEN_CP26("KB_DACHEN_CP26"),
 }
 
 enum class BopomofoPhysicalKeyboards(val layout: String) {

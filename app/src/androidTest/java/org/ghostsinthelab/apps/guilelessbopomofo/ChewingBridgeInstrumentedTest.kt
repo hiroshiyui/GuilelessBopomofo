@@ -706,6 +706,25 @@ class ChewingBridgeInstrumentedTest {
     }
 
     @Test
+    fun switchToDaChenCp26Layout() {
+        ChewingBridge.chewing.configSetStr("chewing.keyboard_type", "KB_DACHEN_CP26")
+        assertEquals(ChewingBridge.chewing.convKBStr2Num("KB_DACHEN_CP26"), ChewingBridge.chewing.getKBType())
+        assertEquals("KB_DACHEN_CP26", ChewingBridge.chewing.configGetStr("chewing.keyboard_type"))
+
+        ChewingBridge.chewing.handleDefault('q')
+        ChewingBridge.chewing.handleDefault('q')
+        ChewingBridge.chewing.handleDefault('j')
+        assertEquals("ㄆㄨ", ChewingBridge.chewing.bopomofoStringStatic())
+        assertEquals("ㄆㄨ", ChewingBridge.chewing.bopomofoString())
+        ChewingBridge.chewing.handleDefault('e')
+        assertEquals("僕", ChewingBridge.chewing.bufferString())
+        ChewingBridge.chewing.handleDefault('g')
+        ChewingBridge.chewing.handleDefault('e')
+        ChewingBridge.chewing.commitPreeditBuf()
+        assertEquals("樸實", ChewingBridge.chewing.commitString())
+    }
+
+    @Test
     fun switchToSymbolSelectionMode() {
         ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setMaxChiSymbolLen(10)
