@@ -37,6 +37,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CompactLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenCp26LayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardDachenLayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26LayoutBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.KeyboardEt26QwertyLayoutBinding
@@ -63,6 +64,7 @@ class KeyboardPanel(
     private lateinit var keyboardEt26QwertyLayoutBinding: KeyboardEt26QwertyLayoutBinding
     private lateinit var keyboardEt41LayoutBinding: KeyboardEt41LayoutBinding
     private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
+    private lateinit var keyboardDachenCp26LayoutBinding: KeyboardDachenCp26LayoutBinding
     private lateinit var keyboardQwertyLayoutBinding: KeyboardQwertyLayoutBinding
     private lateinit var compactLayoutBinding: CompactLayoutBinding
 
@@ -223,6 +225,12 @@ class KeyboardPanel(
             "KB_DEFAULT" -> {
                 keyboardDachenLayoutBinding = KeyboardDachenLayoutBinding.inflate(LayoutInflater.from(context))
                 this.addView(keyboardDachenLayoutBinding.root)
+                return
+            }
+
+            "KB_DACHEN_CP26" -> {
+                keyboardDachenCp26LayoutBinding = KeyboardDachenCp26LayoutBinding.inflate(LayoutInflater.from(context))
+                this.addView(keyboardDachenCp26LayoutBinding.root)
                 return
             }
         }

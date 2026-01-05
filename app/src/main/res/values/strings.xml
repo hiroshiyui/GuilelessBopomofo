@@ -117,6 +117,7 @@
         <item>@string/bopomofo_keyboard_layout_hsu</item>
         <item>@string/bopomofo_keyboard_layout_eten26</item>
         <item>@string/bopomofo_keyboard_layout_eten41</item>
+        <item>@string/bopomofo_keyboard_layout_dachen26</item>
     </string-array>
     <string-array name="physical_bopomofo_keyboard_layouts">
         <item>@string/bopomofo_keyboard_layout_dachen</item>

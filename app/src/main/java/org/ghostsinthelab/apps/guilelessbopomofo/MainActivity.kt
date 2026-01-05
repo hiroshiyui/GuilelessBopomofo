@@ -113,7 +113,8 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                     keyboardLayouts[0] to BopomofoSoftKeyboards.KB_DEFAULT.layout,
                     keyboardLayouts[1] to BopomofoSoftKeyboards.KB_HSU.layout,
                     keyboardLayouts[2] to BopomofoSoftKeyboards.KB_ET26.layout,
-                    keyboardLayouts[3] to BopomofoSoftKeyboards.KB_ET.layout
+                    keyboardLayouts[3] to BopomofoSoftKeyboards.KB_ET.layout,
+                    keyboardLayouts[4] to BopomofoSoftKeyboards.KB_DACHEN_CP26.layout
                 )
 
                 val adapter = ArrayAdapter(
