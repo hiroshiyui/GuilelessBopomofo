@@ -161,6 +161,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
             ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
             ChewingBridge.chewing.setCandPerPage(10)
+            ChewingBridge.chewing.configSetInt("chewing.sort_candidates_by_frequency", 1)
 
             sharedPreferences.getString(
                 USER_CANDIDATE_SELECTION_KEYS_OPTION, SelectionKeys.NUMBER_ROW.set
