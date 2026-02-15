@@ -18,6 +18,7 @@
 
 #include <jni.h>
 #include <string>
+#include <vector>
 #include <android/log.h>
 #include "libs/libchewing/capi/include/chewing.h"
 
@@ -33,37 +34,30 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_chewingNew(
         JNIEnv *env,
         jobject,
         jstring data_path) {
-    ChewingContext *ctx;
+    const char *native_data_path = env->GetStringUTFChars(data_path, nullptr);
+    if (!native_data_path) {
+        return 0;
+    }
 
-    /* build native_data_path */
-    const char *native_data_path;
-    native_data_path = env->GetStringUTFChars(data_path, JNI_FALSE);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "native_data_path: %s", native_data_path);
 
-    /* build native_user_data_path */
-    char user_hash_dat[] = "userhash.dat";
-    /* this first 1 is for '/', the second 1 is for zero terminator */
-    unsigned int native_user_data_path_len =
-            strlen(native_data_path) + strlen(user_hash_dat) + 1 + 1;
-    char native_user_data_path[native_user_data_path_len];
-    memset(native_user_data_path, '\0', native_user_data_path_len);
-
-    strcat(native_user_data_path, native_data_path);
-    strcat(native_user_data_path, "/");
-    strcat(native_user_data_path, user_hash_dat);
+    std::string native_user_data_path = std::string(native_data_path) + "/userhash.dat";
 
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "native_user_data_path: %s",
-                        native_user_data_path);
+                        native_user_data_path.c_str());
 
     /* create chewing context */
-    ctx = chewing_new2(native_data_path, native_user_data_path, nullptr, 0);
+    ChewingContext *ctx = chewing_new2(native_data_path, native_user_data_path.c_str(), nullptr, nullptr);
+    env->ReleaseStringUTFChars(data_path, native_data_path);
+
     /* check if we do chewing_new2() successfully */
-    if (chewing_Reset(ctx) == -1) {
+    if (!ctx || chewing_Reset(ctx) == -1) {
         jclass Exception = env->FindClass("java/lang/Exception");
         env->ThrowNew(Exception, "Unable to initialize Chewing engine.");
+        return 0;
     }
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "New Chewing context: %lld",
-                        (long long) ctx);
+
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "New Chewing context created");
     return (jlong) (intptr_t) ctx;
 }
 
@@ -74,8 +68,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_delete(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Delete chewing context: %lld",
-                        (long long) ctx);
+    if (!ctx) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Delete chewing context");
     chewing_delete(ctx);
 }
 
@@ -86,6 +80,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setChiEngMode(
         jint mode,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return;
     chewing_set_ChiEngMode(ctx, mode);
 }
 
@@ -96,8 +91,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getChiEngMode(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Get chewing Chinese/English mode from context ptr: %lld", (long long) ctx);
+    if (!ctx) return 0;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Get chewing Chinese/English mode");
     return chewing_get_ChiEngMode(ctx);
 }
 
@@ -110,12 +105,12 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setSelKey(
         jint len,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jint buf[len];
-    (*env).GetIntArrayRegion(selkeys, 0, len, buf);
+    if (!ctx || len <= 0) return;
+    std::vector<jint> buf(len);
+    env->GetIntArrayRegion(selkeys, 0, len, buf.data());
 
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Set chewing selection keys from context ptr: %lld", (long long) ctx);
-    chewing_set_selKey(ctx, reinterpret_cast<const int *>(buf), len);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Set chewing selection keys");
+    chewing_set_selKey(ctx, reinterpret_cast<const int *>(buf.data()), len);
 }
 
 /* chewing_get_selKey() */
@@ -125,18 +120,27 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getSelKey(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Get chewing selection keys from context ptr: %lld", (long long) ctx);
+    if (!ctx) return nullptr;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Get chewing selection keys");
     int *get_selkey_ptr = chewing_get_selKey(ctx);
+    if (!get_selkey_ptr) return nullptr;
     int len = chewing_get_candPerPage(ctx);
+    if (len <= 0) {
+        chewing_free(get_selkey_ptr);
+        return nullptr;
+    }
 
-    jint buf[len];
+    std::vector<jint> buf(len);
     jintArray ret_jintArray = env->NewIntArray(len);
+    if (!ret_jintArray) {
+        chewing_free(get_selkey_ptr);
+        return nullptr;
+    }
 
     for (int i = 0; i < len; i++) {
         buf[i] = get_selkey_ptr[i];
     }
-    env->SetIntArrayRegion(ret_jintArray, 0, len, buf);
+    env->SetIntArrayRegion(ret_jintArray, 0, len, buf.data());
     chewing_free(get_selkey_ptr);
     return ret_jintArray;
 }
@@ -148,8 +152,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_free(
         jobject,
         jlong res_ptr) {
     auto *res = reinterpret_cast<void *>(res_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Free chewing resource (ptr): %lld",
-                        (long long) res);
+    if (!res) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Free chewing resource");
     chewing_free(res);
 }
 
@@ -161,9 +165,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setMaxChiSymbolLen(
         jint len,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return;
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Set chewing max Chinese symbol length to %d from context ptr: %lld",
-                        (jint) len, (long long) ctx);
+                        "Set chewing max Chinese symbol length to %d", (jint) len);
     chewing_set_maxChiSymbolLen(ctx, len);
 }
 
@@ -173,9 +177,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getMaxChiSymbolLen(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jint max_chi_symbol_len;
-    max_chi_symbol_len = chewing_get_maxChiSymbolLen(ctx);
-    return max_chi_symbol_len;
+    if (!ctx) return 0;
+    return chewing_get_maxChiSymbolLen(ctx);
 }
 
 /* chewing_set_candPerPage() */
@@ -186,9 +189,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setCandPerPage(
         jint candidates,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return;
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Set chewing candidates per page to %d from context ptr: %lld",
-                        (jint) candidates, (long long) ctx);
+                        "Set chewing candidates per page to %d", (jint) candidates);
     chewing_set_candPerPage(ctx, candidates);
 }
 
@@ -198,9 +201,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getCandPerPage(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jint cand_per_page;
-    cand_per_page = chewing_get_candPerPage(ctx);
-    return cand_per_page;
+    if (!ctx) return 0;
+    return chewing_get_candPerPage(ctx);
 }
 
 /* chewing_set_phraseChoiceRearward() */
@@ -211,9 +213,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setPhraseChoiceRearward(
         jint mode,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return;
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Set phrase choice rearward to (%d) from context ptr: %lld", (jint) mode,
-                        (long long) ctx);
+                        "Set phrase choice rearward to (%d)", (jint) mode);
     chewing_set_phraseChoiceRearward(ctx, mode);
 }
 
@@ -223,9 +225,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getPhraseChoiceRearward(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jint phrase_choice_rearward;
-    phrase_choice_rearward = chewing_get_phraseChoiceRearward(ctx);
-    return phrase_choice_rearward;
+    if (!ctx) return 0;
+    return chewing_get_phraseChoiceRearward(ctx);
 }
 
 /* chewing_handle_Default() */
@@ -236,8 +237,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleDefault(
         jchar key,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Handle default input from context ptr: %lld", (long long) ctx);
+    if (!ctx) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle default input");
     chewing_handle_Default(ctx, (int) key);
 }
 
@@ -247,9 +248,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleBackspace(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Handle backspace input from context ptr: %lld",
-                        (long long) ctx);
+    if (!ctx) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle backspace input");
     chewing_handle_Backspace(ctx);
 }
 
@@ -260,8 +260,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleEnter(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle enter input from context ptr: %lld",
-                        (long long) ctx);
+    if (!ctx) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle enter input");
     chewing_handle_Enter(ctx);
 }
 
@@ -272,9 +272,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleSpace(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Handle space key input from context ptr: %lld",
-                        (long long) ctx);
+    if (!ctx) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle space key input");
     chewing_handle_Space(ctx);
 }
 
@@ -283,8 +282,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleHome(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle Home key input from context ptr: %lld",
-                        (long long) ctx);
+    if (!ctx) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle Home key input");
     chewing_handle_Home(ctx);
 }
 
@@ -293,8 +292,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleEnd(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle End key input from context ptr: %lld",
-                        (long long) ctx);
+    if (!ctx) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle End key input");
     chewing_handle_End(ctx);
 }
 
@@ -305,8 +304,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleLeft(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle left input from context ptr: %lld",
-                        (long long) ctx);
+    if (!ctx) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle left input");
     chewing_handle_Left(ctx);
 }
 
@@ -317,8 +316,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleRight(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle right input from context ptr: %lld",
-                        (long long) ctx);
+    if (!ctx) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle right input");
     chewing_handle_Right(ctx);
 }
 
@@ -329,9 +328,10 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_commitString(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Commit string from context ptr: %lld",
-                        (long long) ctx);
+    if (!ctx) return nullptr;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Commit string");
     char *commit_string = chewing_commit_String(ctx);
+    if (!commit_string) return nullptr;
     jstring ret_jstring = env->NewStringUTF(commit_string);
     chewing_free(commit_string);
     return ret_jstring;
@@ -343,9 +343,10 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_commitStringStatic(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return nullptr;
     const char *commit_string_static = chewing_commit_String_static(ctx);
-    jstring ret_jstring = env->NewStringUTF(commit_string_static);
-    return ret_jstring;
+    if (!commit_string_static) return nullptr;
+    return env->NewStringUTF(commit_string_static);
 }
 
 /* chewing_commit_preedit_buf() */
@@ -355,11 +356,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_commitPreeditBuf(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Commit pre-edit buffer from context ptr: %lld", (long long) ctx);
-    jint ret_jint;
-    ret_jint = chewing_commit_preedit_buf(ctx);
-    return ret_jint;
+    if (!ctx) return -1;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Commit pre-edit buffer");
+    return chewing_commit_preedit_buf(ctx);
 }
 
 /* chewing_cand_open() */
@@ -369,10 +368,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candOpen(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Open candidates 'window' from context ptr: %lld", (long long) ctx);
-    jint ret_jint = chewing_cand_open(ctx);
-    return ret_jint;
+    if (!ctx) return -1;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Open candidates 'window'");
+    return chewing_cand_open(ctx);
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -380,10 +378,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candClose(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Close candidates 'window' from context ptr: %lld", (long long) ctx);
-    jint ret_jint = chewing_cand_close(ctx);
-    return ret_jint;
+    if (!ctx) return -1;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Close candidates 'window'");
+    return chewing_cand_close(ctx);
 }
 
 /* chewing_cand_TotalChoice() */
@@ -393,11 +390,10 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candTotalChoice(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jint total_choice;
-    total_choice = chewing_cand_TotalChoice(ctx);
+    if (!ctx) return 0;
+    jint total_choice = chewing_cand_TotalChoice(ctx);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Count of total candidates (%d) from context ptr: %lld",
-                        (jint) total_choice, (long long) ctx);
+                        "Count of total candidates: %d", (jint) total_choice);
     return total_choice;
 }
 
@@ -409,12 +405,10 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candChooseByIndex(
         jint index,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return -1;
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Choose candidates by index (%d) from context ptr: %lld", (jint) index,
-                        (long long) ctx);
-    jint ret_jint;
-    ret_jint = chewing_cand_choose_by_index(ctx, index);
-    return ret_jint;
+                        "Choose candidates by index (%d)", (jint) index);
+    return chewing_cand_choose_by_index(ctx, index);
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
@@ -423,11 +417,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candListHasPrev(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return JNI_FALSE;
     jboolean has_prev_bool = chewing_cand_list_has_prev(ctx);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Checks whether or not (%d) there is a previous (longer) candidate list from context ptr: %lld",
-                        (jint) has_prev_bool,
-                        (long long) ctx);
+                        "Checks whether or not (%d) there is a previous (longer) candidate list",
+                        (jint) has_prev_bool);
     return has_prev_bool;
 }
 
@@ -437,11 +431,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candListHasNext(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return JNI_FALSE;
     jboolean has_next_bool = chewing_cand_list_has_next(ctx);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "Checks whether or not (%d) there is a next (shorter) candidate list from context ptr: %lld",
-                        (jint) has_next_bool,
-                        (long long) ctx);
+                        "Checks whether or not (%d) there is a next (shorter) candidate list",
+                        (jint) has_next_bool);
     return has_next_bool;
 }
 
@@ -450,11 +444,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candListPrev(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return -1;
     jint result = chewing_cand_list_prev(ctx);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "changes current candidate list to previous candidate list (result: %d) from context ptr: %lld",
-                        (jint) result,
-                        (long long) ctx);
+                        "Changes current candidate list to previous candidate list (result: %d)",
+                        (jint) result);
     return result;
 }
 
@@ -463,11 +457,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candListNext(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return -1;
     jint result = chewing_cand_list_next(ctx);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "changes current candidate list to next candidate list (result: %d) from context ptr: %lld",
-                        (jint) result,
-                        (long long) ctx);
+                        "Changes current candidate list to next candidate list (result: %d)",
+                        (jint) result);
     return result;
 }
 
@@ -477,11 +471,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candListFirst(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return -1;
     jint result = chewing_cand_list_first(ctx);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "changes current candidate list to first candidate list (result: %d) from context ptr: %lld",
-                        (jint) result,
-                        (long long) ctx);
+                        "Changes current candidate list to first candidate list (result: %d)",
+                        (jint) result);
     return result;
 }
 
@@ -490,11 +484,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candListLast(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return -1;
     jint result = chewing_cand_list_last(ctx);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "changes current candidate list to last candidate list (result: %d) from context ptr: %lld",
-                        (jint) result,
-                        (long long) ctx);
+                        "Changes current candidate list to last candidate list (result: %d)",
+                        (jint) result);
     return result;
 }
 
@@ -504,9 +498,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setKBType(
         jint type,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jint set_keyboard_type_result;
-    set_keyboard_type_result = chewing_set_KBType(ctx, type);
-    return set_keyboard_type_result;
+    if (!ctx) return -1;
+    return chewing_set_KBType(ctx, type);
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -514,9 +507,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getKBType(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jint current_keyboard_type;
-    current_keyboard_type = chewing_get_KBType(ctx);
-    return current_keyboard_type;
+    if (!ctx) return -1;
+    return chewing_get_KBType(ctx);
 }
 
 extern "C" JNIEXPORT jstring JNICALL
@@ -524,7 +516,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getKBString(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return nullptr;
     char *current_keyboard_type = chewing_get_KBString(ctx);
+    if (!current_keyboard_type) return nullptr;
     jstring ret_jstring = env->NewStringUTF(current_keyboard_type);
     chewing_free(current_keyboard_type);
     return ret_jstring;
@@ -535,14 +529,13 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_convKBStr2Num(
         JNIEnv *env,
         jobject,
         jstring keyboard_string) {
-    const char *native_keyboard_string;
-    native_keyboard_string = env->GetStringUTFChars(keyboard_string, JNI_FALSE);
-    unsigned int native_keyboard_string_len = strlen(native_keyboard_string) + 1;
-    char native_keyboard_string_char_array[native_keyboard_string_len];
-    memset(native_keyboard_string_char_array, '\0', native_keyboard_string_len);
-    strcat(native_keyboard_string_char_array, native_keyboard_string);
+    const char *native_keyboard_string = env->GetStringUTFChars(keyboard_string, nullptr);
+    if (!native_keyboard_string) return -1;
 
-    return chewing_KBStr2Num(native_keyboard_string_char_array);
+    std::string kb_str(native_keyboard_string);
+    env->ReleaseStringUTFChars(keyboard_string, native_keyboard_string);
+
+    return chewing_KBStr2Num(kb_str.data());
 }
 
 extern "C" JNIEXPORT jstring JNICALL
@@ -550,11 +543,12 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferString(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return nullptr;
     char *native_buffer_string = chewing_buffer_String(ctx);
+    if (!native_buffer_string) return nullptr;
     jstring ret_jstring = env->NewStringUTF(native_buffer_string);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
-                        "outputs current pre-edit buffer from context ptr: %lld",
-                        (long long) ctx);
+                        "Outputs current pre-edit buffer");
     chewing_free(native_buffer_string);
     return ret_jstring;
 }
@@ -566,7 +560,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bopomofoString(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return nullptr;
     char *bopomofo_string = chewing_bopomofo_String(ctx);
+    if (!bopomofo_string) return nullptr;
     jstring ret_jstring = env->NewStringUTF(bopomofo_string);
     chewing_free(bopomofo_string);
     return ret_jstring;
@@ -578,9 +574,10 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferStringStatic(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return nullptr;
     const char *native_buffer_string_static = chewing_buffer_String_static(ctx);
-    jstring ret_jstring = env->NewStringUTF(native_buffer_string_static);
-    return ret_jstring;
+    if (!native_buffer_string_static) return nullptr;
+    return env->NewStringUTF(native_buffer_string_static);
 }
 
 extern "C" JNIEXPORT jstring JNICALL
@@ -589,9 +586,10 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bopomofoStringStatic(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return nullptr;
     const char *bopomofo_string_static = chewing_bopomofo_String_static(ctx);
-    jstring ret_jstring = env->NewStringUTF(bopomofo_string_static);
-    return ret_jstring;
+    if (!bopomofo_string_static) return nullptr;
+    return env->NewStringUTF(bopomofo_string_static);
 }
 
 extern "C" JNIEXPORT jstring JNICALL
@@ -601,9 +599,10 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candStringByIndexStatic(
         jint index,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return nullptr;
     const char *cand_string_by_index_static = chewing_cand_string_by_index_static(ctx, index);
-    jstring ret_jstring = env->NewStringUTF(cand_string_by_index_static);
-    return ret_jstring;
+    if (!cand_string_by_index_static) return nullptr;
+    return env->NewStringUTF(cand_string_by_index_static);
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -612,8 +611,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_cleanPreeditBuf(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jint result = chewing_clean_preedit_buf(ctx);
-    return result;
+    if (!ctx) return -1;
+    return chewing_clean_preedit_buf(ctx);
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -622,8 +621,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_cleanBopomofoBuf(
         jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jint result = chewing_clean_bopomofo_buf(ctx);
-    return result;
+    if (!ctx) return -1;
+    return chewing_clean_bopomofo_buf(ctx);
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -631,8 +630,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferLen(
         JNIEnv *env, jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jint result = chewing_buffer_Len(ctx);
-    return result;
+    if (!ctx) return 0;
+    return chewing_buffer_Len(ctx);
 }
 
 extern "C" JNIEXPORT void JNICALL
@@ -642,6 +641,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setEasySymbolInput(
         jint mode,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return;
     chewing_set_easySymbolInput(ctx, mode);
 }
 
@@ -652,8 +652,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getEasySymbolInput(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    jint result = chewing_get_easySymbolInput(ctx);
-    return result;
+    if (!ctx) return 0;
+    return chewing_get_easySymbolInput(ctx);
 }
 
 extern "C" JNIEXPORT void JNICALL
@@ -663,6 +663,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setSpaceAsSelection(
         jint mode,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return;
     chewing_set_spaceAsSelection(ctx, mode);
 }
 
@@ -671,13 +672,16 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_commitCheck(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return 0;
     return chewing_commit_Check(ctx);
 }
+
 extern "C" JNIEXPORT jint JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferCheck(
         JNIEnv *env, jobject,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return 0;
     return chewing_buffer_Check(ctx);
 }
 
@@ -687,6 +691,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getSpaceAsSelection(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return 0;
     return chewing_get_spaceAsSelection(ctx);
 }
 
@@ -696,6 +701,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candTotalPage(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return 0;
     return chewing_cand_TotalPage(ctx);
 }
 
@@ -705,6 +711,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candCurrentPage(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return 0;
     return chewing_cand_CurrentPage(ctx);
 }
 
@@ -714,6 +721,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candChoicePerPage(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return 0;
     return chewing_cand_ChoicePerPage(ctx);
 }
 
@@ -723,6 +731,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candEnumerate(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return;
     chewing_cand_Enumerate(ctx);
 }
 
@@ -732,6 +741,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candHasNext(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return 0;
     return chewing_cand_hasNext(ctx);
 }
 
@@ -741,7 +751,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candString(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return nullptr;
     char *cand_string = chewing_cand_String(ctx);
+    if (!cand_string) return nullptr;
     jstring ret_jstring = env->NewStringUTF(cand_string);
     chewing_free(cand_string);
     return ret_jstring;
@@ -753,9 +765,10 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candStringStatic(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return nullptr;
     const char *cand_string_static = chewing_cand_String_static(ctx);
-    jstring ret_jstring = env->NewStringUTF(cand_string_static);
-    return ret_jstring;
+    if (!cand_string_static) return nullptr;
+    return env->NewStringUTF(cand_string_static);
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -764,6 +777,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_cursorCurrent(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return 0;
     return chewing_cursor_Current(ctx);
 }
 
@@ -772,8 +786,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handleEsc(
         JNIEnv *env, jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle Escape input from context ptr: %lld",
-                        (long long) ctx);
+    if (!ctx) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle Escape input");
     chewing_handle_Esc(ctx);
 }
 
@@ -782,8 +796,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handlePageUp(
         JNIEnv *env, jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle PageUp input from context ptr: %lld",
-                        (long long) ctx);
+    if (!ctx) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle PageUp input");
     chewing_handle_PageUp(ctx);
 }
 
@@ -793,8 +807,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_handlePageDown(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle PageDown input from context ptr: %lld",
-                        (long long) ctx);
+    if (!ctx) return;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Handle PageDown input");
     chewing_handle_PageDown(ctx);
 }
 
@@ -805,6 +819,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setShapeMode(
         jint mode,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return;
     chewing_set_ShapeMode(ctx, mode);
 }
 
@@ -814,8 +829,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getShapeMode(
         jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Get shape mode from context ptr: %lld",
-                        (long long) ctx);
+    if (!ctx) return 0;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Get shape mode");
     return chewing_get_ShapeMode(ctx);
 }
 
@@ -825,17 +840,20 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_ack(
         JNIEnv *env, jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return -1;
     return chewing_ack(ctx);
 }
+
 extern "C"
 JNIEXPORT jstring JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_version(
         JNIEnv *env, jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return nullptr;
     const char *chewing_version_string = chewing_version();
-    jstring ret_jstring = env->NewStringUTF(chewing_version_string);
-    return ret_jstring;
+    if (!chewing_version_string) return nullptr;
+    return env->NewStringUTF(chewing_version_string);
 }
 
 extern "C"
@@ -845,8 +863,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configHasOption(
         jstring option,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    const char *native_option = env->GetStringUTFChars(option, JNI_FALSE);
+    if (!ctx) return 0;
+    const char *native_option = env->GetStringUTFChars(option, nullptr);
+    if (!native_option) return 0;
     jint ret_jint = chewing_config_has_option(ctx, native_option);
+    env->ReleaseStringUTFChars(option, native_option);
     return ret_jint;
 }
 
@@ -857,8 +878,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configGetInt(
         jstring option,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    const char *native_option = env->GetStringUTFChars(option, JNI_FALSE);
+    if (!ctx) return 0;
+    const char *native_option = env->GetStringUTFChars(option, nullptr);
+    if (!native_option) return 0;
     jint ret_jint = chewing_config_get_int(ctx, native_option);
+    env->ReleaseStringUTFChars(option, native_option);
     return ret_jint;
 }
 
@@ -869,8 +893,11 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configSetInt(
         jstring option, jint value,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    const char *native_option = env->GetStringUTFChars(option, JNI_FALSE);
+    if (!ctx) return -1;
+    const char *native_option = env->GetStringUTFChars(option, nullptr);
+    if (!native_option) return -1;
     jint ret_jint = chewing_config_set_int(ctx, native_option, value);
+    env->ReleaseStringUTFChars(option, native_option);
     return ret_jint;
 }
 
@@ -881,9 +908,17 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configSetStr(
         jstring option, jstring value,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    const char *native_option = env->GetStringUTFChars(option, JNI_FALSE);
-    const char *native_value = env->GetStringUTFChars(value, JNI_FALSE);
+    if (!ctx) return -1;
+    const char *native_option = env->GetStringUTFChars(option, nullptr);
+    if (!native_option) return -1;
+    const char *native_value = env->GetStringUTFChars(value, nullptr);
+    if (!native_value) {
+        env->ReleaseStringUTFChars(option, native_option);
+        return -1;
+    }
     jint ret_jint = chewing_config_set_str(ctx, native_option, (char *) native_value);
+    env->ReleaseStringUTFChars(value, native_value);
+    env->ReleaseStringUTFChars(option, native_option);
     return ret_jint;
 }
 
@@ -894,11 +929,15 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configGetStr(
         jstring option,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    const char *native_option = env->GetStringUTFChars(option, JNI_FALSE);
-    char *fetched_value;
+    if (!ctx) return nullptr;
+    const char *native_option = env->GetStringUTFChars(option, nullptr);
+    if (!native_option) return nullptr;
+    char *fetched_value = nullptr;
     chewing_config_get_str(ctx, native_option, &fetched_value);
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Get config string from context ptr: %lld, value: %s",
-                        (long long) ctx, fetched_value);
+    env->ReleaseStringUTFChars(option, native_option);
+    if (!fetched_value) return nullptr;
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Get config string value: %s",
+                        fetched_value);
     jstring ret_jstring = env->NewStringUTF(fetched_value);
     chewing_free(fetched_value);
     return ret_jstring;
