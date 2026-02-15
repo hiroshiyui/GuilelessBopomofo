@@ -1,9 +1,6 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
     id("kotlin-parcelize")
-    id("kotlin-kapt")
-    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -32,13 +29,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        setProperty("archivesBaseName", "${applicationId}_v${versionName}")
     }
 
     buildFeatures {
         buildConfig = true
-        dataBinding = true
         viewBinding = true
     }
 
@@ -80,112 +74,94 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
-        }
-    }
-
     ndkVersion = "28.1.13356709"
+}
 
-    val chewingLibraryPath: String = "${rootDir}/app/src/main/cpp/libs/libchewing"
+base {
+    archivesName = "${android.defaultConfig.applicationId}_v${android.defaultConfig.versionName}"
+}
 
-    tasks.register<Exec>("prepareChewing") {
-        workingDir(chewingLibraryPath)
-        // This is just for task 'buildChewingData', other definitions are in cpp/CMakeLists.txt
-        commandLine(
-            "cmake", "-B", "build/", "-DBUILD_INFO=false", "-DBUILD_TESTING=false", "-DWITH_SQLITE3=false", "-DCMAKE_BUILD_TYPE=Release"
-        )
+val chewingLibraryPath: String = "${rootDir}/app/src/main/cpp/libs/libchewing"
+val chewingDataFiles = listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
+
+val rustupAvailable = providers.exec {
+    isIgnoreExitValue = true
+    commandLine("rustup", "-V")
+}.result.map { it.exitValue == 0 }.getOrElse(false)
+
+tasks.register<Exec>("prepareChewing") {
+    workingDir(chewingLibraryPath)
+    // This is just for task 'buildChewingData', other definitions are in cpp/CMakeLists.txt
+    commandLine(
+        "cmake", "-B", "build/", "-DBUILD_INFO=false", "-DBUILD_TESTING=false", "-DWITH_SQLITE3=false", "-DCMAKE_BUILD_TYPE=Release"
+    )
+}
+
+tasks.register<Exec>("buildChewingData") {
+    dependsOn("prepareChewing")
+    workingDir("$chewingLibraryPath/build")
+    commandLine("make", "dict_chewing", "misc")
+}
+
+tasks.register<Copy>("copyChewingDataFiles") {
+    dependsOn("buildChewingData")
+    from("$chewingLibraryPath/build/data/dict/chewing") {
+        include("tsi.dat")
+        include("word.dat")
     }
-
-    val chewingDataFiles = listOf<String>("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
-
-    tasks.register<Exec>("buildChewingData") {
-        dependsOn("prepareChewing")
-        workingDir("$chewingLibraryPath/build")
-        commandLine("make", "dict_chewing", "misc")
+    from("$chewingLibraryPath/build/data/misc") {
+        include("swkb.dat")
+        include("symbols.dat")
     }
+    into("$rootDir/app/src/main/assets")
+}
 
-    tasks.register<Copy>("copyChewingDataFiles") {
-        dependsOn("buildChewingData")
-        from("$chewingLibraryPath/build/data/dict/chewing") {
-            include("tsi.dat")
-            include("word.dat")
-        }
-        from("$chewingLibraryPath/build/data/misc") {
-            include("swkb.dat")
-            include("symbols.dat")
-        }
-        into("$rootDir/app/src/main/assets")
-    }
+tasks.register<Exec>("installRustup") {
+    onlyIf { !rustupAvailable }
+    commandLine(
+        "curl", "--proto", "'=https'", "--tlsv1.2", "-sSf", "https://sh.rustup.rs", "|", "sh", "-s", "--", "--default-toolchain", "none"
+    )
+}
 
-    tasks.register<Exec>("installRustup") {
-        onlyIf {
-            try {
-                val result = exec {
-                    isIgnoreExitValue = true
-                    commandLine("rustup", "-V")
-                }
-                result.exitValue != 0
-            } catch (e: Exception) {
-                return@onlyIf false
-            }
-        }
-        commandLine(
-            "curl", "--proto", "'=https'", "--tlsv1.2", "-sSf", "https://sh.rustup.rs", "|", "sh", "-s", "--", "--default-toolchain", "none"
-        )
-    }
+tasks.register<Exec>("installSpecifiedRustToolchain") {
+    dependsOn("installRustup")
+    onlyIf { !rustupAvailable }
+    // follows rust-toolchain.toml
+    commandLine("rustup", "install")
+}
 
-    tasks.register<Exec>("installSpecifiedRustToolchain") {
-        dependsOn("installRustup")
-        onlyIf {
-            try {
-                val result = exec {
-                    isIgnoreExitValue = true
-                    commandLine("rustup", "-V")
-                }
-                result.exitValue != 0
-            } catch (e: Exception) {
-                return@onlyIf false
-            }
-        }
-        // follows rust-toolchain.toml
-        commandLine("rustup", "install")
-    }
+tasks.preBuild {
+    dependsOn(
+        "installSpecifiedRustToolchain", "copyChewingDataFiles"
+    )
+}
 
-    tasks.preBuild {
-        dependsOn(
-            "installSpecifiedRustToolchain", "copyChewingDataFiles"
-        )
+tasks.register<Delete>("cleanChewingDataFiles") {
+    for (chewingDataFile in chewingDataFiles) {
+        file("$rootDir/app/src/main/assets/$chewingDataFile").delete()
     }
+}
 
-    tasks.register<Delete>("cleanChewingDataFiles") {
-        for (chewingDataFile in chewingDataFiles) {
-            file("$rootDir/app/src/main/assets/$chewingDataFile").delete()
-        }
-    }
+tasks.register<Exec>("execMakeClean") {
+    onlyIf { file("$chewingLibraryPath/build/Makefile").exists() }
+    workingDir("$chewingLibraryPath/build")
+    commandLine("make", "clean")
+    isIgnoreExitValue = true
+}
 
-    tasks.register<Exec>("execMakeClean") {
-        onlyIf { file("$chewingLibraryPath/build/Makefile").exists() }
-        workingDir("$chewingLibraryPath/build")
-        commandLine("make", "clean")
-        isIgnoreExitValue = true
-    }
+tasks.register<Delete>("deleteChewingBuildDirectory") {
+    onlyIf { file("$chewingLibraryPath/build/Makefile").exists() }
+    delete("$chewingLibraryPath/build")
+}
 
-    tasks.register<Delete>("deleteChewingBuildDirectory") {
-        onlyIf { file("$chewingLibraryPath/build/Makefile").exists() }
-        delete("$chewingLibraryPath/build")
-    }
+tasks.register<Delete>("deleteAppDotCxxDirectory") {
+    delete("$rootDir/app/.cxx")
+}
 
-    tasks.register<Delete>("deleteAppDotCxxDirectory") {
-        delete("$rootDir/app/.cxx")
-    }
-
-    tasks.clean {
-        dependsOn(
-            "cleanChewingDataFiles", "execMakeClean", "deleteChewingBuildDirectory", "deleteAppDotCxxDirectory"
-        )
-    }
+tasks.clean {
+    dependsOn(
+        "cleanChewingDataFiles", "execMakeClean", "deleteChewingBuildDirectory", "deleteAppDotCxxDirectory"
+    )
 }
 
 dependencies {
