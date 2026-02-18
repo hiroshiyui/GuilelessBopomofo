@@ -849,8 +849,6 @@ JNIEXPORT jstring JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_version(
         JNIEnv *env, jobject thiz,
         jlong chewing_ctx_ptr) {
-    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    if (!ctx) return nullptr;
     const char *chewing_version_string = chewing_version();
     if (!chewing_version_string) return nullptr;
     return env->NewStringUTF(chewing_version_string);
