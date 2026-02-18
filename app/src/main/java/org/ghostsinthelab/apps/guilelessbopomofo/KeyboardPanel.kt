@@ -69,8 +69,10 @@ class KeyboardPanel(
     private lateinit var compactLayoutBinding: CompactLayoutBinding
 
     // candidatesRecyclerView
-    private val candidatesLayoutBinding: CandidatesLayoutBinding = CandidatesLayoutBinding.inflate(LayoutInflater.from(context))
-    private val candidatesRecyclerView = candidatesLayoutBinding.CandidatesRecyclerView
+    private val candidatesLayoutBinding: CandidatesLayoutBinding by lazy {
+        CandidatesLayoutBinding.inflate(LayoutInflater.from(context))
+    }
+    private val candidatesRecyclerView get() = candidatesLayoutBinding.CandidatesRecyclerView
 
     var currentLayout: Layout = Layout.MAIN
 

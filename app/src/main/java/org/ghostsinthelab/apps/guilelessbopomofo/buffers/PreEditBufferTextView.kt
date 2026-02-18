@@ -105,11 +105,11 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         } catch (e: StringIndexOutOfBoundsException) {
-            Log.e(logTag, "StringIndexOutOfBoundsException")
+            Log.e(logTag, "StringIndexOutOfBoundsException", e)
         } catch (e: IndexOutOfBoundsException) {
             // For physical keyboard users, it's a very common case for them to change offset by keys,
             // and sometimes make it out of bounds.
-            Log.e(logTag, "IndexOutOfBoundsException")
+            Log.e(logTag, "IndexOutOfBoundsException", e)
         }
     }
 
