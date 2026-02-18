@@ -101,7 +101,10 @@ import kotlin.coroutines.CoroutineContext
 class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPreferences.OnSharedPreferenceChangeListener,
     KeyEventExtension, EdgeToEdge {
     private val logTag = "GuilelessBopomofoSvc"
+    @Volatile
     private var shiftKeyIsLocked: Boolean = false
+
+    @Volatile
     private var shiftKeyIsActive: Boolean = false
 
     private lateinit var viewBinding: ImeLayoutBinding
@@ -111,6 +114,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     companion object {
         val defaultHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
+
+        @Volatile
         var userHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
     }
 
@@ -274,7 +279,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         super.onDestroy()
         Log.d(logTag, "onDestroy()")
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
-        ChewingBridge.chewing.delete()
+        try {
+            ChewingBridge.chewing.delete()
+        } catch (e: Exception) {
+            Log.e(logTag, "Failed to cleanup Chewing context", e)
+        }
         EventBus.getDefault().unregister(this)
     }
 
@@ -311,7 +320,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         }
 
         // pass-through other KeyEvent, or we will make some physical keys like volume keys invalid
-        currentInputConnection.sendKeyEvent(event)
+        if (event != null) {
+            currentInputConnection?.sendKeyEvent(event)
+        }
 
         return super.onKeyDown(keyCode, event)
     }
@@ -423,7 +434,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         // Consider keys in NumPad
         if (event.isNumPadKey()) {
-            currentInputConnection.sendKeyEvent(event)
+            currentInputConnection?.sendKeyEvent(event)
             EventBus.getDefault().post(Events.UpdateBufferViews())
             return
         }
@@ -436,21 +447,20 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         // when user press Alt + I, then show IME picker
         if (event.keyCode == KEYCODE_I && event.isAltPressed) {
-            val imm = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showInputMethodPicker()
+            (this.getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)?.showInputMethodPicker()
             return
         }
 
         var keyPressed: Char = event.unicodeChar.toChar()
 
         if (shiftKeyIsActive) {
-            currentInputConnection.sendKeyEvent(KeyEvent(ACTION_DOWN, KEYCODE_SHIFT_LEFT))
+            currentInputConnection?.sendKeyEvent(KeyEvent(ACTION_DOWN, KEYCODE_SHIFT_LEFT))
             keyPressed = event.getUnicodeChar(META_SHIFT_ON).toChar()
         }
 
         // common Ctrl-key handling
         if (event.isCtrlPressed) {
-            currentInputConnection.apply {
+            currentInputConnection?.apply {
                 when (event.keyCode) {
                     KEYCODE_A -> {
                         performContextMenuAction(android.R.id.selectAll)
@@ -494,9 +504,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         if (shiftKeyIsActive && !shiftKeyIsLocked) {
             Log.d(logTag, "Release Shift key")
             viewBinding.keyboardPanel.releaseShiftKey()
-            currentInputConnection.sendKeyEvent(KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT))
+            currentInputConnection?.sendKeyEvent(KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT))
         }
-        return
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -543,7 +552,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 this@GuilelessBopomofoService.requestHideSelf(0)
             }
         }
-        return
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -558,16 +566,14 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 // reset last cursor position
                 this.lastChewingCursor = 0
                 this.switchToLayout(Layout.MAIN)
-
             }
         }
-        return
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCommitTextInChewingCommitBuffer(event: Events.CommitTextInChewingCommitBuffer) {
         Log.d(logTag, event.toString())
-        currentInputConnection.commitText(
+        currentInputConnection?.commitText(
             ChewingBridge.chewing.commitString(), 1
         )
     }
@@ -616,7 +622,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         Log.d(logTag, event.toString())
         // Always reset Shift state when switching main layouts.
         viewBinding.keyboardPanel.releaseShiftKey()
-        currentInputConnection.sendKeyEvent(KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT))
+        currentInputConnection?.sendKeyEvent(KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT))
         viewBinding.keyboardPanel.toggleMainLayoutMode()
     }
 
@@ -642,8 +648,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 applicationContext, getString(R.string.shape_mode_changed, shapeMode), Toast.LENGTH_SHORT
             ).show()
         }
-
-        return
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -669,7 +673,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             when (val imeAction = (this.imeOptions and EditorInfo.IME_MASK_ACTION)) {
                 EditorInfo.IME_ACTION_GO, EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_SEARCH, EditorInfo.IME_ACTION_SEND -> {
                     // The current EditText has a specified android:imeOptions attribute.
-                    this@GuilelessBopomofoService.currentInputConnection.performEditorAction(
+                    this@GuilelessBopomofoService.currentInputConnection?.performEditorAction(
                         imeAction
                     )
                 }
@@ -720,7 +724,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         // Save app version
         val appVersion = BuildConfig.VERSION_NAME.toByteArray()
 
-        val chewingDataAppVersionTxt = File(String.format("%s/%s", chewingDataDir.absolutePath, "data_appversion.txt"))
+        val chewingDataAppVersionTxt = File(chewingDataDir, "data_appversion.txt")
 
         // update Chewing data files by version
         if (!chewingDataAppVersionTxt.exists()) {
@@ -732,9 +736,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             installChewingData(dataPath)
 
             // refresh app version
-            val chewingDataAppVersionTxtOutputStream = FileOutputStream(chewingDataAppVersionTxt)
-            chewingDataAppVersionTxtOutputStream.write(appVersion)
-            chewingDataAppVersionTxtOutputStream.close()
+            FileOutputStream(chewingDataAppVersionTxt).use { it.write(appVersion) }
         }
     }
 
@@ -744,21 +746,16 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         // Copying data files
         for (file in chewingDataFiles) {
-            val destinationFile = File(String.format("%s/%s", chewingDataDir.absolutePath, file))
+            val destinationFile = File(chewingDataDir, file)
             Log.d(logTag, "Copying ${file}...")
-            val dataInputStream = assets.open(file)
-            val dataOutputStream = FileOutputStream(destinationFile)
-
             try {
-                dataInputStream.copyTo(dataOutputStream)
-            } catch (e: java.lang.Exception) {
-                e.message?.let {
-                    Log.e(logTag, it)
+                assets.open(file).use { input ->
+                    FileOutputStream(destinationFile).use { output ->
+                        input.copyTo(output)
+                    }
                 }
-            } finally {
-                Log.d(logTag, "Closing data I/O streams")
-                dataInputStream.close()
-                dataOutputStream.close()
+            } catch (e: Exception) {
+                Log.e(logTag, "Failed to copy $file", e)
             }
         }
     }
@@ -768,7 +765,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         val chewingDataDir = File(dataPath)
 
         for (file in chewingDataFiles) {
-            val destinationFile = File(String.format("%s/%s", chewingDataDir.absolutePath, file))
+            val destinationFile = File(chewingDataDir, file)
             if (!destinationFile.exists()) {
                 return false
             }
@@ -806,37 +803,31 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     // triggered if any sharedPreference has been changed
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
+            // Reload the main layout
             USER_SOFT_KEYBOARD_LAYOUT,
             USER_PHYSICAL_KEYBOARD_LAYOUT,
             USER_DISPLAY_HSU_QWERTY_LAYOUT,
             USER_DISPLAY_ETEN26_QWERTY_LAYOUT,
+            USER_KEY_BUTTON_HEIGHT,
+            USER_ENABLE_IME_SWITCH,
+            USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH,
                 -> {
-                // just 'reload' the main layout
                 if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
                     viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
                 }
             }
 
             USER_ENABLE_SPACE_AS_SELECTION -> {
-                ChewingBridge.chewing.setSpaceAsSelection(0)
-                sharedPreferences?.apply {
-                    if (this.getBoolean(key, true)) {
-                        ChewingBridge.chewing.setSpaceAsSelection(1)
-                    }
-                }
+                val enabled = sharedPreferences?.getBoolean(key, true) ?: true
+                ChewingBridge.chewing.setSpaceAsSelection(if (enabled) 1 else 0)
             }
 
             USER_PHRASE_CHOICE_REARWARD -> {
-                ChewingBridge.chewing.setPhraseChoiceRearward(0)
-                sharedPreferences?.apply {
-                    if (this.getBoolean(key, false)) {
-                        ChewingBridge.chewing.setPhraseChoiceRearward(1)
-                    }
-                }
+                val enabled = sharedPreferences?.getBoolean(key, false) ?: false
+                ChewingBridge.chewing.setPhraseChoiceRearward(if (enabled) 1 else 0)
             }
 
             USER_HAPTIC_FEEDBACK_STRENGTH -> {
-                // reload the value
                 sharedPreferences?.apply {
                     userHapticFeedbackStrength = this.getInt(
                         key, defaultHapticFeedbackStrength
@@ -844,45 +835,27 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 }
             }
 
-            SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS -> {
-                // do nothing
-            }
-
+            // No-op: handled elsewhere (onEvaluateFullscreenMode, Vibratable)
+            SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS,
             USER_FULLSCREEN_WHEN_IN_LANDSCAPE,
             USER_FULLSCREEN_WHEN_IN_PORTRAIT,
-                -> {
-                // do nothing (onEvaluateFullscreenMode() will handle it well)
-            }
-
-            USER_KEY_BUTTON_HEIGHT,
-            USER_ENABLE_IME_SWITCH,
-            USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH,
-                -> {
-                // just 'reload' the main layout
-                if (this@GuilelessBopomofoService::viewBinding.isInitialized) {
-                    viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
-                }
-            }
+                -> {}
 
             USER_CANDIDATE_SELECTION_KEYS_OPTION -> {
-                sharedPreferences?.apply {
-                    this.getString(
-                        key, SelectionKeys.NUMBER_ROW.set
-                    )?.let {
-                        ChewingBridge.chewing.setSelKey(
-                            SelectionKeys.valueOf(it).keys, 10
-                        )
-                    }
+                sharedPreferences?.getString(
+                    key, SelectionKeys.NUMBER_ROW.set
+                )?.let {
+                    ChewingBridge.chewing.setSelKey(
+                        SelectionKeys.valueOf(it).keys, 10
+                    )
                 }
             }
 
             USER_CONVERSION_ENGINE -> {
-                sharedPreferences?.apply {
-                    this.getInt(
-                        key, ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
-                    ).let {
-                        ChewingBridge.chewing.configSetInt("chewing.conversion_engine", it)
-                    }
+                sharedPreferences?.getInt(
+                    key, ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
+                )?.let {
+                    ChewingBridge.chewing.configSetInt("chewing.conversion_engine", it)
                 }
             }
         }

@@ -326,22 +326,18 @@ class KeyboardPanel(
         } else {
             renderCandidatesLayout(CandidateLayoutStyle.GRID)
         }
-        return
     }
 
     private fun renderCandidatesLayout(candidateLayoutStyle: CandidateLayoutStyle) {
         when (candidateLayoutStyle) {
             CandidateLayoutStyle.LIST -> {
-                val layoutManager = FlexboxLayoutManager(context)
                 candidatesRecyclerView.adapter = PagedCandidatesAdapter(ChewingBridge.chewing.candCurrentPage())
-                candidatesRecyclerView.layoutManager = layoutManager
-                return
+                candidatesRecyclerView.layoutManager = FlexboxLayoutManager(context)
             }
 
             CandidateLayoutStyle.GRID -> {
                 candidatesRecyclerView.adapter = CandidatesAdapter()
                 candidatesRecyclerView.layoutManager = GridLayoutManager(context, 4, LinearLayoutManager.HORIZONTAL, false)
-                return
             }
         }
     }
@@ -349,11 +345,9 @@ class KeyboardPanel(
     fun releaseShiftKey() {
         Log.d(logTag, "releaseShiftKey()")
         this.findViewById<ShiftKey>(R.id.keyImageButtonShift)?.switchToState(ShiftKey.ShiftKeyState.RELEASED)
-        return
     }
 
     fun setShapeMode(mode: String) {
         compactLayoutBinding.textViewCurrentWidthModeValue.text = mode
-        return
     }
 }

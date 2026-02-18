@@ -63,14 +63,14 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
                 // 如果使用者點選最後一個字的時候很邊邊角角，
                 // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來
                 if (offset >= this.text.length) {
-                    offset = ChewingBridge.chewing.bufferLen() - 1
+                    offset = (ChewingBridge.chewing.bufferLen() - 1).coerceAtLeast(0)
                 }
             }
 
             CursorMovedFrom.PHYSICAL_KEYBOARD -> {
                 offset = ChewingBridge.chewing.cursorCurrent()
                 if (offset >= ChewingBridge.chewing.bufferLen()) {
-                    offset = ChewingBridge.chewing.bufferLen() - 1
+                    offset = (ChewingBridge.chewing.bufferLen() - 1).coerceAtLeast(0)
                 }
             }
         }
@@ -213,7 +213,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
             ChewingBridge.chewing.candClose()
             // move to end
             ChewingBridge.chewing.handleEnd()
-            offset = ChewingBridge.chewing.cursorCurrent() - 1
+            offset = (ChewingBridge.chewing.cursorCurrent() - 1).coerceAtLeast(0)
         }
 
         fun moveToBegin() {
@@ -224,12 +224,7 @@ class PreEditBufferTextView(context: Context, attrs: AttributeSet) :
 
         fun syncOffsetWithCursor() {
             offset = ChewingBridge.chewing.cursorCurrent()
-            if (offset < 0) {
-                offset = 0
-            }
-            if (offset >= ChewingBridge.chewing.bufferLen()) {
-                offset = ChewingBridge.chewing.bufferLen() - 1
-            }
+                .coerceIn(0, (ChewingBridge.chewing.bufferLen() - 1).coerceAtLeast(0))
         }
     }
 }

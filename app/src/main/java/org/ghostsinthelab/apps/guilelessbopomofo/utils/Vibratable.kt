@@ -25,8 +25,6 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED_PREFERENCES
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_HAPTIC_FEEDBACK_STRENGTH
@@ -84,18 +82,14 @@ interface Vibratable {
         }
 
         // perform vibration
-        runBlocking {
-            launch {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val vibrationEffect =
-                        VibrationEffect.createOneShot(vibrationMilliSeconds, amplitude)
-                    vibrator.vibrate(vibrationEffect)
-                } else {
-                    @Suppress("DEPRECATION")
-                    // deprecated in API 26 (Android 8.0), for older devices, we just support time-based vibration. (treat amplitude as time in milliseconds)
-                    vibrator.vibrate(amplitude.toLong())
-                }
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val vibrationEffect =
+                VibrationEffect.createOneShot(vibrationMilliSeconds, amplitude)
+            vibrator.vibrate(vibrationEffect)
+        } else {
+            @Suppress("DEPRECATION")
+            // deprecated in API 26 (Android 8.0), for older devices, we just support time-based vibration. (treat amplitude as time in milliseconds)
+            vibrator.vibrate(amplitude.toLong())
         }
     }
 }

@@ -18,9 +18,6 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-const val SYMBOL_MODE: Int = 0
-const val CHINESE_MODE: Int = 1
-
 class Chewing {
     // Chewing context pointer, represent its address as a Long
     var context: Long = 0
@@ -28,7 +25,7 @@ class Chewing {
     init {
         try {
             System.loadLibrary("libchewing_android_jni")
-        } catch (exception: Throwable) {
+        } catch (exception: UnsatisfiedLinkError) {
             exception.printStackTrace()
             throw ChewingInitException
         }

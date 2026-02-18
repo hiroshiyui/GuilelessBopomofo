@@ -20,7 +20,10 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 object GuilelessBopomofoEnv {
     const val APP_SHARED_PREFERENCES: String = "GuilelessBopomofoService"
+    @Volatile
     var physicalKeyboardPresented: Boolean = false
+
+    @Volatile
     var deviceIsEmulator: Boolean = false
 
     // Put registered shared preferences keys here:

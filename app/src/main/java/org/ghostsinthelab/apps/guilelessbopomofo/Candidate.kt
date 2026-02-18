@@ -18,7 +18,4 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-data class Candidate(var index: Int) {
-    lateinit var candidateString: String
-    var selectionKey: Char = '\u0000'
-}
+data class Candidate(val index: Int, val candidateString: String, var selectionKey: Char = '\u0000')

@@ -381,7 +381,8 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
     }
 
     private fun isGuilelessBopomofoEnabled(): Boolean {
-        val inputMethodManager: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+            ?: return false
         val enabledInputMethodList = inputMethodManager.enabledInputMethodList
 
         enabledInputMethodList.forEach {
