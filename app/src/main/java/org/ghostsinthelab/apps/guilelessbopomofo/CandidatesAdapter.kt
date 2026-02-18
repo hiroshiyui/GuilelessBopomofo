@@ -27,9 +27,9 @@ class CandidatesAdapter : RecyclerView.Adapter<CandidateViewHolder>() {
     private val itemCount: Int = ChewingBridge.chewing.candTotalChoice()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CandidateViewHolder {
-        val itemView =
+        val binding =
             CandidateItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CandidateViewHolder(itemView.root)
+        return CandidateViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CandidateViewHolder, position: Int) {

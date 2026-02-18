@@ -211,9 +211,8 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                     USER_HAPTIC_FEEDBACK_STRENGTH, GuilelessBopomofoService.defaultHapticFeedbackStrength
                 )
 
-                textViewSettingHapticFeedbaclCurrentStrength.text = String.format(
-                    resources.getString(R.string.haptic_feedback_strength_setting), hapticFeedbackPreferenceStrength
-                )
+                textViewSettingHapticFeedbaclCurrentStrength.text =
+                    getString(R.string.haptic_feedback_strength_setting, hapticFeedbackPreferenceStrength)
 
                 seekBarHapticFeedbackStrength.value = hapticFeedbackPreferenceStrength.toFloat()
                 seekBarHapticFeedbackStrength.addOnChangeListener { _, value, _ ->
@@ -225,9 +224,8 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
                     sharedPreferences.edit().putInt(
                         USER_HAPTIC_FEEDBACK_STRENGTH, hapticFeedbackPreferenceStrength
                     ).apply()
-                    textViewSettingHapticFeedbaclCurrentStrength.text = String.format(
-                        resources.getString(R.string.haptic_feedback_strength_setting), hapticFeedbackPreferenceStrength
-                    )
+                    textViewSettingHapticFeedbaclCurrentStrength.text =
+                        getString(R.string.haptic_feedback_strength_setting, hapticFeedbackPreferenceStrength)
                 }
 
                 switchSettingApplySameHapticFeedbackStrengthToFunctionButtons.let {
@@ -270,17 +268,15 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
 
                 seekBarKeyButtonHeight.value = keyButtonPreferenceHeight.toFloat()
 
-                textViewSettingKeyButtonCurrentHeight.text = String.format(
-                    resources.getString(R.string.key_button_height_setting), keyButtonPreferenceHeight
-                )
+                textViewSettingKeyButtonCurrentHeight.text =
+                    getString(R.string.key_button_height_setting, keyButtonPreferenceHeight)
 
                 seekBarKeyButtonHeight.addOnChangeListener { _, value, _ ->
                     keyButtonPreferenceHeight = value.toInt()
                     sharedPreferences.edit().putInt(USER_KEY_BUTTON_HEIGHT, keyButtonPreferenceHeight)
                         .apply()
-                    textViewSettingKeyButtonCurrentHeight.text = String.format(
-                        resources.getString(R.string.key_button_height_setting), keyButtonPreferenceHeight
-                    )
+                    textViewSettingKeyButtonCurrentHeight.text =
+                        getString(R.string.key_button_height_setting, keyButtonPreferenceHeight)
                 }
 
                 switchSettingEnableImeSwitch.let {
@@ -386,7 +382,7 @@ class MainActivity : AppCompatActivity(), Vibratable, EdgeToEdge {
         val enabledInputMethodList = inputMethodManager.enabledInputMethodList
 
         enabledInputMethodList.forEach {
-            if (it.serviceName == "org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService") {
+            if (it.serviceName == GuilelessBopomofoService::class.java.name) {
                 return true
             }
         }

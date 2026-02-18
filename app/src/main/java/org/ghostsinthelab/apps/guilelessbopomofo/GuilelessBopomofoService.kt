@@ -585,7 +585,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             switchToNextInputMethod(false)
         } else {
             // backward compatibility, support IME switch on legacy devices
-            val imm = applicationContext.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = applicationContext.getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                ?: return
             val imeToken: IBinder? = viewBinding.root.windowToken
             @Suppress("DEPRECATION") imm.switchToNextInputMethod(imeToken, false)
         }

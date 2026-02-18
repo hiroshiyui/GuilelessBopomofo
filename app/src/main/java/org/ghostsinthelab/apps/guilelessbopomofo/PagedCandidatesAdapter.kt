@@ -33,13 +33,13 @@ class PagedCandidatesAdapter(candCurrentPage: Int) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagedCandidateViewHolder {
-        val itemView =
+        val binding =
             CandidatesItemPagedLayoutBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-        return PagedCandidateViewHolder(itemView.root)
+        return PagedCandidateViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PagedCandidateViewHolder, position: Int) {

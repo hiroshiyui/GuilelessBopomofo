@@ -18,16 +18,13 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CandidateButton
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidateItemLayoutBinding
 
-class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val candidateButton: CandidateButton = itemView.findViewById(R.id.buttonCandidateItem)
-
+class CandidateViewHolder(private val binding: CandidateItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
     fun setData(position: Int) {
         val candidateString = ChewingBridge.chewing.candStringByIndexStatic(position)
-        candidateButton.text = candidateString
-        candidateButton.candidate = Candidate(position, candidateString)
+        binding.buttonCandidateItem.text = candidateString
+        binding.buttonCandidateItem.candidate = Candidate(position, candidateString)
     }
 }

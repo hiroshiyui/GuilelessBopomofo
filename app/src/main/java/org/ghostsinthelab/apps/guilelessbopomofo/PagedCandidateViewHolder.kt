@@ -18,16 +18,12 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import android.view.View
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import org.ghostsinthelab.apps.guilelessbopomofo.databinding.CandidatesItemPagedLayoutBinding
 
-class PagedCandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+class PagedCandidateViewHolder(private val binding: CandidatesItemPagedLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
     fun setData(candidate: Candidate) {
-        val textViewCandidate = itemView.findViewById<TextView>(R.id.textViewCandidate)
-        val textViewSelectionKey = itemView.findViewById<TextView>(R.id.textViewSelectionKey)
-        textViewCandidate.text = candidate.candidateString
-        textViewSelectionKey.text = candidate.selectionKey.toString()
+        binding.textViewCandidate.text = candidate.candidateString
+        binding.textViewSelectionKey.text = candidate.selectionKey.toString()
     }
 }

@@ -68,7 +68,9 @@ object ChewingUtil {
 
         // binding selection key
         candidatesInThisPage.mapIndexed { index, candidate ->
-            candidate.selectionKey = selKeys[index].toChar()
+            if (index < selKeys.size) {
+                candidate.selectionKey = selKeys[index].toChar()
+            }
         }
 
         return candidatesInThisPage.toList()
