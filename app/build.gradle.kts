@@ -164,6 +164,38 @@ tasks.clean {
     )
 }
 
+tasks.register("bumpPatchVersion") {
+    description = "Increment versionCode and versionName patch level"
+    doLast {
+        val buildFile = file("build.gradle.kts")
+        var content = buildFile.readText()
+
+        val versionCodeRegex = Regex("""versionCode\s*=\s*(\d+)""")
+        val versionNameRegex = Regex("""versionName\s*=\s*"(\d+)\.(\d+)\.(\d+)"""")
+
+        val codeMatch = versionCodeRegex.find(content)
+            ?: throw GradleException("versionCode not found")
+        val nameMatch = versionNameRegex.find(content)
+            ?: throw GradleException("versionName not found")
+
+        val oldCode = codeMatch.groupValues[1].toInt()
+        val major = nameMatch.groupValues[1]
+        val minor = nameMatch.groupValues[2]
+        val oldPatch = nameMatch.groupValues[3].toInt()
+
+        val newCode = oldCode + 1
+        val newPatch = oldPatch + 1
+        val newVersionName = "$major.$minor.$newPatch"
+
+        content = content
+            .replace(codeMatch.value, "versionCode = $newCode")
+            .replace(nameMatch.value, """versionName = "$newVersionName"""")
+
+        buildFile.writeText(content)
+        println("Version bumped: $oldCode -> $newCode, ${nameMatch.groupValues[1]}.${nameMatch.groupValues[2]}.$oldPatch -> $newVersionName")
+    }
+}
+
 dependencies {
     androidTestImplementation(libs.androidx.core)
     androidTestImplementation(libs.androidx.espresso.idling.resource)
