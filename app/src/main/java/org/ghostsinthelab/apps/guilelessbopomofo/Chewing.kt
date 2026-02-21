@@ -107,7 +107,7 @@ class Chewing {
     external fun setSelKey(selKeys: IntArray, length: Int, chewingCtx: Long = context)
     external fun setSpaceAsSelection(mode: Int, chewingCtx: Long = context)
     external fun setShapeMode(mode: Int, chewingCtx: Long = context)
-    external fun version(chewingCtx: Long = context): String
+    external fun version(): String
 
     fun connect(dataPath: String): Long {
         context = chewingNew(dataPath)

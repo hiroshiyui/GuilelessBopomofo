@@ -847,8 +847,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_ack(
 extern "C"
 JNIEXPORT jstring JNICALL
 Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_version(
-        JNIEnv *env, jobject thiz,
-        jlong chewing_ctx_ptr) {
+        JNIEnv *env, jobject thiz) {
     const char *chewing_version_string = chewing_version();
     if (!chewing_version_string) return nullptr;
     return env->NewStringUTF(chewing_version_string);
