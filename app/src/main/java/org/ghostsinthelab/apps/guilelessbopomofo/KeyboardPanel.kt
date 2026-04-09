@@ -184,7 +184,7 @@ class KeyboardPanel(
 
         val inflater = LayoutInflater.from(context)
         when (userSoftKeyboardLayoutPreference) {
-            "KB_HSU" -> {
+            BopomofoSoftKeyboards.KB_HSU.layout -> {
                 if (sharedPreferences.getBoolean(USER_DISPLAY_HSU_QWERTY_LAYOUT, false)) {
                     this.addView(KeyboardHsuQwertyLayoutBinding.inflate(inflater).root)
                 } else {
@@ -192,7 +192,7 @@ class KeyboardPanel(
                 }
             }
 
-            "KB_ET26" -> {
+            BopomofoSoftKeyboards.KB_ET26.layout -> {
                 if (sharedPreferences.getBoolean(USER_DISPLAY_ETEN26_QWERTY_LAYOUT, false)) {
                     this.addView(KeyboardEt26QwertyLayoutBinding.inflate(inflater).root)
                 } else {
@@ -200,15 +200,15 @@ class KeyboardPanel(
                 }
             }
 
-            "KB_ET" -> {
+            BopomofoSoftKeyboards.KB_ET.layout -> {
                 this.addView(KeyboardEt41LayoutBinding.inflate(inflater).root)
             }
 
-            "KB_DEFAULT" -> {
+            BopomofoSoftKeyboards.KB_DEFAULT.layout -> {
                 this.addView(KeyboardDachenLayoutBinding.inflate(inflater).root)
             }
 
-            "KB_DACHEN_CP26" -> {
+            BopomofoSoftKeyboards.KB_DACHEN_CP26.layout -> {
                 this.addView(KeyboardDachenCp26LayoutBinding.inflate(inflater).root)
             }
         }

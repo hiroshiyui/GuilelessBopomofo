@@ -441,24 +441,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             viewBinding.keyboardPanel.switchToCompactLayout()
         }
 
-        // Consider keys in NumPad
-        if (event.isNumPadKey()) {
-            currentInputConnection?.sendKeyEvent(event)
-            EventBus.getDefault().post(Events.UpdateBufferViews())
-            return
-        }
-
-        // when user press '`', switch to symbols layout
-        if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode && !event.isShiftPressed) {
-            viewBinding.keyboardPanel.switchToLayout(Layout.SYMBOLS)
-            return
-        }
-
-        // when user press Alt + I, then show IME picker
-        if (event.keyCode == KEYCODE_I && event.isAltPressed) {
-            (this.getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)?.showInputMethodPicker()
-            return
-        }
+        if (handleNumPadKey(event)) return
+        if (handleGraveKeyForSymbols(event)) return
+        if (handleAltIForImePicker(event)) return
 
         var keyPressed: Char = event.unicodeChar.toChar()
 
@@ -467,41 +452,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             keyPressed = event.getUnicodeChar(META_SHIFT_ON).toChar()
         }
 
-        // common Ctrl-key handling
-        if (event.isCtrlPressed) {
-            currentInputConnection?.apply {
-                when (event.keyCode) {
-                    KEYCODE_A -> {
-                        performContextMenuAction(android.R.id.selectAll)
-                    }
-
-                    KEYCODE_Z -> {
-                        performContextMenuAction(android.R.id.undo)
-                    }
-
-                    KEYCODE_X -> {
-                        performContextMenuAction(android.R.id.cut)
-                    }
-
-                    KEYCODE_C -> {
-                        performContextMenuAction(android.R.id.copy)
-                    }
-
-                    KEYCODE_V -> {
-                        performContextMenuAction(android.R.id.paste)
-                    }
-
-                    KEYCODE_R -> {
-                        performContextMenuAction(android.R.id.redo)
-                    }
-                }
-            }
-            return
-        }
+        if (handleCtrlKeySequence(event)) return
 
         // If in candidate selection window, the selection keys have to be mapped to DVORAK layout
-        // ** This dirty hack should be resolved in the future, in libchewing. **
-        if (ChewingBridge.chewing.getKBString() == "KB_DVORAK_HSU" && viewBinding.keyboardPanel.currentLayout == Layout.CANDIDATES) {
+        // TODO: This should be resolved in the future, in libchewing.
+        if (ChewingBridge.chewing.getKBString() == BopomofoPhysicalKeyboards.KB_DVORAK_HSU.layout && viewBinding.keyboardPanel.currentLayout == Layout.CANDIDATES) {
             keyPressed = ChewingUtil.qwertyToDvorakKeyMapping(keyPressed)
         }
 
@@ -509,7 +464,48 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         EventBus.getDefault().post(Events.UpdateBufferViews())
         EventBus.getDefault().post(Events.UpdateCursorPosition())
 
-        // release Shift key and make the button background color back to normal
+        releaseShiftKeyIfNeeded()
+    }
+
+    private fun handleNumPadKey(event: KeyEvent): Boolean {
+        if (!event.isNumPadKey()) return false
+        currentInputConnection?.sendKeyEvent(event)
+        EventBus.getDefault().post(Events.UpdateBufferViews())
+        return true
+    }
+
+    private fun handleGraveKeyForSymbols(event: KeyEvent): Boolean {
+        if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode && !event.isShiftPressed) {
+            viewBinding.keyboardPanel.switchToLayout(Layout.SYMBOLS)
+            return true
+        }
+        return false
+    }
+
+    private fun handleAltIForImePicker(event: KeyEvent): Boolean {
+        if (event.keyCode == KEYCODE_I && event.isAltPressed) {
+            (this.getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)?.showInputMethodPicker()
+            return true
+        }
+        return false
+    }
+
+    private fun handleCtrlKeySequence(event: KeyEvent): Boolean {
+        if (!event.isCtrlPressed) return false
+        currentInputConnection?.apply {
+            when (event.keyCode) {
+                KEYCODE_A -> performContextMenuAction(android.R.id.selectAll)
+                KEYCODE_Z -> performContextMenuAction(android.R.id.undo)
+                KEYCODE_X -> performContextMenuAction(android.R.id.cut)
+                KEYCODE_C -> performContextMenuAction(android.R.id.copy)
+                KEYCODE_V -> performContextMenuAction(android.R.id.paste)
+                KEYCODE_R -> performContextMenuAction(android.R.id.redo)
+            }
+        }
+        return true
+    }
+
+    private fun releaseShiftKeyIfNeeded() {
         if (shiftKeyIsActive && !shiftKeyIsLocked) {
             Log.d(logTag, "Release Shift key")
             viewBinding.keyboardPanel.releaseShiftKey()

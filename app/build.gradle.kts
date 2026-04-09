@@ -22,6 +22,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
+                // Suppress warnings from libchewing (third-party submodule)
                 cFlags("-Wno-unused-function", "-Wno-unused-but-set-variable")
                 cppFlags += listOf("")
             }

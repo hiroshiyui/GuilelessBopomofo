@@ -46,9 +46,7 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            if (sharedPreferences.getBoolean(USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, false)) {
-                return true
-            } else {
+            if (!sharedPreferences.getBoolean(USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, false)) {
                 switchNextInputMethod()
             }
             return true
@@ -57,8 +55,6 @@ class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
         override fun onDoubleTap(e: MotionEvent): Boolean {
             if (sharedPreferences.getBoolean(USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, false)) {
                 switchNextInputMethod()
-            } else {
-                return true
             }
             return true
         }

@@ -18,7 +18,11 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.util.Log
+
 class Chewing {
+    private val logTag = "Chewing"
+
     // Chewing context pointer, represent its address as a Long
     var context: Long = 0
 
@@ -26,7 +30,7 @@ class Chewing {
         try {
             System.loadLibrary("libchewing_android_jni")
         } catch (exception: UnsatisfiedLinkError) {
-            exception.printStackTrace()
+            Log.e(logTag, "Failed to load native library", exception)
             throw ChewingInitException
         }
     }
@@ -75,7 +79,9 @@ class Chewing {
     external fun configSetStr(option: String, value: String, chewingCtx: Long = context): Int
     external fun convKBStr2Num(keyboardString: String): Int
     external fun cursorCurrent(chewingCtx: Long = context): Int
+    // delete(): destroys the ChewingContext (wraps chewing_delete)
     external fun delete(chewingCtx: Long = context)
+    // free(): frees individual resources returned by libchewing (wraps chewing_free)
     external fun free(resourcePtr: Long)
     external fun getCandPerPage(chewingCtx: Long = context): Int
     external fun getChiEngMode(chewingCtx: Long = context): Int
