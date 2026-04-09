@@ -18,14 +18,90 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.content.Context
+import android.util.Log
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
+import java.io.File
+import java.io.FileOutputStream
 
 object ChewingUtil {
+    private const val logTag = "ChewingUtil"
+
     fun listOfDataFiles(): List<String> {
         return listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
+    }
+
+    fun ensureChewingConnected(context: Context) {
+        if (ChewingBridge.chewing.context != 0L) return
+        val dataPath = context.applicationInfo.dataDir
+        setupChewingData(context, dataPath)
+        ChewingBridge.chewing.connect(dataPath)
+    }
+
+    fun setupChewingData(context: Context, dataPath: String) {
+        val chewingDataDir = File(dataPath)
+
+        if (!checkChewingData(dataPath)) {
+            Log.d(logTag, "Install Chewing data files.")
+            installChewingData(context, dataPath)
+        }
+
+        val appVersion = BuildConfig.VERSION_NAME.toByteArray()
+        val chewingDataAppVersionTxt = File(chewingDataDir, "data_appversion.txt")
+
+        if (!chewingDataAppVersionTxt.exists()) {
+            chewingDataAppVersionTxt.appendBytes(appVersion)
+        }
+
+        if (!chewingDataAppVersionTxt.readBytes().contentEquals(appVersion)) {
+            Log.d(logTag, "Here comes a new version.")
+            installChewingData(context, dataPath)
+            FileOutputStream(chewingDataAppVersionTxt).use { it.write(appVersion) }
+        }
+    }
+
+    private fun installChewingData(context: Context, dataPath: String) {
+        val chewingDataDir = File(dataPath)
+        for (file in listOfDataFiles()) {
+            val destinationFile = File(chewingDataDir, file)
+            Log.d(logTag, "Copying ${file}...")
+            try {
+                context.assets.open(file).use { input ->
+                    FileOutputStream(destinationFile).use { output ->
+                        input.copyTo(output)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(logTag, "Failed to copy $file", e)
+            }
+        }
+    }
+
+    private fun checkChewingData(dataPath: String): Boolean {
+        Log.d(logTag, "Checking Chewing data files...")
+        val chewingDataDir = File(dataPath)
+        for (file in listOfDataFiles()) {
+            val destinationFile = File(chewingDataDir, file)
+            if (!destinationFile.exists()) {
+                return false
+            }
+        }
+        return true
+    }
+
+    fun enumerateUserPhrases(): List<UserPhrase> {
+        val phrases = mutableListOf<UserPhrase>()
+        ChewingBridge.chewing.userphraseEnumerate()
+        while (ChewingBridge.chewing.userphraseHasNext() != 0) {
+            val result = ChewingBridge.chewing.userphraseGet() ?: break
+            if (result.size >= 2) {
+                phrases.add(UserPhrase(result[0], result[1]))
+            }
+        }
+        return phrases
     }
 
     fun candidateWindowOpened(): Boolean {

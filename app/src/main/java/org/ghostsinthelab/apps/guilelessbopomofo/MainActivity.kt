@@ -75,6 +75,10 @@ class MainActivity : AppCompatActivity(), EdgeToEdge {
                         switchFragment(PhysicalKeyboardSettingsFragment())
                         true
                     }
+                    R.id.nav_user_phrases -> {
+                        switchFragment(UserPhraseManagerFragment())
+                        true
+                    }
                     else -> false
                 }
             }

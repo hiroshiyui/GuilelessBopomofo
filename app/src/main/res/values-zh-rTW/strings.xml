@@ -113,6 +113,34 @@
     <string name="bopomofo_keyboard_layout_colemak_dh_orth">Colemak-DH Ortholinear 鍵盤排列</string>
     <string name="bopomofo_keyboard_layout_colemak">Colemak 鍵盤排列</string>
     <string name="bopomofo_keyboard_layout_workman">Workman 鍵盤排列</string>
+    <string name="user_phrase_manager_title">使用者詞彙管理</string>
+    <string name="user_phrase_manager_description">檢視、新增或刪除您自訂的使用者詞彙</string>
+    <string name="manage_user_phrases">管理使用者詞彙</string>
+    <string name="no_user_phrases">尚無使用者詞彙</string>
+    <string name="add_user_phrase">新增</string>
+    <string name="delete_user_phrase">刪除</string>
+    <string name="delete_user_phrase_title">刪除使用者詞彙</string>
+    <string name="delete_user_phrase_message">確定要刪除「%1$s」嗎？</string>
+    <string name="user_phrase_input_hint">詞彙（例如：樸實注音）</string>
+    <string name="bopomofo_input_hint">注音（例如：ㄆㄨˇ ㄕˊ ㄓㄨˋ ㄧㄣ）</string>
+    <string name="user_phrase_input_empty">請輸入詞彙與注音</string>
+    <string name="user_phrase_add_failed">新增使用者詞彙失敗</string>
+    <string name="backup_user_phrases">備份</string>
+    <string name="restore_user_phrases">還原</string>
+    <string name="backup_success">已備份 %1$d 筆使用者詞彙</string>
+    <string name="backup_failed">備份使用者詞彙失敗</string>
+    <string name="restore_confirm_message">從備份檔還原 %1$d 筆使用者詞彙？</string>
+    <string name="restore_success">已還原 %1$d 筆使用者詞彙</string>
+    <string name="restore_failed">還原使用者詞彙失敗</string>
+    <string name="restore_no_data">檔案中找不到有效的使用者詞彙</string>
+    <string name="restore_invalid_file">無效的備份檔案</string>
+    <string name="restore_invalid_header">檔案格式無效：缺少或不正確的標頭列</string>
+    <string name="restore_malformed_row">第 %1$d 列資料格式異常，已拒絕匯入</string>
+    <string name="restore_invalid_bopomofo">第 %1$d 列的注音資料無效，已拒絕匯入</string>
+    <string name="analyze_bopomofo">分析注音</string>
+    <string name="analyze_bopomofo_hint">先輸入詞彙，再按「分析注音」自動推薦注音讀法，或是在下方直接輸入注音。</string>
+    <string name="analyze_bopomofo_no_results">無法找到此詞彙的注音讀法</string>
+    <string name="analyze_bopomofo_select">請選擇一組注音讀法：</string>
     <string-array name="on_screen_bopomofo_keyboard_layouts">
         <item>@string/bopomofo_keyboard_layout_dachen</item>
         <item>@string/bopomofo_keyboard_layout_hsu</item>

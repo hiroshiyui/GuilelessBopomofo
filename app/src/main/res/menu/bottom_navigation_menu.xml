@@ -30,4 +30,8 @@
         android:id="@+id/nav_physical_keyboard"
         android:icon="@drawable/ic_keyboard"
         android:title="@string/physical_keyboard_settings" />
+    <item
+        android:id="@+id/nav_user_phrases"
+        android:icon="@drawable/ic_dictionary"
+        android:title="@string/user_phrase_manager_title" />
 </menu>

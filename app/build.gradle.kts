@@ -114,6 +114,9 @@ tasks.register<Copy>("copyChewingDataFiles") {
         include("swkb.dat")
         include("symbols.dat")
     }
+    from("$chewingLibraryPath/data/dict/chewing") {
+        include("word.csv")
+    }
     into("$rootDir/app/src/main/assets")
 }
 

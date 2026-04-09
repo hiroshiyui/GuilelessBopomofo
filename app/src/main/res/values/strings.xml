@@ -112,6 +112,34 @@
     <string name="bopomofo_keyboard_layout_colemak_dh_orth">Colemak-DH Ortholinear</string>
     <string name="bopomofo_keyboard_layout_colemak">Colemak</string>
     <string name="bopomofo_keyboard_layout_workman">Workman</string>
+    <string name="user_phrase_manager_title">User Phrase Manager</string>
+    <string name="user_phrase_manager_description">View, add, or delete your custom user phrases</string>
+    <string name="manage_user_phrases">Manage User Phrases</string>
+    <string name="no_user_phrases">No user phrases found</string>
+    <string name="add_user_phrase">Add</string>
+    <string name="delete_user_phrase">Delete</string>
+    <string name="delete_user_phrase_title">Delete User Phrase</string>
+    <string name="delete_user_phrase_message">Delete \"%1$s\"?</string>
+    <string name="user_phrase_input_hint">Phrase (e.g. 樸實注音)</string>
+    <string name="bopomofo_input_hint">Bopomofo (e.g. ㄆㄨˇ ㄕˊ ㄓㄨˋ ㄧㄣ)</string>
+    <string name="user_phrase_input_empty">Please enter both phrase and bopomofo</string>
+    <string name="user_phrase_add_failed">Failed to add user phrase</string>
+    <string name="backup_user_phrases">Backup</string>
+    <string name="restore_user_phrases">Restore</string>
+    <string name="backup_success">Backed up %1$d user phrases</string>
+    <string name="backup_failed">Failed to backup user phrases</string>
+    <string name="restore_confirm_message">Restore %1$d user phrases from backup?</string>
+    <string name="restore_success">Restored %1$d user phrases</string>
+    <string name="restore_failed">Failed to restore user phrases</string>
+    <string name="restore_no_data">No valid user phrases found in the file</string>
+    <string name="restore_invalid_file">Invalid backup file</string>
+    <string name="restore_invalid_header">Invalid file format: missing or incorrect header row</string>
+    <string name="restore_malformed_row">Malformed data at row %1$d, import rejected</string>
+    <string name="restore_invalid_bopomofo">Invalid bopomofo at row %1$d, import rejected</string>
+    <string name="analyze_bopomofo">Analyze Bopomofo</string>
+    <string name="analyze_bopomofo_hint">Enter a phrase above and tap \"Analyze Bopomofo\" to suggest readings, or type bopomofo manually below.</string>
+    <string name="analyze_bopomofo_no_results">Unable to find bopomofo readings for this phrase</string>
+    <string name="analyze_bopomofo_select">Select a bopomofo reading:</string>
     <string-array name="on_screen_bopomofo_keyboard_layouts">
         <item>@string/bopomofo_keyboard_layout_dachen</item>
         <item>@string/bopomofo_keyboard_layout_hsu</item>

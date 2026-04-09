@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Material Design dictionary icon
+  ~ Source: https://fonts.google.com/icons?selected=Material+Symbols+Outlined:dictionary
+  ~ License: Apache License 2.0
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="960"
+    android:viewportHeight="960"
+    android:tint="?attr/colorControlNormal">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M480,600q50,-25 97.5,-38T680,549q33,0 65,5.5t55,15.5v-346q-27,-14 -57.5,-21T680,196q-55,0 -107.5,18T480,268v332ZM240,680q54,-26 109,-39t131,-13q35,0 68.5,4.5T616,644q33,8 64.5,18.5T744,684q32,0 56,-12t40,-31v-471q-18,20 -44.5,30T740,200q-42,0 -87,12.5T560,247q-48,-23 -93.5,-35T380,200q-55,0 -107.5,12T168,247v442q20,-12 42.5,-19t49.5,-7q36,0 71.5,7t67.5,21q32,-14 66.5,-21t70.5,-7q36,0 70,7t66,21l28,-10v82l-28,9q-32,-14 -65.5,-21T480,745q-37,0 -72,7t-68,21q-33,-14 -67.5,-21T200,745q-32,0 -62,7t-58,21v-82ZM480,434Z" />
+</vector>

@@ -95,7 +95,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.File
-import java.io.FileOutputStream
 import kotlin.coroutines.CoroutineContext
 
 class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPreferences.OnSharedPreferenceChangeListener,
@@ -145,7 +144,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         // Initializing Chewing
         try {
             val dataPath = applicationInfo.dataDir
-            setupChewingData(dataPath)
+            ChewingUtil.setupChewingData(this, dataPath)
             ChewingBridge.chewing.connect(dataPath)
             ChewingBridge.chewing.context.let {
                 Log.d(logTag, "Chewing context ptr: $it")
@@ -716,67 +715,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 this.renderCandidatesLayout()
             }
         }
-    }
-
-    private fun setupChewingData(dataPath: String) {
-        // Get app data directory
-        val chewingDataDir = File(dataPath)
-
-        if (!checkChewingData(dataPath)) {
-            Log.d(logTag, "Install Chewing data files.")
-            installChewingData(dataPath)
-        }
-
-        // Save app version
-        val appVersion = BuildConfig.VERSION_NAME.toByteArray()
-
-        val chewingDataAppVersionTxt = File(chewingDataDir, "data_appversion.txt")
-
-        // update Chewing data files by version
-        if (!chewingDataAppVersionTxt.exists()) {
-            chewingDataAppVersionTxt.appendBytes(appVersion)
-        }
-
-        if (!chewingDataAppVersionTxt.readBytes().contentEquals(appVersion)) {
-            Log.d(logTag, "Here comes a new version.")
-            installChewingData(dataPath)
-
-            // refresh app version
-            FileOutputStream(chewingDataAppVersionTxt).use { it.write(appVersion) }
-        }
-    }
-
-    private fun installChewingData(dataPath: String) {
-        // Get app data directory
-        val chewingDataDir = File(dataPath)
-
-        // Copying data files
-        for (file in chewingDataFiles) {
-            val destinationFile = File(chewingDataDir, file)
-            Log.d(logTag, "Copying ${file}...")
-            try {
-                assets.open(file).use { input ->
-                    FileOutputStream(destinationFile).use { output ->
-                        input.copyTo(output)
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e(logTag, "Failed to copy $file", e)
-            }
-        }
-    }
-
-    private fun checkChewingData(dataPath: String): Boolean {
-        Log.d(logTag, "Checking Chewing data files...")
-        val chewingDataDir = File(dataPath)
-
-        for (file in chewingDataFiles) {
-            val destinationFile = File(chewingDataDir, file)
-            if (!destinationFile.exists()) {
-                return false
-            }
-        }
-        return true
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
