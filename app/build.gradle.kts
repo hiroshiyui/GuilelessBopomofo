@@ -227,4 +227,5 @@ dependencies {
     implementation(libs.material)
     implementation(libs.preference.ktx)
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
 }
