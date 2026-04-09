@@ -54,7 +54,7 @@ Several common hotkeys:
     git clone --recursive https://github.com/hiroshiyui/GuilelessBopomofo.git
     ```
 1. Build it:
-    * Import this project into Android Studio, then run **"Buile -> Make Project"**, or...
+    * Import this project into Android Studio, then run **"Build -> Make Project"**, or...
     * execute `./gradlew :app:assembleDebug` or `./gradlew :app:assembleRelease` from shell command line
 1. Locate the generated APK files from `./app/build/outputs/apk/`
 1. Enjoy!

@@ -4,6 +4,8 @@ I have implemented most features of libchewing (https://chewing.im/), to provide
 
 * Unlike other similar products, though I don't have fuzzy, error-tolerance design, I do still have ability to predict possible phrases by context, and I do remember phrases from your typing history automatically.
 
-* Besides the most common "DaChen", I also provide you "Hsu" & "E-Ten 26 keys" Bopomofo keyboard layouts.
+* Besides the most common "DaChen", I also provide you "Hsu", "E-Ten 26 keys", and "DaChen CP26" Bopomofo keyboard layouts.
+
+* I also support physical keyboard input with the same layout options, so you can use a consistent Bopomofo experience across virtual and hardware keyboards.
 
 My source code repository: https://github.com/hiroshiyui/GuilelessBopomofo

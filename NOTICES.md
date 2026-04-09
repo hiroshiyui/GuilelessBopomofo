@@ -24,3 +24,19 @@
     - https://github.com/square/leakcanary/blob/main/LICENSE.txt
     - https://github.com/square/leakcanary
     - https://square.github.io/leakcanary/
+
+* FlexboxLayout: Apache License, Version 2.0
+    - https://github.com/nicklockwood/FlexboxLayout/blob/master/LICENSE
+    - https://github.com/google/flexbox-layout
+
+* Material Components for Android: Apache License, Version 2.0
+    - https://github.com/material-components/material-components-android/blob/master/LICENSE
+    - https://github.com/material-components/material-components-android
+
+* Kotlin Coroutines: Apache License, Version 2.0
+    - https://github.com/Kotlin/kotlinx.coroutines/blob/master/LICENSE.txt
+    - https://github.com/Kotlin/kotlinx.coroutines
+
+* Mockito: MIT License
+    - https://github.com/mockito/mockito/blob/main/LICENSE
+    - https://github.com/mockito/mockito

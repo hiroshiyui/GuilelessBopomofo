@@ -1,0 +1,10 @@
+Hi there! Here's what's new in version 3.7.4:
+
+* Upgraded libchewing to 0.13.0, bringing improved input processing.
+* Improved thread safety, null safety, and resource management across the app.
+* Enhanced error logging and lazy-initialized candidates layout for better stability.
+* Refined UI consistency with ViewBinding in ViewHolders.
+* Added unit tests for pure Kotlin logic codes.
+* Security auditing for JNI codes.
+
+Thanks for using Guileless Bopomofo!
