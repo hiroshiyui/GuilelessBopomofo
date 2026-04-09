@@ -1,0 +1,9 @@
+Hi there! Welcome to Guileless Bopomofo 4.0.0 -- a major update!
+
+* New User Phrase Manager: add, browse, and delete user phrases with bopomofo analysis, plus backup and restore support.
+* Redesigned settings with bottom tab navigation for easier access.
+* Fixed user phrases not persisting after force close.
+* Comprehensive security and code quality audit with fixes applied.
+* Added unit tests for events, ChewingUtil actions, and physical key handlers.
+
+Thanks for using Guileless Bopomofo!
