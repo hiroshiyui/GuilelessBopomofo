@@ -61,3 +61,51 @@ User input -> `GuilelessBopomofoService` -> `Chewing` (JNI) -> libchewing (nativ
 - Compile/Target SDK 36, Min SDK 23
 - Version catalog at `gradle/libs.versions.toml`
 - Release builds enable R8 minification and resource shrinking
+
+## Developer Principles
+
+### Code Quality
+
+- **Null safety**: use Kotlin null-safe operators properly; avoid `!!` unless justified.
+- **Thread safety**: correct use of coroutines; synchronized access to shared state.
+- **Resource management**: no leaked cursors, streams, or native resources.
+- **Error handling**: appropriate try/catch usage; never silently swallow exceptions.
+- **Consistency**: follow existing codebase patterns (EventBus for events, ViewBinding for views, etc.).
+- **No dead code**: remove unused imports, unreachable logic, and redundant code.
+
+### Code Smells to Avoid
+
+- Long methods doing too many things — break into smaller, focused functions.
+- Large classes with too many responsibilities — split by concern.
+- Duplicated code — extract shared logic into common functions.
+- Deep nesting — prefer early returns or extraction over excessive `if`/`when`/`try` nesting.
+- Magic numbers/strings — use named constants.
+- Mutable shared state — prefer immutable data and local state; flag unnecessary `var` or global mutable collections.
+
+### Refactoring Guidance
+
+- Use Kotlin idioms over Java-style patterns — scope functions (`let`/`apply`/`also`), destructuring, extension functions, `buildList`/`buildString`.
+- Replace complex `when`/`if-else` chains that switch on type with polymorphic dispatch.
+- Model related constants/states with sealed classes or enums instead of loose strings/ints.
+- Consolidate duplicate logic between `keys/virtual/` and `keys/physical/` handlers where appropriate.
+- Reduce coupling via dependency injection, EventBus, or interface abstractions.
+- Structure code for testability — avoid direct static calls and hidden dependencies.
+
+### JNI / Native Safety
+
+- **Buffer overflows**: ensure JNI string and array operations use correct lengths.
+- **Null pointer dereference**: validate JNI references (`FindClass`, `GetMethodID` return values) before use.
+- **Reference leaks**: release JNI local references when no longer needed, especially in loops.
+- **Input validation**: validate data crossing the JNI boundary on both sides.
+- **Memory management**: proper allocation/deallocation of native memory.
+
+### Security
+
+- **IME privacy**: as an IME handling all user keystrokes, never log or leak user input.
+- **No hardcoded secrets**: no API keys, credentials, or secrets in source.
+- **SharedPreferences**: no sensitive data stored in plain text.
+- **Intent safety**: validate intent extras; guard against intent injection.
+- **Export controls**: ensure components (activities, services, receivers) are not inadvertently exported.
+- **No command injection**: avoid unsafe `Runtime.exec()` or `ProcessBuilder` usage.
+- **No path traversal**: validate file paths in file operations.
+- **ProGuard/R8**: ensure obfuscation rules don't strip security-critical code.
