@@ -117,6 +117,8 @@
     <string name="user_phrase_manager_description">檢視、新增或刪除您自訂的使用者詞彙</string>
     <string name="manage_user_phrases">管理使用者詞彙</string>
     <string name="no_user_phrases">尚無使用者詞彙</string>
+    <string name="search_user_phrases_hint">搜尋詞彙或注音</string>
+    <string name="search_user_phrases_no_results">找不到符合的詞彙</string>
     <string name="add_user_phrase">新增</string>
     <string name="delete_user_phrase">刪除</string>
     <string name="delete_user_phrase_title">刪除使用者詞彙</string>

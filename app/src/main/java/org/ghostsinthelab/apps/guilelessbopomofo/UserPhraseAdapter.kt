@@ -24,9 +24,11 @@ import androidx.recyclerview.widget.RecyclerView
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.UserPhraseItemLayoutBinding
 
 class UserPhraseAdapter(
-    private val phrases: MutableList<UserPhrase>,
+    private val allPhrases: MutableList<UserPhrase>,
     private val onDeleteClick: (UserPhrase) -> Unit
 ) : RecyclerView.Adapter<UserPhraseViewHolder>() {
+
+    private var filteredPhrases: List<UserPhrase> = allPhrases
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserPhraseViewHolder {
         val binding = UserPhraseItemLayoutBinding.inflate(
@@ -36,14 +38,24 @@ class UserPhraseAdapter(
     }
 
     override fun onBindViewHolder(holder: UserPhraseViewHolder, position: Int) {
-        holder.bind(phrases[position], onDeleteClick)
+        holder.bind(filteredPhrases[position], onDeleteClick)
     }
 
-    override fun getItemCount(): Int = phrases.size
+    override fun getItemCount(): Int = filteredPhrases.size
 
     fun setData(newPhrases: List<UserPhrase>) {
-        phrases.clear()
-        phrases.addAll(newPhrases)
+        allPhrases.clear()
+        allPhrases.addAll(newPhrases)
+        filteredPhrases = allPhrases
+        notifyDataSetChanged()
+    }
+
+    fun filter(query: String) {
+        filteredPhrases = if (query.isEmpty()) {
+            allPhrases
+        } else {
+            allPhrases.filter { it.phrase.contains(query) || it.bopomofo.contains(query) }
+        }
         notifyDataSetChanged()
     }
 }

@@ -108,6 +108,14 @@ object ChewingUtil {
         val results = ChewingBridge.chewing.userphraseGetAll() ?: return emptyList()
         return results.mapNotNull { pair ->
             if (pair.size >= 2) UserPhrase(pair[0], pair[1]) else null
+        }.filter {
+            // Skip single-character entries: these are auto-learned by libchewing
+            // during composition commit, not intentionally added by the user.
+            // Showing them in the manager would be confusing, and deleting them
+            // triggers a libchewing bug where the character gets added to the
+            // exclusion dictionary (chewing-deleted.dat), hiding it from system
+            // dictionary candidates entirely.
+            it.phrase.length > 1
         }
     }
 

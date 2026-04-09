@@ -116,6 +116,8 @@
     <string name="user_phrase_manager_description">View, add, or delete your custom user phrases</string>
     <string name="manage_user_phrases">Manage User Phrases</string>
     <string name="no_user_phrases">No user phrases found</string>
+    <string name="search_user_phrases_hint">Search phrases or bopomofo</string>
+    <string name="search_user_phrases_no_results">No matching phrases found</string>
     <string name="add_user_phrase">Add</string>
     <string name="delete_user_phrase">Delete</string>
     <string name="delete_user_phrase_title">Delete User Phrase</string>

@@ -20,6 +20,8 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +41,7 @@ import java.io.OutputStreamWriter
 
 class UserPhraseManagerFragment : Fragment() {
     private val logTag = "UserPhraseManager"
+
     private var _binding: FragmentUserPhraseManagerBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: UserPhraseAdapter
@@ -75,6 +78,16 @@ class UserPhraseManagerFragment : Fragment() {
         binding.buttonBackup.setOnClickListener { backupLauncher.launch("guileless_bopomofo_user_phrases.csv") }
         binding.buttonRestore.setOnClickListener { restoreLauncher.launch(arrayOf("text/*")) }
 
+        binding.editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                val query = s?.toString()?.trim() ?: ""
+                adapter.filter(query)
+                updateEmptyState(query)
+            }
+        })
+
         loadUserPhrases()
     }
 
@@ -93,10 +106,22 @@ class UserPhraseManagerFragment : Fragment() {
     private fun loadUserPhrases() {
         val phrases = ChewingUtil.enumerateUserPhrases()
         adapter.setData(phrases)
-        binding.textViewEmptyState.visibility =
-            if (phrases.isEmpty()) View.VISIBLE else View.GONE
-        binding.recyclerViewUserPhrases.visibility =
-            if (phrases.isEmpty()) View.GONE else View.VISIBLE
+        val query = binding.editTextSearch.text?.toString()?.trim() ?: ""
+        if (query.isNotEmpty()) {
+            adapter.filter(query)
+        }
+        updateEmptyState(query)
+    }
+
+    private fun updateEmptyState(query: String) {
+        val isEmpty = adapter.itemCount == 0
+        binding.textViewEmptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        binding.recyclerViewUserPhrases.visibility = if (isEmpty) View.GONE else View.VISIBLE
+        binding.textViewEmptyState.text = if (query.isNotEmpty()) {
+            getString(R.string.search_user_phrases_no_results)
+        } else {
+            getString(R.string.no_user_phrases)
+        }
     }
 
     private fun confirmDeletePhrase(userPhrase: UserPhrase) {
