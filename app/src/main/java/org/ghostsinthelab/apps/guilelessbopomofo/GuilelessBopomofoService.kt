@@ -510,7 +510,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUpdateBufferViews(event: Events.UpdateBufferViews) {
-        Log.d(logTag, event.toString())
+        Log.d(logTag, event::class.simpleName ?: "Event")
         viewBinding.apply {
             launch { textViewPreEditBuffer.update() }
             launch { textViewBopomofoBuffer.update() }
@@ -519,19 +519,19 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUpdateCursorPosition(event: Events.UpdateCursorPosition) {
-        Log.d(logTag, event.toString())
+        Log.d(logTag, event::class.simpleName ?: "Event")
         viewBinding.textViewPreEditBuffer.updateCursorPosition()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUpdateCursorPositionToBegin(event: Events.UpdateCursorPositionToBegin) {
-        Log.d(logTag, event.toString())
+        Log.d(logTag, event::class.simpleName ?: "Event")
         viewBinding.textViewPreEditBuffer.updateCursorPositionToBegin()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUpdateCursorPositionToEnd(event: Events.UpdateCursorPositionToEnd) {
-        Log.d(logTag, event.toString())
+        Log.d(logTag, event::class.simpleName ?: "Event")
         viewBinding.textViewPreEditBuffer.updateCursorPositionToEnd()
     }
 
@@ -556,7 +556,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onExitKeyboardSubLayouts(event: Events.ExitKeyboardSubLayouts) {
-        Log.d(logTag, event.toString())
+        Log.d(logTag, event::class.simpleName ?: "Event")
         viewBinding.keyboardPanel.apply {
             if (this.currentLayout in listOf(
                     Layout.SYMBOLS, Layout.CANDIDATES
@@ -572,7 +572,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCommitTextInChewingCommitBuffer(event: Events.CommitTextInChewingCommitBuffer) {
-        Log.d(logTag, event.toString())
+        Log.d(logTag, event::class.simpleName ?: "Event")
         currentInputConnection?.commitText(
             ChewingBridge.chewing.commitString(), 1
         )
@@ -580,7 +580,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSwitchToNextInputMethod(event: Events.SwitchToNextInputMethod) {
-        Log.d(logTag, event.toString())
+        Log.d(logTag, event::class.simpleName ?: "Event")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             switchToNextInputMethod(false)
         } else {
@@ -620,7 +620,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onToggleKeyboardMainLayoutMode(event: Events.ToggleKeyboardMainLayoutMode) {
-        Log.d(logTag, event.toString())
+        Log.d(logTag, event::class.simpleName ?: "Event")
         // Always reset Shift state when switching main layouts.
         viewBinding.keyboardPanel.releaseShiftKey()
         currentInputConnection?.sendKeyEvent(KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT))
@@ -653,7 +653,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEnterKeyDownWhenBufferIsEmpty(event: Events.EnterKeyDownWhenBufferIsEmpty) {
-        Log.d(logTag, event.toString())
+        Log.d(logTag, event::class.simpleName ?: "Event")
 
         var multiLineEditText = false
 

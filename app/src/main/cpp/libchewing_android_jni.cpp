@@ -53,7 +53,10 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_chewingNew(
     /* check if we do chewing_new2() successfully */
     if (!ctx || chewing_Reset(ctx) == -1) {
         jclass Exception = env->FindClass("java/lang/Exception");
-        env->ThrowNew(Exception, "Unable to initialize Chewing engine.");
+        if (Exception) {
+            env->ThrowNew(Exception, "Unable to initialize Chewing engine.");
+            env->DeleteLocalRef(Exception);
+        }
         return 0;
     }
 
@@ -108,6 +111,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_setSelKey(
     if (!ctx || len <= 0) return;
     std::vector<jint> buf(len);
     env->GetIntArrayRegion(selkeys, 0, len, buf.data());
+    if (env->ExceptionCheck()) return;
 
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Set chewing selection keys");
     chewing_set_selKey(ctx, reinterpret_cast<const int *>(buf.data()), len);
@@ -334,6 +338,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_commitString(
     if (!commit_string) return nullptr;
     jstring ret_jstring = env->NewStringUTF(commit_string);
     chewing_free(commit_string);
+    if (!ret_jstring) return nullptr;
     return ret_jstring;
 }
 
@@ -346,7 +351,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_commitStringStatic(
     if (!ctx) return nullptr;
     const char *commit_string_static = chewing_commit_String_static(ctx);
     if (!commit_string_static) return nullptr;
-    return env->NewStringUTF(commit_string_static);
+    jstring ret_jstring = env->NewStringUTF(commit_string_static);
+    if (!ret_jstring) return nullptr;
+    return ret_jstring;
 }
 
 /* chewing_commit_preedit_buf() */
@@ -521,6 +528,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getKBString(
     if (!current_keyboard_type) return nullptr;
     jstring ret_jstring = env->NewStringUTF(current_keyboard_type);
     chewing_free(current_keyboard_type);
+    if (!ret_jstring) return nullptr;
     return ret_jstring;
 }
 
@@ -550,6 +558,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferString(
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Outputs current pre-edit buffer");
     chewing_free(native_buffer_string);
+    if (!ret_jstring) return nullptr;
     return ret_jstring;
 }
 
@@ -565,6 +574,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bopomofoString(
     if (!bopomofo_string) return nullptr;
     jstring ret_jstring = env->NewStringUTF(bopomofo_string);
     chewing_free(bopomofo_string);
+    if (!ret_jstring) return nullptr;
     return ret_jstring;
 }
 
@@ -577,7 +587,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferStringStatic(
     if (!ctx) return nullptr;
     const char *native_buffer_string_static = chewing_buffer_String_static(ctx);
     if (!native_buffer_string_static) return nullptr;
-    return env->NewStringUTF(native_buffer_string_static);
+    jstring ret_jstring = env->NewStringUTF(native_buffer_string_static);
+    if (!ret_jstring) return nullptr;
+    return ret_jstring;
 }
 
 extern "C" JNIEXPORT jstring JNICALL
@@ -589,7 +601,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bopomofoStringStatic(
     if (!ctx) return nullptr;
     const char *bopomofo_string_static = chewing_bopomofo_String_static(ctx);
     if (!bopomofo_string_static) return nullptr;
-    return env->NewStringUTF(bopomofo_string_static);
+    jstring ret_jstring = env->NewStringUTF(bopomofo_string_static);
+    if (!ret_jstring) return nullptr;
+    return ret_jstring;
 }
 
 extern "C" JNIEXPORT jstring JNICALL
@@ -602,7 +616,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candStringByIndexStatic(
     if (!ctx) return nullptr;
     const char *cand_string_by_index_static = chewing_cand_string_by_index_static(ctx, index);
     if (!cand_string_by_index_static) return nullptr;
-    return env->NewStringUTF(cand_string_by_index_static);
+    jstring ret_jstring = env->NewStringUTF(cand_string_by_index_static);
+    if (!ret_jstring) return nullptr;
+    return ret_jstring;
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -756,6 +772,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candString(
     if (!cand_string) return nullptr;
     jstring ret_jstring = env->NewStringUTF(cand_string);
     chewing_free(cand_string);
+    if (!ret_jstring) return nullptr;
     return ret_jstring;
 }
 
@@ -768,7 +785,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candStringStatic(
     if (!ctx) return nullptr;
     const char *cand_string_static = chewing_cand_String_static(ctx);
     if (!cand_string_static) return nullptr;
-    return env->NewStringUTF(cand_string_static);
+    jstring ret_jstring = env->NewStringUTF(cand_string_static);
+    if (!ret_jstring) return nullptr;
+    return ret_jstring;
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -850,7 +869,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_version(
         JNIEnv *env, jobject thiz) {
     const char *chewing_version_string = chewing_version();
     if (!chewing_version_string) return nullptr;
-    return env->NewStringUTF(chewing_version_string);
+    jstring ret_jstring = env->NewStringUTF(chewing_version_string);
+    if (!ret_jstring) return nullptr;
+    return ret_jstring;
 }
 
 extern "C"
@@ -937,5 +958,6 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configGetStr(
                         fetched_value);
     jstring ret_jstring = env->NewStringUTF(fetched_value);
     chewing_free(fetched_value);
+    if (!ret_jstring) return nullptr;
     return ret_jstring;
 }

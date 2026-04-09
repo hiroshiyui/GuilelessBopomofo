@@ -63,6 +63,9 @@ enum class ConversionEngines(val mode: Int) {
     FUZZY_CHEWING_CONVERSION_ENGINE(2)
 }
 
+// All access to ChewingBridge.chewing must be from the main thread.
+// InputMethodService callbacks and EventBus @Subscribe(threadMode = ThreadMode.MAIN)
+// handlers satisfy this requirement. The underlying native ChewingContext is not thread-safe.
 object ChewingBridge {
     val chewing: Chewing = Chewing()
 }
