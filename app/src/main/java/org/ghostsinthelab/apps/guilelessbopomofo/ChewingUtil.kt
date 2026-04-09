@@ -93,15 +93,10 @@ object ChewingUtil {
     }
 
     fun enumerateUserPhrases(): List<UserPhrase> {
-        val phrases = mutableListOf<UserPhrase>()
-        ChewingBridge.chewing.userphraseEnumerate()
-        while (ChewingBridge.chewing.userphraseHasNext() != 0) {
-            val result = ChewingBridge.chewing.userphraseGet() ?: break
-            if (result.size >= 2) {
-                phrases.add(UserPhrase(result[0], result[1]))
-            }
+        val results = ChewingBridge.chewing.userphraseGetAll() ?: return emptyList()
+        return results.mapNotNull { pair ->
+            if (pair.size >= 2) UserPhrase(pair[0], pair[1]) else null
         }
-        return phrases
     }
 
     fun candidateWindowOpened(): Boolean {

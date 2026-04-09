@@ -970,72 +970,79 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configGetStr(
     return ret_jstring;
 }
 
-/* chewing_userphrase_enumerate() */
-extern "C"
-JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseEnumerate(
-        JNIEnv *env, jobject thiz,
-        jlong chewing_ctx_ptr) {
-    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    if (!ctx) return -1;
-    return chewing_userphrase_enumerate(ctx);
-}
-
-/* chewing_userphrase_has_next() */
-extern "C"
-JNIEXPORT jint JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseHasNext(
-        JNIEnv *env, jobject thiz,
-        jlong chewing_ctx_ptr) {
-    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
-    if (!ctx) return 0;
-    unsigned int phrase_len = 0;
-    unsigned int bopomofo_len = 0;
-    return chewing_userphrase_has_next(ctx, &phrase_len, &bopomofo_len);
-}
-
-/* chewing_userphrase_get() - returns [phrase, bopomofo] as a String array */
+/*
+ * chewing_userphrase_enumerate + has_next + get, all in one call.
+ * Returns a jobjectArray of String[2] arrays: [[phrase, bopomofo], ...]
+ *
+ * The chewing_userphrase_has_next / chewing_userphrase_get pair must be
+ * called exactly once per iteration. Splitting them across separate JNI
+ * calls caused has_next to be called twice (once in hasNext, once in get),
+ * skipping every other entry. This combined function avoids that bug.
+ */
 extern "C"
 JNIEXPORT jobjectArray JNICALL
-Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseGet(
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseGetAll(
         JNIEnv *env, jobject thiz,
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     if (!ctx) return nullptr;
 
-    unsigned int phrase_len = 0;
-    unsigned int bopomofo_len = 0;
-    if (!chewing_userphrase_has_next(ctx, &phrase_len, &bopomofo_len)) {
-        return nullptr;
-    }
-
-    std::vector<char> phrase_buf(phrase_len);
-    std::vector<char> bopomofo_buf(bopomofo_len);
-
-    int result = chewing_userphrase_get(ctx, phrase_buf.data(), phrase_len,
-                                         bopomofo_buf.data(), bopomofo_len);
-    if (result != 0) return nullptr;
-
     jclass stringClass = env->FindClass("java/lang/String");
     if (!stringClass) return nullptr;
 
-    jobjectArray arr = env->NewObjectArray(2, stringClass, nullptr);
-    if (!arr) {
+    // Collect all phrases first
+    std::vector<std::pair<std::string, std::string>> phrases;
+
+    chewing_userphrase_enumerate(ctx);
+
+    unsigned int phrase_len = 0;
+    unsigned int bopomofo_len = 0;
+    while (chewing_userphrase_has_next(ctx, &phrase_len, &bopomofo_len)) {
+        std::vector<char> phrase_buf(phrase_len);
+        std::vector<char> bopomofo_buf(bopomofo_len);
+
+        int result = chewing_userphrase_get(ctx, phrase_buf.data(), phrase_len,
+                                             bopomofo_buf.data(), bopomofo_len);
+        if (result == 0) {
+            phrases.emplace_back(phrase_buf.data(), bopomofo_buf.data());
+        }
+    }
+
+    // Build the result array
+    jclass stringArrayClass = env->FindClass("[Ljava/lang/String;");
+    if (!stringArrayClass) {
         env->DeleteLocalRef(stringClass);
         return nullptr;
     }
 
-    jstring phraseStr = env->NewStringUTF(phrase_buf.data());
-    jstring bopomofoStr = env->NewStringUTF(bopomofo_buf.data());
+    jobjectArray outerArray = env->NewObjectArray(
+            static_cast<jsize>(phrases.size()), stringArrayClass, nullptr);
+    if (!outerArray) {
+        env->DeleteLocalRef(stringClass);
+        env->DeleteLocalRef(stringArrayClass);
+        return nullptr;
+    }
 
-    if (phraseStr) env->SetObjectArrayElement(arr, 0, phraseStr);
-    if (bopomofoStr) env->SetObjectArrayElement(arr, 1, bopomofoStr);
+    for (size_t i = 0; i < phrases.size(); i++) {
+        jobjectArray innerArray = env->NewObjectArray(2, stringClass, nullptr);
+        if (!innerArray) continue;
 
-    if (phraseStr) env->DeleteLocalRef(phraseStr);
-    if (bopomofoStr) env->DeleteLocalRef(bopomofoStr);
+        jstring phraseStr = env->NewStringUTF(phrases[i].first.c_str());
+        jstring bopomofoStr = env->NewStringUTF(phrases[i].second.c_str());
+
+        if (phraseStr) env->SetObjectArrayElement(innerArray, 0, phraseStr);
+        if (bopomofoStr) env->SetObjectArrayElement(innerArray, 1, bopomofoStr);
+
+        env->SetObjectArrayElement(outerArray, static_cast<jsize>(i), innerArray);
+
+        if (phraseStr) env->DeleteLocalRef(phraseStr);
+        if (bopomofoStr) env->DeleteLocalRef(bopomofoStr);
+        env->DeleteLocalRef(innerArray);
+    }
+
     env->DeleteLocalRef(stringClass);
-
-    return arr;
+    env->DeleteLocalRef(stringArrayClass);
+    return outerArray;
 }
 
 /* chewing_userphrase_add() */
