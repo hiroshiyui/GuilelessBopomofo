@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Material Design touch_app icon
+  ~ Source: https://fonts.google.com/icons?selected=Material+Symbols+Outlined:touch_app
+  ~ License: Apache License 2.0
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="960"
+    android:viewportHeight="960"
+    android:tint="?attr/colorControlNormal">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M560,520v-202q0,-25 -17.5,-41.5T500,260q-25,0 -42.5,16.5T440,318v288l-84,-80q-11,-11 -27.5,-14t-31.5,5q-20,10 -27.5,30.5T274,582l130,208q8,12 20.5,21t27.5,9h188q38,0 64.5,-26.5T730,730v-170q0,-17 -11.5,-28.5T690,520L560,520ZM418,800q-24,0 -42,-10t-32,-26L214,556q-22,-36 -8.5,-76t51.5,-58q23,-12 49,-10t47,18l7,6v-118q0,-58 41,-98t99,-40q58,0 99,40t41,98v142h90q50,0 85,35t35,85v170q0,71 -49.5,120.5T680,920L418,800ZM500,0q-92,0 -162,60.5T252,212q-2,14 8,24t24,10q12,0 21,-8.5t11,-20.5q13,-57 60.5,-97T500,80q76,0 128,52t52,128q0,76 -52,128T500,440q-12,0 -21,8.5T470,470q0,14 9,24t23,8q109,-10 183.5,-87.5T760,260q0,-108 -76,-184T500,0Z" />
+</vector>
