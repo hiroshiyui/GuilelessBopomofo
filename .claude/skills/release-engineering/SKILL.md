@@ -89,13 +89,34 @@ Wait for the user to confirm signing is complete before proceeding to the GitHub
 
 ## GitHub Release
 
-After building and GPG-signing the APKs, create a GitHub Release using `gh`:
+After building and GPG-signing the APKs, create a GitHub Release using `gh`.
+
+### Release Notes
+
+Write a human-friendly release note body — do **not** rely solely on `--generate-notes`. The note should:
+
+- Start with both the **en-US** and **zh-TW** F-Droid changelogs (already written earlier in the process), separated by a blank line.
+- Append the auto-generated changelog (commit list) below as a "Full Changelog" section for completeness.
+
+Structure:
+```markdown
+<en-US changelog content>
+
+<zh-TW changelog content>
+
+<!-- auto-generated below -->
+**Full Changelog**: https://github.com/hiroshiyui/GuilelessBopomofo/compare/<previous-tag>...<versionName>
+```
+
+### Creating the Release
 
 ```bash
 gh release create <versionName> \
   --title "<versionName>" \
-  --generate-notes \
-  --notes-start-tag <previous-tag> \
+  --notes "$(cat <<'EOF'
+<release notes body as described above>
+EOF
+)" \
   <apk-and-asc-files...>
 ```
 
@@ -105,7 +126,7 @@ Upload **both** debug and release APKs along with their `.asc` signature files (
 - `org.ghostsinthelab.apps.guilelessbopomofo_v<version>-release.apk`
 - `org.ghostsinthelab.apps.guilelessbopomofo_v<version>-release.apk.asc`
 
-The release title matches the tag/versionName (e.g. `3.7.5`). Use `--generate-notes --notes-start-tag` to auto-generate the changelog from the previous release tag.
+The release title matches the tag/versionName (e.g. `3.7.5`).
 
 ## Important Reminders
 
