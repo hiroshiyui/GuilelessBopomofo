@@ -58,15 +58,7 @@ class KeyboardPanel(
     internal var lastChewingCursor: Int = 0
     private var currentCandidatesList: Int = 0
 
-    private lateinit var keyboardHsuLayoutBinding: KeyboardHsuLayoutBinding
-    private lateinit var keyboardHsuQwertyLayoutBinding: KeyboardHsuQwertyLayoutBinding
-    private lateinit var keyboardEt26LayoutBinding: KeyboardEt26LayoutBinding
-    private lateinit var keyboardEt26QwertyLayoutBinding: KeyboardEt26QwertyLayoutBinding
-    private lateinit var keyboardEt41LayoutBinding: KeyboardEt41LayoutBinding
-    private lateinit var keyboardDachenLayoutBinding: KeyboardDachenLayoutBinding
-    private lateinit var keyboardDachenCp26LayoutBinding: KeyboardDachenCp26LayoutBinding
-    private lateinit var keyboardQwertyLayoutBinding: KeyboardQwertyLayoutBinding
-    private lateinit var compactLayoutBinding: CompactLayoutBinding
+    private var compactLayoutBinding: CompactLayoutBinding? = null
 
     // candidatesRecyclerView
     private val candidatesLayoutBinding: CandidatesLayoutBinding by lazy {
@@ -146,24 +138,26 @@ class KeyboardPanel(
         }
 
         this.removeAllViews()
-        compactLayoutBinding = CompactLayoutBinding.inflate(LayoutInflater.from(context))
+        val binding = CompactLayoutBinding.inflate(LayoutInflater.from(context))
+        compactLayoutBinding = binding
+
         if (ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
-            compactLayoutBinding.textViewCurrentModeValue.text = resources.getString(R.string.mode_bopomofo)
+            binding.textViewCurrentModeValue.text = resources.getString(R.string.mode_bopomofo)
         } else {
-            compactLayoutBinding.textViewCurrentModeValue.text = resources.getString(R.string.mode_alphanumerical)
+            binding.textViewCurrentModeValue.text = resources.getString(R.string.mode_alphanumerical)
         }
 
         when (ChewingBridge.chewing.getShapeMode()) {
             ShapeMode.HALF.mode -> {
-                compactLayoutBinding.textViewCurrentWidthModeValue.text = resources.getString(R.string.half_width_mode)
+                binding.textViewCurrentWidthModeValue.text = resources.getString(R.string.half_width_mode)
             }
 
             ShapeMode.FULL.mode -> {
-                compactLayoutBinding.textViewCurrentWidthModeValue.text = resources.getString(R.string.full_width_mode)
+                binding.textViewCurrentWidthModeValue.text = resources.getString(R.string.full_width_mode)
             }
         }
 
-        this.addView(compactLayoutBinding.root)
+        this.addView(binding.root)
     }
 
     private fun switchToBopomofoLayout() {
@@ -188,52 +182,34 @@ class KeyboardPanel(
             ChewingBridge.chewing.setKBType(newSoftKeyboardType)
         }
 
+        val inflater = LayoutInflater.from(context)
         when (userSoftKeyboardLayoutPreference) {
             "KB_HSU" -> {
-                if (sharedPreferences.getBoolean(
-                        USER_DISPLAY_HSU_QWERTY_LAYOUT, false
-                    )
-                ) {
-                    keyboardHsuQwertyLayoutBinding = KeyboardHsuQwertyLayoutBinding.inflate(LayoutInflater.from(context))
-                    this.addView(keyboardHsuQwertyLayoutBinding.root)
+                if (sharedPreferences.getBoolean(USER_DISPLAY_HSU_QWERTY_LAYOUT, false)) {
+                    this.addView(KeyboardHsuQwertyLayoutBinding.inflate(inflater).root)
                 } else {
-                    keyboardHsuLayoutBinding = KeyboardHsuLayoutBinding.inflate(LayoutInflater.from(context))
-                    this.addView(keyboardHsuLayoutBinding.root)
+                    this.addView(KeyboardHsuLayoutBinding.inflate(inflater).root)
                 }
-                return
             }
 
             "KB_ET26" -> {
-                if (sharedPreferences.getBoolean(
-                        USER_DISPLAY_ETEN26_QWERTY_LAYOUT, false
-                    )
-                ) {
-                    keyboardEt26QwertyLayoutBinding = KeyboardEt26QwertyLayoutBinding.inflate(LayoutInflater.from(context))
-                    this.addView(keyboardEt26QwertyLayoutBinding.root)
+                if (sharedPreferences.getBoolean(USER_DISPLAY_ETEN26_QWERTY_LAYOUT, false)) {
+                    this.addView(KeyboardEt26QwertyLayoutBinding.inflate(inflater).root)
                 } else {
-                    keyboardEt26LayoutBinding = KeyboardEt26LayoutBinding.inflate(LayoutInflater.from(context))
-                    this.addView(keyboardEt26LayoutBinding.root)
+                    this.addView(KeyboardEt26LayoutBinding.inflate(inflater).root)
                 }
-                return
             }
 
             "KB_ET" -> {
-                keyboardEt41LayoutBinding = KeyboardEt41LayoutBinding.inflate(LayoutInflater.from(context)).also {
-                    this.addView(it.root)
-                }
-                return
+                this.addView(KeyboardEt41LayoutBinding.inflate(inflater).root)
             }
 
             "KB_DEFAULT" -> {
-                keyboardDachenLayoutBinding = KeyboardDachenLayoutBinding.inflate(LayoutInflater.from(context))
-                this.addView(keyboardDachenLayoutBinding.root)
-                return
+                this.addView(KeyboardDachenLayoutBinding.inflate(inflater).root)
             }
 
             "KB_DACHEN_CP26" -> {
-                keyboardDachenCp26LayoutBinding = KeyboardDachenCp26LayoutBinding.inflate(LayoutInflater.from(context))
-                this.addView(keyboardDachenCp26LayoutBinding.root)
-                return
+                this.addView(KeyboardDachenCp26LayoutBinding.inflate(inflater).root)
             }
         }
     }
@@ -247,10 +223,8 @@ class KeyboardPanel(
         }
 
         currentLayout = Layout.QWERTY
-        keyboardQwertyLayoutBinding = KeyboardQwertyLayoutBinding.inflate(LayoutInflater.from(context))
-
         this.removeAllViews()
-        this.addView(keyboardQwertyLayoutBinding.root)
+        this.addView(KeyboardQwertyLayoutBinding.inflate(LayoutInflater.from(context)).root)
     }
 
     private fun switchToSymbolPicker() {
@@ -350,6 +324,6 @@ class KeyboardPanel(
     }
 
     fun setShapeMode(mode: String) {
-        compactLayoutBinding.textViewCurrentWidthModeValue.text = mode
+        compactLayoutBinding?.textViewCurrentWidthModeValue?.text = mode
     }
 }
