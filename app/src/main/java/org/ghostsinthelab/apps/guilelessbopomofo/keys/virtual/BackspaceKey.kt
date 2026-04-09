@@ -23,15 +23,12 @@ import android.content.Context
 import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.GestureDetector
-import android.view.KeyEvent
 import android.view.MotionEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
@@ -42,6 +39,12 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     KeyImageButton(context, attrs), CoroutineScope {
     private var backspacePressed: Boolean = false
     var lastBackspaceClickTime: Long = 0
+
+    companion object {
+        private const val BACKSPACE_DEBOUNCE_MS = 100L
+        private const val BACKSPACE_REPEAT_INITIAL_DELAY_MS = 50L
+        private const val BACKSPACE_REPEAT_INTERVAL_MS = 100L
+    }
     override var mDetector: GestureDetector
 
     override val coroutineContext: CoroutineContext
@@ -55,7 +58,7 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     inner class MyGestureListener : GestureListener() {
         override fun onDown(e: MotionEvent): Boolean {
             // avoids too fast repeat clicks
-            if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < 100) {
+            if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < BACKSPACE_DEBOUNCE_MS) {
                 return false
             }
             lastBackspaceClickTime = SystemClock.elapsedRealtime()
@@ -100,22 +103,17 @@ class BackspaceKey(context: Context, attrs: AttributeSet) :
     }
 
     private suspend fun repeatBackspace() {
-        fixedRateTimer("repeatBackspace", true, 50L, 100L) {
+        fixedRateTimer("repeatBackspace", true, BACKSPACE_REPEAT_INITIAL_DELAY_MS, BACKSPACE_REPEAT_INTERVAL_MS) {
             if (backspacePressed) {
                 performKeyStroke()
             } else {
                 this@fixedRateTimer.cancel()
             }
         }
-        delay(50L)
+        delay(BACKSPACE_REPEAT_INITIAL_DELAY_MS)
     }
 
     private fun performKeyStroke() {
-        if (ChewingUtil.anyBufferIsNotEmpty()) {
-            ChewingBridge.chewing.handleBackspace()
-            EventBus.getDefault().post(Events.UpdateBufferViews())
-        } else {
-            EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_DEL))
-        }
+        ChewingUtil.handleBackspaceAction()
     }
 }

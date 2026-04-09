@@ -22,12 +22,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-import org.greenrobot.eventbus.EventBus
 
 class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override var mDetector: GestureDetector
@@ -44,12 +41,7 @@ class EnterKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            if (ChewingUtil.anyBufferIsNotEmpty()) { // not committed yet
-                ChewingBridge.chewing.commitPreeditBuf(ChewingBridge.chewing.context)
-                EventBus.getDefault().post(Events.UpdateBufferViews())
-            } else {
-                EventBus.getDefault().post(Events.EnterKeyDownWhenBufferIsEmpty())
-            }
+            ChewingUtil.handleEnterAction()
             return true
         }
     }

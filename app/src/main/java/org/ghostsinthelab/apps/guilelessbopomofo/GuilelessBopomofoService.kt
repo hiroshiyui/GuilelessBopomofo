@@ -113,6 +113,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     private val chewingDataFiles = ChewingUtil.listOfDataFiles()
 
     companion object {
+        private const val CANDIDATES_PER_PAGE = 10
+
         val defaultHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
 
         @Volatile
@@ -126,8 +128,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         if (Build.MANUFACTURER == "Google" && Build.BOARD.startsWith("goldfish_")) {
             deviceIsEmulator = true
         }
-
-        EventBus.getDefault().register(this)
 
         // register physical key handlers
         initializePhysicalKeyDispatcher()
@@ -165,24 +165,33 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             ).let { ChewingBridge.chewing.configSetInt("chewing.conversion_engine", it) }
 
             ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
-            ChewingBridge.chewing.setCandPerPage(10)
+            ChewingBridge.chewing.setCandPerPage(CANDIDATES_PER_PAGE)
             ChewingBridge.chewing.configSetInt("chewing.sort_candidates_by_frequency", 1)
 
             sharedPreferences.getString(
                 USER_CANDIDATE_SELECTION_KEYS_OPTION, SelectionKeys.NUMBER_ROW.set
             )?.let {
-                ChewingBridge.chewing.setSelKey(SelectionKeys.valueOf(it).keys, 10)
+                ChewingBridge.chewing.setSelKey(SelectionKeys.valueOf(it).keys, CANDIDATES_PER_PAGE)
             }
-        } catch (exception: Exception) {
+        } catch (exception: UnsatisfiedLinkError) {
+            ChewingBridge.chewing.context = 0
             val exceptionDescription: String = getString(R.string.libchewing_init_fail, exception.message)
             Toast.makeText(applicationContext, exceptionDescription, Toast.LENGTH_LONG).show()
-            exception.let { e ->
-                e.printStackTrace()
-                e.message?.let { msg ->
-                    Log.e(logTag, msg)
-                }
-            }
+            Log.e(logTag, "Failed to load native library", exception)
+        } catch (exception: Chewing.ChewingInitException) {
+            ChewingBridge.chewing.context = 0
+            val exceptionDescription: String = getString(R.string.libchewing_init_fail, exception.message)
+            Toast.makeText(applicationContext, exceptionDescription, Toast.LENGTH_LONG).show()
+            Log.e(logTag, "Failed to initialize Chewing", exception)
+        } catch (exception: java.io.IOException) {
+            ChewingBridge.chewing.context = 0
+            val exceptionDescription: String = getString(R.string.libchewing_init_fail, exception.message)
+            Toast.makeText(applicationContext, exceptionDescription, Toast.LENGTH_LONG).show()
+            Log.e(logTag, "Failed to setup Chewing data", exception)
         }
+
+        // Register EventBus after initialization so handlers won't fire on uninitialized state
+        EventBus.getDefault().register(this)
 
         userHapticFeedbackStrength =
             sharedPreferences.getInt(USER_HAPTIC_FEEDBACK_STRENGTH, defaultHapticFeedbackStrength)
@@ -847,7 +856,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                     key, SelectionKeys.NUMBER_ROW.set
                 )?.let {
                     ChewingBridge.chewing.setSelKey(
-                        SelectionKeys.valueOf(it).keys, 10
+                        SelectionKeys.valueOf(it).keys, CANDIDATES_PER_PAGE
                     )
                 }
             }

@@ -21,10 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 import android.content.Context
 import android.util.Log
 import android.view.KeyEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.greenrobot.eventbus.EventBus
 
 class Enter : PhysicalKeyHandler {
     override fun onKeyDown(
@@ -33,14 +30,7 @@ class Enter : PhysicalKeyHandler {
         event: KeyEvent?,
     ): Boolean {
         Log.d("Enter", "onKeyDown()")
-
-        if (ChewingUtil.anyBufferIsNotEmpty()) { // not committed yet
-            ChewingBridge.chewing.commitPreeditBuf(ChewingBridge.chewing.context)
-            EventBus.getDefault().post(Events.UpdateBufferViews())
-        } else {
-            EventBus.getDefault().post(Events.EnterKeyDownWhenBufferIsEmpty())
-        }
-
+        ChewingUtil.handleEnterAction()
         return true
     }
 

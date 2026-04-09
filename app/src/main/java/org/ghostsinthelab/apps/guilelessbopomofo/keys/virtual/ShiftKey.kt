@@ -38,8 +38,8 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
     enum class ShiftKeyState { RELEASED, PRESSED, HOLD }
 
     var currentShiftKeyState = ShiftKeyState.RELEASED
-    var isActive: Boolean = false
-    var isLocked: Boolean = false
+    val isActive: Boolean get() = currentShiftKeyState != ShiftKeyState.RELEASED
+    val isLocked: Boolean get() = currentShiftKeyState == ShiftKeyState.HOLD
 
     override var mDetector: GestureDetector
 
@@ -102,24 +102,6 @@ class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         )
 
         val backgroundColorToSet = buttonStateBackgroundColors.getValue(state)
-
-        when (state) {
-            ShiftKeyState.RELEASED -> {
-                isActive = false
-                isLocked = false
-            }
-
-            ShiftKeyState.PRESSED -> {
-                isActive = true
-                isLocked = false
-            }
-
-            ShiftKeyState.HOLD -> {
-                isActive = true
-                isLocked = true
-            }
-        }
-
         background.setTint(backgroundColorToSet)
 
 

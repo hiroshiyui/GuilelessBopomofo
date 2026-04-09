@@ -20,10 +20,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
 import android.content.Context
 import android.view.KeyEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.greenrobot.eventbus.EventBus
 
 class Del : PhysicalKeyHandler {
     override fun onKeyDown(
@@ -31,13 +28,7 @@ class Del : PhysicalKeyHandler {
         keyCode: Int,
         event: KeyEvent?,
     ): Boolean {
-        if (ChewingUtil.anyBufferIsNotEmpty()) {
-            ChewingBridge.chewing.handleBackspace()
-            EventBus.getDefault().post(Events.UpdateBufferViews())
-        } else {
-            EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_DEL))
-        }
-
+        ChewingUtil.handleBackspaceAction()
         return true
     }
 }

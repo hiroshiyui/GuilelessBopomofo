@@ -18,6 +18,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.greenrobot.eventbus.EventBus
@@ -74,6 +75,36 @@ object ChewingUtil {
         }
 
         return candidatesInThisPage.toList()
+    }
+
+    fun handleBackspaceAction() {
+        if (anyBufferIsNotEmpty()) {
+            ChewingBridge.chewing.handleBackspace()
+            EventBus.getDefault().post(Events.UpdateBufferViews())
+        } else {
+            EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_DEL))
+        }
+    }
+
+    fun handleEnterAction() {
+        if (anyBufferIsNotEmpty()) {
+            ChewingBridge.chewing.commitPreeditBuf(ChewingBridge.chewing.context)
+            EventBus.getDefault().post(Events.UpdateBufferViews())
+        } else {
+            EventBus.getDefault().post(Events.EnterKeyDownWhenBufferIsEmpty())
+        }
+    }
+
+    fun handleSpaceAction() {
+        if (anyBufferIsNotEmpty()) {
+            ChewingBridge.chewing.handleSpace()
+            EventBus.getDefault().post(Events.UpdateBufferViews())
+            if (ChewingBridge.chewing.getSpaceAsSelection() == 1 && ChewingBridge.chewing.candTotalChoice() > 0) {
+                openCandidates()
+            }
+        } else {
+            EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE))
+        }
     }
 
     fun openCandidates() {

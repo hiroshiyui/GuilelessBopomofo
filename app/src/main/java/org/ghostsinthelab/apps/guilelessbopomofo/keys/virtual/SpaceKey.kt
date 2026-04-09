@@ -21,14 +21,10 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 import android.content.Context
 import android.util.AttributeSet
 import android.view.GestureDetector
-import android.view.KeyEvent
 import android.view.MotionEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-import org.greenrobot.eventbus.EventBus
 
 class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
     override var mDetector: GestureDetector
@@ -45,17 +41,7 @@ class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, 
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            if (ChewingUtil.anyBufferIsNotEmpty()) {
-                ChewingBridge.chewing.handleSpace()
-                EventBus.getDefault().post(Events.UpdateBufferViews())
-                // 空白鍵是否為選字鍵？
-                if (ChewingBridge.chewing.getSpaceAsSelection() == 1 && ChewingBridge.chewing.candTotalChoice() > 0) {
-                    ChewingUtil.openCandidates()
-                }
-            } else {
-                EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE))
-            }
-
+            ChewingUtil.handleSpaceAction()
             return true
         }
     }

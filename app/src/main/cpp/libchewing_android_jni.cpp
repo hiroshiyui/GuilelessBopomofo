@@ -39,9 +39,17 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_chewingNew(
         return 0;
     }
 
+    // Validate path does not contain traversal sequences
+    std::string data_path_str(native_data_path);
+    if (data_path_str.empty() || data_path_str.find("..") != std::string::npos) {
+        __android_log_print(ANDROID_LOG_ERROR, LOGTAG, "Invalid data path");
+        env->ReleaseStringUTFChars(data_path, native_data_path);
+        return 0;
+    }
+
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "native_data_path: %s", native_data_path);
 
-    std::string native_user_data_path = std::string(native_data_path) + "/userhash.dat";
+    std::string native_user_data_path = data_path_str + "/userhash.dat";
 
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "native_user_data_path: %s",
                         native_user_data_path.c_str());
