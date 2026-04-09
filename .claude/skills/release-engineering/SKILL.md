@@ -28,11 +28,7 @@ The established release workflow follows this pattern:
 1. **Ensure all changes are committed** on the working branch.
 2. **Bump version** — run `./gradlew bumpPatchVersion` or edit `app/build.gradle.kts` manually for minor/major bumps.
 3. **Write changelogs** for F-Droid (see Changelog section below).
-4. **Build the release APK**:
-   ```bash
-   ./gradlew :app:assembleRelease
-   ```
-   Output: `app/release/` (debug builds go to `app/debug/`)
+4. **Build signed APKs** — signing requires a keystore passphrase, so **do not run the build automatically**. Prompt the user to build the signed APKs manually in Android Studio (Build > Generate Signed APK) or via the command line. Output: `app/release/` (debug builds go to `app/debug/`). Wait for the user to confirm the build is complete before proceeding.
 5. **Create release commit** — commit message format: `Release <versionName>` with `Signed-off-by` trailer.
 6. **Tag the release** — lightweight tag matching versionName (e.g. `3.7.5`). Tags are NOT annotated.
 7. **Push** the commit and tag when the user confirms.
@@ -74,7 +70,11 @@ fastlane/metadata/android/zh-TW/changelogs/<versionCode>.txt
 
 ## GPG Signing
 
-Built APKs must be signed with GPG using a detached ASCII-armored signature:
+GPG signing requires interactive passphrase entry — **do not run `gpg` commands automatically**. Instead, prompt the user to sign the APKs manually with the commands below.
+
+The APK filename follows the pattern `org.ghostsinthelab.apps.guilelessbopomofo_v<versionName>-<buildType>.apk` (configured by the `archivesName` setting in `app/build.gradle.kts`).
+
+Provide the user with the exact commands to run:
 ```bash
 gpg --detach-sign --armor <apk-file>
 ```
@@ -82,9 +82,10 @@ gpg --detach-sign --armor <apk-file>
 For example:
 ```bash
 gpg --detach-sign --armor org.ghostsinthelab.apps.guilelessbopomofo_v3.7.5-release.apk
+gpg --detach-sign --armor org.ghostsinthelab.apps.guilelessbopomofo_v3.7.5-debug.apk
 ```
 
-The APK filename follows the pattern `org.ghostsinthelab.apps.guilelessbopomofo_v<versionName>-<buildType>.apk` (configured by the `archivesName` setting in `app/build.gradle.kts`). This produces a `.asc` signature file alongside the APK.
+Wait for the user to confirm signing is complete before proceeding to the GitHub Release step.
 
 ## GitHub Release
 
