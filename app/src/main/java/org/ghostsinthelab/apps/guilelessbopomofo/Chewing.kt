@@ -113,6 +113,12 @@ class Chewing {
     external fun setSelKey(selKeys: IntArray, length: Int, chewingCtx: Long = context)
     external fun setSpaceAsSelection(mode: Int, chewingCtx: Long = context)
     external fun setShapeMode(mode: Int, chewingCtx: Long = context)
+    external fun userphraseEnumerate(chewingCtx: Long = context): Int
+    external fun userphraseHasNext(chewingCtx: Long = context): Int
+    external fun userphraseGet(chewingCtx: Long = context): Array<String>?
+    external fun userphraseAdd(phrase: String, bopomofo: String, chewingCtx: Long = context): Int
+    external fun userphraseRemove(phrase: String, bopomofo: String, chewingCtx: Long = context): Int
+    external fun userphraseLookup(phrase: String, bopomofo: String, chewingCtx: Long = context): Int
     external fun version(): String
 
     fun connect(dataPath: String): Long {

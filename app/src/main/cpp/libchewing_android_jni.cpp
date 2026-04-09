@@ -969,3 +969,137 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configGetStr(
     if (!ret_jstring) return nullptr;
     return ret_jstring;
 }
+
+/* chewing_userphrase_enumerate() */
+extern "C"
+JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseEnumerate(
+        JNIEnv *env, jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return -1;
+    return chewing_userphrase_enumerate(ctx);
+}
+
+/* chewing_userphrase_has_next() */
+extern "C"
+JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseHasNext(
+        JNIEnv *env, jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return 0;
+    unsigned int phrase_len = 0;
+    unsigned int bopomofo_len = 0;
+    return chewing_userphrase_has_next(ctx, &phrase_len, &bopomofo_len);
+}
+
+/* chewing_userphrase_get() - returns [phrase, bopomofo] as a String array */
+extern "C"
+JNIEXPORT jobjectArray JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseGet(
+        JNIEnv *env, jobject thiz,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return nullptr;
+
+    unsigned int phrase_len = 0;
+    unsigned int bopomofo_len = 0;
+    if (!chewing_userphrase_has_next(ctx, &phrase_len, &bopomofo_len)) {
+        return nullptr;
+    }
+
+    std::vector<char> phrase_buf(phrase_len);
+    std::vector<char> bopomofo_buf(bopomofo_len);
+
+    int result = chewing_userphrase_get(ctx, phrase_buf.data(), phrase_len,
+                                         bopomofo_buf.data(), bopomofo_len);
+    if (result != 0) return nullptr;
+
+    jclass stringClass = env->FindClass("java/lang/String");
+    if (!stringClass) return nullptr;
+
+    jobjectArray arr = env->NewObjectArray(2, stringClass, nullptr);
+    if (!arr) {
+        env->DeleteLocalRef(stringClass);
+        return nullptr;
+    }
+
+    jstring phraseStr = env->NewStringUTF(phrase_buf.data());
+    jstring bopomofoStr = env->NewStringUTF(bopomofo_buf.data());
+
+    if (phraseStr) env->SetObjectArrayElement(arr, 0, phraseStr);
+    if (bopomofoStr) env->SetObjectArrayElement(arr, 1, bopomofoStr);
+
+    if (phraseStr) env->DeleteLocalRef(phraseStr);
+    if (bopomofoStr) env->DeleteLocalRef(bopomofoStr);
+    env->DeleteLocalRef(stringClass);
+
+    return arr;
+}
+
+/* chewing_userphrase_add() */
+extern "C"
+JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseAdd(
+        JNIEnv *env, jobject thiz,
+        jstring phrase, jstring bopomofo,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return -1;
+    const char *native_phrase = env->GetStringUTFChars(phrase, nullptr);
+    if (!native_phrase) return -1;
+    const char *native_bopomofo = env->GetStringUTFChars(bopomofo, nullptr);
+    if (!native_bopomofo) {
+        env->ReleaseStringUTFChars(phrase, native_phrase);
+        return -1;
+    }
+    jint ret = chewing_userphrase_add(ctx, native_phrase, native_bopomofo);
+    env->ReleaseStringUTFChars(bopomofo, native_bopomofo);
+    env->ReleaseStringUTFChars(phrase, native_phrase);
+    return ret;
+}
+
+/* chewing_userphrase_remove() */
+extern "C"
+JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseRemove(
+        JNIEnv *env, jobject thiz,
+        jstring phrase, jstring bopomofo,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return -1;
+    const char *native_phrase = env->GetStringUTFChars(phrase, nullptr);
+    if (!native_phrase) return -1;
+    const char *native_bopomofo = env->GetStringUTFChars(bopomofo, nullptr);
+    if (!native_bopomofo) {
+        env->ReleaseStringUTFChars(phrase, native_phrase);
+        return -1;
+    }
+    jint ret = chewing_userphrase_remove(ctx, native_phrase, native_bopomofo);
+    env->ReleaseStringUTFChars(bopomofo, native_bopomofo);
+    env->ReleaseStringUTFChars(phrase, native_phrase);
+    return ret;
+}
+
+/* chewing_userphrase_lookup() */
+extern "C"
+JNIEXPORT jint JNICALL
+Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseLookup(
+        JNIEnv *env, jobject thiz,
+        jstring phrase, jstring bopomofo,
+        jlong chewing_ctx_ptr) {
+    auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
+    if (!ctx) return 0;
+    const char *native_phrase = env->GetStringUTFChars(phrase, nullptr);
+    if (!native_phrase) return 0;
+    const char *native_bopomofo = env->GetStringUTFChars(bopomofo, nullptr);
+    if (!native_bopomofo) {
+        env->ReleaseStringUTFChars(phrase, native_phrase);
+        return 0;
+    }
+    jint ret = chewing_userphrase_lookup(ctx, native_phrase, native_bopomofo);
+    env->ReleaseStringUTFChars(bopomofo, native_bopomofo);
+    env->ReleaseStringUTFChars(phrase, native_phrase);
+    return ret;
+}
