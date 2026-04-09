@@ -41,6 +41,18 @@ object ChewingUtil {
         ChewingBridge.chewing.connect(dataPath)
     }
 
+    /**
+     * Flushes the chewing context to persist user phrases to disk.
+     * This deletes the current context and reconnects, forcing libchewing
+     * to write userhash.dat. Call this after adding or removing user phrases.
+     */
+    fun flushContext(context: Context) {
+        val dataPath = context.applicationInfo.dataDir
+        ChewingBridge.chewing.delete()
+        ChewingBridge.chewing.context = 0
+        ChewingBridge.chewing.connect(dataPath)
+    }
+
     fun setupChewingData(context: Context, dataPath: String) {
         val chewingDataDir = File(dataPath)
 

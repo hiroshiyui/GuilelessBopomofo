@@ -105,6 +105,7 @@ class UserPhraseManagerFragment : Fragment() {
             .setMessage(getString(R.string.delete_user_phrase_message, userPhrase.phrase))
             .setPositiveButton(R.string.delete_user_phrase) { _, _ ->
                 ChewingBridge.chewing.userphraseRemove(userPhrase.phrase, userPhrase.bopomofo)
+                ChewingUtil.flushContext(requireContext())
                 loadUserPhrases()
             }
             .setNegativeButton(android.R.string.cancel, null)
@@ -169,6 +170,7 @@ class UserPhraseManagerFragment : Fragment() {
                         val result = ChewingBridge.chewing.userphraseAdd(phrase.phrase, phrase.bopomofo)
                         if (result > 0) added++
                     }
+                    ChewingUtil.flushContext(requireContext())
                     loadUserPhrases()
                     Toast.makeText(
                         requireContext(),
@@ -343,6 +345,7 @@ class UserPhraseManagerFragment : Fragment() {
 
                 val result = ChewingBridge.chewing.userphraseAdd(phrase, bopomofo)
                 if (result > 0) {
+                    ChewingUtil.flushContext(requireContext())
                     loadUserPhrases()
                 } else {
                     Toast.makeText(requireContext(), R.string.user_phrase_add_failed, Toast.LENGTH_SHORT).show()
