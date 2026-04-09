@@ -32,7 +32,7 @@ The established release workflow follows this pattern:
    ```bash
    ./gradlew :app:assembleRelease
    ```
-   Output: `app/build/outputs/apk/release/`
+   Output: `app/release/` (debug builds go to `app/debug/`)
 5. **Create release commit** — commit message format: `Release <versionName>` with `Signed-off-by` trailer.
 6. **Tag the release** — lightweight tag matching versionName (e.g. `3.7.5`). Tags are NOT annotated.
 7. **Push** the commit and tag when the user confirms.
