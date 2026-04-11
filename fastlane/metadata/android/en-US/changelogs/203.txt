@@ -1,6 +1,6 @@
 Hi there! Guileless Bopomofo 4.0.3 is here with a small fix to the User Phrase Manager.
 
-* Single-character user phrases are now visible in the manager again. libchewing upstream has fixed the exclusion dictionary bug, so the previous workaround is no longer needed.
+* Single-character user phrases are now visible in the manager again. libchewing upstream has resolved the exclusion dictionary issue, so the previous workaround is no longer needed.
 * Updated the bundled libchewing library.
 
 Thanks for using Guileless Bopomofo!

@@ -1,6 +1,6 @@
 Hi there! Guileless Bopomofo 4.0.1 is here with improvements to the User Phrase Manager.
 
 * Added search: quickly find user phrases by phrase text or bopomofo.
-* Single-character auto-learned entries are now hidden from the phrase list to avoid confusion and prevent a libchewing exclusion bug.
+* Single-character auto-learned entries are now hidden from the phrase list to avoid confusion and work around a libchewing exclusion dictionary issue.
 
 Thanks for using Guileless Bopomofo!
