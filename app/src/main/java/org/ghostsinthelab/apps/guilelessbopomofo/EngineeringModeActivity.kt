@@ -18,17 +18,12 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityEngineeringModeBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EdgeToEdge
 import java.io.File
@@ -85,17 +80,8 @@ class EngineeringModeActivity : AppCompatActivity(), EdgeToEdge {
             }
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(viewBinding.root) { v, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                topMargin = insets.top
-            }
-            WindowInsetsCompat.CONSUMED
-        }
-
-        val view = viewBinding.root
-        applyInsetsAsMargins(view)
         setContentView(viewBinding.root)
+        applyInsetsAsPadding(viewBinding.root)
     }
 
     private fun checkChewingDateFiles(): Boolean {

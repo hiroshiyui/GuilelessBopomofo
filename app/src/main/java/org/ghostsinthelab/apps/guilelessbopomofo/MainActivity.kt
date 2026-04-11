@@ -23,11 +23,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.EdgeToEdge
 
-class MainActivity : AppCompatActivity(), EdgeToEdge {
+class MainActivity : AppCompatActivity() {
     private val logTag: String = "MainActivity"
 
     // ViewBinding
@@ -84,9 +86,23 @@ class MainActivity : AppCompatActivity(), EdgeToEdge {
             }
         }
 
-        val view = viewBinding.root
-        applyInsetsAsMargins(view)
-        setContentView(view)
+        setContentView(viewBinding.root)
+
+        // Apply system-bar and cutout insets as internal padding on the header and
+        // bottom navigation so the window itself can still draw edge-to-edge while
+        // the contents stay clear of the status bar, navigation bar, and cutouts.
+        ViewCompat.setOnApplyWindowInsetsListener(viewBinding.root) { _, windowInsets ->
+            val insets = windowInsets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+            )
+            viewBinding.headerLayout.updatePadding(
+                left = insets.left, top = insets.top, right = insets.right
+            )
+            viewBinding.bottomNavigation.updatePadding(
+                left = insets.left, right = insets.right, bottom = insets.bottom
+            )
+            WindowInsetsCompat.CONSUMED
+        }
 
         // Show general settings tab by default
         if (savedInstanceState == null) {

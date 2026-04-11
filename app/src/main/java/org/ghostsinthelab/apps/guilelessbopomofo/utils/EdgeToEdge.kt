@@ -19,34 +19,25 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.utils
 
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 
 interface EdgeToEdge {
 
-    fun applyInsetsAsMargins(view: View) {
-        ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
-            val systemBarInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                topMargin = systemBarInsets.top
-                bottomMargin = systemBarInsets.bottom
-                // Consider leftMargin = systemBarInsets.left and rightMargin = systemBarInsets.right too
-            }
-            WindowInsetsCompat.CONSUMED
-        }
-    }
-
+    /**
+     * Applies the combined system-bar + display-cutout insets as padding to [view].
+     *
+     * Prefer this over margin-based approaches: padding keeps the view's size and
+     * background unchanged, so the window can still draw edge-to-edge while the
+     * contents are kept clear of the status bar, navigation bar, and cutouts.
+     */
     fun applyInsetsAsPadding(view: View) {
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
-            val systemBarInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(
-                systemBarInsets.left,
-                systemBarInsets.top,
-                systemBarInsets.right,
-                systemBarInsets.bottom
+            val insets = windowInsets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
             )
+            v.setPadding(insets.left, insets.top, insets.right, insets.bottom)
             WindowInsetsCompat.CONSUMED
         }
     }
