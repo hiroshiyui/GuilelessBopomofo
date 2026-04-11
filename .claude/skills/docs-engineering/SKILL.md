@@ -60,5 +60,6 @@ fastlane/metadata/android/
 - For zh-TW text, use Traditional Chinese characters only. Do not use Simplified Chinese.
 - Preserve the existing tone: the app "speaks" in first person in store listings and changelogs; README and other docs use standard third-person technical writing.
 - When referencing keyboard layouts, use their established names: Dachen (大千), Hsu (許氏), E-Ten (倚天), Dachen CP26 (大千26鍵).
+- **Respect external resource providers' efforts.** When describing problems in upstream projects, dependencies, or third-party services (e.g., libchewing, libraries, platforms), use softened wording. Prefer "issue", "behavior", or "limitation" over "bug"; prefer "resolved" or "addressed" over "fixed the bug". Frame workarounds as collaborative rather than corrective. This applies to both en-US and zh-TW text (e.g., use 「問題」 rather than 「錯誤」 or 「bug」 when referring to upstream).
 
 ## Task: $ARGUMENTS
