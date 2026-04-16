@@ -261,6 +261,81 @@ class ChewingUtilInstrumentedTest {
 
     // endregion
 
+    // region resetUserPhraseData
+
+    @Test
+    fun resetUserPhraseData_shouldDeleteUserHashFile() {
+        // Add a user phrase so userhash.dat is created
+        ChewingBridge.chewing.userphraseAdd("測試", "ㄘㄜˋ ㄕˋ")
+        // Flush to persist userhash.dat to disk
+        ChewingBridge.chewing.delete()
+        ChewingBridge.chewing.context = 0
+        ChewingBridge.chewing.connect(dataPath)
+
+        val userhashFile = File(chewingDataDir, "userhash.dat")
+        assertTrue("userhash.dat should exist after adding a phrase", userhashFile.exists())
+
+        ChewingUtil.resetUserPhraseData(appContext)
+
+        assertFalse("userhash.dat should be deleted after reset", userhashFile.exists())
+    }
+
+    @Test
+    fun resetUserPhraseData_shouldDeleteChewingDeletedFile() {
+        // Add then remove a phrase so chewing-deleted.dat is created
+        ChewingBridge.chewing.userphraseAdd("測試", "ㄘㄜˋ ㄕˋ")
+        ChewingBridge.chewing.userphraseRemove("測試", "ㄘㄜˋ ㄕˋ")
+        // Flush to persist chewing-deleted.dat to disk
+        ChewingBridge.chewing.delete()
+        ChewingBridge.chewing.context = 0
+        ChewingBridge.chewing.connect(dataPath)
+
+        val deletedFile = File(chewingDataDir, "chewing-deleted.dat")
+        // chewing-deleted.dat may or may not exist depending on libchewing version;
+        // if it does exist, verify it gets removed
+        if (deletedFile.exists()) {
+            ChewingUtil.resetUserPhraseData(appContext)
+            assertFalse("chewing-deleted.dat should be deleted after reset", deletedFile.exists())
+        }
+    }
+
+    @Test
+    fun resetUserPhraseData_shouldClearUserPhrases() {
+        // Add a user phrase
+        ChewingBridge.chewing.userphraseAdd("測試", "ㄘㄜˋ ㄕˋ")
+        val phrasesBeforeReset = ChewingUtil.enumerateUserPhrases()
+        assertTrue("Should have at least one user phrase", phrasesBeforeReset.isNotEmpty())
+
+        ChewingUtil.resetUserPhraseData(appContext)
+
+        val phrasesAfterReset = ChewingUtil.enumerateUserPhrases()
+        assertTrue("User phrases should be empty after reset", phrasesAfterReset.isEmpty())
+    }
+
+    @Test
+    fun resetUserPhraseData_shouldReconnectChewing() {
+        ChewingUtil.resetUserPhraseData(appContext)
+
+        // Chewing context should be valid (non-zero) after reset
+        assertTrue("Chewing context should be reconnected", ChewingBridge.chewing.context != 0L)
+
+        // Engine should still work — type ㄊ (key 'w')
+        ChewingBridge.chewing.handleDefault('w')
+        assertTrue(ChewingUtil.anyBufferIsNotEmpty())
+    }
+
+    @Test
+    fun resetUserPhraseData_shouldNotDeleteCoreDataFiles() {
+        ChewingUtil.resetUserPhraseData(appContext)
+
+        for (file in chewingDataFiles) {
+            val dataFile = File(chewingDataDir, file)
+            assertTrue("$file should still exist after reset", dataFile.exists())
+        }
+    }
+
+    // endregion
+
     // region listOfDataFiles
 
     @Test

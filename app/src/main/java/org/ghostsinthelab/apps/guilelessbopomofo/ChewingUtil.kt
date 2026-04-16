@@ -104,6 +104,23 @@ object ChewingUtil {
         return true
     }
 
+    fun resetUserPhraseData(context: Context) {
+        val dataPath = context.applicationInfo.dataDir
+        val chewingDataDir = File(dataPath)
+
+        ChewingBridge.chewing.delete()
+        ChewingBridge.chewing.context = 0
+
+        for (file in listOf("chewing-deleted.dat", "userhash.dat")) {
+            val target = File(chewingDataDir, file)
+            if (target.exists()) {
+                target.delete()
+            }
+        }
+
+        ChewingBridge.chewing.connect(dataPath)
+    }
+
     fun enumerateUserPhrases(): List<UserPhrase> {
         val results = ChewingBridge.chewing.userphraseGetAll() ?: return emptyList()
         return results.mapNotNull { pair ->

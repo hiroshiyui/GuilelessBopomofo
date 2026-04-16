@@ -136,6 +136,10 @@
     <string name="restore_invalid_header">ファイル形式が無効です：ヘッダー行が見つからないか正しくありません</string>
     <string name="restore_malformed_row">%1$d 行目のデータが不正です。インポートを拒否しました</string>
     <string name="restore_invalid_bopomofo">%1$d 行目の注音符号が無効です。インポートを拒否しました</string>
+    <string name="reset_user_phrase_data">リセット</string>
+    <string name="reset_user_phrase_data_confirm_first">すべてのユーザーフレーズと自動学習履歴が削除されます。この操作は元に戻せません。続行しますか？</string>
+    <string name="reset_user_phrase_data_confirm_second">最終確認です。すべてのユーザーフレーズと自動学習履歴が完全に削除されます。実行しますか？</string>
+    <string name="reset_user_phrase_data_done">ユーザーフレーズデータがリセットされました</string>
     <string name="analyze_bopomofo">注音符号を分析</string>
     <string name="analyze_bopomofo_hint">フレーズを入力し「注音符号を分析」をタップして読み方を提案するか、下に直接注音符号を入力してください。</string>
     <string name="analyze_bopomofo_no_results">このフレーズの注音符号の読み方が見つかりません</string>

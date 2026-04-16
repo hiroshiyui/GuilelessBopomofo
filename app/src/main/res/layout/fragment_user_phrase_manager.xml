@@ -51,7 +51,15 @@
                 style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:text="@string/restore_user_phrases" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonResetUserPhraseData"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reset_user_phrase_data" />
 
         </LinearLayout>
 

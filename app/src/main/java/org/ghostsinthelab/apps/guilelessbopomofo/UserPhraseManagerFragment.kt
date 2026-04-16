@@ -78,6 +78,8 @@ class UserPhraseManagerFragment : Fragment() {
         binding.buttonBackup.setOnClickListener { backupLauncher.launch("guileless_bopomofo_user_phrases.csv") }
         binding.buttonRestore.setOnClickListener { restoreLauncher.launch(arrayOf("text/*")) }
 
+        binding.buttonResetUserPhraseData.setOnClickListener { confirmResetUserPhraseData() }
+
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -325,6 +327,26 @@ class UserPhraseManagerFragment : Fragment() {
         }
         fields.add(current.toString())
         return fields
+    }
+
+    private fun confirmResetUserPhraseData() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.reset_user_phrase_data)
+            .setMessage(R.string.reset_user_phrase_data_confirm_first)
+            .setPositiveButton(R.string.reset_user_phrase_data) { _, _ ->
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.reset_user_phrase_data)
+                    .setMessage(R.string.reset_user_phrase_data_confirm_second)
+                    .setPositiveButton(R.string.reset_user_phrase_data) { _, _ ->
+                        ChewingUtil.resetUserPhraseData(requireContext())
+                        loadUserPhrases()
+                        Toast.makeText(requireContext(), R.string.reset_user_phrase_data_done, Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     private fun showAddPhraseDialog() {

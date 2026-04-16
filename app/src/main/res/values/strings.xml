@@ -138,6 +138,10 @@
     <string name="restore_invalid_header">Invalid file format: missing or incorrect header row</string>
     <string name="restore_malformed_row">Malformed data at row %1$d, import rejected</string>
     <string name="restore_invalid_bopomofo">Invalid bopomofo at row %1$d, import rejected</string>
+    <string name="reset_user_phrase_data">Reset</string>
+    <string name="reset_user_phrase_data_confirm_first">This will delete all user phrases and auto-learned history. This action cannot be undone. Are you sure?</string>
+    <string name="reset_user_phrase_data_confirm_second">This is your last chance. All user phrases and auto-learned history will be permanently deleted. Proceed?</string>
+    <string name="reset_user_phrase_data_done">User phrase data has been reset</string>
     <string name="analyze_bopomofo">Analyze Bopomofo</string>
     <string name="analyze_bopomofo_hint">Enter a phrase above and tap \"Analyze Bopomofo\" to suggest readings, or type bopomofo manually below.</string>
     <string name="analyze_bopomofo_no_results">Unable to find bopomofo readings for this phrase</string>

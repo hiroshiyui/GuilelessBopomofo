@@ -139,6 +139,10 @@
     <string name="restore_invalid_header">檔案格式無效：缺少或不正確的標頭列</string>
     <string name="restore_malformed_row">第 %1$d 列資料格式異常，已拒絕匯入</string>
     <string name="restore_invalid_bopomofo">第 %1$d 列的注音資料無效，已拒絕匯入</string>
+    <string name="reset_user_phrase_data">重設</string>
+    <string name="reset_user_phrase_data_confirm_first">這將會刪除所有使用者詞彙與自動學習的歷史紀錄，此操作無法復原。確定要繼續嗎？</string>
+    <string name="reset_user_phrase_data_confirm_second">這是最後確認。所有使用者詞彙與自動學習的歷史紀錄將被永久刪除，確定要執行嗎？</string>
+    <string name="reset_user_phrase_data_done">使用者詞彙資料已重設</string>
     <string name="analyze_bopomofo">分析注音</string>
     <string name="analyze_bopomofo_hint">先輸入詞彙，再按「分析注音」自動推薦注音讀法，或是在下方直接輸入注音。</string>
     <string name="analyze_bopomofo_no_results">無法找到此詞彙的注音讀法</string>
