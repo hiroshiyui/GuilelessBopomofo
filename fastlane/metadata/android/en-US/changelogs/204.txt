@@ -1,0 +1,7 @@
+Hi there! Guileless Bopomofo 4.0.4 is here with a new feature and a compatibility fix.
+
+* Added a reset button in the User Phrase Manager to clear all user phrases and auto-learned history. A double confirmation is required to prevent accidental data loss.
+* Fixed edge-to-edge layout to pass Play Console compatibility check.
+* Updated the bundled libchewing library.
+
+Thanks for using Guileless Bopomofo!
