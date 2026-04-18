@@ -125,6 +125,11 @@ object ChewingUtil {
         val results = ChewingBridge.chewing.userphraseGetAll() ?: return emptyList()
         return results.mapNotNull { pair ->
             if (pair.size >= 2) UserPhrase(pair[0], pair[1]) else null
+        }.filter {
+            // Hide single-character entries: libchewing auto-learns these during
+            // composition commit, so they are not phrases the user intentionally
+            // added. Showing them clutters the manager with noise.
+            it.phrase.length > 1
         }
     }
 
