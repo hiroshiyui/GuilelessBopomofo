@@ -19,8 +19,10 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -88,16 +90,29 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(viewBinding.root)
 
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            viewBinding.headerLayout.visibility = View.GONE
+            viewBinding.divider.visibility = View.GONE
+        }
+
         // Apply system-bar and cutout insets as internal padding on the header and
         // bottom navigation so the window itself can still draw edge-to-edge while
         // the contents stay clear of the status bar, navigation bar, and cutouts.
+        // In landscape the header is hidden, so the top inset is routed to the
+        // fragment container instead.
         ViewCompat.setOnApplyWindowInsetsListener(viewBinding.root) { _, windowInsets ->
             val insets = windowInsets.getInsets(
                 WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
             )
-            viewBinding.headerLayout.updatePadding(
-                left = insets.left, top = insets.top, right = insets.right
-            )
+            if (viewBinding.headerLayout.visibility == View.GONE) {
+                viewBinding.fragmentContainer.updatePadding(
+                    left = insets.left, top = insets.top, right = insets.right
+                )
+            } else {
+                viewBinding.headerLayout.updatePadding(
+                    left = insets.left, top = insets.top, right = insets.right
+                )
+            }
             viewBinding.bottomNavigation.updatePadding(
                 left = insets.left, right = insets.right, bottom = insets.bottom
             )
