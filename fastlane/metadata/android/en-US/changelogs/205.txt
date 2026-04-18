@@ -1,0 +1,8 @@
+Hi there! Guileless Bopomofo 4.0.5 is here with UX polish.
+
+* Re-added the single-character filter in the User Phrase Manager, so the list only shows phrases you intentionally created.
+* Hid the app header in landscape to give settings more vertical room.
+* Fixed the bottom navigation bar in dark theme: the selected icon and its backdrop now look right.
+* Fixed the backup / restore / reset buttons so their labels stay readable in dark theme.
+
+Thanks for using Guileless Bopomofo!
