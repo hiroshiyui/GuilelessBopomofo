@@ -44,4 +44,9 @@
     <color name="colorPreEditBufferTextViewBackground">#2196F3</color>
     <color name="colorBopomofoBufferTextView">#333333</color>
     <color name="colorBopomofoBufferTextViewBackground">#00BCD4</color>
+
+    <!-- Bottom navigation selected icon tint. Day value matches the default
+         colorOnSecondaryContainer behavior; values-night overrides it to a
+         light tone so the icon reads on the wine-red indicator pill. -->
+    <color name="bottomNavIconSelected">@color/colorGuilelessBopomofoMorandiThemeBase4</color>
 </resources>

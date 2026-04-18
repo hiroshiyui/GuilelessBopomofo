@@ -35,7 +35,7 @@
         <item name="colorOnTertiaryContainer">@color/colorGuilelessBopomofoWineThemeBase4</item>
         <!-- misc -->
         <item name="actionBarTheme">@style/AppBaseTheme.ActionBar</item>
-        <item name="android:background">?attr/colorOnPrimary</item>
+        <item name="android:windowBackground">@color/colorGuilelessBopomofoWineThemeBase10</item>
         <item name="materialButtonStyle">@style/AppBaseTheme.MaterialButton</item>
     </style>
 
