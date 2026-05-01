@@ -75,7 +75,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
     }
 
-    ndkVersion = "28.1.13356709"
+    ndkVersion = rootProject.extra["ndkVersion"] as String
 }
 
 base {
