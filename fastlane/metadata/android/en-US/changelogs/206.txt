@@ -1,0 +1,8 @@
+Hi there! Guileless Bopomofo 4.0.6 is a maintenance release that refreshes the build toolchain and dependencies.
+
+* Upgraded to Android compile/target SDK 37.
+* Upgraded the Android Gradle Plugin to 9.2.1 and the Gradle Wrapper to 9.4.1.
+* Bumped Kotlin, kotlinx-coroutines, Material Components, AndroidX core-ktx, and Mockito to their latest versions.
+* Updated the bundled libchewing engine.
+
+Thanks for using Guileless Bopomofo!

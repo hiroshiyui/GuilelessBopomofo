@@ -1,0 +1,8 @@
+嗨！樸實注音 4.0.6 是一次例行性的維護更新，主要在於建構工具鏈與相依套件的升級。
+
+＊ 將 Android 編譯／目標 SDK 升級到 37。
+＊ 將 Android Gradle Plugin 升級到 9.2.1，Gradle Wrapper 升級到 9.4.1。
+＊ 升級 Kotlin、kotlinx-coroutines、Material Components、AndroidX core-ktx 與 Mockito 至最新版本。
+＊ 更新內附的 libchewing 引擎。
+
+感謝您使用樸實注音！
