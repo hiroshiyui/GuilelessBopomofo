@@ -4,8 +4,8 @@ plugins {
 }
 
 android {
-    compileSdk = 36
-    buildToolsVersion = "36.0.0"
+    compileSdk = 37
+    buildToolsVersion = "37.0.0"
     namespace = "org.ghostsinthelab.apps.guilelessbopomofo"
 
     androidResources {
@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId = "org.ghostsinthelab.apps.guilelessbopomofo"
         minSdk = 23
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 205
         versionName = "4.0.5"
 
@@ -75,7 +75,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
     }
 
-    ndkVersion = rootProject.extra["ndkVersion"] as String
+    ndkVersion = "29.0.14206865"
+    compileSdkMinor = 0
 }
 
 base {
