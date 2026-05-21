@@ -1,0 +1,5 @@
+Hi there! Guileless Bopomofo 4.0.7 brings a small but handy improvement for people who switch between an on-screen keyboard and a hardware one (issue #69).
+
+* Added a separate conversion engine preference for when a physical keyboard is attached. Pick your favorite engine for the on-screen keyboard in General settings, and a different one for the hardware keyboard in Physical Keyboard settings — the IME will switch automatically.
+
+Thanks for using Guileless Bopomofo!
