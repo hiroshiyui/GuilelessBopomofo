@@ -103,7 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/radioGroupSelectionKeysOption"
+        app:layout_constraintTop_toBottomOf="@id/radioGroupConversionEnginesPhysical"
         app:srcCompat="@android:drawable/ic_menu_info_details" />
 
     <TextView
@@ -114,6 +114,55 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/imageViewInfo"
         app:layout_constraintTop_toTopOf="@id/imageViewInfo" />
+
+    <TextView
+        android:id="@+id/textViewSettingsConversionEnginesPhysical"
+        style="@style/Settings.Label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/textViewSettingsConversionEnginesPhysical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupSelectionKeysOption" />
+
+    <TextView
+        android:id="@+id/textViewSettingsDescriptionConversionEnginesPhysical"
+        style="@style/Settings.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/textViewSettingsDescriptionConversionEnginesPhysical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingsConversionEnginesPhysical" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupConversionEnginesPhysical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingsDescriptionConversionEnginesPhysical">
+
+        <RadioButton
+            android:id="@+id/radioButtonSimpleConversionEnginePhysical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/radioButtonSimpleConversionEngine" />
+
+        <RadioButton
+            android:id="@+id/radioButtonChewingConversionEnginePhysical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/radioButtonChewingConversionEngine" />
+
+        <RadioButton
+            android:id="@+id/radioButtonFuzzyChewingConversionEnginePhysical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/radioButtonFuzzyChewingConversionEngine" />
+    </RadioGroup>
 
     <TextView
         android:id="@+id/textViewSettingPhysicalBopomofoKeyboardLayout"

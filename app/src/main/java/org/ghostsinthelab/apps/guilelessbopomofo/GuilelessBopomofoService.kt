@@ -52,6 +52,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDIDATE_SELECTION_KEYS_OPTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
@@ -159,9 +160,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             }
 
             // set conversion engine (traditional, fuzzy or default (chewing))
-            sharedPreferences.getInt(
-                USER_CONVERSION_ENGINE, ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
-            ).let { ChewingBridge.chewing.configSetInt("chewing.conversion_engine", it) }
+            applyConversionEngine()
 
             ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
             ChewingBridge.chewing.setCandPerPage(CANDIDATES_PER_PAGE)
@@ -266,6 +265,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY) && (resources.configuration.hardKeyboardHidden ==
                     Configuration.HARDKEYBOARDHIDDEN_NO) && (!deviceIsEmulator)
 
+        // re-apply the conversion engine to match the just-detected keyboard state
+        applyConversionEngine()
+
         val inputType = info?.inputType?.and(InputType.TYPE_MASK_CLASS)
         // if the input type is phone or number, switch to symbol (alphanumeric) mode
         when (inputType) {
@@ -322,7 +324,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         // handles printing (character) keys
         if (event != null && event.isPrintingKey) {
             // if a printing key has been pressed, assume that user have a physical keyboard connected anyway...
+            val wasPhysicalKeyboardPresented = physicalKeyboardPresented
             physicalKeyboardPresented = true
+            if (!wasPhysicalKeyboardPresented) {
+                applyConversionEngine()
+            }
             onPrintingKeyDown(event)
             return true
         }
@@ -407,7 +413,22 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     override fun onFinishInputView(finishingInput: Boolean) {
         super.onFinishInputView(finishingInput)
         physicalKeyboardPresented = false
+        // restore the soft-keyboard conversion engine for the next session
+        if (ChewingBridge.chewing.context != 0L) {
+            applyConversionEngine()
+        }
         Log.d(logTag, "onFinishInputView()")
+    }
+
+    private fun applyConversionEngine() {
+        val key = if (physicalKeyboardPresented)
+            USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD
+        else
+            USER_CONVERSION_ENGINE
+        val mode = sharedPreferences.getInt(
+            key, ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
+        )
+        ChewingBridge.chewing.configSetInt("chewing.conversion_engine", mode)
     }
 
     private fun initializePhysicalKeyDispatcher() {
@@ -795,12 +816,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 }
             }
 
-            USER_CONVERSION_ENGINE -> {
-                sharedPreferences?.getInt(
-                    key, ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
-                )?.let {
-                    ChewingBridge.chewing.configSetInt("chewing.conversion_engine", it)
-                }
+            USER_CONVERSION_ENGINE,
+            USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD -> {
+                applyConversionEngine()
             }
         }
     }

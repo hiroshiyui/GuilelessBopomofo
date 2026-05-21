@@ -94,6 +94,8 @@
     <string name="radioButtonSimpleConversionEngine">簡易（不自動斷詞，懷念的ㄅ半最對味）</string>
     <string name="radioButtonChewingConversionEngine">新酷音預設（自動斷詞，但是要拼出完整聲母、介音、韻母，類似微軟新注音）</string>
     <string name="radioButtonFuzzyChewingConversionEngine">模糊比對式（自動斷詞，不需拼出完整聲母、介音、韻母）</string>
+    <string name="textViewSettingsConversionEnginesPhysical">使用實體鍵盤時的注音轉換漢字模式引擎</string>
+    <string name="textViewSettingsDescriptionConversionEnginesPhysical">當有實體鍵盤連接時，採用以下這種注音轉換漢字模式引擎</string>
     <string name="capsLockIsOn">按到大寫鎖定鍵了</string>
     <string name="capsLockIsOff">解除大寫鎖定</string>
     <string name="hintEditTextTestNumberInput">請在此測試輸入數字</string>

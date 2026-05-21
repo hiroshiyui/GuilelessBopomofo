@@ -93,6 +93,8 @@
     <string name="radioButtonSimpleConversionEngine">Simple</string>
     <string name="radioButtonChewingConversionEngine">Chewing</string>
     <string name="radioButtonFuzzyChewingConversionEngine">Fuzzy Chewing</string>
+    <string name="textViewSettingsConversionEnginesPhysical">Conversion engine when a physical keyboard is attached</string>
+    <string name="textViewSettingsDescriptionConversionEnginesPhysical">Choose the conversion engine to use while a hardware keyboard is in use.</string>
     <string name="capsLockIsOn">Caps Lock is ON</string>
     <string name="capsLockIsOff">Caps Lock is OFF</string>
     <string name="hintEditTextTestNumberInput">Test digits input here</string>

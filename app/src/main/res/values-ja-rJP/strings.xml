@@ -93,6 +93,8 @@
     <string name="radioButtonSimpleConversionEngine">簡単なモード</string>
     <string name="radioButtonChewingConversionEngine">デフォルトモード</string>
     <string name="radioButtonFuzzyChewingConversionEngine">ぼやけたモード</string>
+    <string name="textViewSettingsConversionEnginesPhysical">物理キーボードを接続しているときの注音変換漢字モードエンジン</string>
+    <string name="textViewSettingsDescriptionConversionEnginesPhysical">物理キーボードを接続しているとき、以下のいずれかの注音変換漢字モードエンジンを使います。</string>
     <string name="capsLockIsOn">Caps Lockキーがオンになっています</string>
     <string name="capsLockIsOff">Caps Lockキーがオフになっています</string>
     <string name="hintEditTextTestNumberInput">Test digits input here</string>

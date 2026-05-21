@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED_PREFERENCES
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDIDATE_SELECTION_KEYS_OPTION
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.FragmentPhysicalKeyboardSettingsBinding
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
@@ -105,6 +106,26 @@ class PhysicalKeyboardSettingsFragment : Fragment() {
                 if (sharedPreferences.getString(
                         USER_CANDIDATE_SELECTION_KEYS_OPTION, SelectionKeys.NUMBER_ROW.set
                     ) == keys
+                ) {
+                    button.isChecked = true
+                }
+            }
+
+            for ((button, conversionEngine) in mapOf(
+                radioButtonSimpleConversionEnginePhysical to ConversionEngines.SIMPLE_CONVERSION_ENGINE.mode,
+                radioButtonChewingConversionEnginePhysical to ConversionEngines.CHEWING_CONVERSION_ENGINE.mode,
+                radioButtonFuzzyChewingConversionEnginePhysical to ConversionEngines.FUZZY_CHEWING_CONVERSION_ENGINE.mode
+            )) {
+                button.setOnClickListener {
+                    sharedPreferences.edit()
+                        .putInt(USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD, conversionEngine)
+                        .apply()
+                }
+
+                if (sharedPreferences.getInt(
+                        USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD,
+                        ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
+                    ) == conversionEngine
                 ) {
                     button.isChecked = true
                 }
