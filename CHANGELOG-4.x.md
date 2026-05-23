@@ -1,5 +1,10 @@
 # Changelog — 4.x
 
+## 4.0.8
+- Added an offline in-app announcements facility: a bell icon in the top-right of the main screen opens an Announcements list, with a small dot indicating unread items.
+- Unread announcements auto-popup one at a time on app launch; tap "Got it" to mark as read.
+- All announcement content is bundled with the app and rendered from Markdown — no network access required.
+
 ## 4.0.7
 - Added a separate conversion engine preference for when a physical keyboard is attached, so the on-screen keyboard and the hardware keyboard can use different conversion engines (resolves issue #69).
 
