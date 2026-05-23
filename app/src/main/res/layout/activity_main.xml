@@ -25,73 +25,39 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
         android:paddingBottom="8dp">
 
-        <LinearLayout
-            android:id="@+id/headerContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingTop="8dp">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imageViewAppIcon"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/app_name"
-                app:srcCompat="@mipmap/ic_launcher_round" />
-
-            <TextView
-                android:id="@+id/textViewAppName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/app_name"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textViewAppVersion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:contentDescription="@string/applcation_version_label"
-                android:text="@string/applcation_version_label" />
-        </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/announcementBellContainer"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewAppIcon"
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="top|end"
-            android:layout_marginEnd="8dp">
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            app:srcCompat="@mipmap/ic_launcher_round" />
 
-            <ImageButton
-                android:id="@+id/buttonAnnouncements"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/announcements_title"
-                android:padding="12dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_notifications_bell" />
+        <TextView
+            android:id="@+id/textViewAppName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/app_name"
+            android:textStyle="bold" />
 
-            <View
-                android:id="@+id/announcementBadge"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_gravity="top|end"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/announcement_unread_dot"
-                android:visibility="gone" />
-        </FrameLayout>
-    </FrameLayout>
+        <TextView
+            android:id="@+id/textViewAppVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:contentDescription="@string/applcation_version_label"
+            android:text="@string/applcation_version_label" />
+
+    </LinearLayout>
 
     <View
         android:id="@+id/divider"

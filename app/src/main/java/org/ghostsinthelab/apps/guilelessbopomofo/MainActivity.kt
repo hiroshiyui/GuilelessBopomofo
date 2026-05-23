@@ -29,10 +29,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
-import org.ghostsinthelab.apps.guilelessbopomofo.announcements.Announcement
-import org.ghostsinthelab.apps.guilelessbopomofo.announcements.AnnouncementDialogFragment
-import org.ghostsinthelab.apps.guilelessbopomofo.announcements.AnnouncementRepository
-import org.ghostsinthelab.apps.guilelessbopomofo.announcements.AnnouncementsFragment
 import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -90,31 +86,33 @@ class MainActivity : AppCompatActivity() {
                     else -> false
                 }
             }
-
-            buttonAnnouncements.setOnClickListener {
-                switchFragment(AnnouncementsFragment())
-            }
         }
 
         setContentView(viewBinding.root)
 
-        // In landscape, hide the centered app icon/name/version block so the
-        // header collapses to a slim bar holding only the announcement bell.
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            viewBinding.headerContent.visibility = View.GONE
+            viewBinding.headerLayout.visibility = View.GONE
             viewBinding.divider.visibility = View.GONE
         }
 
         // Apply system-bar and cutout insets as internal padding on the header and
         // bottom navigation so the window itself can still draw edge-to-edge while
         // the contents stay clear of the status bar, navigation bar, and cutouts.
+        // In landscape the header is hidden, so the top inset is routed to the
+        // fragment container instead.
         ViewCompat.setOnApplyWindowInsetsListener(viewBinding.root) { _, windowInsets ->
             val insets = windowInsets.getInsets(
                 WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
             )
-            viewBinding.headerLayout.updatePadding(
-                left = insets.left, top = insets.top, right = insets.right
-            )
+            if (viewBinding.headerLayout.visibility == View.GONE) {
+                viewBinding.fragmentContainer.updatePadding(
+                    left = insets.left, top = insets.top, right = insets.right
+                )
+            } else {
+                viewBinding.headerLayout.updatePadding(
+                    left = insets.left, top = insets.top, right = insets.right
+                )
+            }
             viewBinding.bottomNavigation.updatePadding(
                 left = insets.left, right = insets.right, bottom = insets.bottom
             )
@@ -124,37 +122,7 @@ class MainActivity : AppCompatActivity() {
         // Show general settings tab by default
         if (savedInstanceState == null) {
             switchFragment(GeneralSettingsFragment())
-            showUnreadAnnouncements()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        updateAnnouncementBadge()
-    }
-
-    private fun updateAnnouncementBadge() {
-        val hasUnread = AnnouncementRepository.unread(this).isNotEmpty()
-        viewBinding.announcementBadge.visibility = if (hasUnread) View.VISIBLE else View.GONE
-    }
-
-    private fun showUnreadAnnouncements() {
-        val queue = ArrayDeque(AnnouncementRepository.unread(this))
-        if (queue.isEmpty()) return
-        showNextAnnouncement(queue)
-    }
-
-    private fun showNextAnnouncement(queue: ArrayDeque<Announcement>) {
-        val next = queue.removeFirstOrNull()
-        if (next == null) {
-            updateAnnouncementBadge()
-            return
-        }
-        AnnouncementDialogFragment.newInstance(next.id)
-            .showSequential(supportFragmentManager, "announcement_${next.id}") {
-                updateAnnouncementBadge()
-                showNextAnnouncement(queue)
-            }
     }
 
     private fun switchFragment(fragment: Fragment) {

@@ -13,7 +13,6 @@ kotlinVersion = "2.3.21"
 kotlinxCoroutinesAndroidVersion = "1.11.0"
 leakcanaryAndroidVersion = "2.14"
 lifecycleVersion = "2.10.0"
-markwonVersion = "4.6.2"
 materialVersion = "1.14.0"
 mockitoAndroidVersion = "5.23.0"
 mockitoCoreVersion = "5.23.0"
@@ -50,7 +49,6 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesAndroidVersion" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroidVersion" }
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleVersion" }
-markwon-core = { module = "io.noties.markwon:core", version.ref = "markwonVersion" }
 material = { module = "com.google.android.material:material", version.ref = "materialVersion" }
 mockito-android = { group = "org.mockito", name = "mockito-android", version.ref = "mockitoAndroidVersion" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCoreVersion" }
