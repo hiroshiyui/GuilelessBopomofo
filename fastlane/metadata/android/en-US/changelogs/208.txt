@@ -1,0 +1,7 @@
+Hi there! Guileless Bopomofo 4.0.8 introduces an in-app announcements facility so I can share notes with you directly inside the app, fully offline.
+
+* New bell icon in the top-right corner opens an Announcements list. Unread items show a small dot.
+* Unread announcements auto-popup one at a time on launch. Tap "Got it" to mark as read.
+* All content is bundled with the app and rendered from Markdown — no network needed.
+
+Thanks for using Guileless Bopomofo!
