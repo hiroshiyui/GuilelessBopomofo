@@ -1,0 +1,5 @@
+Hi there! Guileless Bopomofo 4.0.9 is a small follow-up to 4.0.8.
+
+* Reverted the offline announcements facility introduced in 4.0.8 (bell icon, unread badge, and auto-popup are removed).
+
+Thanks for using Guileless Bopomofo!
