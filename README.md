@@ -1,3 +1,7 @@
+>**聲明：** 本人已經離開軟體業，此專案僅能提供「維持與新版新酷音函式庫、新版 Android 相容性」此最小限度的維護更新，恕不再接受任何功能請求。
+>
+>**Statement:** I have left the software industry. This project will only provide minimal maintenance to ensure compatibility with new versions of the libchewing library and Android. No feature requests will be accepted.
+
 # Guileless Bopomofo 樸實注音鍵盤
 
 ![Screenshot of Guileless Bopomofo](./media/Screenshot_20251223_234723.png)
