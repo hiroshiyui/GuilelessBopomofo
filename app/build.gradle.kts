@@ -228,6 +228,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.markwon.core)
     implementation(libs.material)
     implementation(libs.preference.ktx)
     testImplementation(libs.junit)

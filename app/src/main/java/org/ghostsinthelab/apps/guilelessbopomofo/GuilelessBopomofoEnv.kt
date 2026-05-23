@@ -43,4 +43,5 @@ object GuilelessBopomofoEnv {
     const val USER_PHYSICAL_KEYBOARD_LAYOUT : String = "user_physical_keyboard_layout"
     const val USER_KEY_BUTTON_HEIGHT : String = "user_key_button_height"
     const val USER_PHRASE_CHOICE_REARWARD : String = "user_phrase_choice_rearward"
+    const val READ_ANNOUNCEMENT_IDS : String = "read_announcement_ids"
 }

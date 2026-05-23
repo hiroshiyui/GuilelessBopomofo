@@ -174,4 +174,7 @@
         <item>@string/bopomofo_keyboard_layout_workman</item>
         <item>@string/bopomofo_keyboard_layout_colemak</item>
     </string-array>
+    <string name="announcements_title">Announcements</string>
+    <string name="announcements_empty">No announcements yet.</string>
+    <string name="announcement_got_it">Got it</string>
 </resources>
