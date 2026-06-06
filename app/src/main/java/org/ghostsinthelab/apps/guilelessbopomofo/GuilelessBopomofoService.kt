@@ -456,8 +456,14 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     private fun onPrintingKeyDown(event: KeyEvent) {
         Log.d(logTag, "onPrintingKeyDown()")
 
-        // Switch to compact layout if physical keyboard is present and current layout is not compact
-        if (physicalKeyboardPresented && viewBinding.keyboardPanel.currentLayout != Layout.COMPACT) {
+        // Switch to compact layout if physical keyboard is present and current layout is not compact.
+        // Skip while the candidates window is shown (e.g. the `‵` symbol picker): a printing key here
+        // is a selection key, and switching away would tear down the candidates view before onKeyUp()
+        // can render the next-level list, leaving sub-menus invisible (still effective in libchewing).
+        if (physicalKeyboardPresented &&
+            viewBinding.keyboardPanel.currentLayout != Layout.COMPACT &&
+            viewBinding.keyboardPanel.currentLayout != Layout.CANDIDATES
+        ) {
             viewBinding.keyboardPanel.switchToCompactLayout()
         }
 
