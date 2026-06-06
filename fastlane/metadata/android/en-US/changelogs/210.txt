@@ -1,0 +1,5 @@
+Hi there! Guileless Bopomofo 4.0.10 fixes a physical keyboard issue.
+
+* Fixed the symbol picker on physical keyboards: pressing the `‵` key and choosing a category (such as brackets) now opens the second-level menu instead of dropping back to the input screen. (#73)
+
+Thanks for using Guileless Bopomofo!
