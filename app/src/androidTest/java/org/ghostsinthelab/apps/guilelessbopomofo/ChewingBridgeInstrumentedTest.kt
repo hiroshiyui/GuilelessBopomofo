@@ -899,6 +899,74 @@ class ChewingBridgeInstrumentedTest {
         assertEquals("KB_HSU", ChewingBridge.chewing.configGetStr("chewing.keyboard_type"))
     }
 
+    // Regression test for GitHub issue #11: emoji were corrupted crossing the
+    // JNI boundary because NewStringUTF / GetStringUTFChars use Modified UTF-8
+    // (CESU-8), while libchewing speaks standard UTF-8. The two encodings differ
+    // for supplementary-plane code points (U+10000+, i.e. emoji): standard UTF-8
+    // uses one 4-byte sequence, Modified UTF-8 a 6-byte surrogate pair. The JNI
+    // bridge now transcodes standard UTF-8 <-> UTF-16 by hand, so a single
+    // code-point emoji must survive a round trip byte-for-byte.
+    //
+    // The user-phrase path exercises both directions of the fix: the phrase goes
+    // IN through utf8FromJavaString (userphraseAdd) and comes OUT through
+    // newJavaStringFromUtf8 (userphraseGetAll).
+    @Test
+    fun emojiInUserPhraseSurvivesJniRoundTrip() {
+        // "我😀" is 2 Unicode scalars (我 = U+6211, 😀 = U+1F600) so it needs 2
+        // bopomofo syllables; libchewing counts the phrase in scalars, not
+        // UTF-16 units. The emoji is a single supplementary-plane code point,
+        // which is a surrogate pair in Java (String.length == 3, not 2).
+        val phrase = "我😀"
+        val bopomofo = "ㄨㄛˇ ㄒㄧㄠˋ"
+
+        // Start from a clean slate for this specific phrase.
+        ChewingBridge.chewing.userphraseRemove(phrase, bopomofo)
+
+        assertEquals(1, ChewingBridge.chewing.userphraseAdd(phrase, bopomofo))
+        try {
+            // libchewing stored the phrase intact (input direction of the fix).
+            assertEquals(1, ChewingBridge.chewing.userphraseLookup(phrase, bopomofo))
+
+            // It round-trips back out identical, not garbled (output direction).
+            val all = ChewingBridge.chewing.userphraseGetAll()
+            assertNotNull(all)
+            val stored = all!!.firstOrNull { it[1] == bopomofo }
+            assertNotNull("added phrase not found in userphraseGetAll()", stored)
+            assertEquals(phrase, stored!![0])
+
+            // The emoji survived as exactly one code point / one surrogate pair.
+            assertEquals(3, stored[0].length)                       // 我(1) + 😀(2 UTF-16 units)
+            assertEquals(2, stored[0].codePointCount(0, stored[0].length))
+            assertEquals(0x1F600, stored[0].codePointAt(1))
+        } finally {
+            ChewingBridge.chewing.userphraseRemove(phrase, bopomofo)
+        }
+    }
+
+    // Companion check with a standalone supplementary-plane emoji, isolating the
+    // surrogate-pair transcoding from any adjacent BMP character.
+    @Test
+    fun standaloneEmojiUserPhraseSurvivesJniRoundTrip() {
+        val phrase = "😀"          // single scalar U+1F600
+        val bopomofo = "ㄒㄧㄠˋ"     // single syllable to match the single scalar
+
+        ChewingBridge.chewing.userphraseRemove(phrase, bopomofo)
+
+        assertEquals(1, ChewingBridge.chewing.userphraseAdd(phrase, bopomofo))
+        try {
+            val all = ChewingBridge.chewing.userphraseGetAll()
+            assertNotNull(all)
+            val stored = all!!.firstOrNull { it[0] == phrase }
+            assertNotNull("emoji phrase not found in userphraseGetAll()", stored)
+            assertEquals(phrase, stored!![0])
+            assertEquals(2, stored[0].length)                       // one surrogate pair
+            assertEquals(1, stored[0].codePointCount(0, stored[0].length))
+            assertEquals(0x1F600, stored[0].codePointAt(0))
+        } finally {
+            ChewingBridge.chewing.userphraseRemove(phrase, bopomofo)
+        }
+    }
+
     @After
     fun deleteChewingEngine() {
         // Close Chewing

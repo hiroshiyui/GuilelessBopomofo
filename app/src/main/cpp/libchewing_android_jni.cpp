@@ -17,12 +17,94 @@
  */
 
 #include <jni.h>
+#include <cstdint>
 #include <string>
 #include <vector>
 #include <android/log.h>
 #include "libs/libchewing/capi/include/chewing.h"
 
 #define LOGTAG "ChewingAndroidJni"
+
+/*
+    Standard UTF-8 <-> UTF-16 helpers.
+
+    libchewing produces and consumes standard UTF-8, but JNI's NewStringUTF /
+    GetStringUTFChars speak Modified UTF-8 (CESU-8). The two encodings diverge
+    for supplementary-plane code points (U+10000+, i.e. emoji): standard UTF-8
+    uses a single 4-byte sequence, while Modified UTF-8 requires a 6-byte
+    surrogate pair. Letting the JVM decode standard UTF-8 as Modified UTF-8
+    therefore garbles emoji. We transcode by hand and use NewString /
+    GetStringChars (which operate on UTF-16 jchars) to avoid the mismatch.
+    For the Basic Multilingual Plane (ASCII, Bopomofo, Han) the two encodings
+    are byte-identical, so this changes behavior only where it was broken.
+*/
+
+/* Standard UTF-8 (from libchewing) -> Java String (UTF-16 via NewString). */
+static jstring newJavaStringFromUtf8(JNIEnv *env, const char *utf8) {
+    if (!utf8) return env->NewStringUTF("");
+    std::vector<jchar> utf16;
+    const auto *s = reinterpret_cast<const unsigned char *>(utf8);
+    while (*s) {
+        uint32_t cp;
+        unsigned char c = *s++;
+        int extra;
+        if (c < 0x80) { cp = c; extra = 0; }
+        else if ((c & 0xE0) == 0xC0) { cp = c & 0x1F; extra = 1; }
+        else if ((c & 0xF0) == 0xE0) { cp = c & 0x0F; extra = 2; }
+        else if ((c & 0xF8) == 0xF0) { cp = c & 0x07; extra = 3; }
+        else { cp = 0xFFFD; extra = 0; } // invalid lead byte
+        for (int i = 0; i < extra; i++) {
+            if ((*s & 0xC0) != 0x80) { cp = 0xFFFD; break; } // truncated/invalid continuation
+            cp = (cp << 6) | (*s++ & 0x3F);
+        }
+        if (cp > 0x10FFFF || (cp >= 0xD800 && cp <= 0xDFFF)) cp = 0xFFFD;
+        if (cp >= 0x10000) { // encode as a UTF-16 surrogate pair
+            cp -= 0x10000;
+            utf16.push_back(static_cast<jchar>(0xD800 | (cp >> 10)));
+            utf16.push_back(static_cast<jchar>(0xDC00 | (cp & 0x3FF)));
+        } else {
+            utf16.push_back(static_cast<jchar>(cp));
+        }
+    }
+    return env->NewString(utf16.data(), static_cast<jsize>(utf16.size()));
+}
+
+/* Java String (UTF-16 via GetStringChars) -> standard UTF-8 std::string. */
+static std::string utf8FromJavaString(JNIEnv *env, jstring jstr) {
+    if (!jstr) return {};
+    const jchar *utf16 = env->GetStringChars(jstr, nullptr);
+    if (!utf16) return {};
+    jsize len = env->GetStringLength(jstr);
+    std::string out;
+    out.reserve(static_cast<size_t>(len) * 3);
+    for (jsize i = 0; i < len; i++) {
+        uint32_t cp = utf16[i];
+        if (cp >= 0xD800 && cp <= 0xDBFF && i + 1 < len) { // high surrogate
+            jchar lo = utf16[i + 1];
+            if (lo >= 0xDC00 && lo <= 0xDFFF) { // + low surrogate
+                cp = 0x10000 + ((cp - 0xD800) << 10) + (lo - 0xDC00);
+                i++;
+            }
+        }
+        if (cp < 0x80) {
+            out.push_back(static_cast<char>(cp));
+        } else if (cp < 0x800) {
+            out.push_back(static_cast<char>(0xC0 | (cp >> 6)));
+            out.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+        } else if (cp < 0x10000) {
+            out.push_back(static_cast<char>(0xE0 | (cp >> 12)));
+            out.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
+            out.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+        } else {
+            out.push_back(static_cast<char>(0xF0 | (cp >> 18)));
+            out.push_back(static_cast<char>(0x80 | ((cp >> 12) & 0x3F)));
+            out.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
+            out.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+        }
+    }
+    env->ReleaseStringChars(jstr, utf16);
+    return out;
+}
 
 /*
     Chewing JNI functions
@@ -34,29 +116,25 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_chewingNew(
         JNIEnv *env,
         jobject,
         jstring data_path) {
-    const char *native_data_path = env->GetStringUTFChars(data_path, nullptr);
-    if (!native_data_path) {
-        return 0;
-    }
+    std::string native_data_path = utf8FromJavaString(env, data_path);
 
     // Validate path does not contain traversal sequences
-    std::string data_path_str(native_data_path);
-    if (data_path_str.empty() || data_path_str.find("..") != std::string::npos) {
+    if (native_data_path.empty() || native_data_path.find("..") != std::string::npos) {
         __android_log_print(ANDROID_LOG_ERROR, LOGTAG, "Invalid data path");
-        env->ReleaseStringUTFChars(data_path, native_data_path);
         return 0;
     }
 
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "native_data_path: %s", native_data_path);
+    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "native_data_path: %s",
+                        native_data_path.c_str());
 
-    std::string native_user_data_path = data_path_str + "/userhash.dat";
+    std::string native_user_data_path = native_data_path + "/userhash.dat";
 
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "native_user_data_path: %s",
                         native_user_data_path.c_str());
 
     /* create chewing context */
-    ChewingContext *ctx = chewing_new2(native_data_path, native_user_data_path.c_str(), nullptr, nullptr);
-    env->ReleaseStringUTFChars(data_path, native_data_path);
+    ChewingContext *ctx = chewing_new2(native_data_path.c_str(), native_user_data_path.c_str(),
+                                       nullptr, nullptr);
 
     /* check if we do chewing_new2() successfully */
     if (!ctx || chewing_Reset(ctx) == -1) {
@@ -344,7 +422,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_commitString(
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Commit string");
     char *commit_string = chewing_commit_String(ctx);
     if (!commit_string) return nullptr;
-    jstring ret_jstring = env->NewStringUTF(commit_string);
+    jstring ret_jstring = newJavaStringFromUtf8(env, commit_string);
     chewing_free(commit_string);
     if (!ret_jstring) return nullptr;
     return ret_jstring;
@@ -359,7 +437,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_commitStringStatic(
     if (!ctx) return nullptr;
     const char *commit_string_static = chewing_commit_String_static(ctx);
     if (!commit_string_static) return nullptr;
-    jstring ret_jstring = env->NewStringUTF(commit_string_static);
+    jstring ret_jstring = newJavaStringFromUtf8(env, commit_string_static);
     if (!ret_jstring) return nullptr;
     return ret_jstring;
 }
@@ -534,7 +612,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_getKBString(
     if (!ctx) return nullptr;
     char *current_keyboard_type = chewing_get_KBString(ctx);
     if (!current_keyboard_type) return nullptr;
-    jstring ret_jstring = env->NewStringUTF(current_keyboard_type);
+    jstring ret_jstring = newJavaStringFromUtf8(env, current_keyboard_type);
     chewing_free(current_keyboard_type);
     if (!ret_jstring) return nullptr;
     return ret_jstring;
@@ -545,12 +623,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_convKBStr2Num(
         JNIEnv *env,
         jobject,
         jstring keyboard_string) {
-    const char *native_keyboard_string = env->GetStringUTFChars(keyboard_string, nullptr);
-    if (!native_keyboard_string) return -1;
-
-    std::string kb_str(native_keyboard_string);
-    env->ReleaseStringUTFChars(keyboard_string, native_keyboard_string);
-
+    std::string kb_str = utf8FromJavaString(env, keyboard_string);
     return chewing_KBStr2Num(kb_str.data());
 }
 
@@ -562,7 +635,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferString(
     if (!ctx) return nullptr;
     char *native_buffer_string = chewing_buffer_String(ctx);
     if (!native_buffer_string) return nullptr;
-    jstring ret_jstring = env->NewStringUTF(native_buffer_string);
+    jstring ret_jstring = newJavaStringFromUtf8(env, native_buffer_string);
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG,
                         "Outputs current pre-edit buffer");
     chewing_free(native_buffer_string);
@@ -580,7 +653,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bopomofoString(
     if (!ctx) return nullptr;
     char *bopomofo_string = chewing_bopomofo_String(ctx);
     if (!bopomofo_string) return nullptr;
-    jstring ret_jstring = env->NewStringUTF(bopomofo_string);
+    jstring ret_jstring = newJavaStringFromUtf8(env, bopomofo_string);
     chewing_free(bopomofo_string);
     if (!ret_jstring) return nullptr;
     return ret_jstring;
@@ -595,7 +668,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bufferStringStatic(
     if (!ctx) return nullptr;
     const char *native_buffer_string_static = chewing_buffer_String_static(ctx);
     if (!native_buffer_string_static) return nullptr;
-    jstring ret_jstring = env->NewStringUTF(native_buffer_string_static);
+    jstring ret_jstring = newJavaStringFromUtf8(env, native_buffer_string_static);
     if (!ret_jstring) return nullptr;
     return ret_jstring;
 }
@@ -609,7 +682,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_bopomofoStringStatic(
     if (!ctx) return nullptr;
     const char *bopomofo_string_static = chewing_bopomofo_String_static(ctx);
     if (!bopomofo_string_static) return nullptr;
-    jstring ret_jstring = env->NewStringUTF(bopomofo_string_static);
+    jstring ret_jstring = newJavaStringFromUtf8(env, bopomofo_string_static);
     if (!ret_jstring) return nullptr;
     return ret_jstring;
 }
@@ -624,7 +697,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candStringByIndexStatic(
     if (!ctx) return nullptr;
     const char *cand_string_by_index_static = chewing_cand_string_by_index_static(ctx, index);
     if (!cand_string_by_index_static) return nullptr;
-    jstring ret_jstring = env->NewStringUTF(cand_string_by_index_static);
+    jstring ret_jstring = newJavaStringFromUtf8(env, cand_string_by_index_static);
     if (!ret_jstring) return nullptr;
     return ret_jstring;
 }
@@ -778,7 +851,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candString(
     if (!ctx) return nullptr;
     char *cand_string = chewing_cand_String(ctx);
     if (!cand_string) return nullptr;
-    jstring ret_jstring = env->NewStringUTF(cand_string);
+    jstring ret_jstring = newJavaStringFromUtf8(env, cand_string);
     chewing_free(cand_string);
     if (!ret_jstring) return nullptr;
     return ret_jstring;
@@ -793,7 +866,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_candStringStatic(
     if (!ctx) return nullptr;
     const char *cand_string_static = chewing_cand_String_static(ctx);
     if (!cand_string_static) return nullptr;
-    jstring ret_jstring = env->NewStringUTF(cand_string_static);
+    jstring ret_jstring = newJavaStringFromUtf8(env, cand_string_static);
     if (!ret_jstring) return nullptr;
     return ret_jstring;
 }
@@ -877,7 +950,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_version(
         JNIEnv *env, jobject thiz) {
     const char *chewing_version_string = chewing_version();
     if (!chewing_version_string) return nullptr;
-    jstring ret_jstring = env->NewStringUTF(chewing_version_string);
+    jstring ret_jstring = newJavaStringFromUtf8(env, chewing_version_string);
     if (!ret_jstring) return nullptr;
     return ret_jstring;
 }
@@ -890,11 +963,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configHasOption(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     if (!ctx) return 0;
-    const char *native_option = env->GetStringUTFChars(option, nullptr);
-    if (!native_option) return 0;
-    jint ret_jint = chewing_config_has_option(ctx, native_option);
-    env->ReleaseStringUTFChars(option, native_option);
-    return ret_jint;
+    std::string native_option = utf8FromJavaString(env, option);
+    return chewing_config_has_option(ctx, native_option.c_str());
 }
 
 extern "C"
@@ -905,11 +975,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configGetInt(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     if (!ctx) return 0;
-    const char *native_option = env->GetStringUTFChars(option, nullptr);
-    if (!native_option) return 0;
-    jint ret_jint = chewing_config_get_int(ctx, native_option);
-    env->ReleaseStringUTFChars(option, native_option);
-    return ret_jint;
+    std::string native_option = utf8FromJavaString(env, option);
+    return chewing_config_get_int(ctx, native_option.c_str());
 }
 
 extern "C"
@@ -920,11 +987,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configSetInt(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     if (!ctx) return -1;
-    const char *native_option = env->GetStringUTFChars(option, nullptr);
-    if (!native_option) return -1;
-    jint ret_jint = chewing_config_set_int(ctx, native_option, value);
-    env->ReleaseStringUTFChars(option, native_option);
-    return ret_jint;
+    std::string native_option = utf8FromJavaString(env, option);
+    return chewing_config_set_int(ctx, native_option.c_str(), value);
 }
 
 extern "C"
@@ -935,17 +999,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configSetStr(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     if (!ctx) return -1;
-    const char *native_option = env->GetStringUTFChars(option, nullptr);
-    if (!native_option) return -1;
-    const char *native_value = env->GetStringUTFChars(value, nullptr);
-    if (!native_value) {
-        env->ReleaseStringUTFChars(option, native_option);
-        return -1;
-    }
-    jint ret_jint = chewing_config_set_str(ctx, native_option, (char *) native_value);
-    env->ReleaseStringUTFChars(value, native_value);
-    env->ReleaseStringUTFChars(option, native_option);
-    return ret_jint;
+    std::string native_option = utf8FromJavaString(env, option);
+    std::string native_value = utf8FromJavaString(env, value);
+    return chewing_config_set_str(ctx, native_option.c_str(), native_value.data());
 }
 
 extern "C"
@@ -956,15 +1012,13 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_configGetStr(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     if (!ctx) return nullptr;
-    const char *native_option = env->GetStringUTFChars(option, nullptr);
-    if (!native_option) return nullptr;
+    std::string native_option = utf8FromJavaString(env, option);
     char *fetched_value = nullptr;
-    chewing_config_get_str(ctx, native_option, &fetched_value);
-    env->ReleaseStringUTFChars(option, native_option);
+    chewing_config_get_str(ctx, native_option.c_str(), &fetched_value);
     if (!fetched_value) return nullptr;
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "Get config string value: %s",
                         fetched_value);
-    jstring ret_jstring = env->NewStringUTF(fetched_value);
+    jstring ret_jstring = newJavaStringFromUtf8(env, fetched_value);
     chewing_free(fetched_value);
     if (!ret_jstring) return nullptr;
     return ret_jstring;
@@ -1027,8 +1081,8 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseGetAll(
         jobjectArray innerArray = env->NewObjectArray(2, stringClass, nullptr);
         if (!innerArray) continue;
 
-        jstring phraseStr = env->NewStringUTF(phrases[i].first.c_str());
-        jstring bopomofoStr = env->NewStringUTF(phrases[i].second.c_str());
+        jstring phraseStr = newJavaStringFromUtf8(env, phrases[i].first.c_str());
+        jstring bopomofoStr = newJavaStringFromUtf8(env, phrases[i].second.c_str());
 
         if (phraseStr) env->SetObjectArrayElement(innerArray, 0, phraseStr);
         if (bopomofoStr) env->SetObjectArrayElement(innerArray, 1, bopomofoStr);
@@ -1054,17 +1108,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseAdd(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     if (!ctx) return -1;
-    const char *native_phrase = env->GetStringUTFChars(phrase, nullptr);
-    if (!native_phrase) return -1;
-    const char *native_bopomofo = env->GetStringUTFChars(bopomofo, nullptr);
-    if (!native_bopomofo) {
-        env->ReleaseStringUTFChars(phrase, native_phrase);
-        return -1;
-    }
-    jint ret = chewing_userphrase_add(ctx, native_phrase, native_bopomofo);
-    env->ReleaseStringUTFChars(bopomofo, native_bopomofo);
-    env->ReleaseStringUTFChars(phrase, native_phrase);
-    return ret;
+    std::string native_phrase = utf8FromJavaString(env, phrase);
+    std::string native_bopomofo = utf8FromJavaString(env, bopomofo);
+    return chewing_userphrase_add(ctx, native_phrase.c_str(), native_bopomofo.c_str());
 }
 
 /* chewing_userphrase_remove() */
@@ -1076,17 +1122,9 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseRemove(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     if (!ctx) return -1;
-    const char *native_phrase = env->GetStringUTFChars(phrase, nullptr);
-    if (!native_phrase) return -1;
-    const char *native_bopomofo = env->GetStringUTFChars(bopomofo, nullptr);
-    if (!native_bopomofo) {
-        env->ReleaseStringUTFChars(phrase, native_phrase);
-        return -1;
-    }
-    jint ret = chewing_userphrase_remove(ctx, native_phrase, native_bopomofo);
-    env->ReleaseStringUTFChars(bopomofo, native_bopomofo);
-    env->ReleaseStringUTFChars(phrase, native_phrase);
-    return ret;
+    std::string native_phrase = utf8FromJavaString(env, phrase);
+    std::string native_bopomofo = utf8FromJavaString(env, bopomofo);
+    return chewing_userphrase_remove(ctx, native_phrase.c_str(), native_bopomofo.c_str());
 }
 
 /* chewing_userphrase_lookup() */
@@ -1098,15 +1136,7 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_userphraseLookup(
         jlong chewing_ctx_ptr) {
     auto *ctx = reinterpret_cast<ChewingContext *>(chewing_ctx_ptr);
     if (!ctx) return 0;
-    const char *native_phrase = env->GetStringUTFChars(phrase, nullptr);
-    if (!native_phrase) return 0;
-    const char *native_bopomofo = env->GetStringUTFChars(bopomofo, nullptr);
-    if (!native_bopomofo) {
-        env->ReleaseStringUTFChars(phrase, native_phrase);
-        return 0;
-    }
-    jint ret = chewing_userphrase_lookup(ctx, native_phrase, native_bopomofo);
-    env->ReleaseStringUTFChars(bopomofo, native_bopomofo);
-    env->ReleaseStringUTFChars(phrase, native_phrase);
-    return ret;
+    std::string native_phrase = utf8FromJavaString(env, phrase);
+    std::string native_bopomofo = utf8FromJavaString(env, bopomofo);
+    return chewing_userphrase_lookup(ctx, native_phrase.c_str(), native_bopomofo.c_str());
 }
