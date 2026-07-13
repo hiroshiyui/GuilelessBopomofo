@@ -41,10 +41,21 @@ Follow the existing style:
 
    Optional body explaining why.
 
-   Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+   Co-Authored-By: Claude <MODEL> <noreply@anthropic.com>
    EOF
    )"
    ```
+
+   **Co-author line is dynamic** — do NOT hardcode a model version. Replace
+   `<MODEL>` with the display name of the model actually running this session,
+   exactly as stated in your environment/system prompt (e.g. "You are powered by
+   the model named ..."). Include any variant qualifier it carries, such as
+   `(1M context)`. Examples of the resulting trailer:
+   - `Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>`
+   - `Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>`
+
+   If the running model's name is genuinely unavailable, fall back to a bare
+   `Co-Authored-By: Claude <noreply@anthropic.com>` rather than guessing a version.
 4. **Push** — always confirm with the user before pushing. This project has two remotes:
    - `origin` — GitHub (git@github.com:hiroshiyui/GuilelessBopomofo.git)
    - `gitlab` — GitLab mirror (git@gitlab.com:hiroshiyui/GuilelessBopomofo.git)
