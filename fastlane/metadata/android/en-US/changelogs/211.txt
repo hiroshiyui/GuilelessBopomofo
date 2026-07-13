@@ -1,0 +1,6 @@
+Hi there! Guileless Bopomofo 4.0.11 improves emoji handling and refreshes the underlying engine.
+
+* Fixed emoji getting garbled while crossing between the app and the Chewing engine, so single-code-point emoji now display and store correctly in the candidate list and your user phrases. (#11)
+* Updated the libchewing engine and refreshed the build dependencies and Rust toolchain.
+
+Thanks for using Guileless Bopomofo!
