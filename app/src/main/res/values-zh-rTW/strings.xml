@@ -48,6 +48,9 @@
     <string name="rearward_phrase_choice">從後方往前選詞</string>
     <string name="rearward_phrase_choice_switch">從後方往前選詞？</string>
     <string name="rearward_phrase_choice_description">如果啟用本功能，會從游標處向前選詞</string>
+    <string name="english_prediction">英文單字預測</string>
+    <string name="english_prediction_description">如果啟用本功能，在英數模式下輸入英文時，鍵盤上方會顯示單字建議。建議來自內建的單字表，不會儲存您輸入的任何內容。</string>
+    <string name="english_prediction_switch">啟用英文單字預測？</string>
     <string name="haptic_feedback_strength">按鍵觸感力道</string>
     <string name="haptic_feedback_strength_description">調整字符鍵的按鍵觸感力道，實際效果依不同機種而有差異。設定值若為 0 則會關閉按鍵觸感效果。</string>
     <string name="current_mode">模式：</string>

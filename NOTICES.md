@@ -15,6 +15,15 @@
     - https://github.com/chewing/libchewing
     - http://chewing.im/
 
+* SCOWL (Spell Checker Oriented Word Lists), used for English word prediction: Copyright 2000-2018 by Kevin Atkinson, and the other copyright holders named in its notice. The word list in this product is a **modified version** of SCOWL 2020.12.07: sizes 10 to 60 of the English and American lists, filtered to plain ASCII words without possessives, merged and re-formatted by `tools/english-wordlist/build.sh`. SCOWL's full copyright and permission notice, including those of the works it is derived from (Moby Words II, UKACD, VarCon, Ispell, and others), is shipped verbatim with this product at `app/src/main/assets/english/SCOWL-COPYRIGHT.txt`.
+    - http://wordlist.aspell.net/
+    - http://wordlist.aspell.net/scowl-readme/
+    - https://github.com/en-wl/wordlist
+
+  > Copyright 2000-2018 by Kevin Atkinson
+  >
+  > Permission to use, copy, modify, distribute and sell these word lists, the associated scripts, the output created from the scripts, and its documentation for any purpose is hereby granted without fee, provided that the above copyright notice appears in all copies and that both that copyright notice and this permission notice appear in supporting documentation. Kevin Atkinson makes no representations about the suitability of this array for any purpose. It is provided "as is" without express or implied warranty.
+
 * EventBus: Apache License, Version 2.0
     - https://greenrobot.org/eventbus/license/
     - https://github.com/greenrobot/EventBus/blob/master/LICENSE

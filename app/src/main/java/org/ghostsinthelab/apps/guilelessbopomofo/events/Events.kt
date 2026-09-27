@@ -28,10 +28,12 @@ class Events {
     class CommitTextInChewingCommitBuffer
     class DirectionKeyDown(val direction: DirectionKey)
     class EnterKeyDownWhenBufferIsEmpty
+    class KeyboardLayoutSwitched
     class ExitKeyboardSubLayouts
     class PrintingKeyDown(val characterKey: CharacterKey)
     class RequestHideIme
     class SendDownUpKeyEvents(val keycode: Int)
+    class SuggestionSelected(val word: String)
     class SwitchToLayout(val layout: Layout)
     class SwitchToNextInputMethod
     class ToggleFullOrHalfWidthMode

@@ -79,6 +79,12 @@ class KeyboardPanel(
     private val candidatesRecyclerView get() = candidatesLayoutBinding.CandidatesRecyclerView
 
     var currentLayout: Layout = Layout.MAIN
+        set(value) {
+            if (field == value) return
+            field = value
+            // what sits around the panel, the suggestion strip say, depends on it too
+            EventBus.getDefault().post(Events.KeyboardLayoutSwitched())
+        }
 
     val sharedPreferences: SharedPreferences = context.appSharedPreferences
 

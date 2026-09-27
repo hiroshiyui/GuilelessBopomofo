@@ -47,6 +47,9 @@
     <string name="rearward_phrase_choice">Choose phrase rearward</string>
     <string name="rearward_phrase_choice_switch">Choose phrase rearward?</string>
     <string name="rearward_phrase_choice_description">If enabled, phrase will be chosen before the cursor</string>
+    <string name="english_prediction">English word prediction</string>
+    <string name="english_prediction_description">If enabled, word suggestions are offered above the keyboard while typing English in alphanumeric mode. Suggestions come from a built-in word list, nothing you type is stored.</string>
+    <string name="english_prediction_switch">Enable English word prediction?</string>
     <string name="haptic_feedback_strength">Haptic feedback strength</string>
     <string name="haptic_feedback_strength_description">Adjust haptic feedback strength of character keys, the effect varies on different devices. Set this to 0 will disable haptic feedback effect.</string>
     <string name="current_mode">Mode:</string>

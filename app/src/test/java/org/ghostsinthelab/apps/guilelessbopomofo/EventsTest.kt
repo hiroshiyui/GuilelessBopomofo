@@ -76,6 +76,12 @@ class EventsTest {
     }
 
     @Test
+    fun suggestionSelected_holdsWord() {
+        val event = Events.SuggestionSelected("hello")
+        assertEquals("hello", event.word)
+    }
+
+    @Test
     fun switchToLayout_holdsLayout() {
         for (layout in Layout.values()) {
             val event = Events.SwitchToLayout(layout)
@@ -115,6 +121,12 @@ class EventsTest {
     @Test
     fun enterKeyDownWhenBufferIsEmpty_canBeInstantiated() {
         val event = Events.EnterKeyDownWhenBufferIsEmpty()
+        assertNotNull(event)
+    }
+
+    @Test
+    fun keyboardLayoutSwitched_canBeInstantiated() {
+        val event = Events.KeyboardLayoutSwitched()
         assertNotNull(event)
     }
 

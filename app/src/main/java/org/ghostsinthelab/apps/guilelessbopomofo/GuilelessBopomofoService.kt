@@ -45,6 +45,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.view.isVisible
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,6 +56,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_SPACE_AS_SELECTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_LANDSCAPE
@@ -88,6 +90,9 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Space
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Up
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeDown
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeUp
+import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishPrediction
+import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishWords
+import org.ghostsinthelab.apps.guilelessbopomofo.prediction.ScowlWordPredictor
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EdgeToEdge
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyBehavior
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyBehaviorResolver
@@ -111,6 +116,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     private lateinit var viewBinding: ImeLayoutBinding
     private lateinit var sharedPreferences: SharedPreferences
+
+    private val englishPrediction = EnglishPrediction(this) { assets.open(ScowlWordPredictor.ASSET_PATH) }
+
+    // whether the text field being edited wants word suggestions, see onStartInputView()
+    private var fieldAllowsSuggestions: Boolean = false
 
     // The physical keys we answer to ourselves. Every handler is stateless, so one instance
     // of each lasts for the lifetime of the service.
@@ -142,6 +152,12 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         // The layouts that are a detour from the main one, and can be stepped out of.
         private val SUB_LAYOUTS = setOf(Layout.SYMBOLS, Layout.CANDIDATES)
+
+        // The layouts English words are typed on, and so the ones the suggestion strip goes with.
+        private val PREDICTION_LAYOUTS = setOf(Layout.QWERTY, Layout.COMPACT)
+
+        // Far enough back to find the start of any word worth predicting.
+        private const val PREDICTION_LOOKBEHIND = 48
 
         val defaultHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
 
@@ -182,6 +198,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         userHapticFeedbackStrength =
             sharedPreferences.getInt(USER_HAPTIC_FEEDBACK_STRENGTH, defaultHapticFeedbackStrength)
+
+        englishPrediction.isEnabled = sharedPreferences.getBoolean(USER_ENABLE_ENGLISH_PREDICTION, false)
     }
 
 
@@ -240,8 +258,19 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
         }
 
+        fieldAllowsSuggestions = info?.let { EnglishWords.fieldAllowsSuggestions(it.inputType) } ?: false
+
         viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
         EventBus.getDefault().post(Events.UpdateBufferViews())
+    }
+
+    // The text field tells us here about every change of its own, what we have just committed
+    // included, so it is where the word being typed is looked at again.
+    override fun onUpdateSelection(
+        oldSelStart: Int, oldSelEnd: Int, newSelStart: Int, newSelEnd: Int, candidatesStart: Int, candidatesEnd: Int
+    ) {
+        super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd)
+        refreshSuggestions()
     }
 
     override fun onDestroy() {
@@ -254,6 +283,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             Log.e(logTag, "Failed to cleanup Chewing context", e)
         }
         EventBus.getDefault().unregister(this)
+        englishPrediction.isEnabled = false
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
@@ -502,6 +532,43 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         currentInputConnection?.sendKeyEvent(KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT))
     }
 
+    /**
+     * English word prediction goes with typing half-width English on the alphanumerical
+     * keyboard, in a text field that welcomes suggestions. Anywhere else the keyboard stays
+     * exactly as it has always been.
+     */
+    private fun suggestionStripApplies(): Boolean =
+        englishPrediction.isEnabled &&
+                fieldAllowsSuggestions &&
+                ChewingBridge.chewing.context != 0L &&
+                ChewingBridge.chewing.getChiEngMode() == ChiEngMode.SYMBOL.mode &&
+                ChewingBridge.chewing.getShapeMode() == ShapeMode.HALF.mode &&
+                viewBinding.keyboardPanel.currentLayout in PREDICTION_LAYOUTS
+
+    /**
+     * The suggestion strip and the buffers take turns above the keyboard: the strip while
+     * predicting, the buffers whenever there is something in them. English typed after Han
+     * characters still waiting in the pre-edit buffer goes into that buffer rather than the
+     * text field, so there is nothing to predict from then anyway.
+     */
+    private fun refreshSuggestions() {
+        if (!::viewBinding.isInitialized) return
+
+        val predicting = suggestionStripApplies() && !ChewingUtil.anyBufferIsNotEmpty()
+        viewBinding.apply {
+            suggestionStrip.isVisible = predicting
+            flexBoxLayoutBufferTextViews.isVisible = !predicting
+            if (predicting) {
+                suggestionStrip.show(englishPrediction.suggest(englishWordBeforeCursor()))
+            }
+        }
+    }
+
+    private fun englishWordBeforeCursor(): String =
+        currentInputConnection?.getTextBeforeCursor(PREDICTION_LOOKBEHIND, 0)
+            ?.let(EnglishWords::trailingWord)
+            .orEmpty()
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUpdateBufferViews(event: Events.UpdateBufferViews) {
         Log.d(logTag, event::class.simpleName ?: "Event")
@@ -509,6 +576,24 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             launch { textViewPreEditBuffer.update() }
             launch { textViewBopomofoBuffer.update() }
         }
+        refreshSuggestions()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onKeyboardLayoutSwitched(event: Events.KeyboardLayoutSwitched) {
+        refreshSuggestions()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSuggestionSelected(event: Events.SuggestionSelected) {
+        val inputConnection = currentInputConnection ?: return
+        // Look the word up again rather than trust what the strip was built from, the text
+        // field may have changed under us in between.
+        val typedWord = englishWordBeforeCursor()
+        inputConnection.beginBatchEdit()
+        inputConnection.deleteSurroundingText(typedWord.length, 0)
+        inputConnection.commitText("${event.word} ", 1)
+        inputConnection.endBatchEdit()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -610,6 +695,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         // Always reset Shift state when switching main layouts.
         releaseShiftKey()
         viewBinding.keyboardPanel.toggleMainLayoutMode()
+        // the compact layout stays the same layout whichever mode it is in
+        refreshSuggestions()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -625,6 +712,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 getString(R.string.half_width_mode)
             }
         }
+
+        refreshSuggestions()
 
         if (viewBinding.keyboardPanel.currentLayout == Layout.COMPACT) {
             viewBinding.keyboardPanel.setShapeMode(shapeMode)
@@ -755,6 +844,11 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             USER_CONVERSION_ENGINE,
             USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD -> {
                 applyConversionEngine()
+            }
+
+            USER_ENABLE_ENGLISH_PREDICTION -> {
+                englishPrediction.isEnabled = sharedPreferences?.getBoolean(key, false) ?: false
+                refreshSuggestions()
             }
         }
     }
