@@ -204,6 +204,37 @@
         app:layout_constraintTop_toBottomOf="@id/textViewRearwardPhraseChoiceDescription" />
 
     <TextView
+        android:id="@+id/textViewEnglishPrediction"
+        style="@style/Settings.Label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/english_prediction"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switchRearwardPhraseChoice" />
+
+    <TextView
+        android:id="@+id/textViewEnglishPredictionDescription"
+        style="@style/Settings.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/english_prediction_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewEnglishPrediction" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switchEnglishPrediction"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/english_prediction_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewEnglishPredictionDescription" />
+
+    <TextView
         android:id="@+id/textViewSettingsConversionEngines"
         style="@style/Settings.Label"
         android:layout_width="0dp"

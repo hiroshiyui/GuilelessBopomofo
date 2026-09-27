@@ -33,6 +33,7 @@ import androidx.core.view.isGone
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_SPACE_AS_SELECTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
@@ -105,6 +106,9 @@ class GeneralSettingsFragment : ViewBindingFragment<FragmentGeneralSettingsBindi
             )
             switchRearwardPhraseChoice.bindToPreference(
                 sharedPreferences, USER_PHRASE_CHOICE_REARWARD, false
+            )
+            switchEnglishPrediction.bindToPreference(
+                sharedPreferences, USER_ENABLE_ENGLISH_PREDICTION, false
             )
 
             bindRadioGroupToPreference(

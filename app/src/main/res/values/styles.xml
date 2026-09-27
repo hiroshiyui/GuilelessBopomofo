@@ -137,6 +137,10 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="AppBaseTheme.SuggestionStrip" parent="AppBaseTheme">
+        <item name="android:background">?attr/colorOnPrimary</item>
+    </style>
+
     <style name="AppBaseTheme.Settings" parent="AppBaseTheme" />
 
     <style name="AppBaseTheme.Settings.Label" parent="AppBaseTheme.Settings">
@@ -220,6 +224,18 @@
     <style name="CandidateItem.SelectionKey" parent="AppBaseTheme.CandidateItem.SelectionKey" />
 
     <style name="CandidateItem.Paged" parent="AppBaseTheme.CandidateItem.Paged" />
+
+    <style name="SuggestionStrip" parent="AppBaseTheme.SuggestionStrip" />
+
+    <!-- follows CandidateItem.Button, whichever theme (light or dark) that resolves to -->
+    <style name="SuggestionItem.Button" parent="CandidateItem.Button">
+        <item name="android:minHeight">40dip</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 
     <style name="Settings" parent="AppTheme" />
 

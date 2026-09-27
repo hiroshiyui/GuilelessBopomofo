@@ -47,6 +47,9 @@
     <string name="rearward_phrase_choice">後方から単語を選択する</string>
     <string name="rearward_phrase_choice_switch">後方から単語を選択する？</string>
     <string name="rearward_phrase_choice_description">有効にすると、カーソルの前の単語を選択されます</string>
+    <string name="english_prediction">英単語予測</string>
+    <string name="english_prediction_description">有効にすると、英数モードで英語を入力する際、キーボードの上に単語の候補を表示します。候補は内蔵の単語リストによるもので、入力内容は一切保存されません。</string>
+    <string name="english_prediction_switch">英単語予測を有効にする？</string>
     <string name="haptic_feedback_strength">キーの触感強度</string>
     <string name="haptic_feedback_strength_description">文字キーの触感強度を調整する（機種により効果が異なります。設定値が0の場合、触感効果は無効になります）</string>
     <string name="current_mode">モード：</string>

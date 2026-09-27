@@ -52,6 +52,18 @@
 
     </org.ghostsinthelab.apps.guilelessbopomofo.buffers.BufferLayout>
 
+    <!-- shown only while there are suggestions to offer, see GuilelessBopomofoService.refreshSuggestions() -->
+    <org.ghostsinthelab.apps.guilelessbopomofo.prediction.SuggestionStripView
+        android:id="@+id/suggestionStrip"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:clipToPadding="false"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:scrollbars="none"
+        android:theme="@style/SuggestionStrip"
+        android:visibility="gone" />
+
     <org.ghostsinthelab.apps.guilelessbopomofo.KeyboardPanel
         android:id="@+id/keyboardPanel"
         android:layout_width="match_parent"
