@@ -28,10 +28,11 @@ The established release workflow follows this pattern:
 1. **Ensure all changes are committed** on the working branch.
 2. **Bump version** — run `./gradlew bumpPatchVersion` or edit `app/build.gradle.kts` manually for minor/major bumps.
 3. **Write changelogs** for F-Droid (see Changelog section below).
-4. **Build signed APKs** — signing requires a keystore passphrase, so **do not run the build automatically**. Prompt the user to build the signed APKs manually in Android Studio (Build > Generate Signed APK) or via the command line. Output: `app/release/` (debug builds go to `app/debug/`). Wait for the user to confirm the build is complete before proceeding.
+4. **Run the tests** — `./gradlew :app:test`, so the tag lands on a known good state.
 5. **Create release commit** — commit message format: `Release <versionName>` with `Signed-off-by` trailer.
 6. **Tag the release** — lightweight tag matching versionName (e.g. `3.7.5`). Tags are NOT annotated.
-7. **Push** the commit and tag when the user confirms.
+7. **Build signed APKs** — only now, after the commit and tag: F-Droid builds reproducibly from the tagged commit, so the published APKs have to be built from exactly that commit. Signing requires a keystore passphrase, so **do not run the build automatically**. Prompt the user to build the signed APKs manually in Android Studio (Build > Generate Signed APK) or via the command line. Output: `app/build/outputs/apk/release/` (debug builds go to `app/build/outputs/apk/debug/`). Android Studio may also leave copies in `app/release/` and `app/debug/`, but the user signs the ones under `app/build/outputs/apk/`. Wait for the user to confirm the build is complete before proceeding.
+8. **GPG-sign** the APKs (see GPG Signing below), then **push** the commit and tag and create the GitHub Release when the user confirms.
 
 ### Git Conventions
 
@@ -79,13 +80,18 @@ Provide the user with the exact commands to run:
 gpg --detach-sign --armor <apk-file>
 ```
 
-For example:
+For example, from the project root:
 ```bash
-gpg --detach-sign --armor org.ghostsinthelab.apps.guilelessbopomofo_v3.7.5-release.apk
-gpg --detach-sign --armor org.ghostsinthelab.apps.guilelessbopomofo_v3.7.5-debug.apk
+gpg --detach-sign --armor app/build/outputs/apk/release/org.ghostsinthelab.apps.guilelessbopomofo_v3.7.5-release.apk
+gpg --detach-sign --armor app/build/outputs/apk/debug/org.ghostsinthelab.apps.guilelessbopomofo_v3.7.5-debug.apk
 ```
 
 Wait for the user to confirm signing is complete before proceeding to the GitHub Release step.
+
+Verifying the signatures does not need a passphrase, so do it before uploading. gpg prints in the user's locale, so force English output and look for `GOODSIG`:
+```bash
+LC_ALL=C gpg --status-fd 1 --verify <apk-file>.asc <apk-file> | grep GOODSIG
+```
 
 ## GitHub Release
 
@@ -120,7 +126,7 @@ EOF
   <apk-and-asc-files...>
 ```
 
-Upload **both** debug and release APKs along with their `.asc` signature files (4 assets total):
+Upload **both** debug and release APKs along with their `.asc` signature files (4 assets total), all from `app/build/outputs/apk/{debug,release}/`:
 - `org.ghostsinthelab.apps.guilelessbopomofo_v<version>-debug.apk`
 - `org.ghostsinthelab.apps.guilelessbopomofo_v<version>-debug.apk.asc`
 - `org.ghostsinthelab.apps.guilelessbopomofo_v<version>-release.apk`

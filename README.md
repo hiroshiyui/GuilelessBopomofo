@@ -60,7 +60,8 @@ Several common hotkeys:
 1. Build it:
     * Import this project into Android Studio, then run **"Build -> Make Project"**, or...
     * execute `./gradlew :app:assembleDebug` or `./gradlew :app:assembleRelease` from shell command line
-1. Locate the generated APK files from `./app/build/outputs/apk/`
+1. Locate the generated APK files from `./app/build/outputs/apk/debug/` or `./app/build/outputs/apk/release/`, named like `org.ghostsinthelab.apps.guilelessbopomofo_v<version>-debug.apk`
+    * A release build without your own signing configuration comes out as `…-release-unsigned.apk`, sign it before installing
 1. Enjoy!
 
 ## Acknowledgements 感謝有您
