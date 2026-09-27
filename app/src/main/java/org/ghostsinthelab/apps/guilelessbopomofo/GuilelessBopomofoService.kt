@@ -547,20 +547,20 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     /**
      * The suggestion strip and the buffers take turns above the keyboard: the strip while
-     * predicting, the buffers whenever there is something in them. English typed after Han
-     * characters still waiting in the pre-edit buffer goes into that buffer rather than the
-     * text field, so there is nothing to predict from then anyway.
+     * predicting, and only when it has something to offer, the buffers whenever there is
+     * something in them. English typed after Han characters still waiting in the pre-edit
+     * buffer goes into that buffer rather than the text field, so there is nothing to predict
+     * from then anyway.
      */
     private fun refreshSuggestions() {
         if (!::viewBinding.isInitialized) return
 
         val predicting = suggestionStripApplies() && !ChewingUtil.anyBufferIsNotEmpty()
+        val suggestions = if (predicting) englishPrediction.suggest(englishWordBeforeCursor()) else emptyList()
         viewBinding.apply {
-            suggestionStrip.isVisible = predicting
             flexBoxLayoutBufferTextViews.isVisible = !predicting
-            if (predicting) {
-                suggestionStrip.show(englishPrediction.suggest(englishWordBeforeCursor()))
-            }
+            suggestionStrip.show(suggestions)
+            suggestionStrip.isVisible = suggestions.isNotEmpty()
         }
     }
 
