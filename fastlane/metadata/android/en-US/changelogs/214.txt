@@ -1,0 +1,6 @@
+Hi there! Guileless Bopomofo 4.0.14 can now help you type English.
+
+* New optional English word prediction: turn it on in General settings, and while typing English in alphanumeric mode I suggest words above the keyboard. Swipe for more, tap one to fill it in. Suggestions come from a built-in word list, nothing you type is stored.
+* Updated the build tools, Gradle, and Kotlin.
+
+Thanks for using Guileless Bopomofo!
