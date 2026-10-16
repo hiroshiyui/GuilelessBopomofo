@@ -123,6 +123,20 @@ class KeyGesturesInstrumentedTest {
     }
 
     @Test
+    fun slidingPastTheTouchSlop_isNeitherTapNorLongPress() {
+        val key = RecordingKey(detectsLongPress = true)
+        setKey(key)
+        composeRule.onNodeWithTag(TAG).performTouchInput {
+            down(center)
+            moveBy(Offset(viewConfiguration.touchSlop * 2, 0f))
+            advanceEventTime(viewConfiguration.longPressTimeoutMillis + 100)
+            up()
+        }
+        composeRule.waitForIdle()
+        assertEquals(listOf("down"), key.calls)
+    }
+
+    @Test
     fun heldPastTheLongPressTimeout_isNoTap_forAKeyWithoutALongPress() {
         val key = RecordingKey()
         setKey(key)

@@ -184,7 +184,7 @@ class KeyboardController(
     }
 
     private fun switchToAlphanumericalLayout() {
-        Log.d(logTag, "switchToQwertyLayout")
+        Log.d(logTag, "switchToAlphanumericalLayout()")
 
         if (physicalKeyboardPresented) {
             switchToCompactLayout()

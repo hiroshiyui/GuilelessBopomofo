@@ -114,11 +114,6 @@ import java.io.IOException
 class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnSharedPreferenceChangeListener,
     KeyEventExtension, LifecycleOwner, SavedStateRegistryOwner {
     private val logTag = "GuilelessBopomofoSvc"
-    @Volatile
-    private var shiftKeyIsLocked: Boolean = false
-
-    @Volatile
-    private var shiftKeyIsActive: Boolean = false
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -504,7 +499,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
 
         var keyPressed: Char = event.unicodeChar.toChar()
 
-        if (shiftKeyIsActive) {
+        if (uiState.shiftKeyState.isActive) {
             currentInputConnection?.sendKeyEvent(KeyEvent(ACTION_DOWN, KEYCODE_SHIFT_LEFT))
             keyPressed = event.getUnicodeChar(META_SHIFT_ON).toChar()
         }
@@ -563,7 +558,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     }
 
     private fun releaseShiftKeyIfNeeded() {
-        if (shiftKeyIsActive && !shiftKeyIsLocked) {
+        if (uiState.shiftKeyState.isActive && !uiState.shiftKeyState.isLocked) {
             Log.d(logTag, "Release Shift key")
             releaseShiftKey()
         }
@@ -595,9 +590,6 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
      * from then anyway.
      */
     private fun refreshSuggestions() {
-        // EventBus may deliver before onCreate() is through.
-        if (!::keyboardController.isInitialized) return
-
         val predicting = suggestionStripApplies() && !ChewingUtil.anyBufferIsNotEmpty()
         uiState.showBuffers = !predicting
         uiState.suggestions = if (predicting) englishPrediction.suggest(englishWordBeforeCursor()) else emptyList()
@@ -725,12 +717,6 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     fun onPreEditBufferTouched(event: Events.PreEditBufferTouched) {
         preEditBuffer.touchedAt(event.offset)
         keyboardController.switchToLayout(Layout.CANDIDATES)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onUpdateShiftKeyState(event: Events.UpdateShiftKeyState) {
-        shiftKeyIsActive = event.isActive
-        shiftKeyIsLocked = event.isLocked
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

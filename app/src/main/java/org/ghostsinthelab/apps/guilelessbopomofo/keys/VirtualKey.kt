@@ -21,14 +21,14 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys
 import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
+/** Which way a key was swiped. */
+enum class SwipeDirection { UP, RIGHT, LEFT, DOWN }
+
 /**
  * What an on-screen key does when touched. The gestures are recognised for it by
  * [org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.keyGestures]; a key only says how it
  * answers them.
  */
-/** Which way a key was swiped. */
-enum class SwipeDirection { UP, RIGHT, LEFT, DOWN }
-
 interface VirtualKey : Vibratable {
     /**
      * Whether a quick second tap is a gesture of its own. Leaving it off is what an ordinary

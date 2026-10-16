@@ -22,10 +22,8 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNotSame
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class EventsTest {
@@ -84,27 +82,6 @@ class EventsTest {
             val event = Events.SwitchToLayout(layout)
             assertEquals(layout, event.layout)
         }
-    }
-
-    @Test
-    fun updateShiftKeyState_holdsActiveAndLocked() {
-        val event = Events.UpdateShiftKeyState(isActive = true, isLocked = false)
-        assertTrue(event.isActive)
-        assertFalse(event.isLocked)
-    }
-
-    @Test
-    fun updateShiftKeyState_bothTrue() {
-        val event = Events.UpdateShiftKeyState(isActive = true, isLocked = true)
-        assertTrue(event.isActive)
-        assertTrue(event.isLocked)
-    }
-
-    @Test
-    fun updateShiftKeyState_bothFalse() {
-        val event = Events.UpdateShiftKeyState(isActive = false, isLocked = false)
-        assertFalse(event.isActive)
-        assertFalse(event.isLocked)
     }
 
     // --- Events with no fields ---

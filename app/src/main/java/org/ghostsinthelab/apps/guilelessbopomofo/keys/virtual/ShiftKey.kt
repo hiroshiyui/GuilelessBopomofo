@@ -20,11 +20,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
 import android.util.Log
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-import org.greenrobot.eventbus.EventBus
 
 class ShiftKey(private val uiState: ImeUiState) : VirtualKey {
     // manage Shift key state
@@ -54,9 +52,8 @@ class ShiftKey(private val uiState: ImeUiState) : VirtualKey {
 
         fun switchToState(uiState: ImeUiState, state: ShiftKeyState) {
             Log.d(LOG_TAG, "Switch to state: $state")
+            // the service reads it from here too, when it types the next character
             uiState.shiftKeyState = state
-            // notify GuilelessBopomofoService of shift key state change
-            EventBus.getDefault().post(Events.UpdateShiftKeyState(state.isActive, state.isLocked))
         }
     }
 }

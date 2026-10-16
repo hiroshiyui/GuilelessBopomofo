@@ -45,5 +45,4 @@ class Events {
     class UpdateCursorPosition
     class UpdateCursorPositionToBegin
     class UpdateCursorPositionToEnd
-    class UpdateShiftKeyState(val isActive: Boolean, val isLocked: Boolean)
 }

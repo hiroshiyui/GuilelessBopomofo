@@ -75,11 +75,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import org.ghostsinthelab.apps.guilelessbopomofo.BuildConfig
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.SuggestionButton
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.KeyboardSpecs
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.KeyboardVariant
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.SoftKeyboard
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.SettingsCurrentValue
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessColors
@@ -103,7 +105,8 @@ fun ImeRoot(uiState: ImeUiState) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .semantics { testTagsAsResourceId = true }
+            // UI Automator tests (debug builds) find the input view by this tag.
+            .then(if (BuildConfig.DEBUG) Modifier.semantics { testTagsAsResourceId = true } else Modifier)
             .testTag(IME_ROOT_TEST_TAG),
         color = MaterialTheme.colorScheme.surfaceContainer,
         contentColor = MaterialTheme.colorScheme.onSurface,
@@ -126,16 +129,22 @@ fun ImeRoot(uiState: ImeUiState) {
 
 @Composable
 private fun KeyboardPanel(uiState: ImeUiState, modifier: Modifier = Modifier) {
+    val variant = currentKeyboardVariant()
     when (uiState.layout) {
-        Layout.MAIN -> KeyboardSpecs.of(uiState.softKeyboard, currentKeyboardVariant())
+        Layout.MAIN -> rememberKeyboardSpec(uiState.softKeyboard, variant)
             ?.let { Keyboard(it, uiState, modifier) }
             ?: PhoneKeypad(uiState, modifier)
 
-        Layout.QWERTY -> Keyboard(requireNotNull(KeyboardSpecs.of(SoftKeyboard.QWERTY, currentKeyboardVariant())), uiState, modifier)
+        Layout.QWERTY -> Keyboard(requireNotNull(rememberKeyboardSpec(SoftKeyboard.QWERTY, variant)), uiState, modifier)
         Layout.CANDIDATES, Layout.SYMBOLS -> CandidatesPanel(uiState, modifier)
         Layout.COMPACT -> CompactBar(uiState, modifier)
     }
 }
+
+/** The spec is built anew only when the keyboard or the screen changes, not on every recomposition. */
+@Composable
+private fun rememberKeyboardSpec(keyboard: SoftKeyboard, variant: KeyboardVariant) =
+    remember(keyboard, variant) { KeyboardSpecs.of(keyboard, variant) }
 
 /**
  * From Android 15 on the input view reaches down behind the navigation bar; fill that part
@@ -220,7 +229,7 @@ private fun PreEditBufferText(uiState: ImeUiState) {
         },
         modifier = Modifier
             .background(GuilelessColors.PreEditBufferBackground)
-            .pointerInput(Unit) {
+            .pointerInput(context, layoutDirection) {
                 awaitEachGesture {
                     val down = awaitFirstDown()
                     val startPadding = currentPadding.calculateLeftPadding(layoutDirection).toPx()

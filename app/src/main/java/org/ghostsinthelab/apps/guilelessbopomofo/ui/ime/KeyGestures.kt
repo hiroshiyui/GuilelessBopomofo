@@ -21,7 +21,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo.ui.ime
 import android.content.Context
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.ui.Modifier
@@ -54,7 +53,8 @@ private val SWIPE_THRESHOLD = 20.dp
  * Feeds touches on this element to [key], the way `GestureDetector` used to:
  *  - [VirtualKey.onDown] as soon as a finger lands;
  *  - [VirtualKey.onTap] when it lifts again, unless it was held past the long-press timeout
- *    (held that long, a key without a long press does nothing, as with GestureDetector);
+ *    (held that long, a key without a long press does nothing, as with GestureDetector) or
+ *    slid farther than the touch slop first;
  *  - for a key that [detects double taps][VirtualKey.detectsDoubleTap], a second quick tap
  *    goes to [VirtualKey.onDoubleTap] (as it lands) and not to [VirtualKey.onTap];
  *  - [VirtualKey.onLongPress] once held past the long-press timeout, and then, for a key that
@@ -98,7 +98,7 @@ fun Modifier.keyGestures(
 
             var up: PointerInputChange? = null
             try {
-                up = awaitUpOrLongPress(key, context, gestureScope)
+                up = awaitUpOrLongPress(key, context, down, gestureScope)
             } finally {
                 interactionSource.tryEmit(
                     if (up != null) PressInteraction.Release(press) else PressInteraction.Cancel(press)
@@ -120,10 +120,11 @@ fun Modifier.keyGestures(
 private suspend fun AwaitPointerEventScope.awaitUpOrLongPress(
     key: VirtualKey,
     context: Context,
+    down: PointerInputChange,
     gestureScope: CoroutineScope,
 ): PointerInputChange? {
     try {
-        return withTimeout(viewConfiguration.longPressTimeoutMillis) { waitForUpOrCancellation() }
+        return withTimeout(viewConfiguration.longPressTimeoutMillis) { awaitUpInPlace(down) }
     } catch (_: PointerEventTimeoutCancellationException) {
         if (key.detectsLongPress) key.onLongPress(context)
         // Deleting goes through libchewing, which may only be touched from the main thread;
@@ -205,6 +206,21 @@ internal fun swipeDirectionOf(offset: Offset, threshold: Float): SwipeDirection?
         abs(dx) < threshold && abs(dy) < threshold -> null
         abs(dx) >= abs(dy) -> if (dx > 0) SwipeDirection.RIGHT else SwipeDirection.LEFT
         else -> if (dy > 0) SwipeDirection.DOWN else SwipeDirection.UP
+    }
+}
+
+/**
+ * The finger that went [down] lifting where it landed; null once it has slid farther than
+ * the touch slop, or something else (a scrolling row of candidates, say) has claimed the
+ * gesture. As with GestureDetector, a finger that has slid is neither a tap nor, later, a
+ * long press.
+ */
+private suspend fun AwaitPointerEventScope.awaitUpInPlace(down: PointerInputChange): PointerInputChange? {
+    while (true) {
+        val change = awaitPointerEvent().changes.firstOrNull { it.id == down.id } ?: return null
+        if (change.isConsumed) return null
+        if (!change.pressed) return change
+        if ((change.position - down.position).getDistance() > viewConfiguration.touchSlop) return null
     }
 }
 
