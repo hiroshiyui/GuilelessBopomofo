@@ -39,6 +39,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.CandidatesPanel
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.KEY_TEST_TAG
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.Keyboard
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.PhoneKeypad
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.FunctionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.KeySpec
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.KeyboardSpecs
@@ -89,12 +90,20 @@ class ImeComposeInstrumentedTest {
         composeRule.setContent {
             GuilelessTheme { Keyboard(KeyboardSpecs.of(keyboard, KeyboardVariant.DEFAULT), uiState) }
         }
-        SoftKeyboard.entries.forEach { softKeyboard ->
+        SoftKeyboard.entries.filterNot { it.isKeypad }.forEach { softKeyboard ->
             keyboard = softKeyboard
             composeRule.waitForIdle()
             val expected = KeyboardSpecs.of(softKeyboard, KeyboardVariant.DEFAULT).rows.sumOf { it.size }
             assertEquals("$softKeyboard", expected, composeRule.onAllNodesWithTag(KEY_TEST_TAG).fetchSemanticsNodes().size)
         }
+    }
+
+    @Test
+    fun phoneKeypad_drawsTheNumberPadAndItsFunctionKeys() {
+        val uiState = ImeUiState().apply { imeSwitchEnabled = true }
+        composeRule.setContent { GuilelessTheme { PhoneKeypad(uiState) } }
+        // 11 symbol keys and # (punctuation), then Aa, symbols, IME switch, Backspace, Space, Enter
+        assertEquals(12 + 6, composeRule.onAllNodesWithTag(KEY_TEST_TAG).fetchSemanticsNodes().size)
     }
 
     @Test

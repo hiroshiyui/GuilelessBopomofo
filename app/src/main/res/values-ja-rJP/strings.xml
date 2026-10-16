@@ -107,6 +107,7 @@
     <string name="bopomofo_keyboard_layout_dvorak">Dvorak 大千式配列</string>
     <string name="bopomofo_keyboard_layout_dvorak_hsu">Dvorak 許氏配列</string>
     <string name="bopomofo_keyboard_layout_dachen26">大千26キー配列</string>
+    <string name="bopomofo_keyboard_layout_dachen_compact">コンパクト大千（テンキー）</string>
     <string name="bopomofo_keyboard_layout_hanyu_pinyin">漢語拼音</string>
     <string name="bopomofo_keyboard_layout_thl_pinyin">台湾華語ラテン文字化</string>
     <string name="bopomofo_keyboard_layout_mps2_pinyin">注音符号第二形式</string>
@@ -153,6 +154,7 @@
         <item>@string/bopomofo_keyboard_layout_eten26</item>
         <item>@string/bopomofo_keyboard_layout_eten41</item>
         <item>@string/bopomofo_keyboard_layout_dachen26</item>
+        <item>@string/bopomofo_keyboard_layout_dachen_compact</item>
     </string-array>
     <string-array name="physical_bopomofo_keyboard_layouts">
         <item>@string/bopomofo_keyboard_layout_dachen</item>

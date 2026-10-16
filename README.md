@@ -31,9 +31,13 @@ In case you don't know: "Dachen" is the most common keyboard layout, which arran
 
 As for "Hsu's Bopomofo Layout" and "E-Ten 26-Keys", they are more ergonomic Bopomofo keyboard layouts. One of the reasons I developed this input method editor is that I want to use a consistent Hsu's Bopomofo Layout on both my computer and my phone.
 
+"Compact DaChen" puts Bopomofo on a feature phone's number keys, in the classic Taiwanese phone arrangement (1: ㄅㄆㄇㄈ, 2: ㄉㄊㄋㄌ, 3: tones, and so on). Tap a key for its first symbol, or swipe up, right, left (or down, on 0) for the others; each key shows them at the edge you swipe towards. The first tone is the space key.
+
 以防您不知道：「大千」就是市面上最常見的那種一列一列將注音符號依序排列的鍵盤。
 
 至於「許氏鍵盤」與「倚天26鍵」、「大千26鍵」都是比較符合人體工學的三排式注音鍵盤排列，我之所以開發這個輸入法編輯器，原因之一，就是我想在電腦上、手機上使用一致的許氏鍵盤。
+
+「精簡大千」則把注音符號放在傳統手機的數字鍵上，採用常見的臺灣手機注音排列（1：ㄅㄆㄇㄈ、2：ㄉㄊㄋㄌ、3：聲調，依此類推）。點按按鍵輸入第一個符號，往上、右、左滑動（0 鍵還可往下滑）輸入其他符號；每個按鍵都會在對應的滑動方向邊緣標示該符號。一聲請按空白鍵。
 
 ### Physical keyboard 實體鍵盤
 

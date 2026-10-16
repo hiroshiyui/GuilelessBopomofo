@@ -56,8 +56,8 @@ class ChewingEnumsTest {
     // BopomofoSoftKeyboards tests
 
     @Test
-    fun bopomofoSoftKeyboards_hasFiveLayouts() {
-        assertEquals(5, BopomofoSoftKeyboards.entries.size)
+    fun bopomofoSoftKeyboards_hasSixLayouts() {
+        assertEquals(6, BopomofoSoftKeyboards.entries.size)
     }
 
     @Test

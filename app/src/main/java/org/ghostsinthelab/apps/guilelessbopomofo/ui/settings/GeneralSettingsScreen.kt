@@ -63,6 +63,7 @@ private val SOFT_KEYBOARD_LAYOUTS: List<String> = listOf(
     BopomofoSoftKeyboards.KB_ET26.layout,
     BopomofoSoftKeyboards.KB_ET.layout,
     BopomofoSoftKeyboards.KB_DACHEN_CP26.layout,
+    BopomofoSoftKeyboards.KB_DACHEN_COMPACT.layout,
 )
 
 @Composable

@@ -128,7 +128,11 @@ fun ImeRoot(uiState: ImeUiState) {
 @Composable
 private fun KeyboardPanel(uiState: ImeUiState, modifier: Modifier = Modifier) {
     when (uiState.layout) {
-        Layout.MAIN -> Keyboard(KeyboardSpecs.of(uiState.softKeyboard, currentKeyboardVariant()), uiState, modifier)
+        Layout.MAIN -> if (uiState.softKeyboard.isKeypad) {
+            PhoneKeypad(uiState, modifier)
+        } else {
+            Keyboard(KeyboardSpecs.of(uiState.softKeyboard, currentKeyboardVariant()), uiState, modifier)
+        }
         Layout.QWERTY -> Keyboard(KeyboardSpecs.of(SoftKeyboard.QWERTY, currentKeyboardVariant()), uiState, modifier)
         Layout.CANDIDATES, Layout.SYMBOLS -> CandidatesPanel(uiState, modifier)
         Layout.COMPACT -> CompactBar(uiState, modifier)

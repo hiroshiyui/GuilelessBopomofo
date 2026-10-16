@@ -40,12 +40,12 @@ class KeyboardSpecsTest {
     @Test
     fun everyKeyboardAndVariant_isCovered() {
         val covered = EXPECTED.map { (keyboard, variant, _) -> keyboard to variant }.toSet()
-        SoftKeyboard.entries.forEach { keyboard ->
+        SoftKeyboard.entries.filterNot { it.isKeypad }.forEach { keyboard ->
             KeyboardVariant.entries.forEach { variant ->
                 assertTrue("$keyboard $variant has no expectation", keyboard to variant in covered)
             }
         }
-        assertEquals(SoftKeyboard.entries.size * KeyboardVariant.entries.size, covered.size)
+        assertEquals(SoftKeyboard.entries.count { !it.isKeypad } * KeyboardVariant.entries.size, covered.size)
     }
 
     @Test

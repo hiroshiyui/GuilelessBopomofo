@@ -51,7 +51,12 @@ sealed interface KeySpec {
 data class KeyboardSpec(val rows: List<List<KeySpec>>)
 
 /** The on-screen keyboards there are. */
-enum class SoftKeyboard { DACHEN, DACHEN_CP26, ET41, ET26, ET26_QWERTY, HSU, HSU_QWERTY, QWERTY }
+enum class SoftKeyboard(val isKeypad: Boolean = false) {
+    DACHEN, DACHEN_CP26, ET41, ET26, ET26_QWERTY, HSU, HSU_QWERTY, QWERTY,
+
+    /** Drawn from [CompactDachenKeypad] rather than a [KeyboardSpec]. */
+    DACHEN_COMPACT(isKeypad = true),
+}
 
 /**
  * The screens a keyboard is arranged differently for. Mirrors how Android used to pick

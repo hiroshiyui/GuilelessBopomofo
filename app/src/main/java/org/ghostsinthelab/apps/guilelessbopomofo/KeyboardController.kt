@@ -138,10 +138,8 @@ class KeyboardController(
 
         // Chewing keeps its own notion of the layout, and the compact one sets it from a
         // different preference, so say it again on every switch.
-        userSoftKeyboardLayoutPreference?.let {
-            val newSoftKeyboardType = ChewingBridge.chewing.convKBStr2Num(it)
-            ChewingBridge.chewing.setKBType(newSoftKeyboardType)
-        }
+        val chewingLayout = BopomofoSoftKeyboards.fromLayout(userSoftKeyboardLayoutPreference).chewingLayout
+        ChewingBridge.chewing.setKBType(ChewingBridge.chewing.convKBStr2Num(chewingLayout))
 
         uiState.softKeyboard = softKeyboardFor(userSoftKeyboardLayoutPreference)
         applyKeyPreferences()
@@ -169,6 +167,7 @@ class KeyboardController(
 
         BopomofoSoftKeyboards.KB_ET.layout -> SoftKeyboard.ET41
         BopomofoSoftKeyboards.KB_DACHEN_CP26.layout -> SoftKeyboard.DACHEN_CP26
+        BopomofoSoftKeyboards.KB_DACHEN_COMPACT.layout -> SoftKeyboard.DACHEN_COMPACT
         else -> SoftKeyboard.DACHEN
     }
 
