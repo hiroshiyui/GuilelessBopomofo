@@ -19,29 +19,20 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
-import android.util.AttributeSet
-import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyButton
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
-class BackToMainFunctionKey(context: Context, attrs: AttributeSet) : KeyButton(context, attrs) {
-
-    override fun createGestureListener() = MyGestureListener()
-
+object BackToMainFunctionKey : VirtualKey {
     override val detectsDoubleTap: Boolean = true
 
-    inner class MyGestureListener : GestureListener() {
-        override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.NORMAL)
-            return super.onDown(e)
-        }
+    override fun onDown(context: Context) {
+        performVibration(context, Vibratable.VibrationStrength.NORMAL)
+    }
 
-        override fun onSingleTapUp(e: MotionEvent): Boolean {
-            EventBus.getDefault().post(Events.ExitKeyboardSubLayouts())
-            EventBus.getDefault().post(Events.UpdateCursorPositionToEnd())
-            return super.onSingleTapUp(e)
-        }
+    override fun onTap(context: Context) {
+        EventBus.getDefault().post(Events.ExitKeyboardSubLayouts())
+        EventBus.getDefault().post(Events.UpdateCursorPositionToEnd())
     }
 }

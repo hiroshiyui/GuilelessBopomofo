@@ -19,31 +19,20 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
-import android.util.AttributeSet
-import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyButton
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
-class CandidateButton(context: Context, attrs: AttributeSet) :
-    KeyButton(context, attrs), Vibratable {
-    lateinit var candidate: Candidate
-
-    override fun createGestureListener() = MyGestureListener()
-
+class CandidateButton(private val candidate: Candidate) : VirtualKey {
     override val detectsDoubleTap: Boolean = true
 
-    inner class MyGestureListener : GestureListener() {
-        override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.LIGHT)
-            return true
-        }
+    override fun onDown(context: Context) {
+        performVibration(context, Vibratable.VibrationStrength.LIGHT)
+    }
 
-        override fun onSingleTapUp(e: MotionEvent): Boolean {
-            EventBus.getDefault().post(Events.CandidateButtonSelected(candidate))
-            return true
-        }
+    override fun onTap(context: Context) {
+        EventBus.getDefault().post(Events.CandidateButtonSelected(candidate))
     }
 }

@@ -22,7 +22,6 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.os.Build
-import android.os.IBinder
 import android.text.InputType
 import android.util.Log
 import android.view.KeyEvent
@@ -42,13 +41,20 @@ import android.view.KeyEvent.KEYCODE_X
 import android.view.KeyEvent.KEYCODE_Z
 import android.view.KeyEvent.META_SHIFT_ON
 import android.view.View
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.view.isVisible
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.savedstate.SavedStateRegistry
+import androidx.savedstate.SavedStateRegistryController
+import androidx.savedstate.SavedStateRegistryOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDIDATE_SELECTION_KEYS_OPTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
@@ -68,8 +74,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSI
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.deviceIsEmulator
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
-import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBufferTextView
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ImeLayoutBinding
+import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBuffer
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
@@ -93,7 +98,9 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeUp
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishPrediction
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishWords
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.ScowlWordPredictor
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.EdgeToEdge
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeRoot
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessTheme
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyBehavior
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyBehaviorResolver
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
@@ -103,10 +110,9 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.IOException
-import kotlin.coroutines.CoroutineContext
 
-class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPreferences.OnSharedPreferenceChangeListener,
-    KeyEventExtension, EdgeToEdge {
+class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnSharedPreferenceChangeListener,
+    KeyEventExtension, LifecycleOwner, SavedStateRegistryOwner {
     private val logTag = "GuilelessBopomofoSvc"
     @Volatile
     private var shiftKeyIsLocked: Boolean = false
@@ -114,10 +120,21 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     @Volatile
     private var shiftKeyIsActive: Boolean = false
 
-    private lateinit var viewBinding: ImeLayoutBinding
     private lateinit var sharedPreferences: SharedPreferences
 
-    private val englishPrediction = EnglishPrediction(this) { assets.open(ScowlWordPredictor.ASSET_PATH) }
+    // What the input view shows; it lives as long as the service, the view only reads it.
+    private val uiState = ImeUiState()
+    private lateinit var keyboardController: KeyboardController
+    private val preEditBuffer = PreEditBuffer(uiState)
+
+    // InputMethodService is no Activity: Compose wants a lifecycle and saved state to hang
+    // on to, so the service provides both itself.
+    private val lifecycleRegistry = LifecycleRegistry(this)
+    private val savedStateRegistryController = SavedStateRegistryController.create(this)
+    override val lifecycle: Lifecycle get() = lifecycleRegistry
+    override val savedStateRegistry: SavedStateRegistry get() = savedStateRegistryController.savedStateRegistry
+
+    private val englishPrediction = EnglishPrediction(lifecycleScope) { assets.open(ScowlWordPredictor.ASSET_PATH) }
 
     // whether the text field being edited wants word suggestions, see onStartInputView()
     private var fieldAllowsSuggestions: Boolean = false
@@ -168,6 +185,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     override fun onCreate() {
         Log.d(logTag, "onCreate()")
         super.onCreate()
+        savedStateRegistryController.performRestore(null)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
 
         if (Build.MANUFACTURER == "Google" && Build.BOARD.startsWith("goldfish_")) {
             deviceIsEmulator = true
@@ -182,6 +201,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         sharedPreferences = appSharedPreferences
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        keyboardController = KeyboardController(uiState, sharedPreferences)
 
         try {
             initializeChewing()
@@ -226,11 +246,19 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     override fun onCreateInputView(): View {
         Log.d(logTag, "onCreateInputView()")
-        viewBinding = ImeLayoutBinding.inflate(this.layoutInflater)
-
-        applyInputViewBottomEdgeWithGradient(viewBinding.root, viewBinding.imeBottomGradientSpacer)
-
-        return viewBinding.root
+        // ComposeView looks the owners up from the window it is attached to.
+        window.window?.decorView?.let { decorView ->
+            decorView.setViewTreeLifecycleOwner(this)
+            decorView.setViewTreeSavedStateRegistryOwner(this)
+        }
+        return ComposeView(this).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
+            setContent {
+                GuilelessTheme {
+                    ImeRoot(uiState)
+                }
+            }
+        }
     }
 
     override fun onEvaluateInputViewShown(): Boolean {
@@ -260,7 +288,9 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         fieldAllowsSuggestions = info?.let { EnglishWords.fieldAllowsSuggestions(it.inputType) } ?: false
 
-        viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+
+        keyboardController.switchToLayout(Layout.MAIN)
         EventBus.getDefault().post(Events.UpdateBufferViews())
     }
 
@@ -284,6 +314,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         }
         EventBus.getDefault().unregister(this)
         englishPrediction.isEnabled = false
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
@@ -299,8 +330,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             requestHideSelf(0)
             return super.onKeyDown(keyCode, event)
         }
-
-        assureViewBindingInitialized()
 
         // handles physical functional keys
         if (physicalKeyDispatcher[keyCode]?.onKeyDown(this, keyCode, event) == true) {
@@ -338,8 +367,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             return super.onKeyUp(keyCode, event)
         }
 
-        assureViewBindingInitialized()
-
         // handles physical functional keys
         if (physicalKeyDispatcher[keyCode]?.onKeyUp(this, keyCode, event) == true) {
             return true
@@ -347,10 +374,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         if (event?.isPrintingKey == true) {
             // Detect if a candidate had been chosen by user
-            viewBinding.keyboardPanel.let {
-                if (it.currentLayout == Layout.CANDIDATES) {
-                    it.candidateKeySelected()
-                }
+            if (keyboardController.currentLayout == Layout.CANDIDATES) {
+                keyboardController.candidateKeySelected()
             }
             return true
         }
@@ -365,8 +390,6 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             super.onKeyLongPress(keyCode, event)
             return false
         }
-
-        assureViewBindingInitialized()
 
         // handles physical functional keys
         if (physicalKeyDispatcher[keyCode]?.onKeyLongPress(this, keyCode, event) == true) {
@@ -383,6 +406,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         if (ChewingBridge.chewing.context != 0L) {
             applyConversionEngine()
         }
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
         Log.d(logTag, "onFinishInputView()")
     }
 
@@ -450,10 +474,10 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         // is a selection key, and switching away would tear down the candidates view before onKeyUp()
         // can render the next-level list, leaving sub-menus invisible (still effective in libchewing).
         if (physicalKeyboardPresented &&
-            viewBinding.keyboardPanel.currentLayout != Layout.COMPACT &&
-            viewBinding.keyboardPanel.currentLayout != Layout.CANDIDATES
+            keyboardController.currentLayout != Layout.COMPACT &&
+            keyboardController.currentLayout != Layout.CANDIDATES
         ) {
-            viewBinding.keyboardPanel.switchToCompactLayout()
+            keyboardController.switchToCompactLayout()
         }
 
         if (handleNumPadKey(event)) return
@@ -471,7 +495,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         // If in candidate selection window, the selection keys have to be mapped to DVORAK layout
         // TODO: This should be resolved in the future, in libchewing.
-        if (ChewingBridge.chewing.getKBString() == BopomofoPhysicalKeyboards.KB_DVORAK_HSU.layout && viewBinding.keyboardPanel.currentLayout == Layout.CANDIDATES) {
+        if (ChewingBridge.chewing.getKBString() == BopomofoPhysicalKeyboards.KB_DVORAK_HSU.layout && keyboardController.currentLayout == Layout.CANDIDATES) {
             keyPressed = ChewingUtil.qwertyToDvorakKeyMapping(keyPressed)
         }
 
@@ -491,7 +515,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     private fun handleGraveKeyForSymbols(event: KeyEvent): Boolean {
         if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode && !event.isShiftPressed) {
-            viewBinding.keyboardPanel.switchToLayout(Layout.SYMBOLS)
+            keyboardController.switchToLayout(Layout.SYMBOLS)
             return true
         }
         return false
@@ -528,7 +552,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     }
 
     private fun releaseShiftKey() {
-        viewBinding.keyboardPanel.releaseShiftKey()
+        keyboardController.releaseShiftKey()
         currentInputConnection?.sendKeyEvent(KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT))
     }
 
@@ -543,7 +567,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
                 ChewingBridge.chewing.context != 0L &&
                 ChewingBridge.chewing.getChiEngMode() == ChiEngMode.SYMBOL.mode &&
                 ChewingBridge.chewing.getShapeMode() == ShapeMode.HALF.mode &&
-                viewBinding.keyboardPanel.currentLayout in PREDICTION_LAYOUTS
+                keyboardController.currentLayout in PREDICTION_LAYOUTS
 
     /**
      * The suggestion strip and the buffers take turns above the keyboard: the strip while
@@ -553,15 +577,12 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
      * from then anyway.
      */
     private fun refreshSuggestions() {
-        if (!::viewBinding.isInitialized) return
+        // EventBus may deliver before onCreate() is through.
+        if (!::keyboardController.isInitialized) return
 
         val predicting = suggestionStripApplies() && !ChewingUtil.anyBufferIsNotEmpty()
-        val suggestions = if (predicting) englishPrediction.suggest(englishWordBeforeCursor()) else emptyList()
-        viewBinding.apply {
-            flexBoxLayoutBufferTextViews.isVisible = !predicting
-            suggestionStrip.show(suggestions)
-            suggestionStrip.isVisible = suggestions.isNotEmpty()
-        }
+        uiState.showBuffers = !predicting
+        uiState.suggestions = if (predicting) englishPrediction.suggest(englishWordBeforeCursor()) else emptyList()
     }
 
     private fun englishWordBeforeCursor(): String =
@@ -572,10 +593,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUpdateBufferViews(event: Events.UpdateBufferViews) {
         Log.d(logTag, event::class.simpleName ?: "Event")
-        viewBinding.apply {
-            launch { textViewPreEditBuffer.update() }
-            launch { textViewBopomofoBuffer.update() }
-        }
+        preEditBuffer.update()
+        uiState.bopomofoText = ChewingBridge.chewing.bopomofoStringStatic()
         refreshSuggestions()
     }
 
@@ -599,31 +618,29 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUpdateCursorPosition(event: Events.UpdateCursorPosition) {
         Log.d(logTag, event::class.simpleName ?: "Event")
-        viewBinding.textViewPreEditBuffer.updateCursorPosition()
+        preEditBuffer.updateCursorPosition()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUpdateCursorPositionToBegin(event: Events.UpdateCursorPositionToBegin) {
         Log.d(logTag, event::class.simpleName ?: "Event")
-        viewBinding.textViewPreEditBuffer.updateCursorPositionToBegin()
+        preEditBuffer.updateCursorPositionToBegin()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUpdateCursorPositionToEnd(event: Events.UpdateCursorPositionToEnd) {
         Log.d(logTag, event::class.simpleName ?: "Event")
-        viewBinding.textViewPreEditBuffer.updateCursorPositionToEnd()
+        preEditBuffer.updateCursorPositionToEnd()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSwitchToLayout(event: Events.SwitchToLayout) {
-        viewBinding.apply {
-            keyboardPanel.switchToLayout(event.layout)
-        }
+        keyboardController.switchToLayout(event.layout)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onRequestHideIme(event: Events.RequestHideIme) {
-        if (viewBinding.keyboardPanel.currentLayout in DISMISSIBLE_LAYOUTS) {
+        if (keyboardController.currentLayout in DISMISSIBLE_LAYOUTS) {
             requestHideSelf(0)
         }
     }
@@ -631,7 +648,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onExitKeyboardSubLayouts(event: Events.ExitKeyboardSubLayouts) {
         Log.d(logTag, event::class.simpleName ?: "Event")
-        viewBinding.keyboardPanel.apply {
+        keyboardController.apply {
             if (currentLayout in SUB_LAYOUTS) {
                 ChewingBridge.chewing.candClose()
                 // reset last cursor position
@@ -644,9 +661,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCommitTextInChewingCommitBuffer(event: Events.CommitTextInChewingCommitBuffer) {
         Log.d(logTag, event::class.simpleName ?: "Event")
-        currentInputConnection?.commitText(
-            ChewingBridge.chewing.commitString(), 1
-        )
+        currentInputConnection?.commitText(event.text, 1)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -658,7 +673,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             // backward compatibility, support IME switch on legacy devices
             val imm = applicationContext.getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
                 ?: return
-            val imeToken: IBinder? = viewBinding.root.windowToken
+            val imeToken = window.window?.attributes?.token
             @Suppress("DEPRECATION") imm.switchToNextInputMethod(imeToken, false)
         }
     }
@@ -670,17 +685,19 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCandidateButtonSelected(event: Events.CandidateButtonSelected) {
-        viewBinding.keyboardPanel.candidateButtonSelected(event.candidate)
+        keyboardController.candidateButtonSelected(event.candidate)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onPrintingKeyDown(event: Events.PrintingKeyDown) {
-        event.characterKey.keyCodeString?.let { keycodeString ->
-            val keyEvent = KeyEvent(
-                ACTION_DOWN, KeyEvent.keyCodeFromString(keycodeString)
-            )
-            this@GuilelessBopomofoService.onPrintingKeyDown(keyEvent)
-        }
+        val keyEvent = KeyEvent(ACTION_DOWN, KeyEvent.keyCodeFromString(event.keyCodeString))
+        this@GuilelessBopomofoService.onPrintingKeyDown(keyEvent)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onPreEditBufferTouched(event: Events.PreEditBufferTouched) {
+        preEditBuffer.touchedAt(event.offset)
+        keyboardController.switchToLayout(Layout.CANDIDATES)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -694,7 +711,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         Log.d(logTag, event::class.simpleName ?: "Event")
         // Always reset Shift state when switching main layouts.
         releaseShiftKey()
-        viewBinding.keyboardPanel.toggleMainLayoutMode()
+        keyboardController.toggleMainLayoutMode()
         // the compact layout stays the same layout whichever mode it is in
         refreshSuggestions()
     }
@@ -715,8 +732,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
 
         refreshSuggestions()
 
-        if (viewBinding.keyboardPanel.currentLayout == Layout.COMPACT) {
-            viewBinding.keyboardPanel.setShapeMode(shapeMode)
+        if (keyboardController.currentLayout == Layout.COMPACT) {
+            keyboardController.refreshCompactIndicators()
         } else {
             Toast.makeText(
                 applicationContext, getString(R.string.shape_mode_changed, shapeMode), Toast.LENGTH_SHORT
@@ -748,7 +765,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onDirectionKeyDown(event: Events.DirectionKeyDown) {
         if (ChewingBridge.chewing.bufferLen() > 0) {
-            viewBinding.textViewPreEditBuffer.cursorMovedBy(PreEditBufferTextView.CursorMovedFrom.PHYSICAL_KEYBOARD)
+            preEditBuffer.cursorMovedBy(PreEditBuffer.CursorMovedFrom.PHYSICAL_KEYBOARD)
         } else if (ChewingUtil.candidateWindowClosed()) {
             // Nothing of ours to move through, so let the text field move its own cursor.
             when (event.direction) {
@@ -758,7 +775,7 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
         }
 
         // toggle to next page of candidates
-        viewBinding.keyboardPanel.apply {
+        keyboardController.apply {
             if (currentLayout == Layout.CANDIDATES && ChewingUtil.candidateWindowOpened()) {
                 renderCandidatesLayout()
             }
@@ -768,31 +785,17 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
     override fun onConfigurationChanged(newConfig: Configuration) {
         Log.d(logTag, "onConfigurationChanged()")
         super.onConfigurationChanged(newConfig)
-        assureViewBindingInitialized()
-
-        // A new orientation or screen size picks its layout resources afresh, so never let
-        // the panel hand back what it inflated for the previous configuration.
-        viewBinding.keyboardPanel.invalidateRenderedLayout()
-
         if (isInputViewShown) {
             Log.d(logTag, "onConfigurationChanged(): refresh the input view.")
             // toggle main layout automatically between physical keyboard being connected and disconnected
-            viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
+            keyboardController.switchToLayout(Layout.MAIN)
             // there will be a short (time) window that InputMethod.hideSoftInput() will be called when user turn own physical keyboard on/off,
             // so have to call showWindow() here to make the soft input visible:
             showWindow(true)
         }
 
         if (physicalKeyboardPresented) {
-            viewBinding.keyboardPanel.switchToCompactLayout()
-        }
-    }
-
-    private fun assureViewBindingInitialized() {
-        Log.d(logTag, "assureViewBindingInitialized()")
-        if (!::viewBinding.isInitialized) {
-            Log.d(logTag, "initialize viewBinding")
-            setInputView(onCreateInputView())
+            keyboardController.switchToCompactLayout()
         }
     }
 
@@ -808,11 +811,8 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             USER_ENABLE_IME_SWITCH,
             USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH,
                 -> {
-                if (::viewBinding.isInitialized) {
-                    // The layouts are built from these, so they have to be inflated again.
-                    viewBinding.keyboardPanel.invalidateRenderedLayout()
-                    viewBinding.keyboardPanel.switchToLayout(Layout.MAIN)
-                }
+                // The keyboards are built from these, so switch again to pick them up.
+                keyboardController.switchToLayout(Layout.MAIN)
             }
 
             USER_ENABLE_SPACE_AS_SELECTION -> {
@@ -852,7 +852,4 @@ class GuilelessBopomofoService : InputMethodService(), CoroutineScope, SharedPre
             }
         }
     }
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
 }

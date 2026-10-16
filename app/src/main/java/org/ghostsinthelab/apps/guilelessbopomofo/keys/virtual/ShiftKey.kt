@@ -19,61 +19,44 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
-import android.util.AttributeSet
 import android.util.Log
-import android.util.TypedValue
-import android.view.MotionEvent
-import androidx.annotation.AttrRes
-import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
-class ShiftKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
-    override val logTag: String = "ShiftKeyImageButton"
-
+class ShiftKey(private val uiState: ImeUiState) : VirtualKey {
     // manage Shift key state
-    enum class ShiftKeyState(@param:AttrRes val backgroundColorAttr: Int) {
-        RELEASED(R.attr.colorTertiary),
-        PRESSED(R.attr.colorSecondary),
-        HOLD(R.attr.colorPrimary),
+    enum class ShiftKeyState {
+        RELEASED,
+        PRESSED,
+        HOLD,
         ;
+
+        val isActive: Boolean get() = this != RELEASED
+        val isLocked: Boolean get() = this == HOLD
 
         /** Tapping the key walks through the states, and around again. */
         fun next(): ShiftKeyState = entries[(ordinal + 1) % entries.size]
     }
 
-    var currentShiftKeyState = ShiftKeyState.RELEASED
-    val isActive: Boolean get() = currentShiftKeyState != ShiftKeyState.RELEASED
-    val isLocked: Boolean get() = currentShiftKeyState == ShiftKeyState.HOLD
-
-    override fun createGestureListener() = MyGestureListener()
-
-    inner class MyGestureListener : GestureListener() {
-        override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.NORMAL)
-            return true
-        }
-
-        override fun onSingleTapUp(e: MotionEvent): Boolean {
-            switchToState(currentShiftKeyState.next())
-            return true
-        }
+    override fun onDown(context: Context) {
+        performVibration(context, Vibratable.VibrationStrength.NORMAL)
     }
 
-    private fun Context.getThemeColor(@AttrRes attrResId: Int): Int {
-        val typedValue = TypedValue()
-        theme.resolveAttribute(attrResId, typedValue, true)
-        return typedValue.data
+    override fun onTap(context: Context) {
+        switchToState(uiState, uiState.shiftKeyState.next())
     }
 
-    fun switchToState(state: ShiftKeyState) {
-        Log.d(logTag, "Switch to state: $state")
-        currentShiftKeyState = state
-        background.setTint(context.getThemeColor(state.backgroundColorAttr))
+    companion object {
+        private const val LOG_TAG = "ShiftKey"
 
-        // notify GuilelessBopomofoService of shift key state change
-        EventBus.getDefault().post(Events.UpdateShiftKeyState(isActive, isLocked))
+        fun switchToState(uiState: ImeUiState, state: ShiftKeyState) {
+            Log.d(LOG_TAG, "Switch to state: $state")
+            uiState.shiftKeyState = state
+            // notify GuilelessBopomofoService of shift key state change
+            EventBus.getDefault().post(Events.UpdateShiftKeyState(state.isActive, state.isLocked))
+        }
     }
 }

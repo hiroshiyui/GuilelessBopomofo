@@ -33,17 +33,18 @@ enum class EnterKeyIntent {
     ;
 
     companion object {
-        // KeyEvent.isShiftPressed() looks at META_SHIFT_ON alone, which the input pipeline
-        // normalizes in for us. Accept the side specific bits too, so that a keyboard which
-        // reports only those is not left without a line break.
-        private const val SHIFT_META_STATE =
-            KeyEvent.META_SHIFT_ON or KeyEvent.META_SHIFT_LEFT_ON or KeyEvent.META_SHIFT_RIGHT_ON
+        // KeyEvent.isShiftPressed() and isAltPressed() look at META_SHIFT_ON and META_ALT_ON
+        // alone, which the input pipeline normalizes in for us. Accept the side specific bits
+        // too, so that a keyboard which reports only those is not left without a line break.
+        private const val LINE_BREAK_META_STATE =
+            KeyEvent.META_SHIFT_ON or KeyEvent.META_SHIFT_LEFT_ON or KeyEvent.META_SHIFT_RIGHT_ON or
+                    KeyEvent.META_ALT_ON or KeyEvent.META_ALT_LEFT_ON or KeyEvent.META_ALT_RIGHT_ON
 
         /**
-         * `Shift` + `Enter` is how one asks a physical keyboard for a line break without
-         * submitting the text field.
+         * `Shift` + `Enter` or `Alt` + `Enter` is how one asks a physical keyboard for a line
+         * break without submitting the text field.
          */
         fun forMetaState(metaState: Int): EnterKeyIntent =
-            if ((metaState and SHIFT_META_STATE) != 0) LINE_BREAK else EDITOR_ACTION
+            if ((metaState and LINE_BREAK_META_STATE) != 0) LINE_BREAK else EDITOR_ACTION
     }
 }

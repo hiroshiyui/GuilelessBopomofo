@@ -19,27 +19,16 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
-import android.util.AttributeSet
-import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.greenrobot.eventbus.EventBus
 
-class CharacterKey(context: Context, attrs: AttributeSet) :
-    KeyImageButton(context, attrs) {
-
-    override fun createGestureListener() = MyGestureListener()
-
-    // process frequently used gestures here.
-    inner class MyGestureListener : GestureListener() {
-        override fun onDown(e: MotionEvent): Boolean {
-            performVibration(
-                context,
-                GuilelessBopomofoService.userHapticFeedbackStrength
-            )
-            EventBus.getDefault().post(Events.PrintingKeyDown(this@CharacterKey))
-            return super.onDown(e)
-        }
+/** A key that types: [keyCodeString] is the name of the key code it stands for, `KEYCODE_A` say. */
+class CharacterKey(private val keyCodeString: String) : VirtualKey {
+    // Everything happens on the way down, so that fast typing never waits for a finger to lift.
+    override fun onDown(context: Context) {
+        performVibration(context, GuilelessBopomofoService.userHapticFeedbackStrength)
+        EventBus.getDefault().post(Events.PrintingKeyDown(keyCodeString))
     }
 }

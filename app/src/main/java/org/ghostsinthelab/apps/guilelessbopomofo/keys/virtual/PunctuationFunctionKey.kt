@@ -19,38 +19,29 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
-import android.util.AttributeSet
-import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
-class PunctuationFunctionKey(context: Context, attrs: AttributeSet) :
-    KeyImageButton(context, attrs) {
-
-    override fun createGestureListener() = MyGestureListener()
-
+object PunctuationFunctionKey : VirtualKey {
     override val detectsDoubleTap: Boolean = true
+    override val detectsLongPress: Boolean = true
 
-    inner class MyGestureListener : GestureListener() {
-        override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.NORMAL)
-            return true
-        }
+    override fun onDown(context: Context) {
+        performVibration(context, Vibratable.VibrationStrength.NORMAL)
+    }
 
-        override fun onSingleTapUp(e: MotionEvent): Boolean {
-            ChewingUtil.handleShiftComma()
-            EventBus.getDefault().post(Events.UpdateBufferViews())
-            return true
-        }
+    override fun onTap(context: Context) {
+        ChewingUtil.handleShiftComma()
+        EventBus.getDefault().post(Events.UpdateBufferViews())
+    }
 
-        override fun onLongPress(e: MotionEvent) {
-            performVibration(context, Vibratable.VibrationStrength.STRONG)
-            ChewingUtil.openFrequentlyUsedCandidates()
-            EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
-        }
+    override fun onLongPress(context: Context) {
+        performVibration(context, Vibratable.VibrationStrength.STRONG)
+        ChewingUtil.openFrequentlyUsedCandidates()
+        EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
     }
 }

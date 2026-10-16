@@ -18,100 +18,34 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.SystemClock
-import android.util.AttributeSet
-import android.view.MotionEvent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-import kotlin.coroutines.CoroutineContext
 
-class BackspaceKey(context: Context, attrs: AttributeSet) :
-    KeyImageButton(context, attrs), CoroutineScope {
-    private var backspacePressed: Boolean = false
-    private var lastBackspaceClickTime: Long = 0
-    private var repeatingBackspace: Job? = null
+object BackspaceKey : VirtualKey {
+    private const val BACKSPACE_DEBOUNCE_MS = 100L
 
-    companion object {
-        private const val BACKSPACE_DEBOUNCE_MS = 100L
-        private const val BACKSPACE_REPEAT_INITIAL_DELAY_MS = 50L
-        private const val BACKSPACE_REPEAT_INTERVAL_MS = 100L
+    private var lastBackspaceDownTime: Long = 0
+
+    override val repeatsWhileHeld: Boolean = true
+
+    override fun onDown(context: Context) {
+        // avoids buzzing on every one of too fast repeat clicks
+        val now = SystemClock.elapsedRealtime()
+        if (now - lastBackspaceDownTime < BACKSPACE_DEBOUNCE_MS) return
+        lastBackspaceDownTime = now
+        performVibration(context, Vibratable.VibrationStrength.NORMAL)
+    }
+
+    override fun onTap(context: Context) {
+        ChewingUtil.handleBackspaceAction()
     }
 
     // Deleting goes through libchewing, whose context may only be touched from the main
-    // thread, so the repeat has to keep to it as well.
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
-
-    override fun createGestureListener() = MyGestureListener()
-
-    inner class MyGestureListener : GestureListener() {
-        override fun onDown(e: MotionEvent): Boolean {
-            // avoids too fast repeat clicks
-            if (SystemClock.elapsedRealtime() - lastBackspaceClickTime < BACKSPACE_DEBOUNCE_MS) {
-                return false
-            }
-            lastBackspaceClickTime = SystemClock.elapsedRealtime()
-
-            performVibration(context, Vibratable.VibrationStrength.NORMAL)
-            return true
-        }
-
-        override fun onSingleTapUp(e: MotionEvent): Boolean {
-            performKeyStroke()
-            return true
-        }
-
-        override fun onLongPress(e: MotionEvent) {
-            startRepeatingBackspace()
-        }
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        super.onTouchEvent(event)
-        event?.let {
-            when (it.action) {
-                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> backspacePressed = true
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> backspacePressed = false
-            }
-        }
-        return true
-    }
-
-    override fun onDetachedFromWindow() {
-        stopRepeatingBackspace()
-        super.onDetachedFromWindow()
-    }
-
-    /**
-     * Keeps deleting for as long as the key is held down.
-     */
-    private fun startRepeatingBackspace() {
-        stopRepeatingBackspace()
-        repeatingBackspace = launch {
-            delay(BACKSPACE_REPEAT_INITIAL_DELAY_MS)
-            while (isActive && backspacePressed) {
-                performKeyStroke()
-                delay(BACKSPACE_REPEAT_INTERVAL_MS)
-            }
-        }
-    }
-
-    private fun stopRepeatingBackspace() {
-        repeatingBackspace?.cancel()
-        repeatingBackspace = null
-    }
-
-    private fun performKeyStroke() {
+    // thread; the gesture that repeats this runs there too.
+    override fun onRepeat(context: Context) {
         ChewingUtil.handleBackspaceAction()
     }
 }

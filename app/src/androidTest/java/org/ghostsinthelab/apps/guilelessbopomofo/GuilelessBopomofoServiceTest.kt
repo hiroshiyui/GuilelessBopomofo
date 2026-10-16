@@ -31,7 +31,9 @@ import androidx.test.rule.ServiceTestRule
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.IME_ROOT_TEST_TAG
 import org.junit.After
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -105,15 +107,9 @@ class GuilelessBopomofoServiceTest {
 
         // Check if your keyboard view is visible using UI Automator
         // You'll need resource IDs or descriptive text for your keyboard elements
-        val keyboardView = uiDevice.wait(
-            Until.hasObject(
-                By.res(
-                    ApplicationProvider.getApplicationContext<Context>().packageName,
-                    "keyboardView"
-                )
-            ), 5000
-        )
-        assert(keyboardView != null) { "Keyboard panel did not appear." }
+        // The Compose input view exposes its test tag as a bare resource name, without a package.
+        val keyboardViewAppeared = uiDevice.wait(Until.hasObject(By.res(IME_ROOT_TEST_TAG)), 5000)
+        assertTrue("Keyboard panel did not appear.", keyboardViewAppeared == true)
     }
 
     // More tests:
