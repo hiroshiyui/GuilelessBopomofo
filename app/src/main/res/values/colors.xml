@@ -47,6 +47,8 @@
     <color name="colorGuilelessBopomofoMorandiOnSurfaceVariant">#60615E</color>
     <color name="colorGuilelessBopomofoMorandiOutline">#807E78</color>
     <color name="colorGuilelessBopomofoMorandiOutlineVariant">#CDC8BA</color>
+    <!-- Base10 a shade darker, to read at 4.5:1 on secondaryContainer (Base1) -->
+    <color name="colorGuilelessBopomofoMorandiOnSecondaryContainer">#494A49</color>
     <color name="colorGuilelessBopomofoWineSurfaceContainerLowest">#132227</color>
     <color name="colorGuilelessBopomofoWineSurfaceContainerLow">#192C33</color>
     <color name="colorGuilelessBopomofoWineSurfaceContainerHigh">#3E4046</color>

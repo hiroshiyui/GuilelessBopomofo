@@ -29,7 +29,7 @@
         <item name="colorSecondary">@color/colorGuilelessBopomofoMorandiThemeBase7</item>
         <item name="colorOnSecondary">@color/colorGuilelessBopomofoMorandiThemeBase10</item>
         <item name="colorSecondaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase1</item>
-        <item name="colorOnSecondaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase4</item>
+        <item name="colorOnSecondaryContainer">@color/colorGuilelessBopomofoMorandiOnSecondaryContainer</item>
         <!-- tertiary -->
         <item name="colorTertiary">@color/colorGuilelessBopomofoMorandiThemeBase3</item>
         <item name="colorOnTertiary">@color/colorGuilelessBopomofoMorandiThemeBase10</item>
