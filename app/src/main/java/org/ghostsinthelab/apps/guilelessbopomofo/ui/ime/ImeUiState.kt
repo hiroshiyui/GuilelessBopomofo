@@ -50,7 +50,10 @@ class ImeUiState {
 
     var preEditText: String by mutableStateOf("")
 
-    /** The character of [preEditText] the cursor is under, or -1 for none. */
+    /**
+     * The character of [preEditText] the cursor is under, or -1 for none. Counted in
+     * characters (code points), as libchewing counts them, not UTF-16 units.
+     */
     var preEditCursorIndex: Int by mutableIntStateOf(-1)
 
     /** Widens the end of the pre-edit buffer, so one can see the cursor sits past its last character. */

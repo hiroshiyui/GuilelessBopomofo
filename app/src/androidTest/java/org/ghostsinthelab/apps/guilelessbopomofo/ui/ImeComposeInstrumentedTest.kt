@@ -88,12 +88,12 @@ class ImeComposeInstrumentedTest {
         val uiState = ImeUiState().apply { imeSwitchEnabled = true }
         var keyboard by mutableStateOf(SoftKeyboard.DACHEN)
         composeRule.setContent {
-            GuilelessTheme { Keyboard(KeyboardSpecs.of(keyboard, KeyboardVariant.DEFAULT), uiState) }
+            GuilelessTheme { Keyboard(rowsOf(keyboard), uiState) }
         }
-        SoftKeyboard.entries.filterNot { it.isKeypad }.forEach { softKeyboard ->
+        (SoftKeyboard.entries - SoftKeyboard.DACHEN_COMPACT).forEach { softKeyboard ->
             keyboard = softKeyboard
             composeRule.waitForIdle()
-            val expected = KeyboardSpecs.of(softKeyboard, KeyboardVariant.DEFAULT).rows.sumOf { it.size }
+            val expected = rowsOf(softKeyboard).rows.sumOf { it.size }
             assertEquals("$softKeyboard", expected, composeRule.onAllNodesWithTag(KEY_TEST_TAG).fetchSemanticsNodes().size)
         }
     }
@@ -109,7 +109,7 @@ class ImeComposeInstrumentedTest {
     @Test
     fun keyboard_leavesOutTheImeSwitchKeyUnlessEnabled() {
         val uiState = ImeUiState().apply { imeSwitchEnabled = false }
-        val spec = KeyboardSpecs.of(SoftKeyboard.DACHEN, KeyboardVariant.DEFAULT)
+        val spec = rowsOf(SoftKeyboard.DACHEN)
         composeRule.setContent { GuilelessTheme { Keyboard(spec, uiState) } }
         val imeSwitchKeys = spec.rows.flatten().count { it is KeySpec.Function && it.key == FunctionKey.IME_SWITCH }
         assertEquals(1, imeSwitchKeys)
@@ -147,6 +147,8 @@ class ImeComposeInstrumentedTest {
         composeRule.waitForIdle()
         assertFalse(preferences.getBoolean(TEST_PREFERENCE_KEY, true))
     }
+
+    private fun rowsOf(keyboard: SoftKeyboard) = requireNotNull(KeyboardSpecs.of(keyboard, KeyboardVariant.DEFAULT))
 
     private companion object {
         const val TEST_PREFERENCE_KEY = "compose_test_switch"

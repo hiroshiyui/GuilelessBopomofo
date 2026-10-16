@@ -20,6 +20,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts
 
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -40,12 +41,19 @@ class KeyboardSpecsTest {
     @Test
     fun everyKeyboardAndVariant_isCovered() {
         val covered = EXPECTED.map { (keyboard, variant, _) -> keyboard to variant }.toSet()
-        SoftKeyboard.entries.filterNot { it.isKeypad }.forEach { keyboard ->
+        ROW_KEYBOARDS.forEach { keyboard ->
             KeyboardVariant.entries.forEach { variant ->
                 assertTrue("$keyboard $variant has no expectation", keyboard to variant in covered)
             }
         }
-        assertEquals(SoftKeyboard.entries.count { !it.isKeypad } * KeyboardVariant.entries.size, covered.size)
+        assertEquals(ROW_KEYBOARDS.size * KeyboardVariant.entries.size, covered.size)
+    }
+
+    @Test
+    fun theKeypad_hasNoRowsOfKeys() {
+        KeyboardVariant.entries.forEach { variant ->
+            assertNull(KeyboardSpecs.of(SoftKeyboard.DACHEN_COMPACT, variant))
+        }
     }
 
     @Test
@@ -72,6 +80,8 @@ class KeyboardSpecsTest {
     private fun drawable(name: String): Int = R.drawable::class.java.getField(name).getInt(null)
 
     private companion object {
+        val ROW_KEYBOARDS = SoftKeyboard.entries - SoftKeyboard.DACHEN_COMPACT
+
         val EXPECTED: List<Triple<SoftKeyboard, KeyboardVariant, List<String>>> = listOf(
         // layout/keyboard_dachen_layout.xml
         Triple(SoftKeyboard.DACHEN, KeyboardVariant.DEFAULT, listOf(

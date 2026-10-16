@@ -53,7 +53,8 @@ private val SWIPE_THRESHOLD = 20.dp
 /**
  * Feeds touches on this element to [key], the way `GestureDetector` used to:
  *  - [VirtualKey.onDown] as soon as a finger lands;
- *  - [VirtualKey.onTap] when it lifts again, unless it was held past the long-press timeout;
+ *  - [VirtualKey.onTap] when it lifts again, unless it was held past the long-press timeout
+ *    (held that long, a key without a long press does nothing, as with GestureDetector);
  *  - for a key that [detects double taps][VirtualKey.detectsDoubleTap], a second quick tap
  *    goes to [VirtualKey.onDoubleTap] (as it lands) and not to [VirtualKey.onTap];
  *  - [VirtualKey.onLongPress] once held past the long-press timeout, and then, for a key that
@@ -97,11 +98,7 @@ fun Modifier.keyGestures(
 
             var up: PointerInputChange? = null
             try {
-                up = if (key.detectsLongPress || key.repeatsWhileHeld) {
-                    awaitUpOrLongPress(key, context, gestureScope)
-                } else {
-                    waitForUpOrCancellation()
-                }
+                up = awaitUpOrLongPress(key, context, gestureScope)
             } finally {
                 interactionSource.tryEmit(
                     if (up != null) PressInteraction.Release(press) else PressInteraction.Cancel(press)

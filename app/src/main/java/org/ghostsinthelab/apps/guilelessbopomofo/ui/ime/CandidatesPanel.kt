@@ -32,7 +32,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -85,16 +84,20 @@ fun CandidatesPanel(uiState: ImeUiState, modifier: Modifier = Modifier) {
  */
 @Composable
 private fun CandidatesGrid(candidates: List<Candidate>) {
-    val columns = remember(candidates) { candidates.chunked(GuilelessDimens.CandidateGridRows) }
+    val rows = GuilelessDimens.CandidateGridRows
     LazyRow(
         state = rememberLazyListState(),
         modifier = Modifier
             .fillMaxWidth()
-            .height(GuilelessDimens.CandidateGridRowHeight * GuilelessDimens.CandidateGridRows),
+            .height(GuilelessDimens.CandidateGridRowHeight * rows),
     ) {
-        items(columns, key = { column -> column.first().index }) { column ->
+        // Columns by index, so that only the candidates of columns on screen are looked at.
+        items(count = (candidates.size + rows - 1) / rows) { column ->
             Column(modifier = Modifier.width(IntrinsicSize.Max)) {
-                column.forEach { candidate -> CandidateItem(candidate) }
+                val first = column * rows
+                for (index in first until minOf(first + rows, candidates.size)) {
+                    CandidateItem(candidates[index])
+                }
             }
         }
     }

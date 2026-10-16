@@ -74,8 +74,9 @@ class KeyboardController(
         }
     }
 
+    // Each switch sets currentLayout itself, once it knows what it ends up showing: MAIN may
+    // turn out to be QWERTY or COMPACT, and setting it here first would announce two switches.
     fun switchToLayout(layout: Layout) {
-        currentLayout = layout
         when (layout) {
             Layout.MAIN -> switchToMainLayout()
             Layout.CANDIDATES -> switchToCandidatesLayout()
@@ -136,39 +137,41 @@ class KeyboardController(
             USER_SOFT_KEYBOARD_LAYOUT, BopomofoSoftKeyboards.KB_DEFAULT.layout
         )
 
+        val softKeyboard = BopomofoSoftKeyboards.fromLayout(userSoftKeyboardLayoutPreference)
+
         // Chewing keeps its own notion of the layout, and the compact one sets it from a
         // different preference, so say it again on every switch.
-        val chewingLayout = BopomofoSoftKeyboards.fromLayout(userSoftKeyboardLayoutPreference).chewingLayout
-        ChewingBridge.chewing.setKBType(ChewingBridge.chewing.convKBStr2Num(chewingLayout))
+        ChewingBridge.chewing.setKBType(ChewingBridge.chewing.convKBStr2Num(softKeyboard.chewingLayout))
 
-        uiState.softKeyboard = softKeyboardFor(userSoftKeyboardLayoutPreference)
+        uiState.softKeyboard = softKeyboardFor(softKeyboard)
         applyKeyPreferences()
     }
 
     /**
-     * The on-screen keyboard the given layout preference asks for. Anything unheard of, a
-     * preference left over from an older release say, gets the default Dachen keyboard
-     * rather than no keyboard at all.
+     * The keyboard to draw for the chosen layout, with its QWERTY-labelled variant where the
+     * user asked for one. A preference nobody has heard of, one left over from an older
+     * release say, has already been read as the default Dachen keyboard by
+     * [BopomofoSoftKeyboards.fromLayout].
      */
-    private fun softKeyboardFor(softKeyboardLayout: String?): SoftKeyboard = when (softKeyboardLayout) {
-        BopomofoSoftKeyboards.KB_HSU.layout ->
+    private fun softKeyboardFor(softKeyboard: BopomofoSoftKeyboards): SoftKeyboard = when (softKeyboard) {
+        BopomofoSoftKeyboards.KB_HSU ->
             if (sharedPreferences.getBoolean(USER_DISPLAY_HSU_QWERTY_LAYOUT, false)) {
                 SoftKeyboard.HSU_QWERTY
             } else {
                 SoftKeyboard.HSU
             }
 
-        BopomofoSoftKeyboards.KB_ET26.layout ->
+        BopomofoSoftKeyboards.KB_ET26 ->
             if (sharedPreferences.getBoolean(USER_DISPLAY_ETEN26_QWERTY_LAYOUT, false)) {
                 SoftKeyboard.ET26_QWERTY
             } else {
                 SoftKeyboard.ET26
             }
 
-        BopomofoSoftKeyboards.KB_ET.layout -> SoftKeyboard.ET41
-        BopomofoSoftKeyboards.KB_DACHEN_CP26.layout -> SoftKeyboard.DACHEN_CP26
-        BopomofoSoftKeyboards.KB_DACHEN_COMPACT.layout -> SoftKeyboard.DACHEN_COMPACT
-        else -> SoftKeyboard.DACHEN
+        BopomofoSoftKeyboards.KB_ET -> SoftKeyboard.ET41
+        BopomofoSoftKeyboards.KB_DACHEN_CP26 -> SoftKeyboard.DACHEN_CP26
+        BopomofoSoftKeyboards.KB_DACHEN_COMPACT -> SoftKeyboard.DACHEN_COMPACT
+        BopomofoSoftKeyboards.KB_DEFAULT -> SoftKeyboard.DACHEN
     }
 
     private fun applyKeyPreferences() {
@@ -264,9 +267,7 @@ class KeyboardController(
             uiState.candidates = ChewingUtil.getCandidatesByPage(ChewingBridge.chewing.candCurrentPage())
         } else {
             uiState.candidateLayoutStyle = CandidateLayoutStyle.GRID
-            uiState.candidates = List(ChewingBridge.chewing.candTotalChoice()) { index ->
-                Candidate(index, ChewingBridge.chewing.candStringByIndexStatic(index))
-            }
+            uiState.candidates = ChewingCandidateList(ChewingBridge.chewing.candTotalChoice())
         }
         uiState.candidatesGeneration += 1
     }
@@ -278,4 +279,28 @@ class KeyboardController(
             ShiftKey.switchToState(uiState, ShiftKey.ShiftKeyState.RELEASED)
         }
     }
+}
+
+/**
+ * The candidates libchewing offers right now, fetched over JNI only as each one is asked
+ * for, which is to say as the grid draws it: there can be hundreds, and only a screenful
+ * shows at a time. Compares by identity, so that handing a new one to [ImeUiState] never
+ * fetches the lot just to compare them. Only valid until the candidates change, by which
+ * time the controller has replaced it.
+ */
+private class ChewingCandidateList(override val size: Int) : AbstractList<Candidate>() {
+    private val fetched = arrayOfNulls<Candidate>(size)
+
+    override fun get(index: Int): Candidate {
+        checkElementIndex(index)
+        return fetched[index] ?: Candidate(index, ChewingBridge.chewing.candStringByIndexStatic(index))
+            .also { fetched[index] = it }
+    }
+
+    private fun checkElementIndex(index: Int) {
+        if (index !in 0 until size) throw IndexOutOfBoundsException("index: $index, size: $size")
+    }
+
+    override fun equals(other: Any?): Boolean = this === other
+    override fun hashCode(): Int = System.identityHashCode(this)
 }

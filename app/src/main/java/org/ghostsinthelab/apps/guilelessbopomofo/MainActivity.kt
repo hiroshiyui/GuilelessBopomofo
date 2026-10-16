@@ -161,6 +161,8 @@ private fun SettingsApp(onAppIconClick: () -> Unit) {
 
 @Composable
 private fun SettingsHeader(onAppIconClick: () -> Unit, modifier: Modifier = Modifier) {
+    // A call into libchewing that never answers differently, so ask once.
+    val chewingVersion = remember { ChewingBridge.chewing.version() }
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -179,7 +181,7 @@ private fun SettingsHeader(onAppIconClick: () -> Unit, modifier: Modifier = Modi
             fontWeight = FontWeight.Bold,
         )
         Text(
-            text = stringResource(R.string.app_version, BuildConfig.VERSION_NAME, ChewingBridge.chewing.version()),
+            text = stringResource(R.string.app_version, BuildConfig.VERSION_NAME, chewingVersion),
             modifier = Modifier.padding(top = 2.dp),
         )
     }

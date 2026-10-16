@@ -42,7 +42,7 @@ class PreEditBuffer(private val uiState: ImeUiState) {
 
     private val cursor = Cursor()
 
-    /** The user touched the buffer at character [touchedOffset]. */
+    /** The user touched the buffer at character (code point, not UTF-16 unit) [touchedOffset]. */
     fun touchedAt(touchedOffset: Int) {
         offset = touchedOffset
         cursorMovedBy(CursorMovedFrom.TOUCHSCREEN)
@@ -55,7 +55,7 @@ class PreEditBuffer(private val uiState: ImeUiState) {
 
                 // 如果使用者點選最後一個字的時候很邊邊角角，
                 // 很可能 getOffsetForPosition() 算出來的值會超界，要扣回來
-                if (offset >= uiState.preEditText.length) {
+                if (offset >= uiState.preEditText.let { it.codePointCount(0, it.length) }) {
                     offset = (ChewingBridge.chewing.bufferLen() - 1).coerceAtLeast(0)
                 }
             }

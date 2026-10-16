@@ -123,6 +123,17 @@ class KeyGesturesInstrumentedTest {
     }
 
     @Test
+    fun heldPastTheLongPressTimeout_isNoTap_forAKeyWithoutALongPress() {
+        val key = RecordingKey()
+        setKey(key)
+        composeRule.onNodeWithTag(TAG).performTouchInput {
+            down(center); advanceEventTime(viewConfiguration.longPressTimeoutMillis + 100); up()
+        }
+        composeRule.waitForIdle()
+        assertEquals(listOf("down"), key.calls)
+    }
+
+    @Test
     fun hold_repeatsUntilReleased() {
         val key = RecordingKey(repeatsWhileHeld = true)
         setKey(key)

@@ -48,7 +48,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -163,18 +165,32 @@ private fun EngineeringModeScreen(statuses: List<Pair<String, String>>, onTestFi
 }
 
 /**
- * Calls [onLongPress] when a pointer stays down past the long-press timeout, without
- * consuming anything, so the text field underneath still gets its own gestures.
+ * Calls [onLongPress] when a finger stays down and still past the long-press timeout, like
+ * the old OnLongClickListener: moving beyond the touch slop first makes it a drag, which is
+ * left alone. Watching from the initial pass lets the text field underneath take taps and
+ * drags as usual, and once the long press has fired the rest of the gesture is consumed, so
+ * the field does not start a selection of its own as well.
  */
 private fun Modifier.onLongPressObserved(onLongPress: () -> Unit): Modifier = pointerInput(onLongPress) {
-    val longPressTimeout = viewConfiguration.longPressTimeoutMillis
     awaitEachGesture {
-        awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
-        val released = withTimeoutOrNull(longPressTimeout) {
-            do {
-                val event = awaitPointerEvent(PointerEventPass.Initial)
-            } while (event.changes.any { it.pressed })
+        val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+        val letGoOrMoved = withTimeoutOrNull(viewConfiguration.longPressTimeoutMillis) {
+            awaitReleaseOrMove(down, viewConfiguration.touchSlop)
         }
-        if (released == null) onLongPress()
+        // Only a finger still down and in place when the timeout passes is a long press.
+        if (letGoOrMoved != null) return@awaitEachGesture
+
+        onLongPress()
+        do {
+            val event = awaitPointerEvent(PointerEventPass.Initial)
+            event.changes.forEach { it.consume() }
+        } while (event.changes.any { it.pressed })
     }
+}
+
+/** Returns as soon as the finger that went [down] lifts or moves farther than [touchSlop]. */
+private suspend fun AwaitPointerEventScope.awaitReleaseOrMove(down: PointerInputChange, touchSlop: Float) {
+    do {
+        val change = awaitPointerEvent(PointerEventPass.Initial).changes.firstOrNull { it.id == down.id } ?: return
+    } while (change.pressed && (change.position - down.position).getDistance() <= touchSlop)
 }

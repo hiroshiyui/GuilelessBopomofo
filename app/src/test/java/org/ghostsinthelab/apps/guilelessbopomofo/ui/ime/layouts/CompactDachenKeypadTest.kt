@@ -36,7 +36,7 @@ class CompactDachenKeypadTest {
 
     @Test
     fun everyGlyph_typesTheKeyThatCarriesItOnTheDachenKeyboard() {
-        val dachenKeyCodeByIcon = KeyboardSpecs.of(SoftKeyboard.DACHEN, KeyboardVariant.DEFAULT).rows.flatten()
+        val dachenKeyCodeByIcon = requireNotNull(KeyboardSpecs.of(SoftKeyboard.DACHEN, KeyboardVariant.DEFAULT)).rows.flatten()
             .filterIsInstance<KeySpec.Character>()
             .associate { it.icon to it.keyCode }
         BopomofoGlyph.entries.forEach { glyph ->

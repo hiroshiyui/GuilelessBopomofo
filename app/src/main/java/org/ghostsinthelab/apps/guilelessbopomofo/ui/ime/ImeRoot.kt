@@ -128,12 +128,11 @@ fun ImeRoot(uiState: ImeUiState) {
 @Composable
 private fun KeyboardPanel(uiState: ImeUiState, modifier: Modifier = Modifier) {
     when (uiState.layout) {
-        Layout.MAIN -> if (uiState.softKeyboard.isKeypad) {
-            PhoneKeypad(uiState, modifier)
-        } else {
-            Keyboard(KeyboardSpecs.of(uiState.softKeyboard, currentKeyboardVariant()), uiState, modifier)
-        }
-        Layout.QWERTY -> Keyboard(KeyboardSpecs.of(SoftKeyboard.QWERTY, currentKeyboardVariant()), uiState, modifier)
+        Layout.MAIN -> KeyboardSpecs.of(uiState.softKeyboard, currentKeyboardVariant())
+            ?.let { Keyboard(it, uiState, modifier) }
+            ?: PhoneKeypad(uiState, modifier)
+
+        Layout.QWERTY -> Keyboard(requireNotNull(KeyboardSpecs.of(SoftKeyboard.QWERTY, currentKeyboardVariant())), uiState, modifier)
         Layout.CANDIDATES, Layout.SYMBOLS -> CandidatesPanel(uiState, modifier)
         Layout.COMPACT -> CompactBar(uiState, modifier)
     }
@@ -216,8 +215,8 @@ private fun PreEditBufferText(uiState: ImeUiState) {
     Text(
         text = buildAnnotatedString {
             append(text)
-            if (cursorIndex in text.indices) {
-                addStyle(SpanStyle(textDecoration = TextDecoration.Underline), cursorIndex, cursorIndex + 1)
+            text.utf16RangeOfCharacter(cursorIndex)?.let { range ->
+                addStyle(SpanStyle(textDecoration = TextDecoration.Underline), range.first, range.last + 1)
             }
         },
         modifier = Modifier
@@ -226,7 +225,8 @@ private fun PreEditBufferText(uiState: ImeUiState) {
                 awaitEachGesture {
                     val down = awaitFirstDown()
                     val startPadding = currentPadding.calculateLeftPadding(layoutDirection).toPx()
-                    val offset = textLayout?.getOffsetForPosition(down.position - Offset(startPadding, 0f)) ?: 0
+                    val utf16Offset = textLayout?.getOffsetForPosition(down.position - Offset(startPadding, 0f)) ?: 0
+                    val offset = uiState.preEditText.characterIndexOf(utf16Offset)
                     Haptics.performVibration(context, Vibratable.VibrationStrength.LIGHT)
                     if (waitForUpOrCancellation() != null) {
                         EventBus.getDefault().post(Events.PreEditBufferTouched(offset))
@@ -238,6 +238,19 @@ private fun PreEditBufferText(uiState: ImeUiState) {
         style = BufferTextStyle,
         onTextLayout = { textLayout = it },
     )
+}
+
+// libchewing counts the buffer in characters (code points), Compose text in UTF-16 units, and
+// a character outside the BMP, such as an Ext-B Han character or an emoji, takes two of them.
+
+/** The character a UTF-16 [utf16Offset] into this string falls at. */
+internal fun String.characterIndexOf(utf16Offset: Int): Int = codePointCount(0, utf16Offset.coerceIn(0, length))
+
+/** The UTF-16 units of this string's [characterIndex]-th character, or null if there is none. */
+internal fun String.utf16RangeOfCharacter(characterIndex: Int): IntRange? {
+    if (characterIndex !in 0 until codePointCount(0, length)) return null
+    val start = offsetByCodePoints(0, characterIndex)
+    return start until offsetByCodePoints(start, 1)
 }
 
 /** English words to pick from, most likely first; swipe it for the less likely ones. */
