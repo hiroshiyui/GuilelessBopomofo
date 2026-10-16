@@ -55,10 +55,8 @@
     <string name="mode_bopomofo">注音符号</string>
     <string name="mode_alphanumerical">英数字</string>
     <string name="physical_keyboard_settings">物理キーボード設定</string>
-    <string name="enable_physical_keyboard_description">物理キーボード（Bluetooth、USB、またはデバイス内蔵）を使用する際、本機能を有効にすると、ソフトウェアキーボードの表示を簡易モードに変更します</string>
     <string name="tips_using_physical_keyboard">物理キーボードを使用する場合：<b>左 Shift</b> + <b>スペースバー</b> を押すと、注音と英数字の入力モードが切り替わります。<b>Alt</b> + <b>I</b> を押すと、他の入力方法を選択して切り替えることができます。<b>Alt</b> + <b>Space</b> を押すと、全角と半角が切り替わります。</string>
     <string name="physical_selection_keys">物理的な候補選択キー</string>
-    <string name="keybutton_popup_image">現在押されているキー</string>
     <string name="key_button_height_label">キーの高さを調整する</string>
     <string name="key_button_height_description">キーの高さを調整する（デフォルトの高さ：52dp）</string>
     <string name="switch_display_hsu_qwerty_layout">許氏配列使用時にQWERTYキーキャップを表示しますか？</string>
@@ -68,7 +66,6 @@
     <string name="key_button_height_setting">%1$ddp</string>
     <string name="setting_apply_same_haptic_feedback_strength_to_function_buttons">機能キーに文字キーと同じ触感強度を適用しますか？</string>
     <string name="text_view_setting_ime_switch">入力方式を切り替える</string>
-    <string name="text_view_setting_description_ime_switch">入力方式の切り替えキーの動作を調整する（単押しまたは二度押し）</string>
     <string name="switch_setting_ime_switch">二度押しで次の入力方式に切り替えますか？</string>
     <string name="bopomofo_keyboard_layout_eten41">倚天41キー配列</string>
     <string name="please_enable_guileless_bopomofo_first">素朴な注音キーボードを有効にしてください</string>
@@ -83,9 +80,6 @@
     <string name="hardware_keyboard_hidden_status_yes">Hidden</string>
     <string name="hardware_keyboard_hidden_status_undefined">Undefined hidden status</string>
     <string name="hardware_keyboard_hidden_status_unknown">Unknown status</string>
-    <string name="user_preferred_hardware_keyboard_yes">はい</string>
-    <string name="user_preferred_hardware_keyboard_no">いいえ</string>
-    <string name="user_preferred_hardware_keyboard_unknown">Unknown</string>
     <string name="full_width_mode">全角</string>
     <string name="half_width_mode">半角</string>
     <string name="shape_mode_changed">全角半角変換: %1$s</string>
@@ -117,8 +111,6 @@
     <string name="bopomofo_keyboard_layout_colemak">Colemak配列</string>
     <string name="bopomofo_keyboard_layout_workman">Workman配列</string>
     <string name="user_phrase_manager_title">ユーザー辞書管理</string>
-    <string name="user_phrase_manager_description">ユーザー辞書のフレーズを表示、追加、削除する</string>
-    <string name="manage_user_phrases">ユーザー辞書を管理</string>
     <string name="no_user_phrases">ユーザーフレーズがありません</string>
     <string name="add_user_phrase">追加</string>
     <string name="delete_user_phrase">削除</string>
@@ -147,7 +139,6 @@
     <string name="analyze_bopomofo">注音符号を分析</string>
     <string name="analyze_bopomofo_hint">フレーズを入力し「注音符号を分析」をタップして読み方を提案するか、下に直接注音符号を入力してください。</string>
     <string name="analyze_bopomofo_no_results">このフレーズの注音符号の読み方が見つかりません</string>
-    <string name="analyze_bopomofo_select">注音符号の読み方を選択してください：</string>
     <string-array name="on_screen_bopomofo_keyboard_layouts">
         <item>@string/bopomofo_keyboard_layout_dachen</item>
         <item>@string/bopomofo_keyboard_layout_hsu</item>

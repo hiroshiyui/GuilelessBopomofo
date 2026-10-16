@@ -55,10 +55,8 @@
     <string name="mode_bopomofo">Bopomofo</string>
     <string name="mode_alphanumerical">Alphanumerical</string>
     <string name="physical_keyboard_settings">Physical keyboard settings</string>
-    <string name="enable_physical_keyboard_description">Use physical (Bluetooth, USB or on-device) keyboard, if enabled, the layout will switch from software keyboard to a compact look</string>
     <string name="tips_using_physical_keyboard">While using physical keyboard, toggle modes between Bopomofo &amp; English by pressing <b>Left Shift</b> + <b>Space</b>; Switch to other input methods by pressing <b>Left Alt</b> + <b>I</b>; To toggle width mode, press <b>Alt</b> + <b>Space</b>.</string>
     <string name="physical_selection_keys">Physical candidate selection keys</string>
-    <string name="keybutton_popup_image">Current touched key button</string>
     <string name="key_button_height_label">Adjust height of key buttons</string>
     <string name="key_button_height_description">Adjust height of key buttons. (Default value: 52dp)</string>
     <string name="switch_display_hsu_qwerty_layout">Enable QWERTY keycaps for Hsu layout?</string>
@@ -68,7 +66,6 @@
     <string name="key_button_height_setting">%1$ddp</string>
     <string name="setting_apply_same_haptic_feedback_strength_to_function_buttons">Apply same haptic feedback strength to function buttons?</string>
     <string name="text_view_setting_ime_switch">Switch Input Methods</string>
-    <string name="text_view_setting_description_ime_switch">Toggle the input method switch key between single or double touch</string>
     <string name="switch_setting_ime_switch">Use double touch to switch to next input method?</string>
     <string name="bopomofo_keyboard_layout_eten41">E-TEN 41 Keys</string>
     <string name="please_enable_guileless_bopomofo_first">Please enable Guileless Bopomofo first</string>
@@ -83,9 +80,6 @@
     <string name="hardware_keyboard_hidden_status_yes">Hidden</string>
     <string name="hardware_keyboard_hidden_status_undefined">Undefined hidden status</string>
     <string name="hardware_keyboard_hidden_status_unknown">Unknown status</string>
-    <string name="user_preferred_hardware_keyboard_yes">Yes</string>
-    <string name="user_preferred_hardware_keyboard_no">No</string>
-    <string name="user_preferred_hardware_keyboard_unknown">Unknown</string>
     <string name="full_width_mode">Full width</string>
     <string name="half_width_mode">Half width</string>
     <string name="shape_mode_changed">Shape mode: %1$s</string>
@@ -117,8 +111,6 @@
     <string name="bopomofo_keyboard_layout_colemak">Colemak</string>
     <string name="bopomofo_keyboard_layout_workman">Workman</string>
     <string name="user_phrase_manager_title">User Phrase Manager</string>
-    <string name="user_phrase_manager_description">View, add, or delete your custom user phrases</string>
-    <string name="manage_user_phrases">Manage User Phrases</string>
     <string name="no_user_phrases">No user phrases found</string>
     <string name="search_user_phrases_hint">Search phrases or bopomofo</string>
     <string name="search_user_phrases_no_results">No matching phrases found</string>
@@ -149,7 +141,6 @@
     <string name="analyze_bopomofo">Analyze Bopomofo</string>
     <string name="analyze_bopomofo_hint">Enter a phrase above and tap \"Analyze Bopomofo\" to suggest readings, or type bopomofo manually below.</string>
     <string name="analyze_bopomofo_no_results">Unable to find bopomofo readings for this phrase</string>
-    <string name="analyze_bopomofo_select">Select a bopomofo reading:</string>
     <string-array name="on_screen_bopomofo_keyboard_layouts">
         <item>@string/bopomofo_keyboard_layout_dachen</item>
         <item>@string/bopomofo_keyboard_layout_hsu</item>

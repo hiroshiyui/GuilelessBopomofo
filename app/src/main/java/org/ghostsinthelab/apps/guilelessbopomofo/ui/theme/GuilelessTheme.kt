@@ -138,5 +138,4 @@ object GuilelessColors {
     val PreEditBufferBackground = Color(0xFF2196F3)
     val BopomofoBufferText = Color(0xFF333333)
     val BopomofoBufferBackground = Color(0xFF00BCD4)
-    val SelectionKeyText = Color.White
 }

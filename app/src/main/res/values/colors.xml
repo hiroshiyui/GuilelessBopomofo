@@ -29,15 +29,12 @@
     <color name="colorGuilelessBopomofoMorandiThemeBase9">#8699B0</color>
     <color name="colorGuilelessBopomofoMorandiThemeBase10">#515251</color>
     <!-- color palette: Wine style -->
-    <color name="colorGuilelessBopomofoWineThemeBase1">#7E205D</color>
     <color name="colorGuilelessBopomofoWineThemeBase2">#D55A43</color>
     <color name="colorGuilelessBopomofoWineThemeBase3">#C89D76</color>
     <color name="colorGuilelessBopomofoWineThemeBase4">#F4D3BE</color>
     <color name="colorGuilelessBopomofoWineThemeBase5">#5E4D51</color>
-    <color name="colorGuilelessBopomofoWineThemeBase6">#3B5B84</color>
     <color name="colorGuilelessBopomofoWineThemeBase7">#B35A4C</color>
     <color name="colorGuilelessBopomofoWineThemeBase8">#7C3A39</color>
-    <color name="colorGuilelessBopomofoWineThemeBase9">#CE9898</color>
     <color name="colorGuilelessBopomofoWineThemeBase10">#1D343C</color>
     <!-- Bottom navigation selected icon tint (MainActivity). values-night overrides it to
          a light tone so the icon reads on the wine-red indicator pill. -->
