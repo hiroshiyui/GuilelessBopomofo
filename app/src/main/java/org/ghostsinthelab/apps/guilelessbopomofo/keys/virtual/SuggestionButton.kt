@@ -19,30 +19,20 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
-import android.util.AttributeSet
-import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyButton
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
 
 /** One of the English words offered on the suggestion strip. */
-class SuggestionButton(context: Context, attrs: AttributeSet) :
-    KeyButton(context, attrs), Vibratable {
+class SuggestionButton(private val word: String) : VirtualKey {
+    override fun onDown(context: Context) {
+        performVibration(context, Vibratable.VibrationStrength.LIGHT)
+    }
 
-    override fun createGestureListener() = MyGestureListener()
-
-    inner class MyGestureListener : GestureListener() {
-        override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.LIGHT)
-            return true
-        }
-
-        override fun onSingleTapUp(e: MotionEvent): Boolean {
-            if (text.isNotEmpty()) {
-                EventBus.getDefault().post(Events.SuggestionSelected(text.toString()))
-            }
-            return true
+    override fun onTap(context: Context) {
+        if (word.isNotEmpty()) {
+            EventBus.getDefault().post(Events.SuggestionSelected(word))
         }
     }
 }

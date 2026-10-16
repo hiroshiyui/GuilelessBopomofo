@@ -19,25 +19,16 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
-import android.util.AttributeSet
-import android.view.MotionEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
-class SpaceKey(context: Context, attrs: AttributeSet) : KeyImageButton(context, attrs) {
+object SpaceKey : VirtualKey {
+    override fun onDown(context: Context) {
+        performVibration(context, Vibratable.VibrationStrength.LIGHT)
+    }
 
-    override fun createGestureListener() = MyGestureListener()
-
-    inner class MyGestureListener : GestureListener() {
-        override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.LIGHT)
-            return true
-        }
-
-        override fun onSingleTapUp(e: MotionEvent): Boolean {
-            ChewingUtil.handleSpaceAction()
-            return true
-        }
+    override fun onTap(context: Context) {
+        ChewingUtil.handleSpaceAction()
     }
 }

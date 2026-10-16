@@ -19,65 +19,41 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
-import android.util.AttributeSet
-import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.KeyImageButton
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.appSharedPreferences
 import org.greenrobot.eventbus.EventBus
 
-class ImeSwitchFunctionKey(context: Context, attrs: AttributeSet) :
-    KeyImageButton(context, attrs) {
-
-    override fun createGestureListener() = MyGestureListener()
-
+/** Shown only when the user turns it on, see `USER_ENABLE_IME_SWITCH`. */
+object ImeSwitchFunctionKey : VirtualKey {
     override val detectsDoubleTap: Boolean = true
+    override val detectsLongPress: Boolean = true
 
-    init {
-        setKeyVisibility()
+    override fun onDown(context: Context) {
+        performVibration(context, Vibratable.VibrationStrength.NORMAL)
     }
 
-    inner class MyGestureListener : GestureListener() {
-        override fun onDown(e: MotionEvent): Boolean {
-            performVibration(context, Vibratable.VibrationStrength.NORMAL)
-            return true
-        }
-
-        override fun onSingleTapUp(e: MotionEvent): Boolean {
-            if (!sharedPreferences.getBoolean(USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, false)) {
-                switchNextInputMethod()
-            }
-            return true
-        }
-
-        override fun onDoubleTap(e: MotionEvent): Boolean {
-            if (sharedPreferences.getBoolean(USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, false)) {
-                switchNextInputMethod()
-            }
-            return true
-        }
-
-        override fun onLongPress(e: MotionEvent) {
-            performVibration(context, Vibratable.VibrationStrength.STRONG)
-            val imm =
-                context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showInputMethodPicker()
-        }
-
-        private fun switchNextInputMethod() {
-            EventBus.getDefault().post(Events.SwitchToNextInputMethod())
-        }
+    override fun onTap(context: Context) {
+        if (!switchesOnDoubleTap(context)) switchNextInputMethod()
     }
 
-    private fun setKeyVisibility() {
-        val userEnableImeSwitch = sharedPreferences.getBoolean(USER_ENABLE_IME_SWITCH, false)
-        this@ImeSwitchFunctionKey.visibility = if (userEnableImeSwitch) {
-            VISIBLE
-        } else {
-            GONE
-        }
+    override fun onDoubleTap(context: Context) {
+        if (switchesOnDoubleTap(context)) switchNextInputMethod()
+    }
+
+    override fun onLongPress(context: Context) {
+        performVibration(context, Vibratable.VibrationStrength.STRONG)
+        val imm = context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showInputMethodPicker()
+    }
+
+    private fun switchesOnDoubleTap(context: Context): Boolean =
+        context.appSharedPreferences.getBoolean(USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, false)
+
+    private fun switchNextInputMethod() {
+        EventBus.getDefault().post(Events.SwitchToNextInputMethod())
     }
 }

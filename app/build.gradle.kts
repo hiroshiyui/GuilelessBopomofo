@@ -36,7 +36,6 @@ android {
     buildFeatures {
         buildConfig = true
         compose = true
-        viewBinding = true
     }
 
     buildTypes {
@@ -231,18 +230,13 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.lifecycle.runtime.compose)
-    implementation(libs.appcompat)
-    implementation(libs.appcompat.resources)
-    implementation(libs.constraintlayout)
     implementation(libs.core.ktx)
     implementation(libs.eventbus)
-    implementation(libs.flexbox.layout)
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.material)
-    implementation(libs.preference.ktx)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
 }

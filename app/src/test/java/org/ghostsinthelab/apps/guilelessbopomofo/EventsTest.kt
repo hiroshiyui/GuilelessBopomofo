@@ -21,14 +21,12 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.mockito.Mockito.mock
 
 class EventsTest {
 
@@ -57,10 +55,9 @@ class EventsTest {
     }
 
     @Test
-    fun printingKeyDown_holdsCharacterKey() {
-        val mockKey = mock(CharacterKey::class.java)
-        val event = Events.PrintingKeyDown(mockKey)
-        assertEquals(mockKey, event.characterKey)
+    fun printingKeyDown_holdsKeyCodeString() {
+        val event = Events.PrintingKeyDown("KEYCODE_A")
+        assertEquals("KEYCODE_A", event.keyCodeString)
     }
 
     @Test

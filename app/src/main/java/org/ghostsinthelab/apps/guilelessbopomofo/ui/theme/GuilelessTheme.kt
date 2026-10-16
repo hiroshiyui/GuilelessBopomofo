@@ -88,26 +88,40 @@ private fun wineColorScheme(): ColorScheme {
 
 /** Sizes and type that the XML styles used to carry. */
 object GuilelessDimens {
-    val KeyCornerRadius = 8.dp
-    val KeyShape = RoundedCornerShape(KeyCornerRadius)
+    // A key's slot is KeyMinHeightDefault (or the user's key height) tall; the raised face
+    // sits inside it, inset as MaterialButton insets its background.
+    val KeyShape = RoundedCornerShape(6.dp)
     val KeyElevation = 1.dp
     val KeyMinHeightDefault = 52.dp
-    val KeyButtonMinSize = 48.dp
-    val KeyboardPanelPadding = 4.dp
-    val KeySpacing = 2.dp
+    val KeyHorizontalInset = 2.dp
+    val KeyVerticalInset = 6.dp
+    val TextKeyMinHeight = 48.dp
+    val TextKeyHorizontalPadding = 16.dp
+    val KeyboardPanelVerticalPadding = 4.dp
     val ButtonCornerRadius = 16.dp
 
-    val CandidateMinSize = 48.dp
+    val CandidateGridRows = 4
+    val CandidateGridRowHeight = 55.dp
+    val CandidateMinHeight = 48.dp
+    val CandidateHorizontalInset = 4.dp
+    val CandidateHorizontalPadding = 24.dp
     val CandidateTextSize = 24.sp
     val PagedCandidateTextSize = 20.sp
     val SelectionKeyTextSize = 12.sp
 
     val SuggestionStripHeight = 52.dp
-    val SuggestionMinHeight = 40.dp
+    val SuggestionStripPadding = 4.dp
+    val SuggestionMinWidth = 72.dp
+    val SuggestionHorizontalPadding = 16.dp
+    val SuggestionMargin = 2.dp
     val SuggestionTextSize = 18.sp
 
     val BufferElevation = 4.dp
     val BufferTextSize = 26.sp
+    val BufferLineHeight = 34.sp
+    val BufferMinHeight = 35.dp
+    val PreEditBufferPadding = 12.dp
+    val BopomofoBufferPadding = 2.dp
 }
 
 object GuilelessFonts {

@@ -39,14 +39,7 @@
     <color name="colorGuilelessBopomofoWineThemeBase8">#7C3A39</color>
     <color name="colorGuilelessBopomofoWineThemeBase9">#CE9898</color>
     <color name="colorGuilelessBopomofoWineThemeBase10">#1D343C</color>
-    <!-- color settings -->
-    <color name="colorPreEditBufferTextView">#FFFFFF</color>
-    <color name="colorPreEditBufferTextViewBackground">#2196F3</color>
-    <color name="colorBopomofoBufferTextView">#333333</color>
-    <color name="colorBopomofoBufferTextViewBackground">#00BCD4</color>
-
-    <!-- Bottom navigation selected icon tint. Day value matches the default
-         colorOnSecondaryContainer behavior; values-night overrides it to a
-         light tone so the icon reads on the wine-red indicator pill. -->
+    <!-- Bottom navigation selected icon tint (MainActivity). values-night overrides it to
+         a light tone so the icon reads on the wine-red indicator pill. -->
     <color name="bottomNavIconSelected">@color/colorGuilelessBopomofoMorandiThemeBase4</color>
 </resources>
