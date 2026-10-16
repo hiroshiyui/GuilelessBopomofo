@@ -10,3 +10,4 @@
 
 app/debug/
 app/release/
+.vscode/settings.json
