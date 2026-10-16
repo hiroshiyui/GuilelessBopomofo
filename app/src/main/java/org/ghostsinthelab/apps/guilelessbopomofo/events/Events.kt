@@ -24,6 +24,9 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 
 class Events {
     class CandidateButtonSelected(val candidate: Candidate)
+
+    /** libchewing was given a fresh context, without the settings the input method put on the old one. */
+    class ChewingReconnected
     class CommitTextInChewingCommitBuffer(val text: String)
     class DirectionKeyDown(val direction: DirectionKey)
     class EnterKeyDownWhenBufferIsEmpty

@@ -54,6 +54,8 @@ class KeyboardController(
         private set(value) {
             if (uiState.layout == value) return
             uiState.layout = value
+            // Read lazily from libchewing, the candidates are only good while they show.
+            if (value != Layout.CANDIDATES && value != Layout.SYMBOLS) uiState.candidates = emptyList()
             // what sits around the panel, the suggestion strip say, depends on it too
             EventBus.getDefault().post(Events.KeyboardLayoutSwitched())
         }
@@ -225,7 +227,6 @@ class KeyboardController(
     private fun leaveCandidatesLayout(moveCursorToEnd: Boolean) {
         ChewingBridge.chewing.candClose()
         currentCandidatesList = 0
-        uiState.candidates = emptyList()
         EventBus.getDefault().post(Events.UpdateBufferViews())
         if (moveCursorToEnd) {
             EventBus.getDefault().post(Events.UpdateCursorPositionToEnd())

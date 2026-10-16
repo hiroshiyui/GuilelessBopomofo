@@ -235,6 +235,30 @@ class KeyboardControllerInstrumentedTest {
         ChewingBridge.chewing.cleanBopomofoBuf()
     }
 
+    @Test
+    fun leavingTheCandidates_dropsTheCandidateList() {
+        val keys = arrayOf('x', 'm', '4', 't', '8', '6')
+        for (key in keys) {
+            ChewingBridge.chewing.handleDefault(key)
+        }
+        ChewingBridge.chewing.handleSpace()
+        ChewingBridge.chewing.candOpen()
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            keyboardController.switchToLayout(Layout.CANDIDATES)
+        }
+        assertTrue(uiState.candidates.isNotEmpty())
+
+        ChewingBridge.chewing.candClose()
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            keyboardController.switchToLayout(Layout.MAIN)
+        }
+        assertTrue("candidates read lazily from libchewing must not outlive the window", uiState.candidates.isEmpty())
+
+        // cleanup
+        ChewingBridge.chewing.cleanPreeditBuf()
+        ChewingBridge.chewing.cleanBopomofoBuf()
+    }
+
     // --- Layout round-trips ---
 
     @Test

@@ -307,6 +307,8 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
         super.onDestroy()
         Log.d(logTag, "onDestroy()")
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        // Also forgets the pointer, so the settings screens, sharing this object, never use
+        // the freed context.
         try {
             ChewingBridge.chewing.delete()
         } catch (e: Exception) {
@@ -416,24 +418,40 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
         ChewingBridge.chewing.connect(dataPath)
         Log.d(logTag, "Chewing context ptr: ${ChewingBridge.chewing.context}")
 
-        if (sharedPreferences.getBoolean(USER_ENABLE_SPACE_AS_SELECTION, true)) {
-            ChewingBridge.chewing.setSpaceAsSelection(1)
-        }
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
+        applyChewingSettings()
+    }
 
-        if (sharedPreferences.getBoolean(USER_PHRASE_CHOICE_REARWARD, false)) {
-            ChewingBridge.chewing.setPhraseChoiceRearward(1)
-        }
+    /**
+     * What this input method sets on a libchewing context, from the user's preferences and
+     * its own constants. A context starts without any of it.
+     */
+    private fun applyChewingSettings() {
+        ChewingBridge.chewing.setSpaceAsSelection(
+            if (sharedPreferences.getBoolean(USER_ENABLE_SPACE_AS_SELECTION, true)) 1 else 0
+        )
+        ChewingBridge.chewing.setPhraseChoiceRearward(
+            if (sharedPreferences.getBoolean(USER_PHRASE_CHOICE_REARWARD, false)) 1 else 0
+        )
 
         // set conversion engine (traditional, fuzzy or default (chewing))
         applyConversionEngine()
 
-        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         ChewingBridge.chewing.setCandPerPage(CANDIDATES_PER_PAGE)
         ChewingBridge.chewing.configSetInt("chewing.sort_candidates_by_frequency", 1)
 
         applySelectionKeys(
             sharedPreferences.getString(USER_CANDIDATE_SELECTION_KEYS_OPTION, SelectionKeys.NUMBER_ROW.set)
         )
+    }
+
+    // The user phrase manager flushes libchewing by swapping in a fresh context, which knows
+    // none of the settings above; neither does it know the keyboard type the layout set.
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onChewingReconnected(event: Events.ChewingReconnected) {
+        Log.d(logTag, event::class.simpleName ?: "Event")
+        applyChewingSettings()
+        returnToMainLayout()
     }
 
     /**
@@ -648,14 +666,23 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onExitKeyboardSubLayouts(event: Events.ExitKeyboardSubLayouts) {
         Log.d(logTag, event::class.simpleName ?: "Event")
-        keyboardController.apply {
-            if (currentLayout in SUB_LAYOUTS) {
-                ChewingBridge.chewing.candClose()
-                // reset last cursor position
-                lastChewingCursor = 0
-                switchToLayout(Layout.MAIN)
-            }
+        if (keyboardController.currentLayout in SUB_LAYOUTS) {
+            returnToMainLayout()
         }
+    }
+
+    /**
+     * Back to the main keyboard, from wherever the panel is. Leaving the candidates or the
+     * symbols closes libchewing's candidate window too, or the next selection key would still
+     * pick from it, out of sight behind the keyboard.
+     */
+    private fun returnToMainLayout() {
+        if (keyboardController.currentLayout in SUB_LAYOUTS) {
+            ChewingBridge.chewing.candClose()
+            // reset last cursor position
+            keyboardController.lastChewingCursor = 0
+        }
+        keyboardController.switchToLayout(Layout.MAIN)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -788,7 +815,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
         if (isInputViewShown) {
             Log.d(logTag, "onConfigurationChanged(): refresh the input view.")
             // toggle main layout automatically between physical keyboard being connected and disconnected
-            keyboardController.switchToLayout(Layout.MAIN)
+            returnToMainLayout()
             // there will be a short (time) window that InputMethod.hideSoftInput() will be called when user turn own physical keyboard on/off,
             // so have to call showWindow() here to make the soft input visible:
             showWindow(true)
@@ -812,7 +839,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
             USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH,
                 -> {
                 // The keyboards are built from these, so switch again to pick them up.
-                keyboardController.switchToLayout(Layout.MAIN)
+                returnToMainLayout()
             }
 
             USER_ENABLE_SPACE_AS_SELECTION -> {

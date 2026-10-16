@@ -78,10 +78,19 @@ object ChewingUtil {
      */
     private inline fun reconnect(context: Context, whileDisconnected: (File) -> Unit = {}) {
         val dataPath = context.applicationInfo.dataDir
+        val wasConnected = ChewingBridge.chewing.context != 0L
+        // The input method may be in the middle of typing: keep its modes across the swap.
+        val chiEngMode = if (wasConnected) ChewingBridge.chewing.getChiEngMode() else ChiEngMode.CHINESE.mode
+        val shapeMode = if (wasConnected) ChewingBridge.chewing.getShapeMode() else ShapeMode.HALF.mode
+
         ChewingBridge.chewing.delete()
-        ChewingBridge.chewing.context = 0
         whileDisconnected(File(dataPath))
         ChewingBridge.chewing.connect(dataPath)
+
+        ChewingBridge.chewing.setChiEngMode(chiEngMode)
+        ChewingBridge.chewing.setShapeMode(shapeMode)
+        // The rest of its settings the input method, if it is running, puts back itself.
+        EventBus.getDefault().post(Events.ChewingReconnected())
     }
 
     fun setupChewingData(context: Context, dataPath: String) {

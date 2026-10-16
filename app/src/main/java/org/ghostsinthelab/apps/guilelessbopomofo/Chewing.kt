@@ -80,7 +80,9 @@ class Chewing {
     external fun convKBStr2Num(keyboardString: String): Int
     external fun cursorCurrent(chewingCtx: Long = context): Int
     // delete(): destroys the ChewingContext (wraps chewing_delete)
-    external fun delete(chewingCtx: Long = context)
+    // The JNI entry point is still Chewing.delete; Kotlin callers go through delete() below.
+    @JvmName("delete")
+    private external fun nativeDelete(chewingCtx: Long)
     // free(): frees individual resources returned by libchewing (wraps chewing_free)
     external fun free(resourcePtr: Long)
     external fun getCandPerPage(chewingCtx: Long = context): Int
@@ -120,8 +122,23 @@ class Chewing {
     external fun userphraseLookup(phrase: String, bopomofo: String, chewingCtx: Long = context): Int
     external fun version(): String
 
+    /**
+     * Opens a context on the data in [dataPath], first handing back any context still open,
+     * which would otherwise be leaked.
+     */
     fun connect(dataPath: String): Long {
+        delete()
         context = chewingNew(dataPath)
         return context
+    }
+
+    /**
+     * Hands the context back to libchewing, and forgets it: the pointer is freed native
+     * memory from here on, and [context] being 0 is what everyone else checks before using it.
+     */
+    fun delete() {
+        if (context == 0L) return
+        nativeDelete(context)
+        context = 0
     }
 }
