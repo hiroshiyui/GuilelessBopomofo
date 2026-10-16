@@ -40,8 +40,19 @@ class EnterKeyIntentTest {
     }
 
     @Test
-    fun otherModifiers_areNotShift() {
-        val metaState = KeyEvent.META_CTRL_ON or KeyEvent.META_ALT_ON or KeyEvent.META_SYM_ON
+    fun alt_asksForALineBreak() {
+        listOf(KeyEvent.META_ALT_ON, KeyEvent.META_ALT_LEFT_ON, KeyEvent.META_ALT_RIGHT_ON).forEach { metaState ->
+            assertEquals(
+                "meta state $metaState should ask for a line break",
+                EnterKeyIntent.LINE_BREAK,
+                EnterKeyIntent.forMetaState(metaState)
+            )
+        }
+    }
+
+    @Test
+    fun otherModifiers_areNotShiftOrAlt() {
+        val metaState = KeyEvent.META_CTRL_ON or KeyEvent.META_SYM_ON or KeyEvent.META_META_ON
 
         assertEquals(EnterKeyIntent.EDITOR_ACTION, EnterKeyIntent.forMetaState(metaState))
     }

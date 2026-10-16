@@ -41,6 +41,7 @@ Several common hotkeys:
   * <kbd>Left Shift</kbd> + <kbd>Space</kbd>: Switch between Bopomofo and Alphanumeric input modes.
   * <kbd>Alt</kbd> + <kbd>Space</kbd>: Switch between full-width and half-width character input modes.
   * <kbd>Alt</kbd> + <kbd>I</kbd>: Switch to other input methods.
+  * <kbd>Shift</kbd> + <kbd>Enter</kbd> or <kbd>Alt</kbd> + <kbd>Enter</kbd>: Insert a line break, even where <kbd>Enter</kbd> would send or submit the text field (once the Bopomofo buffer is empty).
   * Long press <kbd>Right Shift</kbd>: Open the common punctuation candidate list. Use <kbd>←</kbd><kbd>→</kbd> arrow keys to switch pages.
   * The <kbd>`</kbd> key (top-left of the keyboard): Open the symbol candidate list for various categories. Use <kbd>←</kbd><kbd>→</kbd> arrow keys to switch pages.
 
@@ -48,6 +49,7 @@ Several common hotkeys:
   * <kbd>左 Shift</kbd> + <kbd>空白鍵</kbd>：切換注音與英數字輸入模式
   * <kbd>Alt</kbd> + <kbd>空白鍵</kbd>：切換全形與半形
   * <kbd>Alt</kbd> + <kbd>I</kbd>：切換其他輸入法
+  * <kbd>Shift</kbd> + <kbd>Enter</kbd> 或 <kbd>Alt</kbd> + <kbd>Enter</kbd>：換行，即使該文字欄位的 <kbd>Enter</kbd> 是送出或提交（注音緩衝區為空時）
   * 長按 <kbd>右 Shift</kbd>：開啟常用標點符號候選清單，按 <kbd>←</kbd><kbd>→</kbd> 鍵換頁
   * 鍵盤左上方的 <kbd>`</kbd> 鍵：開啟各種類別的符號候選清單，按 <kbd>←</kbd><kbd>→</kbd> 鍵換頁
 
