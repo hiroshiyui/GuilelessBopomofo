@@ -189,4 +189,13 @@ class UserPhraseCsvTest {
         assertEquals(UserPhraseCsv.ParseResult.UnreadableFile, UserPhraseCsv.parse(endless))
         assertTrue("read $served characters", served < 2_000_000)
     }
+
+    @Test
+    fun aByteOrderMarkBeforeTheHeader_isAccepted() {
+        val csv = "\uFEFF" + UserPhraseCsv.format(listOf(UserPhrase("測試", "ㄘㄜˋ ㄕˋ")))
+        assertEquals(
+            UserPhraseCsv.ParseResult.Success(listOf(UserPhrase("測試", "ㄘㄜˋ ㄕˋ"))),
+            UserPhraseCsv.parse(java.io.StringReader(csv)),
+        )
+    }
 }

@@ -64,7 +64,7 @@
     <string name="tips_using_physical_keyboard">物理キーボードを使用する場合：<b>左 Shift</b> + <b>スペースバー</b> を押すと、注音と英数字の入力モードが切り替わります。<b>Alt</b> + <b>I</b> を押すと、他の入力方法を選択して切り替えることができます。<b>Alt</b> + <b>Space</b> を押すと、全角と半角が切り替わります。</string>
     <string name="physical_selection_keys">物理的な候補選択キー</string>
     <string name="key_button_height_label">キーの高さを調整する</string>
-    <string name="key_button_height_description">キーの高さを調整する（デフォルトの高さ：52dp）</string>
+    <string name="key_button_height_description">キーの高さを調整する（デフォルトの高さ：%1$ddp）</string>
     <string name="switch_display_hsu_qwerty_layout">許氏配列使用時にQWERTYキーキャップを表示しますか？</string>
     <string name="switch_display_eten26_qwerty_layout">倚天26キー配列使用時にQWERTYキーキャップを表示しますか？</string>
     <string name="user_interface_settings">UI設定</string>
@@ -118,6 +118,8 @@
     <string name="bopomofo_keyboard_layout_workman">Workman配列</string>
     <string name="user_phrase_manager_title">ユーザー辞書管理</string>
     <string name="no_user_phrases">ユーザーフレーズがありません</string>
+    <string name="search_user_phrases_hint">フレーズまたは注音を検索</string>
+    <string name="search_user_phrases_no_results">一致するフレーズが見つかりません</string>
     <string name="add_user_phrase">追加</string>
     <string name="delete_user_phrase">削除</string>
     <string name="delete_user_phrase_title">ユーザーフレーズを削除</string>

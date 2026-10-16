@@ -41,12 +41,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerInputChange
@@ -109,6 +113,10 @@ class EngineeringModeActivity : ComponentActivity() {
     }
 }
 
+private val FirstFieldSpacing = 32.dp
+private val FieldSpacing = 16.dp
+private val StatusSpacing = 24.dp
+private val StatusLabelEndPadding = 8.dp
 private val ScreenHorizontalPadding = 16.dp
 private val StatusTextSize = 16.sp
 
@@ -119,6 +127,10 @@ private fun EngineeringModeScreen(statuses: List<Pair<String, String>>, onTestFi
     // Long pressing either test field is a shortcut to the IME picker, so that one can
     // switch keyboards without leaving this screen.
     val longPressToPickIme = Modifier.onLongPressObserved(onTestFieldLongPress)
+    // Focus the first field on entry, as the old EditText was, so the keyboard comes up
+    // (the manifest asks for stateVisible) ready to be tried.
+    val firstFieldFocus = remember { FocusRequester() }
+    LaunchedEffect(Unit) { firstFieldFocus.requestFocus() }
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Column(
@@ -131,8 +143,9 @@ private fun EngineeringModeScreen(statuses: List<Pair<String, String>>, onTestFi
                 onValueChange = { testText = it },
                 placeholder = { Text(stringResource(R.string.hintEditTextTestTextInput)) },
                 modifier = longPressToPickIme
+                    .focusRequester(firstFieldFocus)
                     .fillMaxWidth()
-                    .padding(top = 32.dp),
+                    .padding(top = FirstFieldSpacing),
             )
             TextField(
                 value = testNumber,
@@ -142,20 +155,20 @@ private fun EngineeringModeScreen(statuses: List<Pair<String, String>>, onTestFi
                 singleLine = true,
                 modifier = longPressToPickIme
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = FieldSpacing),
             )
             statuses.forEach { (label, value) ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 24.dp),
+                        .padding(top = StatusSpacing),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = label,
                         modifier = Modifier
                             .weight(1f)
-                            .padding(end = 8.dp),
+                            .padding(end = StatusLabelEndPadding),
                         fontSize = StatusTextSize,
                         fontWeight = FontWeight.Bold,
                     )

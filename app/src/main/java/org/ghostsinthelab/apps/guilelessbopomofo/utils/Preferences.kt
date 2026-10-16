@@ -57,7 +57,8 @@ private fun <T> rememberPreference(
     read: SharedPreferences.() -> T,
     write: SharedPreferences.Editor.(T) -> Unit,
 ): MutableState<T> {
-    val sharedPreferences = LocalContext.current.appSharedPreferences
+    val context = LocalContext.current
+    val sharedPreferences = remember(context) { context.appSharedPreferences }
     val state = remember(key) {
         PreferenceState(mutableStateOf(sharedPreferences.read())) { value ->
             sharedPreferences.edit { write(value) }

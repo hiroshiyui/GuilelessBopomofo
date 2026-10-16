@@ -37,6 +37,7 @@ object UserPhraseCsv {
 
     private const val FIELDS_PER_ROW = 2
     private const val READ_CHUNK_SIZE = 8 * 1024
+    private const val BYTE_ORDER_MARK = "\uFEFF"
 
     /** What came out of a file the user asked us to restore from. */
     sealed interface ParseResult {
@@ -85,7 +86,8 @@ object UserPhraseCsv {
             return ParseResult.UnreadableFile
         }
 
-        if (lines.first().trim() != HEADER) {
+        // Spreadsheet apps such as Excel start a UTF-8 file with a byte order mark.
+        if (lines.first().removePrefix(BYTE_ORDER_MARK).trim() != HEADER) {
             return ParseResult.UnexpectedHeader
         }
 

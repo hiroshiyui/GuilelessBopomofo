@@ -18,30 +18,14 @@
 
 <resources>
 
-    <!-- Only the window theme is left here; everything drawn inside the window is themed by
-         GuilelessTheme (ui/theme/GuilelessTheme.kt), which reads the same palette. -->
-    <style name="AppBaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- primary -->
-        <item name="colorPrimary">@color/colorGuilelessBopomofoMorandiThemeBase6</item>
-        <item name="colorOnPrimary">@color/colorGuilelessBopomofoMorandiOnPrimary</item>
-        <item name="colorPrimaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase2</item>
-        <!-- secondary -->
-        <item name="colorSecondary">@color/colorGuilelessBopomofoMorandiThemeBase7</item>
-        <item name="colorOnSecondary">@color/colorGuilelessBopomofoMorandiThemeBase10</item>
-        <item name="colorSecondaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase1</item>
-        <item name="colorOnSecondaryContainer">@color/colorGuilelessBopomofoMorandiOnSecondaryContainer</item>
-        <!-- tertiary -->
-        <item name="colorTertiary">@color/colorGuilelessBopomofoMorandiThemeBase3</item>
-        <item name="colorOnTertiary">@color/colorGuilelessBopomofoMorandiThemeBase10</item>
-        <item name="colorTertiaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase5</item>
-        <item name="colorOnTertiaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase9</item>
-        <!-- surfaces: the window before Compose draws, matching GuilelessTheme -->
-        <item name="colorSurface">@color/colorGuilelessBopomofoMorandiSurface</item>
-        <item name="colorOnSurface">@color/colorGuilelessBopomofoMorandiThemeBase10</item>
+    <!-- The window theme: what shows before Compose draws, on launch and between screens.
+         Everything inside the window is themed by GuilelessTheme (ui/theme/GuilelessTheme.kt),
+         which reads the same palette; the platform's own Material theme is parent enough. -->
+    <style name="AppBaseTheme" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/colorGuilelessBopomofoMorandiThemeBase6</item>
+        <item name="android:colorAccent">@color/colorGuilelessBopomofoMorandiThemeBase6</item>
         <item name="android:colorBackground">@color/colorGuilelessBopomofoMorandiSurface</item>
-        <item name="colorOnBackground">@color/colorGuilelessBopomofoMorandiThemeBase10</item>
         <item name="android:windowBackground">@color/colorGuilelessBopomofoMorandiSurface</item>
-        <!-- misc -->
         <item name="android:windowLightStatusBar">true</item>
     </style>
 

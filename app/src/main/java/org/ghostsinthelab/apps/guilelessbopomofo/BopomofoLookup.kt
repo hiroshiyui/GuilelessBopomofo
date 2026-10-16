@@ -27,6 +27,8 @@ import android.util.Log
  */
 object BopomofoLookup {
     private const val logTag = "BopomofoLookup"
+    // Loaded off the main thread, read on it.
+    @Volatile
     private var charToBopomofoMap: Map<Char, List<String>>? = null
 
     fun init(context: Context) {

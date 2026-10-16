@@ -11,7 +11,6 @@ kotlinVersion = "2.4.10"
 kotlinxCoroutinesAndroidVersion = "1.11.0"
 leakcanaryAndroidVersion = "2.14"
 lifecycleVersion = "2.11.0"
-materialVersion = "1.14.0"
 rulesVersion = "1.7.0"
 runnerVersion = "1.7.0"
 uiautomatorVersion = "2.4.0"
@@ -37,7 +36,6 @@ junit = { module = "junit:junit", version.ref = "junitVersion" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroidVersion" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesAndroidVersion" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroidVersion" }
-material = { module = "com.google.android.material:material", version.ref = "materialVersion" }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }

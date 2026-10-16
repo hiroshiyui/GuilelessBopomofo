@@ -18,6 +18,10 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.ui.settings
 
+import android.graphics.Typeface
+import android.text.Spanned
+import android.text.style.StyleSpan
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,13 +50,19 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -68,6 +78,7 @@ private val DescriptionBottomMargin = 16.dp
 private val WidgetTopMargin = 8.dp
 private val CurrentValueShape = RoundedCornerShape(4.dp)
 private val CurrentValueHorizontalPadding = 8.dp
+private val RadioLabelSpacing = 8.dp
 
 /** The scrolling column each settings tab sits in (was a ScrollView + padded LinearLayout). */
 @Composable
@@ -79,6 +90,23 @@ fun SettingsScreen(modifier: Modifier = Modifier, content: @Composable ColumnSco
             .padding(ScreenPadding),
         content = content,
     )
+}
+
+/**
+ * A string resource with its bold markup kept, which [stringResource] would drop: the
+ * `<b>` spans become bold [SpanStyle]s.
+ */
+@Composable
+@ReadOnlyComposable
+fun boldMarkupStringResource(@StringRes id: Int): AnnotatedString {
+    val text = LocalResources.current.getText(id)
+    if (text !is Spanned) return AnnotatedString(text.toString())
+    return buildAnnotatedString {
+        append(text.toString())
+        text.getSpans(0, text.length, StyleSpan::class.java)
+            .filter { it.style and Typeface.BOLD != 0 }
+            .forEach { addStyle(SpanStyle(fontWeight = FontWeight.Bold), text.getSpanStart(it), text.getSpanEnd(it)) }
+    }
 }
 
 /** `Settings.PrimaryHeader` */
@@ -177,7 +205,7 @@ fun <T> RadioGroupPreference(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 RadioButton(selected = value == selected, onClick = null)
-                Text(text = label, modifier = Modifier.padding(start = 8.dp))
+                Text(text = label, modifier = Modifier.padding(start = RadioLabelSpacing))
             }
         }
     }

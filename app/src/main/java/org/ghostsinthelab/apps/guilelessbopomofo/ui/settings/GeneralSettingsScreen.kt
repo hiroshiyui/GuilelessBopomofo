@@ -56,6 +56,8 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberBooleanPreference
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberIntPreference
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberStringPreference
 
+private val ImeSettingsButtonSpacing = 8.dp
+
 // In the order R.array.on_screen_bopomofo_keyboard_layouts names them.
 private val SOFT_KEYBOARD_LAYOUTS: List<String> = listOf(
     BopomofoSoftKeyboards.KB_DEFAULT.layout,
@@ -98,7 +100,7 @@ fun GeneralSettingsScreen(modifier: Modifier = Modifier) {
         SettingsButton(
             text = stringResource(R.string.launch_input_method_system_settings),
             onClick = { imeSystemSettingsLauncher.launch(imeSystemSettingsIntent) },
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = ImeSettingsButtonSpacing),
         )
 
         SettingsLabel(stringResource(R.string.bopomofo_keyboard_layout))

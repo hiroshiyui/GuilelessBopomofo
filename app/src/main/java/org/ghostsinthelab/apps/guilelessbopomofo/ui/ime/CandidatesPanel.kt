@@ -60,6 +60,11 @@ const val CANDIDATE_TEST_TAG = "candidate"
 
 // What AppCompat's light theme draws text in, which the paged candidates used to inherit.
 private val PagedCandidateTextLight = Color(0xDE000000)
+private val SelectionKeyStartMargin = 4.dp
+private val SelectionKeyEndMargin = 2.dp
+private val SelectionKeyHorizontalPadding = 4.dp
+private val PagedCandidateEndPadding = 4.dp
+private val BackKeyIconSpacing = 4.dp
 private val SelectionKeyShape = RoundedCornerShape(4.dp)
 
 /** The candidates to choose from, and a key back to the keyboard. */
@@ -147,16 +152,16 @@ private fun PagedCandidates(candidates: List<Candidate>) {
                 Text(
                     text = candidate.selectionKey.toString(),
                     modifier = Modifier
-                        .padding(start = 4.dp, end = 2.dp)
+                        .padding(start = SelectionKeyStartMargin, end = SelectionKeyEndMargin)
                         .background(Color.Black, SelectionKeyShape)
-                        .padding(horizontal = 4.dp),
+                        .padding(horizontal = SelectionKeyHorizontalPadding),
                     color = Color.White,
                     fontFamily = GuilelessFonts.SelectionKey,
                     fontSize = GuilelessDimens.SelectionKeyTextSize,
                 )
                 Text(
                     text = candidate.candidateString,
-                    modifier = Modifier.padding(end = 4.dp),
+                    modifier = Modifier.padding(end = PagedCandidateEndPadding),
                     color = textColor,
                     fontFamily = GuilelessFonts.Candidate,
                     fontSize = GuilelessDimens.PagedCandidateTextSize,
@@ -176,7 +181,7 @@ private fun BackToMainKey() {
         Row(
             modifier = Modifier.padding(horizontal = GuilelessDimens.TextKeyHorizontalPadding),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(BackKeyIconSpacing),
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_keyboard_24),

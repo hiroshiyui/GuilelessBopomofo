@@ -64,7 +64,7 @@
     <string name="tips_using_physical_keyboard">While using physical keyboard, toggle modes between Bopomofo &amp; English by pressing <b>Left Shift</b> + <b>Space</b>; Switch to other input methods by pressing <b>Left Alt</b> + <b>I</b>; To toggle width mode, press <b>Alt</b> + <b>Space</b>.</string>
     <string name="physical_selection_keys">Physical candidate selection keys</string>
     <string name="key_button_height_label">Adjust height of key buttons</string>
-    <string name="key_button_height_description">Adjust height of key buttons. (Default value: 52dp)</string>
+    <string name="key_button_height_description">Adjust height of key buttons. (Default value: %1$ddp)</string>
     <string name="switch_display_hsu_qwerty_layout">Enable QWERTY keycaps for Hsu layout?</string>
     <string name="switch_display_eten26_qwerty_layout">Enable QWERTY keycaps for E-TEN 26 keys layout?</string>
     <string name="user_interface_settings">User interface settings</string>

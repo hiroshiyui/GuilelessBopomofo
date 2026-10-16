@@ -36,11 +36,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -76,6 +71,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.UserPhraseCsv
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
@@ -84,6 +80,21 @@ private const val BACKUP_FILE_NAME = "guileless_bopomofo_user_phrases.csv"
 private const val BACKUP_MIME_TYPE = "text/csv"
 private const val RESTORE_MIME_TYPE = "text/*"
 private val ListBottomPadding = 72.dp
+private val ActionBarHorizontalPadding = 8.dp
+private val ActionBarVerticalPadding = 4.dp
+private val ActionButtonSpacing = 8.dp
+private val SearchFieldHorizontalPadding = 8.dp
+private val SearchFieldVerticalPadding = 4.dp
+private val EmptyStateTextSize = 16.sp
+private val FabMargin = 16.dp
+private val ItemStartPadding = 16.dp
+private val ItemEndPadding = 8.dp
+private val ItemVerticalPadding = 8.dp
+private val PhraseTextSize = 18.sp
+private val BopomofoTextSize = 14.sp
+private val DialogFieldSpacing = 8.dp
+private val DialogHintSpacing = 4.dp
+private val DialogHintTextSize = 12.sp
 
 /** The dialogs this screen can show; only one at a time. */
 private sealed interface UserPhraseDialog {
@@ -147,8 +158,8 @@ fun UserPhraseManagerScreen(modifier: Modifier = Modifier) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+                    .padding(horizontal = ActionBarHorizontalPadding, vertical = ActionBarVerticalPadding),
+                horizontalArrangement = Arrangement.spacedBy(ActionButtonSpacing, Alignment.End),
             ) {
                 SettingsButton(stringResource(R.string.backup_user_phrases), { backupLauncher.launch(BACKUP_FILE_NAME) })
                 SettingsButton(stringResource(R.string.restore_user_phrases), { restoreLauncher.launch(arrayOf(RESTORE_MIME_TYPE)) })
@@ -160,7 +171,7 @@ fun UserPhraseManagerScreen(modifier: Modifier = Modifier) {
                 onValueChange = { query = it },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                    .padding(horizontal = SearchFieldHorizontalPadding, vertical = SearchFieldVerticalPadding),
                 placeholder = { Text(stringResource(R.string.search_user_phrases_hint)) },
                 leadingIcon = { Icon(painterResource(android.R.drawable.ic_menu_search), contentDescription = null) },
                 singleLine = true,
@@ -172,7 +183,7 @@ fun UserPhraseManagerScreen(modifier: Modifier = Modifier) {
                             if (trimmedQuery.isNotEmpty()) R.string.search_user_phrases_no_results else R.string.no_user_phrases
                         ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontSize = 16.sp,
+                        fontSize = EmptyStateTextSize,
                     )
                 } else {
                     LazyColumn(
@@ -190,7 +201,7 @@ fun UserPhraseManagerScreen(modifier: Modifier = Modifier) {
             onClick = { dialog = UserPhraseDialog.AddPhrase },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(16.dp),
+                .padding(FabMargin),
         ) {
             Icon(painterResource(android.R.drawable.ic_input_add), contentDescription = stringResource(R.string.add_user_phrase))
         }
@@ -265,14 +276,14 @@ private fun UserPhraseItem(userPhrase: UserPhrase, onDelete: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
+            .padding(start = ItemStartPadding, end = ItemEndPadding, top = ItemVerticalPadding, bottom = ItemVerticalPadding),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = userPhrase.phrase, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = userPhrase.phrase, fontSize = PhraseTextSize, fontWeight = FontWeight.Bold)
             Text(
                 text = userPhrase.bopomofo,
-                fontSize = 14.sp,
+                fontSize = BopomofoTextSize,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
@@ -302,16 +313,16 @@ private fun ConfirmDialog(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AddUserPhraseDialog(onDismiss: () -> Unit, onAdd: (phrase: String, bopomofo: String) -> Unit) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var phrase by rememberSaveable { mutableStateOf("") }
     var manualBopomofo by rememberSaveable { mutableStateOf("") }
-    // Once analyzed, the dropdown of suggested readings replaces the manual field.
-    var combinations by remember { mutableStateOf(emptyList<String>()) }
-    var chosenBopomofo by remember { mutableStateOf("") }
-    var dropdownExpanded by remember { mutableStateOf(false) }
+    // Once analyzed, the dropdown of suggested readings replaces the manual field; kept, like
+    // the rest, across a rotation. An ArrayList, so that it can be saved.
+    var combinations by rememberSaveable { mutableStateOf(arrayListOf<String>()) }
+    var chosenBopomofo by rememberSaveable { mutableStateOf("") }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -320,7 +331,12 @@ private fun AddUserPhraseDialog(onDismiss: () -> Unit, onAdd: (phrase: String, b
             Column {
                 OutlinedTextField(
                     value = phrase,
-                    onValueChange = { phrase = it },
+                    onValueChange = {
+                        phrase = it
+                        // readings of what the phrase was no longer apply
+                        combinations = arrayListOf()
+                        chosenBopomofo = ""
+                    },
                     label = { Text(stringResource(R.string.user_phrase_input_hint)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
@@ -329,48 +345,30 @@ private fun AddUserPhraseDialog(onDismiss: () -> Unit, onAdd: (phrase: String, b
                     onClick = {
                         val trimmed = phrase.trim()
                         if (trimmed.isEmpty()) return@FilledTonalButton
-                        BopomofoLookup.init(context)
-                        val found = BopomofoLookup.generateCombinations(trimmed)
-                        if (found.isEmpty()) {
-                            context.toast(R.string.analyze_bopomofo_no_results)
-                        } else {
-                            combinations = found
-                            chosenBopomofo = found.first()
+                        scope.launch {
+                            // The first time, this reads the whole word list: not on the main thread.
+                            withContext(Dispatchers.IO) { BopomofoLookup.init(context) }
+                            val found = BopomofoLookup.generateCombinations(trimmed)
+                            if (found.isEmpty()) {
+                                context.toast(R.string.analyze_bopomofo_no_results)
+                            } else {
+                                combinations = ArrayList(found)
+                                chosenBopomofo = found.first()
+                            }
                         }
                     },
-                    modifier = Modifier.padding(top = 8.dp),
+                    modifier = Modifier.padding(top = DialogFieldSpacing),
                 ) {
                     Text(stringResource(R.string.analyze_bopomofo))
                 }
                 if (combinations.isNotEmpty()) {
-                    ExposedDropdownMenuBox(
-                        expanded = dropdownExpanded,
-                        onExpandedChange = { dropdownExpanded = it },
-                        modifier = Modifier.padding(top = 8.dp),
-                    ) {
-                        OutlinedTextField(
-                            value = chosenBopomofo,
-                            onValueChange = {},
-                            readOnly = true,
-                            singleLine = true,
-                            label = { Text(stringResource(R.string.bopomofo_input_hint)) },
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = dropdownExpanded) },
-                            modifier = Modifier
-                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                                .fillMaxWidth(),
-                        )
-                        ExposedDropdownMenu(expanded = dropdownExpanded, onDismissRequest = { dropdownExpanded = false }) {
-                            combinations.forEach { combination ->
-                                DropdownMenuItem(
-                                    text = { Text(combination) },
-                                    onClick = {
-                                        chosenBopomofo = combination
-                                        dropdownExpanded = false
-                                    },
-                                )
-                            }
-                        }
-                    }
+                    DropdownPreference(
+                        entries = combinations,
+                        values = combinations,
+                        selected = chosenBopomofo,
+                        onSelected = { chosenBopomofo = it },
+                        label = stringResource(R.string.bopomofo_input_hint),
+                    )
                 } else {
                     OutlinedTextField(
                         value = manualBopomofo,
@@ -379,14 +377,14 @@ private fun AddUserPhraseDialog(onDismiss: () -> Unit, onAdd: (phrase: String, b
                         singleLine = true,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 8.dp),
+                            .padding(top = DialogFieldSpacing),
                     )
                 }
                 Text(
                     text = stringResource(R.string.analyze_bopomofo_hint),
-                    modifier = Modifier.padding(top = 4.dp),
+                    modifier = Modifier.padding(top = DialogHintSpacing),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = 12.sp,
+                    fontSize = DialogHintTextSize,
                 )
             }
         },
@@ -418,10 +416,11 @@ private fun exportUserPhrases(context: Context, uri: Uri) {
     }
 
     try {
-        context.contentResolver.openOutputStream(uri)?.use { outputStream ->
-            OutputStreamWriter(outputStream, Charsets.UTF_8).use { writer ->
-                writer.write(UserPhraseCsv.format(phrases))
-            }
+        // "wt" truncates a file being written over; some providers leave the old tail with "w".
+        val outputStream = context.contentResolver.openOutputStream(uri, "wt")
+            ?: throw IOException("No stream to write the backup to")
+        OutputStreamWriter(outputStream, Charsets.UTF_8).use { writer ->
+            writer.write(UserPhraseCsv.format(phrases))
         }
         context.toast(context.getString(R.string.backup_success, phrases.size))
     } catch (e: Exception) {

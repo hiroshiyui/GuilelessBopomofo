@@ -39,6 +39,11 @@ import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberStringPreference
 
+private val DropdownSpacing = 8.dp
+private val SelectionKeysSpacing = 16.dp
+private val TipsSpacing = 24.dp
+private val TipsIconSpacing = 8.dp
+
 // In the order R.array.physical_bopomofo_keyboard_layouts names them.
 private val PHYSICAL_KEYBOARD_LAYOUTS: List<String> = listOf(
     BopomofoPhysicalKeyboards.KB_DEFAULT.layout,
@@ -84,14 +89,14 @@ fun PhysicalKeyboardSettingsScreen(modifier: Modifier = Modifier) {
             values = PHYSICAL_KEYBOARD_LAYOUTS,
             selected = physicalKeyboardLayout,
             onSelected = { physicalKeyboardLayout = it },
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = DropdownSpacing),
         )
 
         SettingsLabel(stringResource(R.string.physical_selection_keys))
         var selectionKeys by rememberStringPreference(
             USER_CANDIDATE_SELECTION_KEYS_OPTION, SelectionKeys.NUMBER_ROW.set
         )
-        Column(Modifier.padding(top = 16.dp)) {
+        Column(Modifier.padding(top = SelectionKeysSpacing)) {
             RadioGroupPreference(SELECTION_KEY_OPTIONS, selectionKeys) { selectionKeys = it }
         }
 
@@ -99,9 +104,9 @@ fun PhysicalKeyboardSettingsScreen(modifier: Modifier = Modifier) {
         SettingsDescription(stringResource(R.string.textViewSettingsDescriptionConversionEnginesPhysical))
         ConversionEnginePreference(USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD)
 
-        Row(modifier = Modifier.padding(top = 24.dp)) {
+        Row(modifier = Modifier.padding(top = TipsSpacing)) {
             Image(painter = painterResource(android.R.drawable.ic_menu_info_details), contentDescription = null)
-            Text(stringResource(R.string.tips_using_physical_keyboard), Modifier.padding(start = 8.dp))
+            Text(boldMarkupStringResource(R.string.tips_using_physical_keyboard), Modifier.padding(start = TipsIconSpacing))
         }
     }
 }

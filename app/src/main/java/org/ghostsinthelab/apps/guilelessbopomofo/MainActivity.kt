@@ -156,6 +156,11 @@ private fun SettingsApp(onAppIconClick: () -> Unit) {
     }
 }
 
+private val HeaderTopPadding = 16.dp
+private val HeaderBottomPadding = 8.dp
+private val AppNameSpacing = 4.dp
+private val VersionSpacing = 2.dp
+
 @Composable
 private fun SettingsHeader(onAppIconClick: () -> Unit, modifier: Modifier = Modifier) {
     // A call into libchewing that never answers differently, so ask once.
@@ -163,7 +168,7 @@ private fun SettingsHeader(onAppIconClick: () -> Unit, modifier: Modifier = Modi
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 16.dp, bottom = 8.dp),
+            .padding(top = HeaderTopPadding, bottom = HeaderBottomPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         AppIcon(
@@ -174,12 +179,12 @@ private fun SettingsHeader(onAppIconClick: () -> Unit, modifier: Modifier = Modi
         )
         Text(
             text = stringResource(R.string.app_name),
-            modifier = Modifier.padding(top = 4.dp),
+            modifier = Modifier.padding(top = AppNameSpacing),
             fontWeight = FontWeight.Bold,
         )
         Text(
             text = stringResource(R.string.app_version, BuildConfig.VERSION_NAME, chewingVersion),
-            modifier = Modifier.padding(top = 2.dp),
+            modifier = Modifier.padding(top = VersionSpacing),
         )
     }
 }

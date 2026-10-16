@@ -291,6 +291,9 @@ private fun SuggestionStrip(words: List<String>) {
     }
 }
 
+private val CompactBarSpacing = 8.dp
+private val CompactBarValueSpacing = 2.dp
+
 /**
  * What is left of the keyboard with a physical one attached: which modes are on, centred in
  * the panel as the old KeyboardPanel's gravity had it.
@@ -308,17 +311,17 @@ private fun CompactBar(uiState: ImeUiState, modifier: Modifier = Modifier) {
         )
         Text(
             text = stringResource(R.string.current_mode),
-            modifier = Modifier.padding(start = 8.dp),
+            modifier = Modifier.padding(start = CompactBarSpacing),
             color = LocalGuilelessThemeExtras.current.primaryText,
             fontWeight = FontWeight.Bold,
         )
         SettingsCurrentValue(
             text = stringResource(if (uiState.compactChineseMode) R.string.mode_bopomofo else R.string.mode_alphanumerical),
-            modifier = Modifier.padding(start = 2.dp),
+            modifier = Modifier.padding(start = CompactBarValueSpacing),
         )
         Text(
             text = stringResource(if (uiState.compactFullWidth) R.string.full_width_mode else R.string.half_width_mode),
-            modifier = Modifier.padding(start = 8.dp),
+            modifier = Modifier.padding(start = CompactBarSpacing),
         )
     }
 }
