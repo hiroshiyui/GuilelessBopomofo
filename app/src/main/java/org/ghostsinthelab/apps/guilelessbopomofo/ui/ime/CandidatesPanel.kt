@@ -24,16 +24,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -47,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.R
@@ -77,39 +78,52 @@ fun CandidatesPanel(uiState: ImeUiState, modifier: Modifier = Modifier) {
     }
 }
 
-/** Every candidate, in columns of [GuilelessDimens.CandidateGridRows], scrolling sideways. */
+/**
+ * Every candidate, in columns of [GuilelessDimens.CandidateGridRows], scrolling sideways.
+ * As the RecyclerView grid did, every candidate in a column is as wide as the widest one
+ * in it, so a column of labels of different lengths still lines up.
+ */
 @Composable
 private fun CandidatesGrid(candidates: List<Candidate>) {
-    LazyHorizontalGrid(
-        rows = GridCells.Fixed(GuilelessDimens.CandidateGridRows),
-        state = rememberLazyGridState(),
+    val columns = remember(candidates) { candidates.chunked(GuilelessDimens.CandidateGridRows) }
+    LazyRow(
+        state = rememberLazyListState(),
         modifier = Modifier
             .fillMaxWidth()
             .height(GuilelessDimens.CandidateGridRowHeight * GuilelessDimens.CandidateGridRows),
     ) {
-        items(candidates, key = { it.index }) { candidate ->
-            val virtualKey = remember(candidate) { CandidateButton(candidate) }
-            KeySurface(
-                key = virtualKey,
-                minHeight = GuilelessDimens.CandidateMinHeight,
-                background = MaterialTheme.colorScheme.onSecondaryContainer,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(horizontal = GuilelessDimens.CandidateHorizontalInset),
-                testTag = CANDIDATE_TEST_TAG,
-            ) {
-                Text(
-                    text = candidate.candidateString,
-                    modifier = Modifier
-                        .widthIn(min = GuilelessDimens.CandidateMinHeight)
-                        .padding(horizontal = GuilelessDimens.CandidateHorizontalPadding),
-                    color = MaterialTheme.colorScheme.onSecondary,
-                    fontFamily = GuilelessFonts.Candidate,
-                    fontSize = GuilelessDimens.CandidateTextSize,
-                    maxLines = 1,
-                )
+        items(columns, key = { column -> column.first().index }) { column ->
+            Column(modifier = Modifier.width(IntrinsicSize.Max)) {
+                column.forEach { candidate -> CandidateItem(candidate) }
             }
         }
+    }
+}
+
+@Composable
+private fun CandidateItem(candidate: Candidate) {
+    val virtualKey = remember(candidate) { CandidateButton(candidate) }
+    KeySurface(
+        key = virtualKey,
+        minHeight = GuilelessDimens.CandidateMinHeight,
+        background = MaterialTheme.colorScheme.onSecondaryContainer,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(GuilelessDimens.CandidateGridRowHeight)
+            .padding(horizontal = GuilelessDimens.CandidateHorizontalInset),
+        testTag = CANDIDATE_TEST_TAG,
+    ) {
+        Text(
+            text = candidate.candidateString,
+            modifier = Modifier
+                .widthIn(min = GuilelessDimens.CandidateMinHeight)
+                .padding(horizontal = GuilelessDimens.CandidateHorizontalPadding),
+            color = MaterialTheme.colorScheme.onSecondary,
+            fontFamily = GuilelessFonts.Candidate,
+            fontSize = GuilelessDimens.CandidateTextSize,
+            maxLines = 1,
+            textAlign = TextAlign.Center,
+        )
     }
 }
 
