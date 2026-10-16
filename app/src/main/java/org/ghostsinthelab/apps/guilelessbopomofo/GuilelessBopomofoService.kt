@@ -661,9 +661,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCommitTextInChewingCommitBuffer(event: Events.CommitTextInChewingCommitBuffer) {
         Log.d(logTag, event::class.simpleName ?: "Event")
-        currentInputConnection?.commitText(
-            ChewingBridge.chewing.commitString(), 1
-        )
+        currentInputConnection?.commitText(event.text, 1)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

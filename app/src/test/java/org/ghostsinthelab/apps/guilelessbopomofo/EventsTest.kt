@@ -110,9 +110,9 @@ class EventsTest {
     // --- Events with no fields ---
 
     @Test
-    fun commitTextInChewingCommitBuffer_canBeInstantiated() {
-        val event = Events.CommitTextInChewingCommitBuffer()
-        assertNotNull(event)
+    fun commitTextInChewingCommitBuffer_holdsText() {
+        val event = Events.CommitTextInChewingCommitBuffer("測試")
+        assertEquals("測試", event.text)
     }
 
     @Test

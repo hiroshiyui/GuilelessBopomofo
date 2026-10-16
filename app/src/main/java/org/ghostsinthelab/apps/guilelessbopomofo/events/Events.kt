@@ -24,7 +24,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 
 class Events {
     class CandidateButtonSelected(val candidate: Candidate)
-    class CommitTextInChewingCommitBuffer
+    class CommitTextInChewingCommitBuffer(val text: String)
     class DirectionKeyDown(val direction: DirectionKey)
     class EnterKeyDownWhenBufferIsEmpty
     class KeyboardLayoutSwitched

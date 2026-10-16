@@ -101,7 +101,10 @@ class PreEditBuffer(private val uiState: ImeUiState) {
         // 會把 pre-edit buffer 開頭送到 commit buffer，
         // 所以要先丟出來：
         if (ChewingBridge.chewing.commitCheck() == 1) {
-            EventBus.getDefault().post(Events.CommitTextInChewingCommitBuffer())
+            // Take the text along with the event: posted from within another event's handler,
+            // it is only delivered after that handler returns, and ack() below empties the
+            // commit buffer long before then.
+            EventBus.getDefault().post(Events.CommitTextInChewingCommitBuffer(ChewingBridge.chewing.commitString()))
             // 讓 chewing.commitCheck() 歸 0 (also cleans the commit buffer)
             ChewingBridge.chewing.ack()
         }
