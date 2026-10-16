@@ -87,7 +87,7 @@ fun GeneralSettingsScreen(modifier: Modifier = Modifier) {
     SettingsScreen(modifier) {
         SettingsPrimaryHeader(stringResource(R.string.general_settings_label))
 
-        SettingsLabel(stringResource(R.string.guileless_bopomofo_inputservice_status), Modifier.padding(top = 24.dp))
+        SettingsLabel(stringResource(R.string.guileless_bopomofo_inputservice_status))
         SettingsDescription(stringResource(R.string.guileless_bopomofo_service_status_description))
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(stringResource(R.string.guileless_bopomofo_service_status), Modifier.weight(1f))

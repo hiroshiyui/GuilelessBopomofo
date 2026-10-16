@@ -91,12 +91,12 @@ fun SettingsPrimaryHeader(text: String) {
     )
 }
 
-/** `Settings.Label` */
+/** `Settings.Label`: the title of a settings section, the same space above every one. */
 @Composable
-fun SettingsLabel(text: String, modifier: Modifier = Modifier) {
+fun SettingsLabel(text: String) {
     Text(
         text = text,
-        modifier = modifier.padding(top = LabelTopMargin),
+        modifier = Modifier.padding(top = LabelTopMargin),
         style = MaterialTheme.typography.headlineSmall,
         fontWeight = FontWeight.Bold,
         color = LocalGuilelessThemeExtras.current.secondaryText,

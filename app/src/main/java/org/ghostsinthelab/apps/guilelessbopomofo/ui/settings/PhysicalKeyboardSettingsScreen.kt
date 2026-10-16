@@ -95,7 +95,7 @@ fun PhysicalKeyboardSettingsScreen(modifier: Modifier = Modifier) {
             RadioGroupPreference(SELECTION_KEY_OPTIONS, selectionKeys) { selectionKeys = it }
         }
 
-        SettingsLabel(stringResource(R.string.textViewSettingsConversionEnginesPhysical), Modifier.padding(top = 24.dp))
+        SettingsLabel(stringResource(R.string.textViewSettingsConversionEnginesPhysical))
         SettingsDescription(stringResource(R.string.textViewSettingsDescriptionConversionEnginesPhysical))
         ConversionEnginePreference(USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD)
 
