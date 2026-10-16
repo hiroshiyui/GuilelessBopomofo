@@ -35,7 +35,6 @@
     <string name="service_is_enabled">有効</string>
     <string name="service_is_disabled">未有効</string>
     <string name="launch_input_method_system_settings">キーボード管理システム設定を開く</string>
-    <string name="applcation_version_label">アプリケーションのバージョン</string>
     <string name="fullscreen_mode_setting_title">全画面編集を使用する</string>
     <string name="fullscreen_mode_setting_description">キーボードを全画面で動作させるか</string>
     <string name="fullscreen_when_in_landscape_setting_switch">画面が横向きの場合、全画面モードを有効にしますか？</string>
@@ -102,7 +101,6 @@
     <string name="capsLockIsOff">Caps Lockキーがオフになっています</string>
     <string name="hintEditTextTestNumberInput">Test digits input here</string>
     <string name="switch_setting_enable_ime_switch">入力ソース切り替えボタンを表示しますか？</string>
-    <string name="textViewCurrentWidthModeValue">(width mode)</string>
     <string name="physical_bopomofo_keyboard_layout">物理キーボード配列</string>
     <string name="bopomofo_keyboard_layout_ibm">IBM式配列</string>
     <string name="bopomofo_keyboard_layout_gin_yieh">精業式配列</string>

@@ -59,6 +59,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -93,6 +94,7 @@ private sealed interface UserPhraseDialog {
 @Composable
 fun UserPhraseManagerScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     var allPhrases by remember { mutableStateOf(emptyList<UserPhrase>()) }
     var query by rememberSaveable { mutableStateOf("") }
     var dialog by remember { mutableStateOf<UserPhraseDialog?>(null) }
@@ -211,7 +213,7 @@ fun UserPhraseManagerScreen(modifier: Modifier = Modifier) {
             val added = current.phrases.count { ChewingBridge.chewing.userphraseAdd(it.phrase, it.bopomofo) > 0 }
             ChewingUtil.flushContext(context)
             reload()
-            context.toast(context.getString(R.string.restore_success, added))
+            context.toast(resources.getString(R.string.restore_success, added))
         }
 
         // Asked twice on purpose: there is no undo for this one.

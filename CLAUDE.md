@@ -40,9 +40,11 @@ git clone --recursive https://github.com/hiroshiyui/GuilelessBopomofo.git
 
 - **`Chewing.kt`** - JNI wrapper class with `external` function declarations; loads `libchewing_android_jni` native library
 - **`ChewingBridge.kt`** - Singleton holding the global `Chewing` instance; defines enums for input modes (`ChiEngMode`, `ShapeMode`) and keyboard layouts
-- **`GuilelessBopomofoService.kt`** - Main `InputMethodService` implementation; handles key events, composition, candidate selection for both virtual and physical keyboards
-- **`KeyboardPanel.kt`** - Dynamically constructs virtual keyboard UI with layout-specific button arrangements
-- **`MainActivity.kt`** - Settings/preferences activity
+- **`GuilelessBopomofoService.kt`** - Main `InputMethodService` implementation; handles key events, composition, candidate selection for both virtual and physical keyboards. Hosts the Compose input view (it is its own `LifecycleOwner`/`SavedStateRegistryOwner`)
+- **`KeyboardController.kt`** - Decides which panel the input view shows (keyboard, candidates, compact bar) and keeps libchewing in step; writes `ImeUiState`, draws nothing
+- **`ui/ime/`** - Compose input view: `ImeUiState` (all state the view reads), `ImeRoot`, `Keyboard`, `CandidatesPanel`, and the `keyGestures` modifier (GestureDetector-like tap/double-tap/long-press/repeat)
+- **`ui/ime/layouts/KeyboardSpecs.kt`** - Every on-screen keyboard as data; landscape/sw600dp differences are weight overrides chosen by `KeyboardVariant`
+- **`ui/settings/`, `MainActivity.kt`** - Compose settings screens; `ui/theme/GuilelessTheme.kt` maps the `colors.xml` palette onto Material 3
 
 ### Data Flow
 
@@ -51,9 +53,9 @@ User input -> `GuilelessBopomofoService` -> `Chewing` (JNI) -> libchewing (nativ
 ### Key Patterns
 
 - **EventBus** (greenrobot) for decoupled event communication between components. ProGuard rules preserve `@Subscribe` methods.
-- **Key handlers** are split: `keys/virtual/` for soft keyboard keys, `keys/physical/` for hardware keyboard keys.
+- **Key handlers** are split: `keys/virtual/` for soft keyboard keys (`VirtualKey` behaviours, no Views), `keys/physical/` for hardware keyboard keys.
 - **`GuilelessBopomofoEnv`** holds SharedPreferences keys and device state constants.
-- **View binding** is enabled (`buildFeatures.viewBinding = true`).
+- **Jetpack Compose** for all UI; there are no XML layouts. Only the window theme (`AppTheme`) stays in `styles.xml`.
 
 ## Build Configuration
 
@@ -70,7 +72,7 @@ User input -> `GuilelessBopomofoService` -> `Chewing` (JNI) -> libchewing (nativ
 - **Thread safety**: correct use of coroutines; synchronized access to shared state.
 - **Resource management**: no leaked cursors, streams, or native resources.
 - **Error handling**: appropriate try/catch usage; never silently swallow exceptions.
-- **Consistency**: follow existing codebase patterns (EventBus for events, ViewBinding for views, etc.).
+- **Consistency**: follow existing codebase patterns (EventBus for events, Compose for UI, etc.).
 - **No dead code**: remove unused imports, unreachable logic, and redundant code.
 
 ### Code Smells to Avoid
