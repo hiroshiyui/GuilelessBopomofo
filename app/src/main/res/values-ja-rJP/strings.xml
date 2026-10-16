@@ -37,6 +37,12 @@
     <string name="launch_input_method_system_settings">キーボード管理システム設定を開く</string>
     <string name="fullscreen_mode_setting_title">全画面編集を使用する</string>
     <string name="fullscreen_mode_setting_description">キーボードを全画面で動作させるか</string>
+    <string name="theme_setting_title">テーマ</string>
+    <string name="theme_setting_description">キーボードと設定画面を明るい色と暗い色のどちらで表示するか</string>
+    <string name="theme_follow_system">システムの表示モードに従う</string>
+    <string name="theme_light">ライト</string>
+    <string name="theme_dark">ダーク</string>
+    <string name="dynamic_color_setting_switch">壁紙から取ったダイナミックカラーを使う</string>
     <string name="fullscreen_when_in_landscape_setting_switch">画面が横向きの場合、全画面モードを有効にしますか？</string>
     <string name="fullscreen_when_in_portrait_setting_switch">画面が縦向きの場合、全画面モードを有効にしますか？</string>
     <string name="back_to_main_layout">キーボードに戻る</string>

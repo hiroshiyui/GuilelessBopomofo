@@ -56,7 +56,4 @@
     <color name="colorGuilelessBopomofoWineOutline">#9E938A</color>
     <color name="colorGuilelessBopomofoWineOutlineVariant">#535C5C</color>
 
-    <!-- Bottom navigation selected icon tint (MainActivity). values-night overrides it to
-         a light tone so the icon reads on the wine-red indicator pill. -->
-    <color name="bottomNavIconSelected">@color/colorGuilelessBopomofoMorandiThemeBase4</color>
 </resources>

@@ -18,34 +18,87 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.ui.theme
 
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DYNAMIC_COLOR
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_THEME_MODE
 import org.ghostsinthelab.apps.guilelessbopomofo.R
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.ThemeMode
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberBooleanPreference
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberStringPreference
+
+/** What, besides the colour scheme, a few places need to know of the theme in use. */
+@Immutable
+data class GuilelessThemeExtras(
+    /** Whether the theme is dark, which the user's choice can make differ from the phone's. */
+    val isDark: Boolean,
+    /** The selected icon of the settings navigation bar. */
+    val navigationSelectedIcon: Color,
+)
+
+val LocalGuilelessThemeExtras = staticCompositionLocalOf<GuilelessThemeExtras> {
+    error("GuilelessThemeExtras is only provided inside GuilelessTheme")
+}
+
+/** Dynamic colour is the wallpaper-based Material You palette of Android 12 and newer. */
+val dynamicColorAvailable: Boolean get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
 /**
  * Compose counterpart of `AppBaseTheme` in `values/styles.xml` (Morandi, day) and
  * `values-night/styles.xml` (Wine, night). The palette stays in `colors.xml` so both
  * the window theme and Compose read the same values.
+ *
+ * Light or dark follows the user's [ThemeMode], the phone's display mode by default; with
+ * dynamic colour on (and available) the wallpaper's palette replaces Morandi and Wine. Both
+ * are read from the preferences here, so a change shows at once wherever the theme is used.
  */
 @Composable
-fun GuilelessTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit,
-) {
-    val colorScheme = if (darkTheme) wineColorScheme() else morandiColorScheme()
-    MaterialTheme(colorScheme = colorScheme, content = content)
+fun GuilelessTheme(content: @Composable () -> Unit) {
+    val themeMode by rememberStringPreference(USER_THEME_MODE, ThemeMode.SYSTEM.value)
+    val dynamicColor by rememberBooleanPreference(USER_DYNAMIC_COLOR, false)
+    val darkTheme = ThemeMode.fromValue(themeMode).isDark(isSystemInDarkTheme())
+
+    val context = LocalContext.current
+    val colorScheme = when {
+        dynamicColor && dynamicColorAvailable ->
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+
+        darkTheme -> wineColorScheme()
+        else -> morandiColorScheme()
+    }
+    val extras = GuilelessThemeExtras(
+        isDark = darkTheme,
+        navigationSelectedIcon = if (dynamicColor && dynamicColorAvailable) {
+            colorScheme.onSecondaryContainer
+        } else {
+            // a palette colour of its own, the light tone that reads on either palette's pill
+            colorResource(if (darkTheme) R.color.colorGuilelessBopomofoWineThemeBase4 else R.color.colorGuilelessBopomofoMorandiThemeBase4)
+        },
+    )
+
+    CompositionLocalProvider(LocalGuilelessThemeExtras provides extras) {
+        MaterialTheme(colorScheme = colorScheme, content = content)
+    }
 }
 
 /*

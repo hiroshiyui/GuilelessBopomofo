@@ -37,6 +37,12 @@
     <string name="launch_input_method_system_settings">Launch keyboard system  settings</string>
     <string name="fullscreen_mode_setting_title">Fullscreen mode</string>
     <string name="fullscreen_mode_setting_description">If enabled, keyboard will fit to fullscreen</string>
+    <string name="theme_setting_title">Theme</string>
+    <string name="theme_setting_description">Draw the keyboard and these settings in light or dark colors</string>
+    <string name="theme_follow_system">Follow the system display mode</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="dynamic_color_setting_switch">Use dynamic color, taken from your wallpaper</string>
     <string name="fullscreen_when_in_landscape_setting_switch">Enable fullscreen when in landscape?</string>
     <string name="fullscreen_when_in_portrait_setting_switch">Enable fullscreen when in portrait?</string>
     <string name="back_to_main_layout">Back to keyboard</string>

@@ -38,6 +38,12 @@
     <string name="launch_input_method_system_settings">開啟系統鍵盤管理設定</string>
     <string name="fullscreen_mode_setting_title">使用全螢幕編輯</string>
     <string name="fullscreen_mode_setting_description">是否讓鍵盤以全螢幕方式運作</string>
+    <string name="theme_setting_title">佈景主題</string>
+    <string name="theme_setting_description">鍵盤與設定畫面採用淺色或深色</string>
+    <string name="theme_follow_system">跟隨系統顯示模式</string>
+    <string name="theme_light">淺色</string>
+    <string name="theme_dark">深色</string>
+    <string name="dynamic_color_setting_switch">使用取自桌布的動態色彩</string>
     <string name="fullscreen_when_in_landscape_setting_switch">當畫面橫置時，啟用全螢幕模式？</string>
     <string name="fullscreen_when_in_portrait_setting_switch">當畫面直立時，啟用全螢幕模式？</string>
     <string name="back_to_main_layout">回到鍵盤</string>

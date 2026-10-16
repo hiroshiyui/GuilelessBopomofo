@@ -19,7 +19,6 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.ui.ime
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -54,6 +53,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.BackToMainFunction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CandidateButton
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessDimens
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessFonts
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.LocalGuilelessThemeExtras
 
 /** Test tag of every candidate, for counting them. */
 const val CANDIDATE_TEST_TAG = "candidate"
@@ -137,7 +137,7 @@ private fun CandidateItem(candidate: Candidate) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PagedCandidates(candidates: List<Candidate>) {
-    val textColor = if (isSystemInDarkTheme()) Color.White else PagedCandidateTextLight
+    val textColor = if (LocalGuilelessThemeExtras.current.isDark) Color.White else PagedCandidateTextLight
     FlowRow(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center) {
         candidates.forEach { candidate ->
             Row(

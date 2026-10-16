@@ -27,17 +27,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DYNAMIC_COLOR
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_LANDSCAPE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_PORTRAIT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_HAPTIC_FEEDBACK_STRENGTH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_THEME_MODE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.R
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.ThemeMode
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessDimens
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.dynamicColorAvailable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Haptics
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberIntPreference
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberStringPreference
 
 private val HAPTIC_FEEDBACK_STRENGTH_RANGE = 0..255
 private val KEY_BUTTON_HEIGHT_RANGE_DP = 40..80
@@ -98,5 +103,22 @@ fun UserInterfaceSettingsScreen(modifier: Modifier = Modifier) {
         SettingsLabel(stringResource(R.string.text_view_setting_ime_switch))
         BooleanPreferenceSwitch(R.string.switch_setting_enable_ime_switch, USER_ENABLE_IME_SWITCH, false)
         BooleanPreferenceSwitch(R.string.switch_setting_ime_switch, USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, false)
+
+        SettingsLabel(stringResource(R.string.theme_setting_title))
+        SettingsDescription(stringResource(R.string.theme_setting_description))
+        var themeMode by rememberStringPreference(USER_THEME_MODE, ThemeMode.SYSTEM.value)
+        RadioGroupPreference(
+            options = listOf(
+                stringResource(R.string.theme_follow_system) to ThemeMode.SYSTEM.value,
+                stringResource(R.string.theme_light) to ThemeMode.LIGHT.value,
+                stringResource(R.string.theme_dark) to ThemeMode.DARK.value,
+            ),
+            selected = themeMode,
+            onSelected = { themeMode = it },
+        )
+        // Material You's wallpaper colours only exist from Android 12 on.
+        if (dynamicColorAvailable) {
+            BooleanPreferenceSwitch(R.string.dynamic_color_setting_switch, USER_DYNAMIC_COLOR, false)
+        }
     }
 }

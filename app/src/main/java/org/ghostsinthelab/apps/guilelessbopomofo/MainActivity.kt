@@ -24,7 +24,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -62,7 +61,6 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -73,7 +71,9 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.GeneralSettingsScre
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.PhysicalKeyboardSettingsScreen
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.UserInterfaceSettingsScreen
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.UserPhraseManagerScreen
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.EdgeToEdgeFollowingTheme
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessTheme
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.LocalGuilelessThemeExtras
 
 class MainActivity : ComponentActivity() {
     private val logTag: String = "MainActivity"
@@ -89,10 +89,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(logTag, "onCreate()")
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         setContent {
             GuilelessTheme {
+                EdgeToEdgeFollowingTheme()
                 SettingsApp(onAppIconClick = ::onAppIconClick)
             }
         }
@@ -150,7 +150,7 @@ private fun SettingsApp(onAppIconClick: () -> Unit) {
                         icon = { Icon(painterResource(tab.icon), contentDescription = null) },
                         label = { Text(stringResource(tab.title)) },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = colorResource(R.color.bottomNavIconSelected),
+                            selectedIconColor = LocalGuilelessThemeExtras.current.navigationSelectedIcon,
                         ),
                     )
                 }

@@ -23,7 +23,6 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Column
@@ -59,12 +58,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.withTimeoutOrNull
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.SettingsCurrentValue
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.EdgeToEdgeFollowingTheme
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessTheme
 
 class EngineeringModeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         // Chewing data files status
         val chewingDataFilesStatusText: String = if (
@@ -94,6 +93,7 @@ class EngineeringModeActivity : ComponentActivity() {
 
         setContent {
             GuilelessTheme {
+                EdgeToEdgeFollowingTheme()
                 EngineeringModeScreen(
                     statuses = listOf(
                         stringResource(R.string.chewing_data_files_status) to chewingDataFilesStatusText,
