@@ -22,20 +22,61 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
-import androidx.fragment.app.Fragment
-import org.ghostsinthelab.apps.guilelessbopomofo.databinding.ActivityMainBinding
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.GeneralSettingsScreen
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.PhysicalKeyboardSettingsScreen
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.UserInterfaceSettingsScreen
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.UserPhraseManagerScreen
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessTheme
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     private val logTag: String = "MainActivity"
-
-    // ViewBinding
-    private lateinit var viewBinding: ActivityMainBinding
 
     companion object {
         // How many taps on the app icon it takes to reveal the engineering mode.
@@ -50,79 +91,109 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        viewBinding = ActivityMainBinding.inflate(layoutInflater)
-
-        viewBinding.apply {
-            textViewAppVersion.text = getString(
-                R.string.app_version, BuildConfig.VERSION_NAME, ChewingBridge.chewing.version()
-            )
-
-            imageViewAppIcon.setOnClickListener {
-                if (engineeringModeEnterCount >= ENGINEERING_MODE_ENTER_CLICKS || engineeringModeEnabled) {
-                    engineeringModeEnabled = true
-                    startActivity(Intent(this@MainActivity, EngineeringModeActivity::class.java))
-                } else {
-                    engineeringModeEnterCount += 1
-                }
+        setContent {
+            GuilelessTheme {
+                SettingsApp(onAppIconClick = ::onAppIconClick)
             }
-
-            bottomNavigation.setOnItemSelectedListener { item ->
-                val fragment: Fragment? = when (item.itemId) {
-                    R.id.nav_general -> GeneralSettingsFragment()
-                    R.id.nav_user_interface -> UserInterfaceSettingsFragment()
-                    R.id.nav_physical_keyboard -> PhysicalKeyboardSettingsFragment()
-                    R.id.nav_user_phrases -> UserPhraseManagerFragment()
-                    else -> null
-                }
-                if (fragment == null) {
-                    false
-                } else {
-                    switchFragment(fragment)
-                    true
-                }
-            }
-        }
-
-        setContentView(viewBinding.root)
-
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            viewBinding.headerLayout.isVisible = false
-            viewBinding.divider.isVisible = false
-        }
-
-        // Apply system-bar and cutout insets as internal padding on the header and
-        // bottom navigation so the window itself can still draw edge-to-edge while
-        // the contents stay clear of the status bar, navigation bar, and cutouts.
-        // In landscape the header is hidden, so the top inset is routed to the
-        // fragment container instead.
-        ViewCompat.setOnApplyWindowInsetsListener(viewBinding.root) { _, windowInsets ->
-            val insets = windowInsets.getInsets(
-                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
-            )
-            if (!viewBinding.headerLayout.isVisible) {
-                viewBinding.fragmentContainer.updatePadding(
-                    left = insets.left, top = insets.top, right = insets.right
-                )
-            } else {
-                viewBinding.headerLayout.updatePadding(
-                    left = insets.left, top = insets.top, right = insets.right
-                )
-            }
-            viewBinding.bottomNavigation.updatePadding(
-                left = insets.left, right = insets.right, bottom = insets.bottom
-            )
-            WindowInsetsCompat.CONSUMED
-        }
-
-        // Show general settings tab by default
-        if (savedInstanceState == null) {
-            switchFragment(GeneralSettingsFragment())
         }
     }
 
-    private fun switchFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .commit()
+    private fun onAppIconClick() {
+        if (engineeringModeEnterCount >= ENGINEERING_MODE_ENTER_CLICKS || engineeringModeEnabled) {
+            engineeringModeEnabled = true
+            startActivity(Intent(this, EngineeringModeActivity::class.java))
+        } else {
+            engineeringModeEnterCount += 1
+        }
     }
+}
+
+/** The settings tabs, in the order the bottom navigation shows them. */
+private enum class SettingsTab(@param:StringRes val title: Int, @param:DrawableRes val icon: Int) {
+    GENERAL(R.string.general_settings_label, R.drawable.ic_build_settings),
+    USER_INTERFACE(R.string.user_interface_settings, R.drawable.ic_touch_app),
+    PHYSICAL_KEYBOARD(R.string.physical_keyboard_settings, R.drawable.ic_keyboard),
+    USER_PHRASES(R.string.user_phrase_manager_title, R.drawable.ic_dictionary),
+}
+
+private val SystemInsets: WindowInsets
+    @Composable get() = WindowInsets.systemBars.union(WindowInsets.displayCutout)
+
+@Composable
+private fun SettingsApp(onAppIconClick: () -> Unit) {
+    var currentTab by rememberSaveable { mutableStateOf(SettingsTab.GENERAL) }
+    // In landscape the header is hidden to leave room for the settings themselves.
+    val showHeader = LocalConfiguration.current.orientation != Configuration.ORIENTATION_LANDSCAPE
+
+    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            val topInsets = SystemInsets.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
+            if (showHeader) {
+                SettingsHeader(onAppIconClick, Modifier.windowInsetsPadding(topInsets))
+                HorizontalDivider()
+            }
+            val contentModifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .let { if (showHeader) it.consumeWindowInsets(topInsets) else it.windowInsetsPadding(topInsets) }
+            when (currentTab) {
+                SettingsTab.GENERAL -> GeneralSettingsScreen(contentModifier)
+                SettingsTab.USER_INTERFACE -> UserInterfaceSettingsScreen(contentModifier)
+                SettingsTab.PHYSICAL_KEYBOARD -> PhysicalKeyboardSettingsScreen(contentModifier)
+                SettingsTab.USER_PHRASES -> UserPhraseManagerScreen(contentModifier)
+            }
+            NavigationBar(windowInsets = SystemInsets.only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal)) {
+                SettingsTab.entries.forEach { tab ->
+                    NavigationBarItem(
+                        selected = tab == currentTab,
+                        onClick = { currentTab = tab },
+                        icon = { Icon(painterResource(tab.icon), contentDescription = null) },
+                        label = { Text(stringResource(tab.title)) },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = colorResource(R.color.bottomNavIconSelected),
+                        ),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SettingsHeader(onAppIconClick: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp, bottom = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        AppIcon(
+            contentDescription = stringResource(R.string.app_name),
+            modifier = Modifier
+                .size(AppIconSize)
+                .clickable(onClick = onAppIconClick),
+        )
+        Text(
+            text = stringResource(R.string.app_name),
+            modifier = Modifier.padding(top = 4.dp),
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            text = stringResource(R.string.app_version, BuildConfig.VERSION_NAME, ChewingBridge.chewing.version()),
+            modifier = Modifier.padding(top = 2.dp),
+        )
+    }
+}
+
+private val AppIconSize = 48.dp
+
+/** The launcher icon is an adaptive icon, which painterResource can not draw, so rasterize it. */
+@Composable
+private fun AppIcon(contentDescription: String, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val sizePx = with(LocalDensity.current) { AppIconSize.roundToPx() }
+    val bitmap = remember(sizePx) {
+        ContextCompat.getDrawable(context, R.mipmap.ic_launcher_round)?.toBitmap(sizePx, sizePx)?.asImageBitmap()
+    } ?: return
+    Image(bitmap = bitmap, contentDescription = contentDescription, modifier = modifier)
 }

@@ -1,4 +1,6 @@
 [versions]
+activityComposeVersion = "1.12.4"
+composeBomVersion = "2026.09.00"
 androidxAppcompatVersion = "1.8.0"
 constraintlayoutVersion = "2.2.2"
 coreKtxVersion = "1.19.0"
@@ -23,6 +25,16 @@ testServicesVersion = "1.6.0"
 uiautomatorVersion = "2.4.0"
 
 [libraries]
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
+compose-foundation = { module = "androidx.compose.foundation:foundation" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleVersion" }
 androidx-core = { module = "androidx.test:core", version.ref = "coreVersion" }
 androidx-espresso-idling-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espressoCoreVersion" }
 androidx-espresso-web = { module = "androidx.test.espresso:espresso-web", version.ref = "espressoCoreVersion" }
@@ -55,3 +67,4 @@ mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mo
 preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceKtxVersion" }
 
 [plugins]
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }

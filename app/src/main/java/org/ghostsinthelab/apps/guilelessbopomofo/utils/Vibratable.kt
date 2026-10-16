@@ -77,3 +77,6 @@ interface Vibratable {
         }
     }
 }
+
+/** For callers that are not themselves a [Vibratable], such as composables. */
+object Haptics : Vibratable
