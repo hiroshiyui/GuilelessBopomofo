@@ -39,6 +39,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.ThemeMode
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessDimens
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.applyThemeModeToApp
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.dynamicColorAvailable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Haptics
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberIntPreference
@@ -114,7 +115,10 @@ fun UserInterfaceSettingsScreen(modifier: Modifier = Modifier) {
                 stringResource(R.string.theme_dark) to ThemeMode.DARK.value,
             ),
             selected = themeMode,
-            onSelected = { themeMode = it },
+            onSelected = {
+                themeMode = it
+                context.applyThemeModeToApp(ThemeMode.fromValue(it))
+            },
         )
         // Material You's wallpaper colours only exist from Android 12 on.
         if (dynamicColorAvailable) {

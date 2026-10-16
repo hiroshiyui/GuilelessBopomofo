@@ -52,8 +52,12 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberStringPreference
 data class GuilelessThemeExtras(
     /** Whether the theme is dark, which the user's choice can make differ from the phone's. */
     val isDark: Boolean,
-    /** The selected icon of the settings navigation bar. */
-    val navigationSelectedIcon: Color,
+    /**
+     * Text (or a glyph) in the primary or secondary hue. Morandi's pastel primary and
+     * secondary are for fills: on its light surfaces text needs a darker shade of them.
+     */
+    val primaryText: Color,
+    val secondaryText: Color,
 )
 
 val LocalGuilelessThemeExtras = staticCompositionLocalOf<GuilelessThemeExtras> {
@@ -86,13 +90,18 @@ fun GuilelessTheme(content: @Composable () -> Unit) {
         darkTheme -> wineColorScheme()
         else -> morandiColorScheme()
     }
+    val usesPalette = !(dynamicColor && dynamicColorAvailable)
     val extras = GuilelessThemeExtras(
         isDark = darkTheme,
-        navigationSelectedIcon = if (dynamicColor && dynamicColorAvailable) {
-            colorScheme.onSecondaryContainer
+        primaryText = if (usesPalette && !darkTheme) {
+            colorResource(R.color.colorGuilelessBopomofoMorandiPrimaryText)
         } else {
-            // a palette colour of its own, the light tone that reads on either palette's pill
-            colorResource(if (darkTheme) R.color.colorGuilelessBopomofoWineThemeBase4 else R.color.colorGuilelessBopomofoMorandiThemeBase4)
+            colorScheme.primary
+        },
+        secondaryText = if (usesPalette && !darkTheme) {
+            colorResource(R.color.colorGuilelessBopomofoMorandiSecondaryText)
+        } else {
+            colorScheme.secondary
         },
     )
 
@@ -117,7 +126,7 @@ private fun morandiColorScheme(): ColorScheme {
     val base10 = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase10)
     return lightColorScheme(
         primary = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase6),
-        onPrimary = base8,
+        onPrimary = colorResource(R.color.colorGuilelessBopomofoMorandiOnPrimary),
         primaryContainer = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase2),
         onPrimaryContainer = base10,
         inversePrimary = colorResource(R.color.colorGuilelessBopomofoWineThemeBase3),

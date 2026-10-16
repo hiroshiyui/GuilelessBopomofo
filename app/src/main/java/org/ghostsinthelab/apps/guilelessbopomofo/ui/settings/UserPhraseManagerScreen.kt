@@ -54,6 +54,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -72,7 +73,9 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.UserPhrase
 import org.ghostsinthelab.apps.guilelessbopomofo.UserPhraseCsv
-import java.io.BufferedReader
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
@@ -95,6 +98,7 @@ private sealed interface UserPhraseDialog {
 fun UserPhraseManagerScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val resources = LocalResources.current
+    val scope = rememberCoroutineScope()
     var allPhrases by remember { mutableStateOf(emptyList<UserPhrase>()) }
     var query by rememberSaveable { mutableStateOf("") }
     var dialog by remember { mutableStateOf<UserPhraseDialog?>(null) }
@@ -116,7 +120,11 @@ fun UserPhraseManagerScreen(modifier: Modifier = Modifier) {
     val restoreLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocument()
     ) { uri ->
-        uri?.let { importUserPhrases(context, it) }?.let { phrases ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        // Back on the main thread after reading: libchewing may only be touched from there,
+        // and the confirmed restore adds the phrases to it.
+        scope.launch {
+            val phrases = phrasesToRestore(context, readUserPhrases(context, uri)) ?: return@launch
             if (phrases.isEmpty()) {
                 context.toast(R.string.restore_no_data)
             } else {
@@ -423,24 +431,34 @@ private fun exportUserPhrases(context: Context, uri: Uri) {
 }
 
 /** The phrases in the file at [uri], or null (after telling the user why) if it can not be used. */
-private fun importUserPhrases(context: Context, uri: Uri): List<UserPhrase>? {
-    return try {
-        val lines = context.contentResolver.openInputStream(uri)?.use { inputStream ->
-            BufferedReader(InputStreamReader(inputStream, Charsets.UTF_8)).use { it.readLines() }
-        } ?: emptyList()
-
-        when (val result = UserPhraseCsv.parse(lines)) {
-            is UserPhraseCsv.ParseResult.Success -> result.phrases
-            else -> {
-                val message = describeParseFailure(context, result)
-                Log.w(LOG_TAG, "CSV validation failed: $message")
-                context.toast(message, Toast.LENGTH_LONG)
-                null
-            }
+/**
+ * Reads and checks the file at [uri], off the main thread: the user may have picked anything,
+ * from a slow cloud provider, and [UserPhraseCsv.parse] stops at its size limit.
+ */
+private suspend fun readUserPhrases(context: Context, uri: Uri): UserPhraseCsv.ParseResult? =
+    withContext(Dispatchers.IO) {
+        try {
+            context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                InputStreamReader(inputStream, Charsets.UTF_8).use(UserPhraseCsv::parse)
+            } ?: UserPhraseCsv.ParseResult.UnreadableFile
+        } catch (e: Exception) {
+            Log.e(LOG_TAG, "Failed to import user phrases", e)
+            null
         }
-    } catch (e: Exception) {
-        Log.e(LOG_TAG, "Failed to import user phrases", e)
+    }
+
+/** The phrases [result] holds, or null after telling the user why there are none to restore. */
+private fun phrasesToRestore(context: Context, result: UserPhraseCsv.ParseResult?): List<UserPhrase>? = when (result) {
+    null -> {
         context.toast(R.string.restore_failed)
+        null
+    }
+
+    is UserPhraseCsv.ParseResult.Success -> result.phrases
+    else -> {
+        val message = describeParseFailure(context, result)
+        Log.w(LOG_TAG, "CSV validation failed: $message")
+        context.toast(message, Toast.LENGTH_LONG)
         null
     }
 }

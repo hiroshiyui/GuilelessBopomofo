@@ -61,20 +61,18 @@ object BopomofoLookup {
         return cartesianProduct(readingsPerChar, maxCombinations)
     }
 
-    private fun cartesianProduct(lists: List<List<String>>, maxResults: Int): List<String> {
-        var results = lists[0].map { it }
-        for (i in 1 until lists.size) {
-            val newResults = mutableListOf<String>()
-            for (existing in results) {
-                for (next in lists[i]) {
-                    newResults.add("$existing $next")
-                    if (newResults.size >= maxResults) return newResults
-                }
-            }
-            results = newResults
+    /**
+     * Every reading of the phrase, one per character, at most [maxResults] of them. The cap
+     * applies at every step, so a long phrase never builds an enormous list, but every
+     * reading still covers every character.
+     */
+    internal fun cartesianProduct(lists: List<List<String>>, maxResults: Int): List<String> =
+        lists.drop(1).fold(lists[0].take(maxResults)) { readings, nextReadings ->
+            readings.asSequence()
+                .flatMap { reading -> nextReadings.asSequence().map { "$reading $it" } }
+                .take(maxResults)
+                .toList()
         }
-        return results
-    }
 
     private fun loadWordCsv(context: Context): Map<Char, List<String>> {
         val map = mutableMapOf<Char, MutableList<String>>()

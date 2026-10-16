@@ -18,6 +18,8 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import java.io.Reader
+
 /**
  * Reads and writes the CSV file the user phrase manager backs up to and restores from.
  *
@@ -34,6 +36,7 @@ object UserPhraseCsv {
     private const val MAX_BOPOMOFO_LENGTH = 200
 
     private const val FIELDS_PER_ROW = 2
+    private const val READ_CHUNK_SIZE = 8 * 1024
 
     /** What came out of a file the user asked us to restore from. */
     sealed interface ParseResult {
@@ -58,6 +61,23 @@ object UserPhraseCsv {
             append('"').append(escapeField(it.phrase)).append("\",\"")
             append(escapeField(it.bopomofo)).append("\"\n")
         }
+    }
+
+    /**
+     * Parses what [reader] holds, reading no more than a phrase list could be: a file picked
+     * by mistake, gigabytes long or a single endless line, is turned away after the first
+     * [MAX_TOTAL_LENGTH] characters instead of being read into memory whole.
+     */
+    fun parse(reader: Reader): ParseResult {
+        val text = StringBuilder()
+        val chunk = CharArray(READ_CHUNK_SIZE)
+        while (true) {
+            val read = reader.read(chunk)
+            if (read < 0) break
+            text.appendRange(chunk, 0, read)
+            if (text.length > MAX_TOTAL_LENGTH) return ParseResult.UnreadableFile
+        }
+        return parse(text.lines())
     }
 
     fun parse(lines: List<String>): ParseResult {

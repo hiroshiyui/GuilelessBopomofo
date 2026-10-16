@@ -23,7 +23,7 @@
     <style name="AppBaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- primary -->
         <item name="colorPrimary">@color/colorGuilelessBopomofoMorandiThemeBase6</item>
-        <item name="colorOnPrimary">@color/colorGuilelessBopomofoMorandiThemeBase8</item>
+        <item name="colorOnPrimary">@color/colorGuilelessBopomofoMorandiOnPrimary</item>
         <item name="colorPrimaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase2</item>
         <!-- secondary -->
         <item name="colorSecondary">@color/colorGuilelessBopomofoMorandiThemeBase7</item>

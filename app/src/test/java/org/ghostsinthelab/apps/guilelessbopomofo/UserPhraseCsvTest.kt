@@ -163,4 +163,30 @@ class UserPhraseCsvTest {
         assertFalse(UserPhraseCsv.isValidBopomofo("測試"))
         assertFalse(UserPhraseCsv.isValidBopomofo("ㄘㄜˋ!"))
     }
+
+    @Test
+    fun parseFromReader_readsAPhraseList() {
+        val csv = UserPhraseCsv.format(listOf(UserPhrase("測試", "ㄘㄜˋ ㄕˋ")))
+        assertEquals(
+            UserPhraseCsv.ParseResult.Success(listOf(UserPhrase("測試", "ㄘㄜˋ ㄕˋ"))),
+            UserPhraseCsv.parse(java.io.StringReader(csv)),
+        )
+    }
+
+    @Test
+    fun parseFromReader_stopsReadingAtTheSizeLimit() {
+        // An endless line: the reader must give up rather than read it all.
+        var served = 0L
+        val endless = object : java.io.Reader() {
+            override fun read(buffer: CharArray, offset: Int, length: Int): Int {
+                java.util.Arrays.fill(buffer, offset, offset + length, 'x')
+                served += length
+                return length
+            }
+
+            override fun close() {}
+        }
+        assertEquals(UserPhraseCsv.ParseResult.UnreadableFile, UserPhraseCsv.parse(endless))
+        assertTrue("read $served characters", served < 2_000_000)
+    }
 }

@@ -60,10 +60,12 @@ import kotlinx.coroutines.withTimeoutOrNull
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.SettingsCurrentValue
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.EdgeToEdgeFollowingTheme
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessTheme
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.applyThemeModeToWindow
 
 class EngineeringModeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        applyThemeModeToWindow()
 
         // Chewing data files status
         val chewingDataFilesStatusText: String = if (

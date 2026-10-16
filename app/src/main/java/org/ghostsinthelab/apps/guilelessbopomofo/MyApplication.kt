@@ -19,6 +19,12 @@
 package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.app.Application
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.applyThemeModeToApp
 
 class MyApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        // Keep the system's per-app night mode in step with the theme the user picked.
+        applyThemeModeToApp()
+    }
 }

@@ -85,6 +85,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.SettingsCurrentValu
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessColors
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessDimens
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessFonts
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.LocalGuilelessThemeExtras
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Haptics
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
@@ -308,7 +309,7 @@ private fun CompactBar(uiState: ImeUiState, modifier: Modifier = Modifier) {
         Text(
             text = stringResource(R.string.current_mode),
             modifier = Modifier.padding(start = 8.dp),
-            color = MaterialTheme.colorScheme.primary,
+            color = LocalGuilelessThemeExtras.current.primaryText,
             fontWeight = FontWeight.Bold,
         )
         SettingsCurrentValue(

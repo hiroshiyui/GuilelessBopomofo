@@ -29,7 +29,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +47,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.CompactDachenKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.FunctionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.KeyStyle
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.SwipeKeySpec
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.LocalGuilelessThemeExtras
 
 // The keypad has four rows where the other keyboards have five; make them taller to match.
 private const val KEYPAD_ROW_HEIGHT_FACTOR = 5f / 4f
@@ -125,7 +125,7 @@ private fun SwipeKeyCell(spec: SwipeKeySpec, height: Dp) {
     val key = remember(spec) { SwipeCharacterKey(spec) }
     var aimedAt by remember { mutableStateOf<SwipeDirection?>(null) }
     val (background, content) = keyColors(KeyStyle.NORMAL)
-    val highlight = MaterialTheme.colorScheme.primary
+    val highlight = LocalGuilelessThemeExtras.current.primaryText
     val aimedGlyph = aimedAt?.let(spec::glyphFor)
 
     KeySurface(

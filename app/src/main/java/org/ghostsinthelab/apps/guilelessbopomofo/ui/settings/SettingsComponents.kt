@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessDimens
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessFonts
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.LocalGuilelessThemeExtras
 import kotlin.math.roundToInt
 
 private val ScreenPadding = PaddingValues(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 32.dp)
@@ -86,7 +87,7 @@ fun SettingsPrimaryHeader(text: String) {
     Text(
         text = text,
         style = MaterialTheme.typography.headlineMedium,
-        color = MaterialTheme.colorScheme.primary,
+        color = LocalGuilelessThemeExtras.current.primaryText,
     )
 }
 
@@ -98,7 +99,7 @@ fun SettingsLabel(text: String, modifier: Modifier = Modifier) {
         modifier = modifier.padding(top = LabelTopMargin),
         style = MaterialTheme.typography.headlineSmall,
         fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.secondary,
+        color = LocalGuilelessThemeExtras.current.secondaryText,
     )
 }
 
