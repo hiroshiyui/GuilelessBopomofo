@@ -1,0 +1,8 @@
+Hi there! Guileless Bopomofo 5.0.0 is a big one: I've rebuilt my whole interface with Jetpack Compose, and kept the look you know.
+
+* New Compact DaChen keyboard: a phone-style keypad. Tap a key for its main symbol, swipe for the others.
+* Pick Light, Dark or system theme, with optional dynamic colours.
+* Alt+Enter on a physical keyboard inserts a line break.
+* Many fixes for stability and safety.
+
+Thanks for using Guileless Bopomofo!
