@@ -104,9 +104,7 @@ fun ImeRoot(uiState: ImeUiState) {
             .fillMaxWidth()
             .semantics { testTagsAsResourceId = true }
             .testTag(IME_ROOT_TEST_TAG),
-        // KeyboardTheme
-        color = MaterialTheme.colorScheme.onPrimary,
-        // plain text, such as the compact bar's, in the theme's primary text colour
+        color = MaterialTheme.colorScheme.surfaceContainer,
         contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -165,7 +163,7 @@ private val BottomGradient = Brush.verticalGradient(
 private fun BufferArea(uiState: ImeUiState) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.onPrimary,
+        color = MaterialTheme.colorScheme.surfaceContainer,
         shadowElevation = GuilelessDimens.BufferElevation,
     ) {
         FlowRow(modifier = Modifier.fillMaxWidth()) {
@@ -272,7 +270,7 @@ private fun SuggestionStrip(words: List<String>) {
             KeySurface(
                 key = virtualKey,
                 minHeight = GuilelessDimens.SuggestionStripHeight,
-                background = MaterialTheme.colorScheme.onSecondaryContainer,
+                background = MaterialTheme.colorScheme.surfaceContainerHighest,
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(horizontal = GuilelessDimens.SuggestionMargin),
@@ -282,7 +280,7 @@ private fun SuggestionStrip(words: List<String>) {
                     modifier = Modifier
                         .widthIn(min = GuilelessDimens.SuggestionMinWidth)
                         .padding(horizontal = GuilelessDimens.SuggestionHorizontalPadding),
-                    color = MaterialTheme.colorScheme.onSecondary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = GuilelessDimens.SuggestionTextSize,
                     maxLines = 1,
                     textAlign = TextAlign.Center,

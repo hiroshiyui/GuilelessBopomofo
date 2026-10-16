@@ -36,6 +36,24 @@
     <color name="colorGuilelessBopomofoWineThemeBase7">#B35A4C</color>
     <color name="colorGuilelessBopomofoWineThemeBase8">#7C3A39</color>
     <color name="colorGuilelessBopomofoWineThemeBase10">#1D343C</color>
+    <!-- Material 3 roles neither palette has a colour of its own for, blended from it:
+         surfaces between Base8 and white or Base4 (Morandi) and between Base10 and black or
+         Base5 (Wine), text and outlines between Base10 and Base8 (Morandi) or Base4 and
+         Base10 (Wine), at WCAG contrast of at least 4.5:1 for text and 3:1 for outlines on
+         the surfaces they sit on. -->
+    <color name="colorGuilelessBopomofoMorandiSurface">#F9F7F2</color>
+    <color name="colorGuilelessBopomofoMorandiSurfaceContainerLow">#F5F1E7</color>
+    <color name="colorGuilelessBopomofoMorandiSurfaceContainerHigh">#E6E4D9</color>
+    <color name="colorGuilelessBopomofoMorandiOnSurfaceVariant">#60615E</color>
+    <color name="colorGuilelessBopomofoMorandiOutline">#807E78</color>
+    <color name="colorGuilelessBopomofoMorandiOutlineVariant">#CDC8BA</color>
+    <color name="colorGuilelessBopomofoWineSurfaceContainerLowest">#132227</color>
+    <color name="colorGuilelessBopomofoWineSurfaceContainerLow">#192C33</color>
+    <color name="colorGuilelessBopomofoWineSurfaceContainerHigh">#3E4046</color>
+    <color name="colorGuilelessBopomofoWineOnSurfaceVariant">#DEC3B1</color>
+    <color name="colorGuilelessBopomofoWineOutline">#9E938A</color>
+    <color name="colorGuilelessBopomofoWineOutlineVariant">#535C5C</color>
+
     <!-- Bottom navigation selected icon tint (MainActivity). values-night overrides it to
          a light tone so the icon reads on the wine-red indicator pill. -->
     <color name="bottomNavIconSelected">@color/colorGuilelessBopomofoMorandiThemeBase4</color>

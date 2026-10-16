@@ -48,41 +48,94 @@ fun GuilelessTheme(
     MaterialTheme(colorScheme = colorScheme, content = content)
 }
 
+/*
+ * Every Material 3 role comes from the palette, so that nothing falls back to the baseline
+ * purple. The input view draws the keyboard on surfaceContainer and the keys (and
+ * candidates, suggestions) on surfaceContainerHighest, their glyphs in onSurface; function
+ * keys are tertiary and Enter is secondary.
+ */
+
 @Composable
 @ReadOnlyComposable
-private fun morandiColorScheme(): ColorScheme = lightColorScheme(
-    primary = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase6),
-    onPrimary = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase8),
-    primaryContainer = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase2),
-    secondary = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase7),
-    onSecondary = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase10),
-    secondaryContainer = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase1),
-    onSecondaryContainer = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase4),
-    tertiary = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase3),
-    onTertiary = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase10),
-    tertiaryContainer = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase5),
-    onTertiaryContainer = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase9),
-)
+private fun morandiColorScheme(): ColorScheme {
+    val surface = colorResource(R.color.colorGuilelessBopomofoMorandiSurface)
+    val base4 = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase4)
+    val base8 = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase8)
+    val base10 = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase10)
+    return lightColorScheme(
+        primary = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase6),
+        onPrimary = base8,
+        primaryContainer = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase2),
+        onPrimaryContainer = base10,
+        inversePrimary = colorResource(R.color.colorGuilelessBopomofoWineThemeBase3),
+        secondary = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase7),
+        onSecondary = base10,
+        secondaryContainer = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase1),
+        onSecondaryContainer = base4,
+        tertiary = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase3),
+        onTertiary = base10,
+        tertiaryContainer = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase5),
+        onTertiaryContainer = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase9),
+        background = surface,
+        onBackground = base10,
+        surface = surface,
+        onSurface = base10,
+        surfaceVariant = base4,
+        onSurfaceVariant = colorResource(R.color.colorGuilelessBopomofoMorandiOnSurfaceVariant),
+        inverseSurface = base10,
+        inverseOnSurface = base8,
+        outline = colorResource(R.color.colorGuilelessBopomofoMorandiOutline),
+        outlineVariant = colorResource(R.color.colorGuilelessBopomofoMorandiOutlineVariant),
+        surfaceBright = surface,
+        surfaceDim = base4,
+        surfaceContainerLowest = Color.White,
+        surfaceContainerLow = colorResource(R.color.colorGuilelessBopomofoMorandiSurfaceContainerLow),
+        surfaceContainer = base8,
+        surfaceContainerHigh = colorResource(R.color.colorGuilelessBopomofoMorandiSurfaceContainerHigh),
+        surfaceContainerHighest = base4,
+    )
+}
 
 @Composable
 @ReadOnlyComposable
 private fun wineColorScheme(): ColorScheme {
-    val windowBackground = colorResource(R.color.colorGuilelessBopomofoWineThemeBase10)
+    // values-night sets android:windowBackground to Wine Base10 as well
+    val base4 = colorResource(R.color.colorGuilelessBopomofoWineThemeBase4)
+    val base5 = colorResource(R.color.colorGuilelessBopomofoWineThemeBase5)
+    val base8 = colorResource(R.color.colorGuilelessBopomofoWineThemeBase8)
+    val base10 = colorResource(R.color.colorGuilelessBopomofoWineThemeBase10)
+    val surfaceContainerHigh = colorResource(R.color.colorGuilelessBopomofoWineSurfaceContainerHigh)
     return darkColorScheme(
         primary = colorResource(R.color.colorGuilelessBopomofoWineThemeBase3),
-        onPrimary = colorResource(R.color.colorGuilelessBopomofoWineThemeBase10),
+        onPrimary = base10,
         primaryContainer = colorResource(R.color.colorGuilelessBopomofoWineThemeBase7),
+        onPrimaryContainer = base4,
+        inversePrimary = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase6),
         secondary = colorResource(R.color.colorGuilelessBopomofoWineThemeBase2),
-        onSecondary = colorResource(R.color.colorGuilelessBopomofoWineThemeBase4),
-        secondaryContainer = colorResource(R.color.colorGuilelessBopomofoWineThemeBase8),
-        onSecondaryContainer = colorResource(R.color.colorGuilelessBopomofoWineThemeBase5),
-        tertiary = colorResource(R.color.colorGuilelessBopomofoWineThemeBase8),
-        onTertiary = colorResource(R.color.colorGuilelessBopomofoWineThemeBase4),
-        tertiaryContainer = colorResource(R.color.colorGuilelessBopomofoWineThemeBase8),
-        onTertiaryContainer = colorResource(R.color.colorGuilelessBopomofoWineThemeBase4),
-        // values-night sets android:windowBackground to Wine Base10
-        background = windowBackground,
-        surface = windowBackground,
+        onSecondary = base4,
+        secondaryContainer = base8,
+        onSecondaryContainer = base5,
+        tertiary = base8,
+        onTertiary = base4,
+        tertiaryContainer = base8,
+        onTertiaryContainer = base4,
+        background = base10,
+        onBackground = base4,
+        surface = base10,
+        onSurface = base4,
+        surfaceVariant = base5,
+        onSurfaceVariant = colorResource(R.color.colorGuilelessBopomofoWineOnSurfaceVariant),
+        inverseSurface = base4,
+        inverseOnSurface = base10,
+        outline = colorResource(R.color.colorGuilelessBopomofoWineOutline),
+        outlineVariant = colorResource(R.color.colorGuilelessBopomofoWineOutlineVariant),
+        surfaceBright = surfaceContainerHigh,
+        surfaceDim = base10,
+        surfaceContainerLowest = colorResource(R.color.colorGuilelessBopomofoWineSurfaceContainerLowest),
+        surfaceContainerLow = colorResource(R.color.colorGuilelessBopomofoWineSurfaceContainerLow),
+        surfaceContainer = base10,
+        surfaceContainerHigh = surfaceContainerHigh,
+        surfaceContainerHighest = base5,
     )
 }
 

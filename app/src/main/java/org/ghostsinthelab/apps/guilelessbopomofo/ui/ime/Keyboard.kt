@@ -130,7 +130,7 @@ private fun shiftKeyColor(state: ShiftKey.ShiftKeyState): Color = when (state) {
 @Composable
 internal fun keyColors(style: KeyStyle): Pair<Color, Color> = with(MaterialTheme.colorScheme) {
     when (style) {
-        KeyStyle.NORMAL -> onSecondaryContainer to onSecondary
+        KeyStyle.NORMAL -> surfaceContainerHighest to onSurface
         KeyStyle.SPECIAL -> tertiary to onTertiary
         KeyStyle.ENTER -> secondary to onSecondary
     }

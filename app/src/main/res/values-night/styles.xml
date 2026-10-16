@@ -33,7 +33,11 @@
         <item name="colorOnTertiary">@color/colorGuilelessBopomofoWineThemeBase4</item>
         <item name="colorTertiaryContainer">@color/colorGuilelessBopomofoWineThemeBase8</item>
         <item name="colorOnTertiaryContainer">@color/colorGuilelessBopomofoWineThemeBase4</item>
-        <!-- misc -->
+        <!-- surfaces: the window before Compose draws, matching GuilelessTheme -->
+        <item name="colorSurface">@color/colorGuilelessBopomofoWineThemeBase10</item>
+        <item name="colorOnSurface">@color/colorGuilelessBopomofoWineThemeBase4</item>
+        <item name="android:colorBackground">@color/colorGuilelessBopomofoWineThemeBase10</item>
+        <item name="colorOnBackground">@color/colorGuilelessBopomofoWineThemeBase4</item>
         <item name="android:windowBackground">@color/colorGuilelessBopomofoWineThemeBase10</item>
     </style>
 </resources>

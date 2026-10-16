@@ -109,7 +109,7 @@ private fun CandidateItem(candidate: Candidate) {
     KeySurface(
         key = virtualKey,
         minHeight = GuilelessDimens.CandidateMinHeight,
-        background = MaterialTheme.colorScheme.onSecondaryContainer,
+        background = MaterialTheme.colorScheme.surfaceContainerHighest,
         modifier = Modifier
             .fillMaxWidth()
             .height(GuilelessDimens.CandidateGridRowHeight)
@@ -121,7 +121,7 @@ private fun CandidateItem(candidate: Candidate) {
             modifier = Modifier
                 .widthIn(min = GuilelessDimens.CandidateMinHeight)
                 .padding(horizontal = GuilelessDimens.CandidateHorizontalPadding),
-            color = MaterialTheme.colorScheme.onSecondary,
+            color = MaterialTheme.colorScheme.onSurface,
             fontFamily = GuilelessFonts.Candidate,
             fontSize = GuilelessDimens.CandidateTextSize,
             maxLines = 1,
@@ -171,7 +171,7 @@ private fun BackToMainKey() {
     KeySurface(
         key = BackToMainFunctionKey,
         minHeight = GuilelessDimens.TextKeyMinHeight,
-        background = MaterialTheme.colorScheme.onSecondaryContainer,
+        background = MaterialTheme.colorScheme.surfaceContainerHighest,
     ) {
         Row(
             modifier = Modifier.padding(horizontal = GuilelessDimens.TextKeyHorizontalPadding),
@@ -181,11 +181,11 @@ private fun BackToMainKey() {
             Icon(
                 painter = painterResource(R.drawable.ic_keyboard_24),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSecondary,
+                tint = MaterialTheme.colorScheme.onSurface,
             )
             Text(
                 text = stringResource(R.string.back_to_main_layout),
-                color = MaterialTheme.colorScheme.onSecondary,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontFamily = GuilelessFonts.KeyLabel,
                 fontWeight = GuilelessFonts.KeyLabelWeight,
             )

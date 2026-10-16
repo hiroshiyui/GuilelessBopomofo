@@ -35,6 +35,12 @@
         <item name="colorOnTertiary">@color/colorGuilelessBopomofoMorandiThemeBase10</item>
         <item name="colorTertiaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase5</item>
         <item name="colorOnTertiaryContainer">@color/colorGuilelessBopomofoMorandiThemeBase9</item>
+        <!-- surfaces: the window before Compose draws, matching GuilelessTheme -->
+        <item name="colorSurface">@color/colorGuilelessBopomofoMorandiSurface</item>
+        <item name="colorOnSurface">@color/colorGuilelessBopomofoMorandiThemeBase10</item>
+        <item name="android:colorBackground">@color/colorGuilelessBopomofoMorandiSurface</item>
+        <item name="colorOnBackground">@color/colorGuilelessBopomofoMorandiThemeBase10</item>
+        <item name="android:windowBackground">@color/colorGuilelessBopomofoMorandiSurface</item>
         <!-- misc -->
         <item name="android:windowLightStatusBar">true</item>
     </style>
