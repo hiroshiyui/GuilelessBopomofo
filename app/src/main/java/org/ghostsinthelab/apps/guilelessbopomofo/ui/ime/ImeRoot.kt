@@ -24,6 +24,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -105,6 +106,8 @@ fun ImeRoot(uiState: ImeUiState) {
             .testTag(IME_ROOT_TEST_TAG),
         // KeyboardTheme
         color = MaterialTheme.colorScheme.onPrimary,
+        // plain text, such as the compact bar's, in the theme's primary text colour
+        contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             if (uiState.showBuffers) {
@@ -272,10 +275,17 @@ private fun SuggestionStrip(words: List<String>) {
     }
 }
 
-/** What is left of the keyboard with a physical one attached: which modes are on. */
+/**
+ * What is left of the keyboard with a physical one attached: which modes are on, centred in
+ * the panel as the old KeyboardPanel's gravity had it.
+ */
 @Composable
 private fun CompactBar(uiState: ImeUiState, modifier: Modifier = Modifier) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Image(
             painter = painterResource(R.drawable.ic_guileless_bopomofo_statusbar_icon),
             contentDescription = stringResource(R.string.app_name),
