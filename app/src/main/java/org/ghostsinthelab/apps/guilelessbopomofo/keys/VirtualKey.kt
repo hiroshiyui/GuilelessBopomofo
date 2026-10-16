@@ -26,6 +26,9 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
  * [org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.keyGestures]; a key only says how it
  * answers them.
  */
+/** Which way a key was swiped. */
+enum class SwipeDirection { UP, RIGHT, LEFT, DOWN }
+
 interface VirtualKey : Vibratable {
     /**
      * Whether a quick second tap is a gesture of its own. Leaving it off is what an ordinary
@@ -43,9 +46,16 @@ interface VirtualKey : Vibratable {
      */
     val repeatsWhileHeld: Boolean get() = false
 
+    /**
+     * Whether a swipe starting on the key is a gesture of its own; see [onSwipe]. A swipe
+     * key follows the finger beyond its edges, and has no long press.
+     */
+    val detectsSwipes: Boolean get() = false
+
     fun onDown(context: Context) {}
     fun onTap(context: Context) {}
     fun onDoubleTap(context: Context) {}
     fun onLongPress(context: Context) {}
     fun onRepeat(context: Context) {}
+    fun onSwipe(context: Context, direction: SwipeDirection) {}
 }

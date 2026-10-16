@@ -161,6 +161,18 @@ class KeyboardControllerInstrumentedTest {
         assertEquals(SoftKeyboard.DACHEN_CP26, uiState.softKeyboard)
     }
 
+    @Test
+    fun switchToBopomofoLayout_dachenCompactKeypad() {
+        setLayoutPreference("KB_DACHEN_COMPACT")
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            keyboardController.switchToLayout(Layout.MAIN)
+        }
+        assertEquals(Layout.MAIN, keyboardController.currentLayout)
+        assertEquals(SoftKeyboard.DACHEN_COMPACT, uiState.softKeyboard)
+        // the keypad types Dachen key codes, so libchewing has to read them as Dachen
+        assertEquals("KB_DEFAULT", ChewingBridge.chewing.getKBString())
+    }
+
     // --- Alphanumerical (QWERTY) layout ---
 
     @Test

@@ -37,6 +37,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.FunctionKey.SYMB
 object KeyboardSpecs {
     /** The keys of [keyboard], arranged for the screen [variant] describes. */
     fun of(keyboard: SoftKeyboard, variant: KeyboardVariant): KeyboardSpec = when (keyboard) {
+        SoftKeyboard.DACHEN_COMPACT -> throw IllegalArgumentException("$keyboard is a keypad, see CompactDachenKeypad")
         SoftKeyboard.DACHEN -> dachen(variant)
         SoftKeyboard.DACHEN_CP26 -> dachenCp26()
         SoftKeyboard.ET41 -> et41(variant)

@@ -42,6 +42,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.SwipeDirection
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.BackspaceKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CharacterKey
@@ -107,7 +108,7 @@ private fun KeyFor(keySpec: KeySpec, uiState: ImeUiState, keyHeight: Dp, modifie
     }
 }
 
-private fun virtualKeyFor(functionKey: FunctionKey, uiState: ImeUiState): VirtualKey = when (functionKey) {
+internal fun virtualKeyFor(functionKey: FunctionKey, uiState: ImeUiState): VirtualKey = when (functionKey) {
     FunctionKey.MODE_SWITCH_TO_ENGLISH, FunctionKey.MODE_SWITCH_TO_BOPOMOFO -> ModeSwitchFunctionKey
     FunctionKey.SYMBOL -> SymbolFunctionKey
     FunctionKey.IME_SWITCH -> ImeSwitchFunctionKey
@@ -127,7 +128,7 @@ private fun shiftKeyColor(state: ShiftKey.ShiftKeyState): Color = when (state) {
 
 /** The background and content colours of a key in [style]. */
 @Composable
-private fun keyColors(style: KeyStyle): Pair<Color, Color> = with(MaterialTheme.colorScheme) {
+internal fun keyColors(style: KeyStyle): Pair<Color, Color> = with(MaterialTheme.colorScheme) {
     when (style) {
         KeyStyle.NORMAL -> onSecondaryContainer to onSecondary
         KeyStyle.SPECIAL -> tertiary to onTertiary
@@ -163,6 +164,7 @@ fun KeySurface(
     background: Color,
     modifier: Modifier = Modifier,
     testTag: String = KEY_TEST_TAG,
+    onSwipeDirectionChange: (SwipeDirection?) -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     val context = LocalContext.current
@@ -171,7 +173,7 @@ fun KeySurface(
         modifier = modifier
             .testTag(testTag)
             .heightIn(min = minHeight)
-            .keyGestures(key, context, interactionSource)
+            .keyGestures(key, context, interactionSource, onSwipeDirectionChange)
             .padding(horizontal = GuilelessDimens.KeyHorizontalInset, vertical = GuilelessDimens.KeyVerticalInset),
         propagateMinConstraints = true,
     ) {

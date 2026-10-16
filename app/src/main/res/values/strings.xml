@@ -107,6 +107,7 @@
     <string name="bopomofo_keyboard_layout_dvorak">Dvorak DaChen</string>
     <string name="bopomofo_keyboard_layout_dvorak_hsu">Dvorak Hsu</string>
     <string name="bopomofo_keyboard_layout_dachen26">DaChen 26 Keys</string>
+    <string name="bopomofo_keyboard_layout_dachen_compact">Compact DaChen (Phone Keypad)</string>
     <string name="bopomofo_keyboard_layout_hanyu_pinyin">HanYu PinYin</string>
     <string name="bopomofo_keyboard_layout_thl_pinyin">Taíwan HuaYu Luoma PinYin</string>
     <string name="bopomofo_keyboard_layout_mps2_pinyin">Mandarin Phonetic Symbols II PinYin</string>
@@ -155,6 +156,7 @@
         <item>@string/bopomofo_keyboard_layout_eten26</item>
         <item>@string/bopomofo_keyboard_layout_eten41</item>
         <item>@string/bopomofo_keyboard_layout_dachen26</item>
+        <item>@string/bopomofo_keyboard_layout_dachen_compact</item>
     </string-array>
     <string-array name="physical_bopomofo_keyboard_layouts">
         <item>@string/bopomofo_keyboard_layout_dachen</item>

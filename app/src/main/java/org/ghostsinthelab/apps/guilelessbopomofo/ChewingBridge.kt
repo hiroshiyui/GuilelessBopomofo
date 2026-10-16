@@ -29,12 +29,26 @@ enum class ShapeMode(val mode: Int) {
     HALF(0), FULL(1)
 }
 
-enum class BopomofoSoftKeyboards(val layout: String) {
+/**
+ * The on-screen keyboards one can choose. [layout] is what the preference stores;
+ * [chewingLayout] is the keyboard type libchewing is told, which differs only for keyboards
+ * that send another layout's key codes.
+ */
+enum class BopomofoSoftKeyboards(val layout: String, val chewingLayout: String = layout) {
     KB_DEFAULT("KB_DEFAULT"),
     KB_HSU("KB_HSU"),
     KB_ET("KB_ET"),
     KB_ET26("KB_ET26"),
     KB_DACHEN_CP26("KB_DACHEN_CP26"),
+
+    // A phone keypad that types Dachen key codes.
+    KB_DACHEN_COMPACT("KB_DACHEN_COMPACT", chewingLayout = "KB_DEFAULT"),
+    ;
+
+    companion object {
+        /** The keyboard a stored preference names, or the default Dachen one for anything unheard of. */
+        fun fromLayout(layout: String?): BopomofoSoftKeyboards = entries.find { it.layout == layout } ?: KB_DEFAULT
+    }
 }
 
 enum class BopomofoPhysicalKeyboards(val layout: String) {

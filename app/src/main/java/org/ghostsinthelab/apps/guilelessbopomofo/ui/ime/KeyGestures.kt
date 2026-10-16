@@ -25,15 +25,19 @@ import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerEventTimeoutCancellationException
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.dp
+import kotlin.math.abs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.SwipeDirection
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 
 // The shortest gap between two taps that still counts as a double tap, as GestureDetector has it.
@@ -43,6 +47,9 @@ private const val DOUBLE_TAP_MIN_TIME_MS = 40L
 private const val REPEAT_INITIAL_DELAY_MS = 50L
 private const val REPEAT_INTERVAL_MS = 100L
 
+// How far a finger has to travel from where it landed for a swipe key to count it a swipe.
+private val SWIPE_THRESHOLD = 20.dp
+
 /**
  * Feeds touches on this element to [key], the way `GestureDetector` used to:
  *  - [VirtualKey.onDown] as soon as a finger lands;
@@ -50,7 +57,11 @@ private const val REPEAT_INTERVAL_MS = 100L
  *  - for a key that [detects double taps][VirtualKey.detectsDoubleTap], a second quick tap
  *    goes to [VirtualKey.onDoubleTap] (as it lands) and not to [VirtualKey.onTap];
  *  - [VirtualKey.onLongPress] once held past the long-press timeout, and then, for a key that
- *    [repeats][VirtualKey.repeatsWhileHeld], [VirtualKey.onRepeat] every so often until it is let go.
+ *    [repeats][VirtualKey.repeatsWhileHeld], [VirtualKey.onRepeat] every so often until it is let go;
+ *  - for a key that [detects swipes][VirtualKey.detectsSwipes], [VirtualKey.onSwipe] when the
+ *    finger lifts far enough from where it landed, in whichever direction it mostly went, and
+ *    [VirtualKey.onTap] otherwise. [onSwipeDirectionChange] follows the direction while the
+ *    finger is still down (null when it is too close to call), and is reset once it lifts.
  *
  * Presses are reported to [interactionSource], for the ripple.
  */
@@ -58,6 +69,7 @@ fun Modifier.keyGestures(
     key: VirtualKey,
     context: Context,
     interactionSource: MutableInteractionSource,
+    onSwipeDirectionChange: (SwipeDirection?) -> Unit = {},
 ): Modifier = pointerInput(key) {
     // When the last tap that could start a double tap was let go of.
     var lastTapUpTime: Long? = null
@@ -77,6 +89,11 @@ fun Modifier.keyGestures(
 
             key.onDown(context)
             if (isSecondTap) key.onDoubleTap(context)
+
+            if (key.detectsSwipes) {
+                handleSwipe(key, context, down, onSwipeDirectionChange, interactionSource, press)
+                return@awaitEachGesture
+            }
 
             var up: PointerInputChange? = null
             try {
@@ -131,6 +148,66 @@ private suspend fun AwaitPointerEventScope.awaitUpOrLongPress(
             repeating?.cancel()
         }
         return null
+    }
+}
+
+/** How a swipe gesture ended: let go of, possibly [direction]-wards, or cancelled. */
+private class SwipeEnd(val direction: SwipeDirection?)
+
+private suspend fun AwaitPointerEventScope.handleSwipe(
+    key: VirtualKey,
+    context: Context,
+    down: PointerInputChange,
+    onSwipeDirectionChange: (SwipeDirection?) -> Unit,
+    interactionSource: MutableInteractionSource,
+    press: PressInteraction.Press,
+) {
+    var end: SwipeEnd? = null
+    try {
+        end = awaitSwipeEnd(down, onSwipeDirectionChange)
+    } finally {
+        onSwipeDirectionChange(null)
+        interactionSource.tryEmit(
+            if (end != null) PressInteraction.Release(press) else PressInteraction.Cancel(press)
+        )
+    }
+    when (val direction = end?.direction) {
+        null -> if (end != null) key.onTap(context)
+        else -> key.onSwipe(context, direction)
+    }
+}
+
+/**
+ * Follows the finger that went [down] until it lifts, wherever it wanders, and says which
+ * way it went; null if something else claimed the gesture.
+ */
+private suspend fun AwaitPointerEventScope.awaitSwipeEnd(
+    down: PointerInputChange,
+    onSwipeDirectionChange: (SwipeDirection?) -> Unit,
+): SwipeEnd? {
+    val threshold = maxOf(SWIPE_THRESHOLD.toPx(), viewConfiguration.touchSlop)
+    var direction: SwipeDirection? = null
+    while (true) {
+        val event = awaitPointerEvent()
+        val change = event.changes.firstOrNull { it.id == down.id } ?: return null
+        if (change.isConsumed) return null
+        val newDirection = swipeDirectionOf(change.position - down.position, threshold)
+        if (newDirection != direction) {
+            direction = newDirection
+            onSwipeDirectionChange(direction)
+        }
+        change.consume()
+        if (!change.pressed) return SwipeEnd(direction)
+    }
+}
+
+/** The direction [offset] mostly points in, or null when it is shorter than [threshold] both ways. */
+internal fun swipeDirectionOf(offset: Offset, threshold: Float): SwipeDirection? {
+    val (dx, dy) = offset
+    return when {
+        abs(dx) < threshold && abs(dy) < threshold -> null
+        abs(dx) >= abs(dy) -> if (dx > 0) SwipeDirection.RIGHT else SwipeDirection.LEFT
+        else -> if (dy > 0) SwipeDirection.DOWN else SwipeDirection.UP
     }
 }
 
