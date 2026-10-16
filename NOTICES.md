@@ -34,9 +34,10 @@
     - https://github.com/square/leakcanary
     - https://square.github.io/leakcanary/
 
-* FlexboxLayout: Apache License, Version 2.0
-    - https://github.com/nicklockwood/FlexboxLayout/blob/master/LICENSE
-    - https://github.com/google/flexbox-layout
+* Jetpack Compose (UI, Foundation, Material 3) and AndroidX Activity Compose, Lifecycle Compose: Apache License, Version 2.0
+    - https://github.com/androidx/androidx/blob/androidx-main/LICENSE.txt
+    - https://github.com/androidx/androidx
+    - https://developer.android.com/jetpack/compose
 
 * Material Components for Android: Apache License, Version 2.0
     - https://github.com/material-components/material-components-android/blob/master/LICENSE
