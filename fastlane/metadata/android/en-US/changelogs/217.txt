@@ -1,0 +1,5 @@
+Hi there! Guileless Bopomofo 5.1.0 can now guess your next English word.
+
+* New optional next-word prediction: with English word prediction on, turn it on in General settings, and after each space I suggest the words that most often come next. Tap one and I suggest the word after it. The suggestions come from Simple English Wikipedia, so they suit plain writing more than chatting. Nothing you type is stored.
+
+Thanks for using Guileless Bopomofo!
