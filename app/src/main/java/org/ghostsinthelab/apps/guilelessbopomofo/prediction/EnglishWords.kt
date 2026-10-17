@@ -23,6 +23,7 @@ import java.util.Locale
 
 object EnglishWords {
     private const val APOSTROPHE = '\''
+    private const val SPACE = ' '
 
     private fun Char.isWordChar(): Boolean = this in 'a'..'z' || this in 'A'..'Z' || this == APOSTROPHE
 
@@ -31,10 +32,22 @@ object EnglishWords {
      * Anything else, a Han character say, ends it, and so do quotes in front of it:
      * `我喜歡Andr` gives `Andr`, `'hel` gives `hel`.
      */
-    fun trailingWord(textBeforeCursor: CharSequence): String {
-        val start = textBeforeCursor.indexOfLast { !it.isWordChar() } + 1
-        return textBeforeCursor.substring(start).trimStart(APOSTROPHE)
+    fun trailingWord(textBeforeCursor: CharSequence): String =
+        textBeforeCursor.substring(trailingWordStart(textBeforeCursor)).trimStart(APOSTROPHE)
+
+    /**
+     * The English word before the one the cursor sits at the end of, when only spaces part
+     * them, or an empty string otherwise: `What's ` and `What's u` give `What's`, but
+     * `end. `, `我喜歡 ` and a new line give nothing, as a new sentence starts there.
+     */
+    fun previousWord(textBeforeCursor: CharSequence): String {
+        val beforeTrailingWord = textBeforeCursor.subSequence(0, trailingWordStart(textBeforeCursor))
+        val beforeSpaces = beforeTrailingWord.trimEnd { it == SPACE }
+        if (beforeSpaces.length == beforeTrailingWord.length) return ""
+        return trailingWord(beforeSpaces)
     }
+
+    private fun trailingWordStart(text: CharSequence): Int = text.indexOfLast { !it.isWordChar() } + 1
 
     /**
      * Writes [word] the way [prefix] was typed: `TH` makes it all capitals, `Th` capitalizes

@@ -24,6 +24,11 @@
   >
   > Permission to use, copy, modify, distribute and sell these word lists, the associated scripts, the output created from the scripts, and its documentation for any purpose is hereby granted without fee, provided that the above copyright notice appears in all copies and that both that copyright notice and this permission notice appear in supporting documentation. Kevin Atkinson makes no representations about the suitability of this array for any purpose. It is provided "as is" without express or implied warranty.
 
+* Simple English Wikipedia, used for English next-word prediction: text by the Simple English Wikipedia contributors, licensed under the Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0). The bigram list in this product, `app/src/main/assets/english/wikipedia-bigrams.txt`, is an **adaptation** of the 2026-10-01 database dump: counts of which word follows which, restricted to SCOWL words and the most frequent followers, made by `tools/english-bigrams/build.sh`. It is licensed under CC BY-SA 4.0 too; its attribution and license notice ships with this product at `app/src/main/assets/english/WIKIPEDIA-BIGRAMS-LICENSE.txt`.
+    - https://simple.wikipedia.org/
+    - https://dumps.wikimedia.org/simplewiki/20261001/
+    - https://creativecommons.org/licenses/by-sa/4.0/
+
 * EventBus: Apache License, Version 2.0
     - https://greenrobot.org/eventbus/license/
     - https://github.com/greenrobot/EventBus/blob/master/LICENSE

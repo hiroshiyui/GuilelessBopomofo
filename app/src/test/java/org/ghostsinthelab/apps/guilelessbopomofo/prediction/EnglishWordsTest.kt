@@ -26,6 +26,57 @@ import org.junit.Test
 
 class EnglishWordsTest {
 
+    // --- previousWord ---
+
+    @Test
+    fun previousWord_rightAfterASpace() {
+        assertEquals("What's", EnglishWords.previousWord("What's "))
+    }
+
+    @Test
+    fun previousWord_whileTypingTheNextOne() {
+        assertEquals("What's", EnglishWords.previousWord("What's u"))
+    }
+
+    @Test
+    fun previousWord_acrossSeveralSpaces() {
+        assertEquals("as", EnglishWords.previousWord("as   w"))
+    }
+
+    @Test
+    fun previousWord_dropsLeadingQuotes() {
+        assertEquals("hello", EnglishWords.previousWord("say 'hello "))
+    }
+
+    @Test
+    fun previousWord_ofEnglishAfterHanCharacters() {
+        assertEquals("apple", EnglishWords.previousWord("我喜歡apple "))
+    }
+
+    @Test
+    fun previousWord_noneAfterPunctuation() {
+        assertEquals("", EnglishWords.previousWord("the end. "))
+        assertEquals("", EnglishWords.previousWord("well, w"))
+    }
+
+    @Test
+    fun previousWord_noneAfterHanCharacters() {
+        assertEquals("", EnglishWords.previousWord("我喜歡 "))
+    }
+
+    @Test
+    fun previousWord_noneAcrossANewLine() {
+        assertEquals("", EnglishWords.previousWord("hello\n"))
+        assertEquals("", EnglishWords.previousWord("hello\nw"))
+    }
+
+    @Test
+    fun previousWord_noneWithoutASpace() {
+        assertEquals("", EnglishWords.previousWord("hello"))
+        assertEquals("", EnglishWords.previousWord(""))
+        assertEquals("", EnglishWords.previousWord(" "))
+    }
+
     // --- trailingWord ---
 
     @Test

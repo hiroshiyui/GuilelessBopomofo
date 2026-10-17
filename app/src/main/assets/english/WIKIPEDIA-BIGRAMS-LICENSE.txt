@@ -1,0 +1,21 @@
+wikipedia-bigrams.txt
+=====================
+
+wikipedia-bigrams.txt lists, for English words, the words that most often follow them in
+the articles of Simple English Wikipedia (https://simple.wikipedia.org/), as found in its
+database dump of 2026-10-01:
+
+    https://dumps.wikimedia.org/simplewiki/20261001/simplewiki-20261001-pages-articles.xml.bz2
+
+The text of Simple English Wikipedia is written by its contributors, whose edit history is
+kept with each article, and is available under the Creative Commons Attribution-ShareAlike
+4.0 International License (CC BY-SA 4.0).
+
+wikipedia-bigrams.txt is an adaptation of that text: only counts of which word follows which
+are kept, restricted to the words of the SCOWL word list and to the most frequent followers
+of each word, by tools/english-bigrams/build.sh of Guileless Bopomofo. It is licensed under
+the Creative Commons Attribution-ShareAlike 4.0 International License as well:
+
+    https://creativecommons.org/licenses/by-sa/4.0/
+
+No endorsement by Wikipedia, the Wikimedia Foundation or the contributors is implied.

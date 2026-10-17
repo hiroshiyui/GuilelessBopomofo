@@ -46,6 +46,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ConversionEngines
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_SPACE_AS_SELECTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD
@@ -136,7 +137,15 @@ fun GeneralSettingsScreen(modifier: Modifier = Modifier) {
 
         SettingsLabel(stringResource(R.string.english_prediction))
         SettingsDescription(stringResource(R.string.english_prediction_description))
+        val englishPredictionEnabled by rememberBooleanPreference(USER_ENABLE_ENGLISH_PREDICTION, false)
         BooleanPreferenceSwitch(R.string.english_prediction_switch, USER_ENABLE_ENGLISH_PREDICTION, false)
+        // Next words come on top of word prediction, never on their own.
+        if (englishPredictionEnabled) {
+            SettingsDescription(stringResource(R.string.english_next_word_prediction_description))
+            BooleanPreferenceSwitch(
+                R.string.english_next_word_prediction_switch, USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION, false
+            )
+        }
 
     }
 }
