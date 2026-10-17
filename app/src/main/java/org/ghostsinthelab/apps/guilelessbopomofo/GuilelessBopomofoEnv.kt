@@ -34,6 +34,7 @@ object GuilelessBopomofoEnv {
     const val USER_DISPLAY_ETEN26_QWERTY_LAYOUT : String = "user_display_eten26_qwerty_layout"
     const val USER_DISPLAY_HSU_QWERTY_LAYOUT : String = "user_display_hsu_qwerty_layout"
     const val USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH : String = "user_enable_double_touch_ime_switch"
+    const val USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION : String = "user_enable_english_next_word_prediction"
     const val USER_ENABLE_ENGLISH_PREDICTION : String = "user_enable_english_prediction"
     const val USER_ENABLE_IME_SWITCH : String = "user_enable_ime_switch"
     const val USER_ENABLE_SPACE_AS_SELECTION : String = "user_enable_space_as_selection"

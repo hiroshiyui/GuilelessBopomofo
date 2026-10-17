@@ -56,6 +56,8 @@
     <string name="english_prediction">英文單字預測</string>
     <string name="english_prediction_description">如果啟用本功能，在英數模式下輸入英文時，鍵盤上方會顯示單字建議。建議來自內建的單字表，不會儲存您輸入的任何內容。</string>
     <string name="english_prediction_switch">啟用英文單字預測？</string>
+    <string name="english_next_word_prediction_description">啟用單字預測後，還可以在輸入空白後建議最常接在後面的單字。建議統計自簡易英文維基百科，較適合一般書寫而非聊天，不會儲存您輸入的任何內容。</string>
+    <string name="english_next_word_prediction_switch">同時建議下一個單字？</string>
     <string name="haptic_feedback_strength">按鍵觸感力道</string>
     <string name="haptic_feedback_strength_description">調整字符鍵的按鍵觸感力道，實際效果依不同機種而有差異。設定值若為 0 則會關閉按鍵觸感效果。</string>
     <string name="current_mode">模式：</string>

@@ -62,6 +62,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_SPACE_AS_SELECTION
@@ -95,6 +96,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Space
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Up
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeDown
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeUp
+import org.ghostsinthelab.apps.guilelessbopomofo.prediction.BigramPredictor
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishPrediction
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishWords
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.ScowlWordPredictor
@@ -129,7 +131,11 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     override val lifecycle: Lifecycle get() = lifecycleRegistry
     override val savedStateRegistry: SavedStateRegistry get() = savedStateRegistryController.savedStateRegistry
 
-    private val englishPrediction = EnglishPrediction(lifecycleScope) { assets.open(ScowlWordPredictor.ASSET_PATH) }
+    private val englishPrediction = EnglishPrediction(
+        lifecycleScope,
+        openWordList = { assets.open(ScowlWordPredictor.ASSET_PATH) },
+        openBigramList = { assets.open(BigramPredictor.ASSET_PATH) },
+    )
 
     // whether the text field being edited wants word suggestions, see onStartInputView()
     private var fieldAllowsSuggestions: Boolean = false
@@ -215,6 +221,8 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
             sharedPreferences.getInt(USER_HAPTIC_FEEDBACK_STRENGTH, defaultHapticFeedbackStrength)
 
         englishPrediction.isEnabled = sharedPreferences.getBoolean(USER_ENABLE_ENGLISH_PREDICTION, false)
+        englishPrediction.isNextWordEnabled =
+            sharedPreferences.getBoolean(USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION, false)
     }
 
 
@@ -592,7 +600,15 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     private fun refreshSuggestions() {
         val predicting = suggestionStripApplies() && !ChewingUtil.anyBufferIsNotEmpty()
         uiState.showBuffers = !predicting
-        uiState.suggestions = if (predicting) englishPrediction.suggest(englishWordBeforeCursor()) else emptyList()
+        uiState.suggestions = if (predicting) englishSuggestions() else emptyList()
+    }
+
+    private fun englishSuggestions(): List<String> {
+        val textBeforeCursor = currentInputConnection?.getTextBeforeCursor(PREDICTION_LOOKBEHIND, 0) ?: ""
+        return englishPrediction.suggest(
+            previous = EnglishWords.previousWord(textBeforeCursor),
+            prefix = EnglishWords.trailingWord(textBeforeCursor),
+        )
     }
 
     private fun englishWordBeforeCursor(): String =
@@ -861,6 +877,11 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
 
             USER_ENABLE_ENGLISH_PREDICTION -> {
                 englishPrediction.isEnabled = sharedPreferences?.getBoolean(key, false) ?: false
+                refreshSuggestions()
+            }
+
+            USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION -> {
+                englishPrediction.isNextWordEnabled = sharedPreferences?.getBoolean(key, false) ?: false
                 refreshSuggestions()
             }
         }
