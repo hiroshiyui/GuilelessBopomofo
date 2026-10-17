@@ -32,12 +32,14 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.captionBar
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyRow
@@ -148,7 +150,9 @@ private fun rememberKeyboardSpec(keyboard: SoftKeyboard, variant: KeyboardVarian
 
 /**
  * From Android 15 on the input view reaches down behind the navigation bar; fill that part
- * with a gradient rather than leave the keys under it.
+ * with a gradient rather than leave the keys under it. With gesture navigation the system
+ * reports the IME's own back/switcher bar as a caption bar inset, taller than the gesture
+ * handle that [WindowInsets.navigationBars] covers, so take whichever is larger.
  */
 @Composable
 private fun BottomGradientSpacer() {
@@ -156,7 +160,7 @@ private fun BottomGradientSpacer() {
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
-            .windowInsetsBottomHeight(WindowInsets.navigationBars)
+            .windowInsetsBottomHeight(WindowInsets.navigationBars.union(WindowInsets.captionBar))
             .background(BottomGradient),
     )
 }
