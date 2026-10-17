@@ -1,0 +1,5 @@
+Hi there! Guileless Bopomofo 5.0.1 is a small fix-up release.
+
+* On Android 15 and later with gesture navigation, my keyboard no longer sits too close to the system's back and keyboard-switch buttons at the bottom of the screen.
+
+Thanks for using Guileless Bopomofo!
