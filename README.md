@@ -1,17 +1,21 @@
 >**聲明：** 本人已經離開軟體業，此專案僅能提供「維持與新版新酷音函式庫、新版 Android 相容性」此最小限度的維護更新，恕不再接受任何功能請求。
 >
 >**Statement:** I have left the software industry. This project will only provide minimal maintenance to ensure compatibility with new versions of the libchewing library and Android. No feature requests will be accepted.
+>
+>**声明：** 私はすでにソフトウェア業界を離れました。本プロジェクトは、新しいバージョンの libchewing ライブラリおよび Android との互換性を保つための最小限のメンテナンスのみを行い、機能追加のリクエストは一切受け付けません。
 
 # Guileless Bopomofo 樸實注音鍵盤
 
 ![Screenshot of Guileless Bopomofo](./media/Screenshot_20251223_234723.png)
 ![Screenshot of Guileless Bopomofo](./media/Screenshot_20251223_235026.png)
 
-## About 這是啥
+## About 這是啥 概要
 
 A [Bopomofo](https://en.wikipedia.org/wiki/Bopomofo) software keyboard (aka input method editor) on Android, which is utilizing [libchewing](http://chewing.im/) for intelligent phonetic processing.
 
 樸實注音鍵盤是 Android 平台上的[注音符號](https://zh.wikipedia.org/wiki/%E6%B3%A8%E9%9F%B3%E7%AC%A6%E8%99%9F)軟體鍵盤（輸入法編輯器），藉由[新酷音輸入法](http://chewing.im/)程式庫的輔助，提供自動選字處理機能。
+
+素朴な注音符号入力キーボードは、Android 向けの[注音符号](https://ja.wikipedia.org/wiki/%E6%B3%A8%E9%9F%B3%E7%AC%A6%E5%8F%B7)ソフトウェアキーボード（インプットメソッドエディタ）です。[新酷音（libchewing）](http://chewing.im/)ライブラリを利用して、自動的な漢字変換を提供します。
 
 <a href='https://f-droid.org/zh_Hant/packages/org.ghostsinthelab.apps.guilelessbopomofo/'><img alt="F-Droid立即下載" src="./media/badge_get-it-on-zh-tw.png"/></a>
 
@@ -19,13 +23,17 @@ Please only download and install this software from the F-Droid App repository m
 
 請只在以上所示的 F-Droid App 發行庫，或透過[本專案釋出之 APK 安裝套件包](https://github.com/hiroshiyui/GuilelessBopomofo/releases)取得、安裝本軟體，以保障您的資訊安全。
 
+情報セキュリティを守るため、本ソフトウェアは上記の F-Droid アプリリポジトリ、または[本プロジェクトが公開している APK パッケージ](https://github.com/hiroshiyui/GuilelessBopomofo/releases)からのみダウンロード・インストールしてください。
+
 <strong>NOTICE:</strong> From 2025.09.08, this App is _not_ available on Google Play anymore.
 
 <strong>敬請注意：</strong>自 2025.09.08 開始，本軟體<strong>不再</strong>於 Google Play 上架。
 
-## Usage 使用
+<strong>ご注意：</strong>2025.09.08 以降、本アプリは Google Play では<strong>配信されていません</strong>。
 
-### Bopomofo keyboard layouts 注音鍵盤排列
+## Usage 使用 使い方
+
+### Bopomofo keyboard layouts 注音鍵盤排列 注音キー配列
 
 In case you don't know: "Dachen" is the most common keyboard layout, which arranges Bopomofo symbols sequentially in columns.
 
@@ -39,7 +47,13 @@ As for "Hsu's Bopomofo Layout" and "E-Ten 26-Keys", they are more ergonomic Bopo
 
 「精簡大千」則把注音符號放在傳統手機的數字鍵上，採用常見的臺灣手機注音排列（1：ㄅㄆㄇㄈ、2：ㄉㄊㄋㄌ、3：聲調，依此類推）。點按按鍵輸入第一個符號，往上、右、左滑動（0 鍵還可往下滑）輸入其他符號；每個按鍵都會在對應的滑動方向邊緣標示該符號。一聲請按空白鍵。
 
-### Physical keyboard 實體鍵盤
+念のため：「大千式配列」は最も一般的なキーボード配列で、注音符号を列ごとに順番に並べたものです。
+
+「許氏配列」「倚天26キー配列」「大千26キー配列」は、より人間工学に基づいた 3 段式の注音キーボード配列です。私がこのインプットメソッドエディタを開発した理由の一つは、パソコンでもスマートフォンでも同じ許氏配列を使いたかったからです。
+
+「コンパクト大千（テンキー）」は、フィーチャーフォンの数字キーに注音符号を割り当てた、台湾の携帯電話でおなじみの配列です（1：ㄅㄆㄇㄈ、2：ㄉㄊㄋㄌ、3：声調、以下同様）。キーをタップすると最初の記号が、上・右・左（0 キーは下も）にスワイプするとほかの記号が入力されます。各キーには、スワイプする方向の端にその記号が表示されています。第一声はスペースキーで入力します。
+
+### Physical keyboard 實體鍵盤 物理キーボード
 
 Several common hotkeys:
   * Tap <kbd>Shift</kbd> (either one) on its own, or press <kbd>Shift</kbd> + <kbd>Space</kbd>: Switch between Bopomofo and Alphanumeric input modes.
@@ -56,6 +70,14 @@ Several common hotkeys:
   * <kbd>Shift</kbd> + <kbd>Enter</kbd> 或 <kbd>Alt</kbd> + <kbd>Enter</kbd>：換行，即使該文字欄位的 <kbd>Enter</kbd> 是送出或提交（注音緩衝區為空時）
   * 長按 <kbd>右 Shift</kbd>：開啟常用標點符號候選清單，按 <kbd>←</kbd><kbd>→</kbd> 鍵換頁
   * 鍵盤左上方的 <kbd>`</kbd> 鍵：開啟各種類別的符號候選清單，按 <kbd>←</kbd><kbd>→</kbd> 鍵換頁
+
+主なショートカットキー：
+  * いずれかの <kbd>Shift</kbd> キーだけを軽く押す、または <kbd>Shift</kbd> + <kbd>スペース</kbd>：注音と英数字の入力モードを切り替えます
+  * <kbd>Alt</kbd> + <kbd>スペース</kbd>：全角と半角を切り替えます
+  * <kbd>Alt</kbd> + <kbd>I</kbd>：他の入力方法に切り替えます
+  * <kbd>Shift</kbd> + <kbd>Enter</kbd> または <kbd>Alt</kbd> + <kbd>Enter</kbd>：改行を入力します。<kbd>Enter</kbd> で送信・確定される入力欄でも改行できます（注音バッファが空のとき）
+  * <kbd>右 Shift</kbd> を長押し：よく使う句読点の候補一覧を開きます。<kbd>←</kbd><kbd>→</kbd> キーでページを切り替えます
+  * キーボード左上の <kbd>`</kbd> キー：各カテゴリの記号候補一覧を開きます。<kbd>←</kbd><kbd>→</kbd> キーでページを切り替えます
 
 ## Build 組建
 
