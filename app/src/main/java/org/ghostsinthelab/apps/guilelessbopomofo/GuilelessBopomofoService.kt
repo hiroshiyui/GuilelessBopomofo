@@ -91,7 +91,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Left
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.LeftAlt
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyHandler
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Right
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.RightShift
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Shift
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Space
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Up
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeDown
@@ -140,15 +140,19 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     // whether the text field being edited wants word suggestions, see onStartInputView()
     private var fieldAllowsSuggestions: Boolean = false
 
-    // The physical keys we answer to ourselves. Every handler is stateless, so one instance
-    // of each lasts for the lifetime of the service.
+    // Both Shift keys share this one: it follows a press through to tell a tap from a chord.
+    private val shift = Shift()
+
+    // The physical keys we answer to ourselves. Every handler but `shift` is stateless, so one
+    // instance of each lasts for the lifetime of the service.
     private val physicalKeyDispatcher: Map<Int, PhysicalKeyHandler> = mapOf(
         KeyEvent.KEYCODE_DPAD_DOWN to Down(),
         KeyEvent.KEYCODE_DPAD_UP to Up(),
         KeyEvent.KEYCODE_DPAD_LEFT to Left(),
         KeyEvent.KEYCODE_DPAD_RIGHT to Right(),
         KeyEvent.KEYCODE_ALT_LEFT to LeftAlt(),
-        KeyEvent.KEYCODE_SHIFT_RIGHT to RightShift(),
+        KeyEvent.KEYCODE_SHIFT_LEFT to shift,
+        KeyEvent.KEYCODE_SHIFT_RIGHT to shift,
         KeyEvent.KEYCODE_ENTER to Enter(),
         KeyEvent.KEYCODE_SPACE to Space(),
         KeyEvent.KEYCODE_ESCAPE to Escape(),
@@ -324,6 +328,11 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(logTag, "onKeyDown()")
+
+        // any other key going down turns a Shift press into a chord, e.g. Shift-Space
+        if (keyCode !in Shift.KEY_CODES && event?.repeatCount == 0) {
+            shift.onOtherKeyDown()
+        }
 
         if (!isInputViewShown) {
             return super.onKeyDown(keyCode, event)

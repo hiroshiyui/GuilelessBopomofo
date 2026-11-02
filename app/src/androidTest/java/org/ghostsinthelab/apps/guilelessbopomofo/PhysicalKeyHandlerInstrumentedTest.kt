@@ -19,6 +19,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.os.SystemClock
 import android.util.Log
 import android.view.KeyEvent
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -33,7 +34,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Left
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.LeftAlt
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyHandler
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Right
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.RightShift
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Shift
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Space
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -281,8 +282,8 @@ class PhysicalKeyHandlerInstrumentedTest {
     fun space_onKeyDown_withShiftPressed_postsToggleKeyboardMainLayoutMode() {
         val space = Space()
         // Create a KeyEvent with Shift pressed
-        val downTime = android.os.SystemClock.uptimeMillis()
-        val eventTime = android.os.SystemClock.uptimeMillis()
+        val downTime = SystemClock.uptimeMillis()
+        val eventTime = SystemClock.uptimeMillis()
         val event = KeyEvent(
             downTime, eventTime,
             KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 0,
@@ -299,8 +300,8 @@ class PhysicalKeyHandlerInstrumentedTest {
     fun space_onKeyDown_withAltPressed_postsToggleFullOrHalfWidthMode() {
         val space = Space()
         // Create a KeyEvent with Alt pressed
-        val downTime = android.os.SystemClock.uptimeMillis()
-        val eventTime = android.os.SystemClock.uptimeMillis()
+        val downTime = SystemClock.uptimeMillis()
+        val eventTime = SystemClock.uptimeMillis()
         val event = KeyEvent(
             downTime, eventTime,
             KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE, 0,
@@ -330,8 +331,8 @@ class PhysicalKeyHandlerInstrumentedTest {
     fun left_onKeyDown_withCtrlPressed_postsUpdateCursorPosition() {
         val left = Left()
         // Create a KeyEvent with Ctrl pressed
-        val downTime = android.os.SystemClock.uptimeMillis()
-        val eventTime = android.os.SystemClock.uptimeMillis()
+        val downTime = SystemClock.uptimeMillis()
+        val eventTime = SystemClock.uptimeMillis()
         val event = KeyEvent(
             downTime, eventTime,
             KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT, 0,
@@ -363,8 +364,8 @@ class PhysicalKeyHandlerInstrumentedTest {
     fun right_onKeyDown_withCtrlPressed_postsUpdateCursorPosition() {
         val right = Right()
         // Create a KeyEvent with Ctrl pressed
-        val downTime = android.os.SystemClock.uptimeMillis()
-        val eventTime = android.os.SystemClock.uptimeMillis()
+        val downTime = SystemClock.uptimeMillis()
+        val eventTime = SystemClock.uptimeMillis()
         val event = KeyEvent(
             downTime, eventTime,
             KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT, 0,
@@ -392,11 +393,11 @@ class PhysicalKeyHandlerInstrumentedTest {
         assertEquals(1, receivedUpdateCursorPosition.size)
     }
 
-    // ========== RightShift tests ==========
+    // ========== Shift tests ==========
 
     @Test
     fun rightShift_onKeyDown_returnsTrue() {
-        val rightShift = RightShift()
+        val rightShift = Shift()
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_RIGHT)
         val result = rightShift.onKeyDown(appContext, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
 
@@ -405,7 +406,7 @@ class PhysicalKeyHandlerInstrumentedTest {
 
     @Test
     fun rightShift_onKeyLongPress_inChineseMode_postsEvents() {
-        val rightShift = RightShift()
+        val rightShift = Shift()
         // Ensure we are in Chinese mode
         ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         assertEquals(ChiEngMode.CHINESE.mode, ChewingBridge.chewing.getChiEngMode())
@@ -419,13 +420,74 @@ class PhysicalKeyHandlerInstrumentedTest {
 
     @Test
     fun rightShift_onKeyLongPress_inSymbolMode_returnsFalse() {
-        val rightShift = RightShift()
+        val rightShift = Shift()
         // Switch to symbol (English) mode
         ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
         assertEquals(ChiEngMode.SYMBOL.mode, ChewingBridge.chewing.getChiEngMode())
 
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_RIGHT)
         val result = rightShift.onKeyLongPress(appContext, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
+
+        assertFalse(result)
+        assertEquals(0, receivedSwitchToLayout.size)
+    }
+
+    private fun shiftEvent(action: Int, keyCode: Int, downTime: Long, eventTime: Long) =
+        KeyEvent(downTime, eventTime, action, keyCode, 0)
+
+    private fun tapShift(shift: Shift, keyCode: Int, heldMs: Long, between: () -> Unit = {}) {
+        val downTime = SystemClock.uptimeMillis()
+        shift.onKeyDown(appContext, keyCode, shiftEvent(KeyEvent.ACTION_DOWN, keyCode, downTime, downTime))
+        between()
+        shift.onKeyUp(appContext, keyCode, shiftEvent(KeyEvent.ACTION_UP, keyCode, downTime, downTime + heldMs))
+    }
+
+    @Test
+    fun shift_quickTap_eitherKey_togglesMainLayoutMode() {
+        val shift = Shift()
+        tapShift(shift, KeyEvent.KEYCODE_SHIFT_LEFT, heldMs = 80)
+        tapShift(shift, KeyEvent.KEYCODE_SHIFT_RIGHT, heldMs = 80)
+
+        assertEquals(2, receivedToggleKeyboardMainLayoutMode.size)
+    }
+
+    @Test
+    fun shift_heldTooLong_doesNotToggle() {
+        val shift = Shift()
+        tapShift(shift, KeyEvent.KEYCODE_SHIFT_LEFT, heldMs = Shift.TAP_TIMEOUT_MS + 1)
+
+        assertEquals(0, receivedToggleKeyboardMainLayoutMode.size)
+    }
+
+    @Test
+    fun shift_chordWithAnotherKey_doesNotToggle() {
+        val shift = Shift()
+        tapShift(shift, KeyEvent.KEYCODE_SHIFT_LEFT, heldMs = 80) { shift.onOtherKeyDown() }
+
+        assertEquals(0, receivedToggleKeyboardMainLayoutMode.size)
+    }
+
+    @Test
+    fun shift_bothShiftKeysTogether_doesNotToggle() {
+        val shift = Shift()
+        val downTime = SystemClock.uptimeMillis()
+        val left = KeyEvent.KEYCODE_SHIFT_LEFT
+        val right = KeyEvent.KEYCODE_SHIFT_RIGHT
+        shift.onKeyDown(appContext, left, shiftEvent(KeyEvent.ACTION_DOWN, left, downTime, downTime))
+        shift.onKeyDown(appContext, right, shiftEvent(KeyEvent.ACTION_DOWN, right, downTime + 10, downTime + 10))
+        shift.onKeyUp(appContext, left, shiftEvent(KeyEvent.ACTION_UP, left, downTime, downTime + 50))
+        shift.onKeyUp(appContext, right, shiftEvent(KeyEvent.ACTION_UP, right, downTime + 10, downTime + 60))
+
+        assertEquals(0, receivedToggleKeyboardMainLayoutMode.size)
+    }
+
+    @Test
+    fun shift_onKeyLongPress_leftShift_returnsFalse() {
+        val shift = Shift()
+        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
+
+        val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT)
+        val result = shift.onKeyLongPress(appContext, KeyEvent.KEYCODE_SHIFT_LEFT, event)
 
         assertFalse(result)
         assertEquals(0, receivedSwitchToLayout.size)

@@ -42,7 +42,7 @@ As for "Hsu's Bopomofo Layout" and "E-Ten 26-Keys", they are more ergonomic Bopo
 ### Physical keyboard 實體鍵盤
 
 Several common hotkeys:
-  * <kbd>Left Shift</kbd> + <kbd>Space</kbd>: Switch between Bopomofo and Alphanumeric input modes.
+  * Tap <kbd>Shift</kbd> (either one) on its own, or press <kbd>Shift</kbd> + <kbd>Space</kbd>: Switch between Bopomofo and Alphanumeric input modes.
   * <kbd>Alt</kbd> + <kbd>Space</kbd>: Switch between full-width and half-width character input modes.
   * <kbd>Alt</kbd> + <kbd>I</kbd>: Switch to other input methods.
   * <kbd>Shift</kbd> + <kbd>Enter</kbd> or <kbd>Alt</kbd> + <kbd>Enter</kbd>: Insert a line break, even where <kbd>Enter</kbd> would send or submit the text field (once the Bopomofo buffer is empty).
@@ -50,7 +50,7 @@ Several common hotkeys:
   * The <kbd>`</kbd> key (top-left of the keyboard): Open the symbol candidate list for various categories. Use <kbd>←</kbd><kbd>→</kbd> arrow keys to switch pages.
 
 幾個常用控制鍵：
-  * <kbd>左 Shift</kbd> + <kbd>空白鍵</kbd>：切換注音與英數字輸入模式
+  * 單獨輕按任一 <kbd>Shift</kbd> 鍵，或按 <kbd>Shift</kbd> + <kbd>空白鍵</kbd>：切換注音與英數字輸入模式
   * <kbd>Alt</kbd> + <kbd>空白鍵</kbd>：切換全形與半形
   * <kbd>Alt</kbd> + <kbd>I</kbd>：切換其他輸入法
   * <kbd>Shift</kbd> + <kbd>Enter</kbd> 或 <kbd>Alt</kbd> + <kbd>Enter</kbd>：換行，即使該文字欄位的 <kbd>Enter</kbd> 是送出或提交（注音緩衝區為空時）
