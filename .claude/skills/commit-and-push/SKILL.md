@@ -60,7 +60,7 @@ Follow the existing style:
    - `origin` — GitHub (git@github.com:hiroshiyui/GuilelessBopomofo.git)
    - `gitlab` — GitLab mirror (git@gitlab.com:hiroshiyui/GuilelessBopomofo.git)
 
-   By default, push to `origin`. Push to `gitlab` only if the user requests it.
+   Once the user confirms, push the current branch to both `origin` and `gitlab`, so the mirror never falls behind.
 
 ## Branch Conventions
 
