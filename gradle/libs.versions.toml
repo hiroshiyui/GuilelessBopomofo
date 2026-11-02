@@ -1,10 +1,10 @@
 [versions]
-activityComposeVersion = "1.12.4"
+activityComposeVersion = "1.13.0"
 composeBomVersion = "2026.09.00"
-coreKtxVersion = "1.19.0"
+coreKtxVersion = "1.19.1"
 coreVersion = "1.7.0"
 eventbusVersion = "3.3.1"
-gradle = "9.4.1"
+gradle = "9.5.0"
 junit = "1.3.0"
 junitVersion = "4.13.2"
 kotlinVersion = "2.4.10"
