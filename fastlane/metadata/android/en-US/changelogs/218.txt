@@ -1,0 +1,5 @@
+Hi there! Guileless Bopomofo 5.1.1 adds a handy shortcut for physical keyboards.
+
+* Tap either Shift key on its own to switch between Bopomofo and English, just like Shift + Space. Shift used together with another key, held down, or long-pressed works as before.
+
+Thanks for using Guileless Bopomofo!
