@@ -1,0 +1,6 @@
+Hi there! Guileless Bopomofo 5.1.2 polishes the Shift shortcut for physical keyboards.
+
+* Tapping Shift now switches between Bopomofo and English only when it's a quick press on its own. Shift with Ctrl or Alt, a held-down Shift, or Shift + mouse click no longer switch by accident.
+* Left Shift reaches apps again, so apps that use Shift themselves work as before.
+
+Thanks for using Guileless Bopomofo!
