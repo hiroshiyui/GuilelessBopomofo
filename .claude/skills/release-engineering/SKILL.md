@@ -33,6 +33,14 @@ The established release workflow follows this pattern:
 6. **Tag the release** — lightweight tag matching versionName (e.g. `3.7.5`). Tags are NOT annotated.
 7. **Build signed APKs** — only now, after the commit and tag: F-Droid builds reproducibly from the tagged commit, so the published APKs have to be built from exactly that commit. Signing requires a keystore passphrase, so **do not run the build automatically**. Prompt the user to build the signed APKs manually in Android Studio (Build > Generate Signed APK) or via the command line. Output: `app/build/outputs/apk/release/` (debug builds go to `app/build/outputs/apk/debug/`). Android Studio may also leave copies in `app/release/` and `app/debug/`, but the user signs the ones under `app/build/outputs/apk/`. Wait for the user to confirm the build is complete before proceeding.
 8. **GPG-sign** the APKs (see GPG Signing below). Once the user confirms signing and the signatures verify, **push** the release branch and tag to `origin` and `gitlab` without asking. Push only to these two remotes, even if `git remote` lists others, then create the GitHub Release.
+9. **Merge `current` into `master`** — once the GitHub Release is published, bring `master` up to the release and push everything to both remotes without asking:
+   ```bash
+   git checkout master
+   git merge --ff-only current
+   git push origin master && git push gitlab master
+   git checkout current
+   ```
+   `master` has always been fast-forwarded to `current`, so it never gets merge commits of its own. If `--ff-only` fails, `master` has commits that `current` lacks: stop and ask the user instead of creating a merge commit. Afterwards `current`, `master` and the release tag should be on `origin` and `gitlab`, all at the release commit (`git ls-remote origin` and `git ls-remote gitlab` to check).
 
 ### Git Conventions
 
@@ -136,7 +144,7 @@ The release title matches the tag/versionName (e.g. `3.7.5`).
 
 ## Important Reminders
 
-- Push the release commit and tag to `origin` and `gitlab` without asking for confirmation (ask before pushing to any other remote); the user has pre-approved this for releases. Never force-push.
+- Push the release commit, the tag, and the fast-forwarded `master` to `origin` and `gitlab` without asking for confirmation (ask before pushing to any other remote); the user has pre-approved this for releases. Never force-push.
 - Create the GitHub Release once the user confirms the APKs are built and signed.
 - Run tests before tagging a release if the user hasn't already.
 - The release APK requires a signing configuration — the user handles this outside of version control.
