@@ -32,7 +32,7 @@ The established release workflow follows this pattern:
 5. **Create release commit** — commit message format: `Release <versionName>` with `Signed-off-by` trailer.
 6. **Tag the release** — lightweight tag matching versionName (e.g. `3.7.5`). Tags are NOT annotated.
 7. **Build signed APKs** — only now, after the commit and tag: F-Droid builds reproducibly from the tagged commit, so the published APKs have to be built from exactly that commit. Signing requires a keystore passphrase, so **do not run the build automatically**. Prompt the user to build the signed APKs manually in Android Studio (Build > Generate Signed APK) or via the command line. Output: `app/build/outputs/apk/release/` (debug builds go to `app/build/outputs/apk/debug/`). Android Studio may also leave copies in `app/release/` and `app/debug/`, but the user signs the ones under `app/build/outputs/apk/`. Wait for the user to confirm the build is complete before proceeding.
-8. **GPG-sign** the APKs (see GPG Signing below). Once the user confirms signing and the signatures verify, **push** the release branch and tag to every remote listed by `git remote` (currently `origin` and `gitlab`) without asking, then create the GitHub Release.
+8. **GPG-sign** the APKs (see GPG Signing below). Once the user confirms signing and the signatures verify, **push** the release branch and tag to `origin` and `gitlab` without asking. Push only to these two remotes, even if `git remote` lists others, then create the GitHub Release.
 
 ### Git Conventions
 
@@ -136,7 +136,7 @@ The release title matches the tag/versionName (e.g. `3.7.5`).
 
 ## Important Reminders
 
-- Push the release commit and tag to every remote (`origin` and `gitlab`) without asking for confirmation; the user has pre-approved this for releases. Never force-push.
+- Push the release commit and tag to `origin` and `gitlab` without asking for confirmation (ask before pushing to any other remote); the user has pre-approved this for releases. Never force-push.
 - Create the GitHub Release once the user confirms the APKs are built and signed.
 - Run tests before tagging a release if the user hasn't already.
 - The release APK requires a signing configuration — the user handles this outside of version control.

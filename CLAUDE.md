@@ -60,7 +60,7 @@ User input -> `GuilelessBopomofoService` -> `Chewing` (JNI) -> libchewing (nativ
 ## Build Configuration
 
 - Kotlin (no separate Kotlin Gradle plugin — uses AGP's built-in Kotlin support)
-- Compile/Target SDK 36, Min SDK 23
+- Compile/Target SDK 37, Min SDK 23
 - Version catalog at `gradle/libs.versions.toml`
 - Release builds enable R8 minification and resource shrinking
 
