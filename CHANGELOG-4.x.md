@@ -1,5 +1,30 @@
 # Changelog — 4.x
 
+## 4.0.14
+- Added optional English word prediction in alphanumeric mode: when turned on in General settings, suggestions from a built-in word list appear above the keyboard while typing English. Nothing typed is stored.
+- Collapsed the suggestion strip when there is nothing to suggest.
+- Upgraded Gradle to 9.7.1, Android Gradle Plugin to 9.4.1 and Kotlin to 2.4.10.
+
+## 4.0.13
+- Fixed the keyboard reloading itself on every move between text fields, which rebuilt it once per box in forms such as one-time password inputs.
+- Moved backspace repeat deletion onto the main thread, so a long press can no longer disturb the engine.
+- Consolidated duplicated code across the project and added tests.
+
+## 4.0.12
+- Made the Enter key follow the text field's IME action (send, search, go, or a custom action label such as Send) instead of always inserting a line break; multi-line text boxes still break the line.
+- Added Shift + Enter on physical keyboards to always insert a line break.
+- Upgraded libchewing to 0.13.1.
+
+## 4.0.11
+- Fixed emoji being garbled when crossing the JNI boundary between the app and libchewing (Modified UTF-8 handling), so single-code-point emoji display and store correctly in candidates and user phrases (#11).
+- Updated libchewing, the build dependencies, and the Rust toolchain (1.95).
+- Kept Kotlin at 2.2 for Android Gradle Plugin compatibility.
+- Updated the README to state that the app is no longer distributed on Google Play.
+
+## 4.0.10
+- Fixed the physical keyboard symbol picker: choosing a category after pressing `‵` now opens its second-level menu instead of returning to the input screen (#73).
+- Added a maintenance scope statement to the README.
+
 ## 4.0.9
 - Reverted the offline in-app announcements facility introduced in 4.0.8.
 
