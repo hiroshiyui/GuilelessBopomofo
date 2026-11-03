@@ -27,7 +27,7 @@ The established release workflow follows this pattern:
 
 1. **Ensure all changes are committed** on the working branch.
 2. **Bump version** — run `./gradlew bumpPatchVersion` or edit `app/build.gradle.kts` manually for minor/major bumps.
-3. **Write changelogs** for F-Droid (see Changelog section below).
+3. **Write changelogs** for F-Droid (see Changelog section below), and add the release to the project changelog (see Project Changelog below).
 4. **Run the tests** — `./gradlew :app:test`, so the tag lands on a known good state.
 5. **Create release commit** — commit message format: `Release <versionName>` with `Signed-off-by` trailer.
 6. **Tag the release** — lightweight tag matching versionName (e.g. `3.7.5`). Tags are NOT annotated.
@@ -66,6 +66,17 @@ fastlane/metadata/android/zh-TW/changelogs/<versionCode>.txt
   ```bash
   git log --oneline <previous-tag>..HEAD
   ```
+
+## Project Changelog
+
+Besides the F-Droid changelogs, every release gets an entry in the project changelog, split by major version:
+
+- `CHANGELOG-<major>.x.md` (e.g. `CHANGELOG-5.x.md`) — add a `## X.Y.Z` section at the **top**, newest first, right under the `# Changelog — <major>.x` heading.
+- English only, technical third-person, past-tense bullets ("Added …", "Fixed …", "Upgraded …"), US spelling. This is fuller than the F-Droid changelog: include dependency upgrades and other developer-facing changes, but leave out changes that only touch Claude tooling (`.claude/`, `CLAUDE.md`).
+- Build it from the F-Droid changelog and `git log --no-merges <previous-tag>..HEAD`.
+- For a new major version, create `CHANGELOG-<major>.x.md` and add it to the top of the index in `CHANGELOG.md` with a one-line summary; otherwise extend the existing summary line there if the release adds a headline feature.
+
+Include it in the release commit, so the tagged commit carries its own changelog.
 
 ## Build Commands Reference
 
