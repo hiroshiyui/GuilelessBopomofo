@@ -307,6 +307,8 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
         oldSelStart: Int, oldSelEnd: Int, newSelStart: Int, newSelEnd: Int, candidatesStart: Int, candidatesEnd: Int
     ) {
         super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd)
+        // the selection moving while Shift is held, e.g. a Shift-click with a mouse, is no tap
+        shift.onOtherInput()
         refreshSuggestions()
     }
 
@@ -331,7 +333,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
 
         // any other key going down turns a Shift press into a chord, e.g. Shift-Space
         if (keyCode !in Shift.KEY_CODES && event?.repeatCount == 0) {
-            shift.onOtherKeyDown()
+            shift.onOtherInput()
         }
 
         if (!isInputViewShown) {
@@ -416,6 +418,8 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     override fun onFinishInputView(finishingInput: Boolean) {
         super.onFinishInputView(finishingInput)
         physicalKeyboardPresented = false
+        // a Shift held now would release unseen, leaving a stale press behind
+        shift.reset()
         // restore the soft-keyboard conversion engine for the next session
         if (ChewingBridge.chewing.context != 0L) {
             applyConversionEngine()

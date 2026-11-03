@@ -396,37 +396,49 @@ class PhysicalKeyHandlerInstrumentedTest {
     // ========== Shift tests ==========
 
     @Test
-    fun rightShift_onKeyDown_returnsTrue() {
-        val rightShift = Shift()
+    fun shift_rightKey_onKeyDown_returnsTrue() {
+        val shift = Shift()
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_RIGHT)
-        val result = rightShift.onKeyDown(appContext, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
+        val result = shift.onKeyDown(appContext, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
 
         assertTrue(result)
     }
 
     @Test
-    fun rightShift_onKeyLongPress_inChineseMode_postsEvents() {
-        val rightShift = Shift()
+    fun shift_leftKey_passesThroughToApp() {
+        val shift = Shift()
+        val downTime = SystemClock.uptimeMillis()
+        val left = KeyEvent.KEYCODE_SHIFT_LEFT
+
+        assertFalse(shift.onKeyDown(appContext, left, shiftEvent(KeyEvent.ACTION_DOWN, left, downTime, downTime)))
+        assertFalse(shift.onKeyUp(appContext, left, shiftEvent(KeyEvent.ACTION_UP, left, downTime, downTime + 80)))
+        // passing it on doesn't stop the tap from counting
+        assertEquals(1, receivedToggleKeyboardMainLayoutMode.size)
+    }
+
+    @Test
+    fun shift_rightKey_onKeyLongPress_inChineseMode_postsEvents() {
+        val shift = Shift()
         // Ensure we are in Chinese mode
         ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         assertEquals(ChiEngMode.CHINESE.mode, ChewingBridge.chewing.getChiEngMode())
 
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_RIGHT)
-        val result = rightShift.onKeyLongPress(appContext, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
+        val result = shift.onKeyLongPress(appContext, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
 
         assertTrue(result)
         assertEquals(1, receivedSwitchToLayout.size)
     }
 
     @Test
-    fun rightShift_onKeyLongPress_inSymbolMode_returnsFalse() {
-        val rightShift = Shift()
+    fun shift_rightKey_onKeyLongPress_inSymbolMode_returnsFalse() {
+        val shift = Shift()
         // Switch to symbol (English) mode
         ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
         assertEquals(ChiEngMode.SYMBOL.mode, ChewingBridge.chewing.getChiEngMode())
 
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_RIGHT)
-        val result = rightShift.onKeyLongPress(appContext, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
+        val result = shift.onKeyLongPress(appContext, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
 
         assertFalse(result)
         assertEquals(0, receivedSwitchToLayout.size)
@@ -460,9 +472,23 @@ class PhysicalKeyHandlerInstrumentedTest {
     }
 
     @Test
+    fun shift_repeatWhileHeld_doesNotToggle() {
+        val shift = Shift()
+        val downTime = SystemClock.uptimeMillis()
+        val left = KeyEvent.KEYCODE_SHIFT_LEFT
+        val down = shiftEvent(KeyEvent.ACTION_DOWN, left, downTime, downTime)
+        shift.onKeyDown(appContext, left, down)
+        shift.onKeyDown(appContext, left, KeyEvent.changeTimeRepeat(down, downTime + 400, 1))
+        // a key-up stamped with the key-down's time, as `adb shell input --longpress` sends it
+        shift.onKeyUp(appContext, left, shiftEvent(KeyEvent.ACTION_UP, left, downTime, downTime))
+
+        assertEquals(0, receivedToggleKeyboardMainLayoutMode.size)
+    }
+
+    @Test
     fun shift_chordWithAnotherKey_doesNotToggle() {
         val shift = Shift()
-        tapShift(shift, KeyEvent.KEYCODE_SHIFT_LEFT, heldMs = 80) { shift.onOtherKeyDown() }
+        tapShift(shift, KeyEvent.KEYCODE_SHIFT_LEFT, heldMs = 80) { shift.onOtherInput() }
 
         assertEquals(0, receivedToggleKeyboardMainLayoutMode.size)
     }
@@ -479,6 +505,43 @@ class PhysicalKeyHandlerInstrumentedTest {
         shift.onKeyUp(appContext, right, shiftEvent(KeyEvent.ACTION_UP, right, downTime + 10, downTime + 60))
 
         assertEquals(0, receivedToggleKeyboardMainLayoutMode.size)
+    }
+
+    @Test
+    fun shift_tapWhileCtrlHeld_doesNotToggle() {
+        val shift = Shift()
+        val downTime = SystemClock.uptimeMillis()
+        val keyCode = KeyEvent.KEYCODE_SHIFT_LEFT
+        val ctrl = KeyEvent.META_CTRL_ON or KeyEvent.META_CTRL_LEFT_ON
+        shift.onKeyDown(appContext, keyCode, KeyEvent(downTime, downTime, KeyEvent.ACTION_DOWN, keyCode, 0, ctrl))
+        shift.onKeyUp(appContext, keyCode, KeyEvent(downTime, downTime + 80, KeyEvent.ACTION_UP, keyCode, 0, ctrl))
+
+        assertEquals(0, receivedToggleKeyboardMainLayoutMode.size)
+    }
+
+    @Test
+    fun shift_tapWithCapsLockOn_toggles() {
+        val shift = Shift()
+        val downTime = SystemClock.uptimeMillis()
+        val keyCode = KeyEvent.KEYCODE_SHIFT_LEFT
+        val capsLock = KeyEvent.META_CAPS_LOCK_ON
+        shift.onKeyDown(appContext, keyCode, KeyEvent(downTime, downTime, KeyEvent.ACTION_DOWN, keyCode, 0, capsLock))
+        shift.onKeyUp(appContext, keyCode, KeyEvent(downTime, downTime + 80, KeyEvent.ACTION_UP, keyCode, 0, capsLock))
+
+        assertEquals(1, receivedToggleKeyboardMainLayoutMode.size)
+    }
+
+    @Test
+    fun shift_afterReset_otherShiftTapToggles() {
+        val shift = Shift()
+        val downTime = SystemClock.uptimeMillis()
+        val left = KeyEvent.KEYCODE_SHIFT_LEFT
+        // Left Shift goes down, then the input view closes before its key-up arrives
+        shift.onKeyDown(appContext, left, shiftEvent(KeyEvent.ACTION_DOWN, left, downTime, downTime))
+        shift.reset()
+        tapShift(shift, KeyEvent.KEYCODE_SHIFT_RIGHT, heldMs = 80)
+
+        assertEquals(1, receivedToggleKeyboardMainLayoutMode.size)
     }
 
     @Test
