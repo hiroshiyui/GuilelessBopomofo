@@ -84,6 +84,17 @@ base {
     archivesName = "${android.defaultConfig.applicationId}_v${android.defaultConfig.versionName}"
 }
 
+// The APK task owns its whole output directory, so Gradle clears out older APKs, but the task
+// writing the final App Bundle (sign<Variant>Bundle) owns only its one .aab. With the version
+// in the file name, bundles of earlier versions would pile up, so remove them before a new one.
+tasks.matching { it.name.matches(Regex("sign\\w+Bundle")) }.configureEach {
+    val variant = name.removePrefix("sign").removeSuffix("Bundle").replaceFirstChar { it.lowercase() }
+    val bundleDir = layout.buildDirectory.dir("outputs/bundle/$variant")
+    doFirst {
+        bundleDir.get().asFile.listFiles { file -> file.extension == "aab" }?.forEach { it.delete() }
+    }
+}
+
 val chewingLibraryPath: String = "${rootDir}/app/src/main/cpp/libs/libchewing"
 val chewingDataFiles = listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
 
