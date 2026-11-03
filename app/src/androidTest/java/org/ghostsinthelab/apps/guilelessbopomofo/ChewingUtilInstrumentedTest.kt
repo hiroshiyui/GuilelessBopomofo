@@ -23,6 +23,7 @@ import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.After
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -263,39 +264,40 @@ class ChewingUtilInstrumentedTest {
 
     // region resetUserPhraseData
 
-    @Test
-    fun resetUserPhraseData_shouldDeleteUserHashFile() {
-        // Add a user phrase so userhash.dat is created
-        ChewingBridge.chewing.userphraseAdd("測試", "ㄘㄜˋ ㄕˋ")
-        // Flush to persist userhash.dat to disk
+    // Hands the context back to libchewing, which writes what it has learned to disk.
+    private fun flushUserData() {
         ChewingBridge.chewing.delete()
-        ChewingBridge.chewing.context = 0
         ChewingBridge.chewing.connect(dataPath)
+    }
 
-        val userhashFile = File(chewingDataDir, "userhash.dat")
-        assertTrue("userhash.dat should exist after adding a phrase", userhashFile.exists())
+    // libchewing creates every user data file, empty, as soon as it connects, so a reset
+    // leaves each one in place but holding no phrases: the same bytes as a fresh one.
+    private fun assertResetEmpties(fileName: String, recordPhrases: () -> Unit) {
+        val file = File(chewingDataDir, fileName)
+        ChewingUtil.resetUserPhraseData(appContext)
+        assertTrue("$fileName should be created on connect", file.exists())
+        val empty = file.readBytes()
+
+        recordPhrases()
+        flushUserData()
+        assertFalse("$fileName should change once phrases are recorded", empty.contentEquals(file.readBytes()))
 
         ChewingUtil.resetUserPhraseData(appContext)
-
-        assertFalse("userhash.dat should be deleted after reset", userhashFile.exists())
+        assertArrayEquals("$fileName should be empty again after reset", empty, file.readBytes())
     }
 
     @Test
-    fun resetUserPhraseData_shouldDeleteChewingDeletedFile() {
-        // Add then remove a phrase so chewing-deleted.dat is created
-        ChewingBridge.chewing.userphraseAdd("測試", "ㄘㄜˋ ㄕˋ")
-        ChewingBridge.chewing.userphraseRemove("測試", "ㄘㄜˋ ㄕˋ")
-        // Flush to persist chewing-deleted.dat to disk
-        ChewingBridge.chewing.delete()
-        ChewingBridge.chewing.context = 0
-        ChewingBridge.chewing.connect(dataPath)
+    fun resetUserPhraseData_shouldEmptyUserHashFile() {
+        assertResetEmpties("userhash.dat") {
+            ChewingBridge.chewing.userphraseAdd("測試", "ㄘㄜˋ ㄕˋ")
+        }
+    }
 
-        val deletedFile = File(chewingDataDir, "chewing-deleted.dat")
-        // chewing-deleted.dat may or may not exist depending on libchewing version;
-        // if it does exist, verify it gets removed
-        if (deletedFile.exists()) {
-            ChewingUtil.resetUserPhraseData(appContext)
-            assertFalse("chewing-deleted.dat should be deleted after reset", deletedFile.exists())
+    @Test
+    fun resetUserPhraseData_shouldEmptyChewingDeletedFile() {
+        assertResetEmpties("chewing-deleted.dat") {
+            ChewingBridge.chewing.userphraseAdd("測試", "ㄘㄜˋ ㄕˋ")
+            ChewingBridge.chewing.userphraseRemove("測試", "ㄘㄜˋ ㄕˋ")
         }
     }
 

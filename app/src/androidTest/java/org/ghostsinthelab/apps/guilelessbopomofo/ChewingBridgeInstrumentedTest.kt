@@ -732,14 +732,15 @@ class ChewingBridgeInstrumentedTest {
         ChewingBridge.chewing.handleDefault('`')
         ChewingBridge.chewing.candOpen()
         assertEquals(22, ChewingBridge.chewing.candTotalChoice())
-        assertEquals("…", ChewingBridge.chewing.candStringByIndexStatic(0))
+        // libchewing 0.13.1's data lists the midline ellipsis U+22EF first, not U+2026
+        assertEquals("⋯", ChewingBridge.chewing.candStringByIndexStatic(0))
         assertEquals("※", ChewingBridge.chewing.candStringByIndexStatic(1))
         assertEquals("常用符號", ChewingBridge.chewing.candStringByIndexStatic(2))
         assertEquals("雙線框", ChewingBridge.chewing.candStringByIndexStatic(10))
         assertEquals("線段", ChewingBridge.chewing.candStringByIndexStatic(12))
         ChewingBridge.chewing.handleDefault('1')
         ChewingBridge.chewing.commitPreeditBuf()
-        assertEquals("…", ChewingBridge.chewing.commitString())
+        assertEquals("⋯", ChewingBridge.chewing.commitString())
 
         // 換頁到「雙線框」
         // keyboardless API 版
@@ -850,7 +851,7 @@ class ChewingBridgeInstrumentedTest {
     @Test
     fun testVersion() {
         val version: String = ChewingBridge.chewing.version()
-        assert(version.startsWith("0.13.0"))
+        assertTrue("unexpected libchewing version: $version", version.startsWith("0.13.1"))
     }
 
     @Test
