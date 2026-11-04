@@ -1,5 +1,8 @@
 # Changelog — 5.x
 
+## Unreleased
+- Moved the last logic out of `GuilelessBopomofoService`: carrying out the Enter key into `EnterKeyAction`, and preference changes to the classes that own them, `KeyboardController` for the layout keys and `EnglishSuggestions` for the prediction keys, each covered by tests.
+
 ## 5.1.3
 - Made punctuation typed right after a chosen English suggestion close up against the word: the space the suggestion was committed with is taken back before `, . ! ? ; : ) ] }` and `'`, so `word ,` becomes `word,`. The space is only taken back while the cursor is still right after that word; moving the cursor, deleting, pressing Enter or selecting text leaves it alone.
 - Added UI Automator tests that drive the real keyboard in the engineering screen's text field, typing Bopomofo, converting, choosing a candidate, Backspace, Enter and the mode switch to English, and walk the settings tabs and a preference switch.

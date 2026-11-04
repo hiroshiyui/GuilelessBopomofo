@@ -17,7 +17,10 @@
  */
 package org.ghostsinthelab.apps.guilelessbopomofo.prediction
 
+import android.content.SharedPreferences
 import android.view.inputmethod.InputConnection
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 
@@ -73,6 +76,20 @@ class EnglishSuggestions(
         prediction.isEnabled = false
         uiState.suggestions = emptyList()
         uiState.showBuffers = true
+    }
+
+    /**
+     * Follows the preference under [key] if it is one of English prediction's.
+     *
+     * @return whether it was.
+     */
+    fun onPreferenceChanged(key: String?, preferences: SharedPreferences): Boolean {
+        when (key) {
+            USER_ENABLE_ENGLISH_PREDICTION -> isEnabled = preferences.getBoolean(key, false)
+            USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION -> isNextWordEnabled = preferences.getBoolean(key, false)
+            else -> return false
+        }
+        return true
     }
 
     /** A text field was just started: its [inputType] says whether it wants suggestions. */

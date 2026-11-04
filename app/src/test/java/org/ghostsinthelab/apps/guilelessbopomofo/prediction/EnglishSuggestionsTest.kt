@@ -17,9 +17,12 @@
  */
 package org.ghostsinthelab.apps.guilelessbopomofo.prediction
 
+import android.content.SharedPreferences
 import android.text.InputType
 import android.view.inputmethod.InputConnection
 import java.lang.reflect.Proxy
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.junit.Assert.assertEquals
@@ -203,5 +206,35 @@ class EnglishSuggestionsTest {
         assertTrue(uiState.showBuffers)
         assertEquals(emptyList<String>(), uiState.suggestions)
         assertFalse(predictor.isEnabled)
+    }
+
+    // --- preferences ---
+
+    private fun preferencesSaying(vararg values: Pair<String, Boolean>): SharedPreferences {
+        val map = values.toMap()
+        return Proxy.newProxyInstance(
+            SharedPreferences::class.java.classLoader, arrayOf(SharedPreferences::class.java)
+        ) { _, method, args ->
+            when (method.name) {
+                "getBoolean" -> map[args[0] as String] ?: (args[1] as Boolean)
+                else -> error("unexpected ${method.name}")
+            }
+        } as SharedPreferences
+    }
+
+    @Test
+    fun onPreferenceChanged_followsItsOwnKeys() {
+        startPlainTextField()
+        assertTrue(suggestions.onPreferenceChanged(USER_ENABLE_ENGLISH_PREDICTION, preferencesSaying(USER_ENABLE_ENGLISH_PREDICTION to true)))
+        assertTrue(predictor.isEnabled)
+        assertFalse(uiState.showBuffers)
+        assertTrue(suggestions.onPreferenceChanged(USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION, preferencesSaying(USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION to true)))
+        assertTrue(predictor.isNextWordEnabled)
+    }
+
+    @Test
+    fun onPreferenceChanged_declinesOtherKeys() {
+        assertFalse(suggestions.onPreferenceChanged("something_else", preferencesSaying()))
+        assertFalse(suggestions.onPreferenceChanged(null, preferencesSaying()))
     }
 }

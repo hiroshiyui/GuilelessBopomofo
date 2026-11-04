@@ -22,6 +22,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT
@@ -322,7 +323,29 @@ class KeyboardController(
         switchToMainLayout()
     }
 
+    /**
+     * Rebuilds the main keyboard if the preference under [key] is one it is built from.
+     *
+     * @return whether it was.
+     */
+    fun onPreferenceChanged(key: String?): Boolean {
+        if (key !in LAYOUT_PREFERENCES) return false
+        returnToMainLayout()
+        return true
+    }
+
     companion object {
+        // The preferences the keyboards are built from; a change to any means switching again.
+        private val LAYOUT_PREFERENCES = setOf(
+            USER_SOFT_KEYBOARD_LAYOUT,
+            USER_PHYSICAL_KEYBOARD_LAYOUT,
+            USER_DISPLAY_HSU_QWERTY_LAYOUT,
+            USER_DISPLAY_ETEN26_QWERTY_LAYOUT,
+            USER_KEY_BUTTON_HEIGHT,
+            USER_ENABLE_IME_SWITCH,
+            USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH,
+        )
+
         // The layouts one can leave the keyboard from, rather than merely stepping back
         // into the main one.
         private val DISMISSIBLE_LAYOUTS = setOf(Layout.MAIN, Layout.COMPACT, Layout.QWERTY)

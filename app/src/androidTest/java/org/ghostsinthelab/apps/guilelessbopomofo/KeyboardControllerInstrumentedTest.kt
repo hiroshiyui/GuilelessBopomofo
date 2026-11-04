@@ -463,4 +463,26 @@ class KeyboardControllerInstrumentedTest {
 
         ChewingBridge.chewing.cleanPreeditBuf()
     }
+
+    // ========== preferences ==========
+
+    @Test
+    fun onPreferenceChanged_rebuildsTheMainKeyboard_forALayoutPreference() {
+        setLayoutPreference("KB_HSU")
+        setQwertyVariantPreference(USER_DISPLAY_HSU_QWERTY_LAYOUT, false)
+        var claimed = false
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            keyboardController.switchToLayout(Layout.MAIN)
+            setQwertyVariantPreference(USER_DISPLAY_HSU_QWERTY_LAYOUT, true)
+            claimed = keyboardController.onPreferenceChanged(USER_DISPLAY_HSU_QWERTY_LAYOUT)
+        }
+        assertTrue(claimed)
+        assertEquals(SoftKeyboard.HSU_QWERTY, uiState.softKeyboard)
+    }
+
+    @Test
+    fun onPreferenceChanged_declinesOtherPreferences() {
+        assertFalse(keyboardController.onPreferenceChanged("something_else"))
+        assertFalse(keyboardController.onPreferenceChanged(null))
+    }
 }

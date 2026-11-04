@@ -26,6 +26,7 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.EngineeringModeActivity
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.CANDIDATE_TEST_TAG
@@ -70,6 +71,11 @@ class ImeDriver(private val device: UiDevice) {
         )
         assertNotNull("The test field did not appear", device.wait(Until.findObject(By.clazz(EditText::class.java)), LAUNCH_TIMEOUT_MS))
         assertNotNull("The keyboard did not appear", device.wait(Until.findObject(By.res(IME_ROOT_TEST_TAG)), LAUNCH_TIMEOUT_MS))
+        // The service shares the one libchewing context with every other test in this
+        // process, and some of them delete it. A fresh context, which the service is told
+        // about as the settings screens would tell it, puts it back in Bopomofo mode.
+        instrumentation.runOnMainSync { ChewingUtil.flushContext(context) }
+        device.waitForIdle()
     }
 
     fun closeTestField() {

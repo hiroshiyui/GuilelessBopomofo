@@ -48,19 +48,11 @@ import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import java.io.IOException
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_LANDSCAPE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_PORTRAIT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_HAPTIC_FEEDBACK_STRENGTH
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.deviceIsEmulator
 import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBuffer
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
@@ -541,42 +533,15 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         }
     }
 
-    // triggered if any sharedPreference has been changed
+    // Each part of the input method answers for its own preferences; the haptic strength is
+    // read by every key, so it stays here, and the fullscreen ones are read when evaluated.
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (sharedPreferences == null) return
         if (chewingSettings.onPreferenceChanged(key)) return
-        when (key) {
-            // Reload the main layout
-            USER_SOFT_KEYBOARD_LAYOUT,
-            USER_PHYSICAL_KEYBOARD_LAYOUT,
-            USER_DISPLAY_HSU_QWERTY_LAYOUT,
-            USER_DISPLAY_ETEN26_QWERTY_LAYOUT,
-            USER_KEY_BUTTON_HEIGHT,
-            USER_ENABLE_IME_SWITCH,
-            USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH,
-                -> {
-                // The keyboards are built from these, so switch again to pick them up.
-                keyboardController.returnToMainLayout()
-            }
-
-            USER_HAPTIC_FEEDBACK_STRENGTH -> {
-                userHapticFeedbackStrength =
-                    sharedPreferences?.getInt(key, defaultHapticFeedbackStrength)
-                        ?: defaultHapticFeedbackStrength
-            }
-
-            // No-op: handled elsewhere (onEvaluateFullscreenMode, Vibratable)
-            SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS,
-            USER_FULLSCREEN_WHEN_IN_LANDSCAPE,
-            USER_FULLSCREEN_WHEN_IN_PORTRAIT,
-                -> {}
-
-            USER_ENABLE_ENGLISH_PREDICTION -> {
-                englishSuggestions.isEnabled = sharedPreferences?.getBoolean(key, false) ?: false
-            }
-
-            USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION -> {
-                englishSuggestions.isNextWordEnabled = sharedPreferences?.getBoolean(key, false) ?: false
-            }
+        if (keyboardController.onPreferenceChanged(key)) return
+        if (englishSuggestions.onPreferenceChanged(key, sharedPreferences)) return
+        if (key == USER_HAPTIC_FEEDBACK_STRENGTH) {
+            userHapticFeedbackStrength = sharedPreferences.getInt(key, defaultHapticFeedbackStrength)
         }
     }
 }
