@@ -18,7 +18,9 @@ git clone --recursive https://github.com/hiroshiyui/GuilelessBopomofo.git
 
 # Tests
 ./gradlew :app:test                     # Unit tests
-./gradlew :app:connectedAndroidTest     # Instrumented tests (requires device/emulator)
+./gradlew :app:connectedAndroidTest     # Instrumented tests (requires an unlocked device/emulator)
+#   add -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true, or AGP uninstalls the app
+#   afterwards, which also drops Guileless Bopomofo from the enabled keyboards
 
 # Version management
 ./gradlew bumpPatchVersion              # Increment versionCode and patch in versionName
