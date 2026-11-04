@@ -1,6 +1,6 @@
 # Changelog — 5.x
 
-## Unreleased
+## 5.1.4
 - Moved the last logic out of `GuilelessBopomofoService`: carrying out the Enter key into `EnterKeyAction`, and preference changes to the classes that own them, `KeyboardController` for the layout keys and `EnglishSuggestions` for the prediction keys, each covered by tests.
 
 ## 5.1.3

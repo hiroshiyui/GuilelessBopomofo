@@ -1,0 +1,6 @@
+Hi there! Guileless Bopomofo 5.1.4 is a housekeeping release: nothing changes in how I type, but my insides got a little tidier.
+
+* The last bits of logic left in my main service moved to the parts that own them: the Enter key, and reacting to changed settings.
+* More tests cover those parts, on the real keyboard too.
+
+If you are happy with 5.1.3, you can skip this one. Thanks for using Guileless Bopomofo!
