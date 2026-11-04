@@ -90,6 +90,9 @@ Several common hotkeys:
     * execute `./gradlew :app:assembleDebug` or `./gradlew :app:assembleRelease` from shell command line
 1. Locate the generated APK files from `./app/build/outputs/apk/debug/` or `./app/build/outputs/apk/release/`, named like `org.ghostsinthelab.apps.guilelessbopomofo_v<version>-debug.apk`
     * A release build without your own signing configuration comes out as `…-release-unsigned.apk`, sign it before installing
+1. Run the tests, if you like:
+    * `./gradlew :app:test` runs the unit tests on your machine
+    * `./gradlew :app:connectedAndroidTest -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true` runs the instrumented tests on a connected, unlocked device or emulator; a few of them switch the device's keyboard to Guileless Bopomofo and type on it, and the flag keeps the app installed afterwards
 1. Enjoy!
 
 ## Acknowledgements 感謝有您

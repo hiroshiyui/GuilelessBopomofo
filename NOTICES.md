@@ -42,7 +42,3 @@
 * Kotlin Coroutines: Apache License, Version 2.0
     - https://github.com/Kotlin/kotlinx.coroutines/blob/master/LICENSE.txt
     - https://github.com/Kotlin/kotlinx.coroutines
-
-* Mockito: MIT License
-    - https://github.com/mockito/mockito/blob/main/LICENSE
-    - https://github.com/mockito/mockito
