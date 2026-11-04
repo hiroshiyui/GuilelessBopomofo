@@ -28,20 +28,9 @@ import android.text.InputType
 import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
-import android.view.KeyEvent.ACTION_UP
-import android.view.KeyEvent.KEYCODE_A
-import android.view.KeyEvent.KEYCODE_C
 import android.view.KeyEvent.KEYCODE_DPAD_LEFT
 import android.view.KeyEvent.KEYCODE_DPAD_RIGHT
 import android.view.KeyEvent.KEYCODE_ENTER
-import android.view.KeyEvent.KEYCODE_GRAVE
-import android.view.KeyEvent.KEYCODE_I
-import android.view.KeyEvent.KEYCODE_R
-import android.view.KeyEvent.KEYCODE_SHIFT_LEFT
-import android.view.KeyEvent.KEYCODE_V
-import android.view.KeyEvent.KEYCODE_X
-import android.view.KeyEvent.KEYCODE_Z
-import android.view.KeyEvent.META_SHIFT_ON
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
@@ -85,22 +74,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.CapsLock
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Del
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Down
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.End
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Enter
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Escape
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Home
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Left
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.LeftAlt
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyHandler
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Right
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Shift
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Space
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Up
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeDown
-import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeUp
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyInput
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.BigramPredictor
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishPrediction
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishSuggestions
@@ -110,12 +84,11 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessTheme
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyBehavior
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyBehaviorResolver
-import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.appSharedPreferences
 
 class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreferences.OnSharedPreferenceChangeListener,
-    KeyEventExtension, LifecycleOwner, SavedStateRegistryOwner {
+    LifecycleOwner, SavedStateRegistryOwner {
     private val logTag = "GuilelessBopomofoSvc"
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -124,6 +97,25 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     private val uiState = ImeUiState()
     private lateinit var keyboardController: KeyboardController
     private val preEditBuffer = PreEditBuffer(uiState, this)
+
+    // keyboardController is created in onCreate(), and the keys only arrive after that
+    private val physicalKeyInput by lazy {
+        PhysicalKeyInput(this, uiState, keyboardController, object : PhysicalKeyInput.Editor {
+            override val isInputViewShown: Boolean get() = this@GuilelessBopomofoService.isInputViewShown
+            override val inputConnection: InputConnection? get() = currentInputConnection
+            override fun hideKeyboard() = requestHideSelf(0)
+            override fun physicalKeyboardDetected() = applyConversionEngine()
+            override fun showInputMethodPicker() {
+                (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)?.showInputMethodPicker()
+            }
+
+            override fun sendKeyEventToField(event: KeyEvent) {
+                // the cursor moves on past the chosen word, if there was one
+                englishSuggestions.forgetAutoSpace()
+                currentInputConnection?.sendKeyEvent(event)
+            }
+        })
+    }
 
     // InputMethodService is no Activity: Compose wants a lifecycle and saved state to hang
     // on to, so the service provides both itself.
@@ -204,31 +196,6 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     }
 
     override val context: Context get() = this
-
-    // Both Shift keys share this one: it follows a press through to tell a tap from a chord.
-    private val shift = Shift()
-
-    // The physical keys we answer to ourselves. Every handler but `shift` is stateless, so one
-    // instance of each lasts for the lifetime of the service.
-    private val physicalKeyDispatcher: Map<Int, PhysicalKeyHandler> = mapOf(
-        KeyEvent.KEYCODE_DPAD_DOWN to Down(),
-        KeyEvent.KEYCODE_DPAD_UP to Up(),
-        KeyEvent.KEYCODE_DPAD_LEFT to Left(),
-        KeyEvent.KEYCODE_DPAD_RIGHT to Right(),
-        KeyEvent.KEYCODE_ALT_LEFT to LeftAlt(),
-        KeyEvent.KEYCODE_SHIFT_LEFT to shift,
-        KeyEvent.KEYCODE_SHIFT_RIGHT to shift,
-        KeyEvent.KEYCODE_ENTER to Enter(),
-        KeyEvent.KEYCODE_SPACE to Space(),
-        KeyEvent.KEYCODE_ESCAPE to Escape(),
-        KeyEvent.KEYCODE_DEL to Del(),
-        KeyEvent.KEYCODE_CAPS_LOCK to CapsLock(),
-        KeyEvent.KEYCODE_MOVE_END to End(),
-        KeyEvent.KEYCODE_MOVE_HOME to Home(),
-        KeyEvent.KEYCODE_VOLUME_UP to VolumeUp(),
-        KeyEvent.KEYCODE_VOLUME_DOWN to VolumeDown(),
-        // Add more mappings here for each physical key you want to handle separately
-    )
 
     companion object {
         private const val CANDIDATES_PER_PAGE = 10
@@ -367,7 +334,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     ) {
         super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd)
         // the selection moving while Shift is held, e.g. a Shift-click with a mouse, is no tap
-        shift.onOtherInput()
+        physicalKeyInput.onSelectionMoved()
         englishSuggestions.onSelectionUpdated(newSelStart, newSelEnd)
     }
 
@@ -387,98 +354,19 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        Log.d(logTag, "onKeyDown()")
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean =
+        physicalKeyInput.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event)
 
-        // any other key going down turns a Shift press into a chord, e.g. Shift-Space
-        if (keyCode !in Shift.KEY_CODES && event?.repeatCount == 0) {
-            shift.onOtherInput()
-        }
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean =
+        physicalKeyInput.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event)
 
-        if (!isInputViewShown) {
-            return super.onKeyDown(keyCode, event)
-        }
-
-        // have to make Back key work as is at very first, or some back operations will be blocked
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Log.d(logTag, "Back key pressed")
-            requestHideSelf(0)
-            return super.onKeyDown(keyCode, event)
-        }
-
-        // handles physical functional keys
-        if (physicalKeyDispatcher[keyCode]?.onKeyDown(this, keyCode, event) == true) {
-            return true
-        }
-
-        // handles printing (character) keys
-        if (event != null && event.isPrintingKey) {
-            // if a printing key has been pressed, assume that user have a physical keyboard connected anyway...
-            val wasPhysicalKeyboardPresented = physicalKeyboardPresented
-            physicalKeyboardPresented = true
-            if (!wasPhysicalKeyboardPresented) {
-                applyConversionEngine()
-            }
-            onPrintingKeyDown(event)
-            return true
-        }
-
-        // pass-through other KeyEvent, or we will make some physical keys like volume keys invalid
-        if (event != null) {
-            currentInputConnection?.sendKeyEvent(event)
-        }
-
-        return super.onKeyDown(keyCode, event)
-    }
-
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        Log.d(logTag, "onKeyUp()")
-
-        if (!isInputViewShown) {
-            return super.onKeyUp(keyCode, event)
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            return super.onKeyUp(keyCode, event)
-        }
-
-        // handles physical functional keys
-        if (physicalKeyDispatcher[keyCode]?.onKeyUp(this, keyCode, event) == true) {
-            return true
-        }
-
-        if (event?.isPrintingKey == true) {
-            // Detect if a candidate had been chosen by user
-            if (keyboardController.currentLayout == Layout.CANDIDATES) {
-                keyboardController.candidateKeySelected()
-            }
-            return true
-        }
-
-        return super.onKeyUp(keyCode, event)
-    }
-
-    override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
-        Log.d(logTag, "onKeyLongPress()")
-
-        if (!isInputViewShown) {
-            super.onKeyLongPress(keyCode, event)
-            return false
-        }
-
-        // handles physical functional keys
-        if (physicalKeyDispatcher[keyCode]?.onKeyLongPress(this, keyCode, event) == true) {
-            return true
-        }
-
-        return super.onKeyLongPress(keyCode, event)
-    }
+    override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean =
+        physicalKeyInput.onKeyLongPress(keyCode, event) || super.onKeyLongPress(keyCode, event)
 
     override fun onFinishInputView(finishingInput: Boolean) {
         super.onFinishInputView(finishingInput)
         physicalKeyboardPresented = false
-        // a Shift held now would release unseen, leaving a stale press behind
-        shift.reset()
+        physicalKeyInput.onInputViewFinished()
         // restore the soft-keyboard conversion engine for the next session
         if (ChewingBridge.chewing.context != 0L) {
             applyConversionEngine()
@@ -555,98 +443,6 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             key, ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
         )
         ChewingBridge.chewing.configSetInt("chewing.conversion_engine", mode)
-    }
-
-    // handles both physical and virtual printing key-down events, routes to chewing.handleDefault()
-    private fun onPrintingKeyDown(event: KeyEvent) {
-        Log.d(logTag, "onPrintingKeyDown()")
-
-        // Switch to compact layout if physical keyboard is present and current layout is not compact.
-        // Skip while the candidates window is shown (e.g. the `‵` symbol picker): a printing key here
-        // is a selection key, and switching away would tear down the candidates view before onKeyUp()
-        // can render the next-level list, leaving sub-menus invisible (still effective in libchewing).
-        if (physicalKeyboardPresented &&
-            keyboardController.currentLayout != Layout.COMPACT &&
-            keyboardController.currentLayout != Layout.CANDIDATES
-        ) {
-            keyboardController.switchToCompactLayout()
-        }
-
-        if (handleNumPadKey(event)) return
-        if (handleGraveKeyForSymbols(event)) return
-        if (handleAltIForImePicker(event)) return
-
-        var keyPressed: Char = event.unicodeChar.toChar()
-
-        if (uiState.shiftKeyState.isActive) {
-            currentInputConnection?.sendKeyEvent(KeyEvent(ACTION_DOWN, KEYCODE_SHIFT_LEFT))
-            keyPressed = event.getUnicodeChar(META_SHIFT_ON).toChar()
-        }
-
-        if (handleCtrlKeySequence(event)) return
-
-        // If in candidate selection window, the selection keys have to be mapped to DVORAK layout
-        // TODO: This should be resolved in the future, in libchewing.
-        if (ChewingBridge.chewing.getKBString() == BopomofoPhysicalKeyboards.KB_DVORAK_HSU.layout && keyboardController.currentLayout == Layout.CANDIDATES) {
-            keyPressed = ChewingUtil.qwertyToDvorakKeyMapping(keyPressed)
-        }
-
-        ChewingBridge.chewing.handleDefault(keyPressed)
-        dispatch(ImeAction.UpdateBufferViews)
-        dispatch(ImeAction.UpdateCursorPosition)
-
-        releaseShiftKeyIfNeeded()
-    }
-
-    private fun handleNumPadKey(event: KeyEvent): Boolean {
-        if (!event.isNumPadKey()) return false
-        englishSuggestions.forgetAutoSpace()
-        currentInputConnection?.sendKeyEvent(event)
-        dispatch(ImeAction.UpdateBufferViews)
-        return true
-    }
-
-    private fun handleGraveKeyForSymbols(event: KeyEvent): Boolean {
-        if (event.keyCode == KEYCODE_GRAVE && ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode && !event.isShiftPressed) {
-            keyboardController.switchToLayout(Layout.SYMBOLS)
-            return true
-        }
-        return false
-    }
-
-    private fun handleAltIForImePicker(event: KeyEvent): Boolean {
-        if (event.keyCode == KEYCODE_I && event.isAltPressed) {
-            (this.getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)?.showInputMethodPicker()
-            return true
-        }
-        return false
-    }
-
-    private fun handleCtrlKeySequence(event: KeyEvent): Boolean {
-        if (!event.isCtrlPressed) return false
-        currentInputConnection?.apply {
-            when (event.keyCode) {
-                KEYCODE_A -> performContextMenuAction(android.R.id.selectAll)
-                KEYCODE_Z -> performContextMenuAction(android.R.id.undo)
-                KEYCODE_X -> performContextMenuAction(android.R.id.cut)
-                KEYCODE_C -> performContextMenuAction(android.R.id.copy)
-                KEYCODE_V -> performContextMenuAction(android.R.id.paste)
-                KEYCODE_R -> performContextMenuAction(android.R.id.redo)
-            }
-        }
-        return true
-    }
-
-    private fun releaseShiftKeyIfNeeded() {
-        if (uiState.shiftKeyState.isActive && !uiState.shiftKeyState.isLocked) {
-            Log.d(logTag, "Release Shift key")
-            releaseShiftKey()
-        }
-    }
-
-    private fun releaseShiftKey() {
-        keyboardController.releaseShiftKey()
-        currentInputConnection?.sendKeyEvent(KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT))
     }
 
     private fun onUpdateBufferViews() {
@@ -740,7 +536,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
     private fun onPrintingKeyDown(action: ImeAction.PrintingKeyDown) {
         val keyEvent = KeyEvent(ACTION_DOWN, KeyEvent.keyCodeFromString(action.keyCodeString))
-        this@GuilelessBopomofoService.onPrintingKeyDown(keyEvent)
+        physicalKeyInput.onPrintingKeyDown(keyEvent)
     }
 
     private fun onPreEditBufferTouched(action: ImeAction.PreEditBufferTouched) {
@@ -751,7 +547,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     private fun onToggleKeyboardMainLayoutMode() {
         Log.d(logTag, "onToggleKeyboardMainLayoutMode()")
         // Always reset Shift state when switching main layouts.
-        releaseShiftKey()
+        physicalKeyInput.releaseShiftKey()
         keyboardController.toggleMainLayoutMode()
         // the compact layout stays the same layout whichever mode it is in
         englishSuggestions.refresh()
