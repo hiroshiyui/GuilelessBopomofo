@@ -21,7 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 import android.content.Context
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.greenrobot.eventbus.EventBus
 
 class Space : PhysicalKeyHandler {
@@ -31,12 +31,12 @@ class Space : PhysicalKeyHandler {
         event: KeyEvent?,
     ): Boolean {
         if (event?.isShiftPressed == true) {
-            EventBus.getDefault().post(Events.ToggleKeyboardMainLayoutMode())
+            EventBus.getDefault().post(ImeAction.ToggleKeyboardMainLayoutMode)
             return true
         }
 
         if (event?.isAltPressed == true) {
-            EventBus.getDefault().post(Events.ToggleFullOrHalfWidthMode())
+            EventBus.getDefault().post(ImeAction.ToggleFullOrHalfWidthMode)
             return true
         }
 

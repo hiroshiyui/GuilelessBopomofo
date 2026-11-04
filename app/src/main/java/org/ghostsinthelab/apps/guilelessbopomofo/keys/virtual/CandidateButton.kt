@@ -20,7 +20,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
@@ -33,6 +33,6 @@ class CandidateButton(private val candidate: Candidate) : VirtualKey {
     }
 
     override fun onTap(context: Context) {
-        EventBus.getDefault().post(Events.CandidateButtonSelected(candidate))
+        EventBus.getDefault().post(ImeAction.CandidateButtonSelected(candidate))
     }
 }

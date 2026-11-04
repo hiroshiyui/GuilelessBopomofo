@@ -25,7 +25,7 @@ import android.view.KeyEvent
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.CapsLock
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Del
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Enter
@@ -58,67 +58,67 @@ class PhysicalKeyHandlerInstrumentedTest {
         listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
 
     // Event tracking lists
-    private val receivedUpdateBufferViews = mutableListOf<Events.UpdateBufferViews>()
-    private val receivedSendDownUpKeyEvents = mutableListOf<Events.SendDownUpKeyEvents>()
+    private val receivedUpdateBufferViews = mutableListOf<ImeAction.UpdateBufferViews>()
+    private val receivedSendDownUpKeyEvents = mutableListOf<ImeAction.SendDownUpKeyEvents>()
     private val receivedEnterKeyDownWhenBufferIsEmpty =
-        mutableListOf<Events.EnterKeyDownWhenBufferIsEmpty>()
-    private val receivedRequestHideIme = mutableListOf<Events.RequestHideIme>()
-    private val receivedExitKeyboardSubLayouts = mutableListOf<Events.ExitKeyboardSubLayouts>()
-    private val receivedUpdateCursorPosition = mutableListOf<Events.UpdateCursorPosition>()
-    private val receivedDirectionKeyDown = mutableListOf<Events.DirectionKeyDown>()
+        mutableListOf<ImeAction.EnterKeyDownWhenBufferIsEmpty>()
+    private val receivedRequestHideIme = mutableListOf<ImeAction.RequestHideIme>()
+    private val receivedExitKeyboardSubLayouts = mutableListOf<ImeAction.ExitKeyboardSubLayouts>()
+    private val receivedUpdateCursorPosition = mutableListOf<ImeAction.UpdateCursorPosition>()
+    private val receivedDirectionKeyDown = mutableListOf<ImeAction.DirectionKeyDown>()
     private val receivedToggleKeyboardMainLayoutMode =
-        mutableListOf<Events.ToggleKeyboardMainLayoutMode>()
+        mutableListOf<ImeAction.ToggleKeyboardMainLayoutMode>()
     private val receivedToggleFullOrHalfWidthMode =
-        mutableListOf<Events.ToggleFullOrHalfWidthMode>()
-    private val receivedSwitchToLayout = mutableListOf<Events.SwitchToLayout>()
+        mutableListOf<ImeAction.ToggleFullOrHalfWidthMode>()
+    private val receivedSwitchToLayout = mutableListOf<ImeAction.SwitchToLayout>()
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onUpdateBufferViews(event: Events.UpdateBufferViews) {
+    fun onUpdateBufferViews(event: ImeAction.UpdateBufferViews) {
         receivedUpdateBufferViews.add(event)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onSendDownUpKeyEvents(event: Events.SendDownUpKeyEvents) {
+    fun onSendDownUpKeyEvents(event: ImeAction.SendDownUpKeyEvents) {
         receivedSendDownUpKeyEvents.add(event)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onEnterKeyDownWhenBufferIsEmpty(event: Events.EnterKeyDownWhenBufferIsEmpty) {
+    fun onEnterKeyDownWhenBufferIsEmpty(event: ImeAction.EnterKeyDownWhenBufferIsEmpty) {
         receivedEnterKeyDownWhenBufferIsEmpty.add(event)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onRequestHideIme(event: Events.RequestHideIme) {
+    fun onRequestHideIme(event: ImeAction.RequestHideIme) {
         receivedRequestHideIme.add(event)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onExitKeyboardSubLayouts(event: Events.ExitKeyboardSubLayouts) {
+    fun onExitKeyboardSubLayouts(event: ImeAction.ExitKeyboardSubLayouts) {
         receivedExitKeyboardSubLayouts.add(event)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onUpdateCursorPosition(event: Events.UpdateCursorPosition) {
+    fun onUpdateCursorPosition(event: ImeAction.UpdateCursorPosition) {
         receivedUpdateCursorPosition.add(event)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onDirectionKeyDown(event: Events.DirectionKeyDown) {
+    fun onDirectionKeyDown(event: ImeAction.DirectionKeyDown) {
         receivedDirectionKeyDown.add(event)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onToggleKeyboardMainLayoutMode(event: Events.ToggleKeyboardMainLayoutMode) {
+    fun onToggleKeyboardMainLayoutMode(event: ImeAction.ToggleKeyboardMainLayoutMode) {
         receivedToggleKeyboardMainLayoutMode.add(event)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onToggleFullOrHalfWidthMode(event: Events.ToggleFullOrHalfWidthMode) {
+    fun onToggleFullOrHalfWidthMode(event: ImeAction.ToggleFullOrHalfWidthMode) {
         receivedToggleFullOrHalfWidthMode.add(event)
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onSwitchToLayout(event: Events.SwitchToLayout) {
+    fun onSwitchToLayout(event: ImeAction.SwitchToLayout) {
         receivedSwitchToLayout.add(event)
     }
 

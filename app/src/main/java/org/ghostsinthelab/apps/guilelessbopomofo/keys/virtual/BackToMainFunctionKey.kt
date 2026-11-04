@@ -19,7 +19,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
@@ -32,7 +32,7 @@ object BackToMainFunctionKey : VirtualKey {
     }
 
     override fun onTap(context: Context) {
-        EventBus.getDefault().post(Events.ExitKeyboardSubLayouts())
-        EventBus.getDefault().post(Events.UpdateCursorPositionToEnd())
+        EventBus.getDefault().post(ImeAction.ExitKeyboardSubLayouts)
+        EventBus.getDefault().post(ImeAction.UpdateCursorPositionToEnd)
     }
 }

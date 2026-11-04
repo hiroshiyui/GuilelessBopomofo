@@ -20,20 +20,21 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNotSame
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertSame
 import org.junit.Test
 
-class EventsTest {
+class ImeActionTest {
 
     // --- Events with data fields ---
 
     @Test
     fun candidateButtonSelected_holdsCandidate() {
         val candidate = Candidate(0, "test", 'a')
-        val event = Events.CandidateButtonSelected(candidate)
+        val event = ImeAction.CandidateButtonSelected(candidate)
         assertEquals(candidate, event.candidate)
         assertEquals(0, event.candidate.index)
         assertEquals("test", event.candidate.candidateString)
@@ -42,44 +43,44 @@ class EventsTest {
 
     @Test
     fun directionKeyDown_holdsRight() {
-        val event = Events.DirectionKeyDown(DirectionKey.RIGHT)
+        val event = ImeAction.DirectionKeyDown(DirectionKey.RIGHT)
         assertEquals(DirectionKey.RIGHT, event.direction)
     }
 
     @Test
     fun directionKeyDown_holdsLeft() {
-        val event = Events.DirectionKeyDown(DirectionKey.LEFT)
+        val event = ImeAction.DirectionKeyDown(DirectionKey.LEFT)
         assertEquals(DirectionKey.LEFT, event.direction)
     }
 
     @Test
     fun printingKeyDown_holdsKeyCodeString() {
-        val event = Events.PrintingKeyDown("KEYCODE_A")
+        val event = ImeAction.PrintingKeyDown("KEYCODE_A")
         assertEquals("KEYCODE_A", event.keyCodeString)
     }
 
     @Test
     fun sendDownUpKeyEvents_holdsKeycode() {
-        val event = Events.SendDownUpKeyEvents(42)
+        val event = ImeAction.SendDownUpKeyEvents(42)
         assertEquals(42, event.keycode)
     }
 
     @Test
     fun sendDownUpKeyEvents_holdsZeroKeycode() {
-        val event = Events.SendDownUpKeyEvents(0)
+        val event = ImeAction.SendDownUpKeyEvents(0)
         assertEquals(0, event.keycode)
     }
 
     @Test
     fun suggestionSelected_holdsWord() {
-        val event = Events.SuggestionSelected("hello")
+        val event = ImeAction.SuggestionSelected("hello")
         assertEquals("hello", event.word)
     }
 
     @Test
     fun switchToLayout_holdsLayout() {
         for (layout in Layout.values()) {
-            val event = Events.SwitchToLayout(layout)
+            val event = ImeAction.SwitchToLayout(layout)
             assertEquals(layout, event.layout)
         }
     }
@@ -88,98 +89,92 @@ class EventsTest {
 
     @Test
     fun commitTextInChewingCommitBuffer_holdsText() {
-        val event = Events.CommitTextInChewingCommitBuffer("測試")
+        val event = ImeAction.CommitTextInChewingCommitBuffer("測試")
         assertEquals("測試", event.text)
     }
 
     @Test
     fun enterKeyDownWhenBufferIsEmpty_canBeInstantiated() {
-        val event = Events.EnterKeyDownWhenBufferIsEmpty()
+        val event = ImeAction.EnterKeyDownWhenBufferIsEmpty
         assertNotNull(event)
     }
 
     @Test
     fun keyboardLayoutSwitched_canBeInstantiated() {
-        val event = Events.KeyboardLayoutSwitched()
+        val event = ImeAction.KeyboardLayoutSwitched
         assertNotNull(event)
     }
 
     @Test
     fun exitKeyboardSubLayouts_canBeInstantiated() {
-        val event = Events.ExitKeyboardSubLayouts()
+        val event = ImeAction.ExitKeyboardSubLayouts
         assertNotNull(event)
     }
 
     @Test
     fun requestHideIme_canBeInstantiated() {
-        val event = Events.RequestHideIme()
+        val event = ImeAction.RequestHideIme
         assertNotNull(event)
     }
 
     @Test
     fun switchToNextInputMethod_canBeInstantiated() {
-        val event = Events.SwitchToNextInputMethod()
+        val event = ImeAction.SwitchToNextInputMethod
         assertNotNull(event)
     }
 
     @Test
     fun toggleFullOrHalfWidthMode_canBeInstantiated() {
-        val event = Events.ToggleFullOrHalfWidthMode()
+        val event = ImeAction.ToggleFullOrHalfWidthMode
         assertNotNull(event)
     }
 
     @Test
     fun toggleKeyboardMainLayoutMode_canBeInstantiated() {
-        val event = Events.ToggleKeyboardMainLayoutMode()
+        val event = ImeAction.ToggleKeyboardMainLayoutMode
         assertNotNull(event)
     }
 
     @Test
     fun updateBufferViews_canBeInstantiated() {
-        val event = Events.UpdateBufferViews()
+        val event = ImeAction.UpdateBufferViews
         assertNotNull(event)
     }
 
     @Test
     fun updateCursorPosition_canBeInstantiated() {
-        val event = Events.UpdateCursorPosition()
+        val event = ImeAction.UpdateCursorPosition
         assertNotNull(event)
     }
 
     @Test
     fun updateCursorPositionToBegin_canBeInstantiated() {
-        val event = Events.UpdateCursorPositionToBegin()
+        val event = ImeAction.UpdateCursorPositionToBegin
         assertNotNull(event)
     }
 
     @Test
     fun updateCursorPositionToEnd_canBeInstantiated() {
-        val event = Events.UpdateCursorPositionToEnd()
+        val event = ImeAction.UpdateCursorPositionToEnd
         assertNotNull(event)
     }
 
-    // --- Instance identity (plain classes, not data classes) ---
+    // --- Value semantics ---
 
     @Test
-    fun noFieldEvents_eachInstantiationCreatesDistinctObject() {
-        val a = Events.UpdateBufferViews()
-        val b = Events.UpdateBufferViews()
-        assertNotSame(a, b)
+    fun noFieldActions_areOneObject() {
+        assertSame(ImeAction.UpdateBufferViews, ImeAction.UpdateBufferViews)
     }
 
     @Test
-    fun fieldEvents_eachInstantiationCreatesDistinctObject() {
-        val a = Events.SendDownUpKeyEvents(1)
-        val b = Events.SendDownUpKeyEvents(1)
-        assertNotSame(a, b)
+    fun fieldActions_withTheSameFieldsAreEqual() {
+        assertEquals(ImeAction.SendDownUpKeyEvents(1), ImeAction.SendDownUpKeyEvents(1))
+        assertNotEquals(ImeAction.SendDownUpKeyEvents(1), ImeAction.SendDownUpKeyEvents(2))
     }
 
     @Test
-    fun candidateButtonSelected_distinctInstancesAreNotEqual() {
+    fun candidateButtonSelected_comparesByCandidate() {
         val candidate = Candidate(0, "test")
-        val a = Events.CandidateButtonSelected(candidate)
-        val b = Events.CandidateButtonSelected(candidate)
-        // Plain classes use reference equality by default
-        assertNotSame(a, b)
+        assertEquals(ImeAction.CandidateButtonSelected(candidate), ImeAction.CandidateButtonSelected(candidate))
     }
 }

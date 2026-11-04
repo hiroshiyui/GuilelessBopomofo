@@ -33,7 +33,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.R
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.CANDIDATE_TEST_TAG
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.CandidatesPanel
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
@@ -68,7 +68,7 @@ class ImeComposeInstrumentedTest {
     private val selectedCandidates = mutableListOf<Candidate>()
 
     @Subscribe
-    fun onCandidateButtonSelected(event: Events.CandidateButtonSelected) {
+    fun onCandidateButtonSelected(event: ImeAction.CandidateButtonSelected) {
         selectedCandidates += event.candidate
     }
 

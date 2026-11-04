@@ -23,7 +23,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.ConversionEngines
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.greenrobot.eventbus.EventBus
 
@@ -104,7 +104,7 @@ class PreEditBuffer(private val uiState: ImeUiState) {
             // Take the text along with the event: posted from within another event's handler,
             // it is only delivered after that handler returns, and ack() below empties the
             // commit buffer long before then.
-            EventBus.getDefault().post(Events.CommitTextInChewingCommitBuffer(ChewingBridge.chewing.commitString()))
+            EventBus.getDefault().post(ImeAction.CommitTextInChewingCommitBuffer(ChewingBridge.chewing.commitString()))
             // 讓 chewing.commitCheck() 歸 0 (also cleans the commit buffer)
             ChewingBridge.chewing.ack()
         }
@@ -123,7 +123,7 @@ class PreEditBuffer(private val uiState: ImeUiState) {
     private fun openCandidatesForSimpleConversionEngine() {
         if (ChewingBridge.chewing.configGetInt("chewing.conversion_engine") == ConversionEngines.SIMPLE_CONVERSION_ENGINE.mode) {
             if (ChewingUtil.candidateWindowOpened()) {
-                EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
+                EventBus.getDefault().post(ImeAction.SwitchToLayout(Layout.CANDIDATES))
             }
         }
     }

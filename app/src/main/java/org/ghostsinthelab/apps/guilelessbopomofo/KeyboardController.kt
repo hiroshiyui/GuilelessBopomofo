@@ -28,7 +28,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSI
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ShiftKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState.CandidateLayoutStyle
@@ -57,7 +57,7 @@ class KeyboardController(
             // Read lazily from libchewing, the candidates are only good while they show.
             if (value != Layout.CANDIDATES && value != Layout.SYMBOLS) uiState.candidates = emptyList()
             // what sits around the panel, the suggestion strip say, depends on it too
-            EventBus.getDefault().post(Events.KeyboardLayoutSwitched())
+            EventBus.getDefault().post(ImeAction.KeyboardLayoutSwitched)
         }
 
     fun toggleMainLayoutMode() {
@@ -227,9 +227,9 @@ class KeyboardController(
     private fun leaveCandidatesLayout(moveCursorToEnd: Boolean) {
         ChewingBridge.chewing.candClose()
         currentCandidatesList = 0
-        EventBus.getDefault().post(Events.UpdateBufferViews())
+        EventBus.getDefault().post(ImeAction.UpdateBufferViews)
         if (moveCursorToEnd) {
-            EventBus.getDefault().post(Events.UpdateCursorPositionToEnd())
+            EventBus.getDefault().post(ImeAction.UpdateCursorPositionToEnd)
         }
         switchToMainLayout()
     }

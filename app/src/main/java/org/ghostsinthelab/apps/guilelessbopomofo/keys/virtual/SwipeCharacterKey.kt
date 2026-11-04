@@ -20,7 +20,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.SwipeDirection
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.BopomofoGlyph
@@ -49,6 +49,6 @@ class SwipeCharacterKey(private val spec: SwipeKeySpec) : VirtualKey {
     }
 
     private fun type(glyph: BopomofoGlyph) {
-        EventBus.getDefault().post(Events.PrintingKeyDown(glyph.dachenKeyCode))
+        EventBus.getDefault().post(ImeAction.PrintingKeyDown(glyph.dachenKeyCode))
     }
 }

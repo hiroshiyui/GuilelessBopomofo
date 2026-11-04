@@ -25,7 +25,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.ChiEngMode
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -67,7 +67,7 @@ class Shift : PhysicalKeyHandler {
         val tapped = keyCode == heldKeyCode && !chorded && event != null && event.isQuickTap()
         reset()
         if (tapped) {
-            EventBus.getDefault().post(Events.ToggleKeyboardMainLayoutMode())
+            EventBus.getDefault().post(ImeAction.ToggleKeyboardMainLayoutMode)
         }
         return keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT
     }
@@ -75,7 +75,7 @@ class Shift : PhysicalKeyHandler {
     override fun onKeyLongPress(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT && ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
             ChewingUtil.openFrequentlyUsedCandidates()
-            EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
+            EventBus.getDefault().post(ImeAction.SwitchToLayout(Layout.CANDIDATES))
             return true
         }
         return super.onKeyLongPress(context, keyCode, event)

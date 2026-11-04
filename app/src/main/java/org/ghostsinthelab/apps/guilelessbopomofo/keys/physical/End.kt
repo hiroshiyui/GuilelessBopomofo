@@ -21,15 +21,15 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 import android.content.Context
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.greenrobot.eventbus.EventBus
 
 class End : PhysicalKeyHandler {
     override fun onKeyDown(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
         if (ChewingBridge.chewing.bufferLen() > 0) {
-            EventBus.getDefault().post(Events.UpdateCursorPositionToEnd())
+            EventBus.getDefault().post(ImeAction.UpdateCursorPositionToEnd)
         } else {
-            EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_MOVE_END))
+            EventBus.getDefault().post(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_MOVE_END))
         }
         return true
     }

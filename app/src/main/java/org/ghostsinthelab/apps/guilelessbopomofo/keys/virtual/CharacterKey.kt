@@ -20,7 +20,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.greenrobot.eventbus.EventBus
 
@@ -29,6 +29,6 @@ class CharacterKey(private val keyCodeString: String) : VirtualKey {
     // Everything happens on the way down, so that fast typing never waits for a finger to lift.
     override fun onDown(context: Context) {
         performVibration(context, GuilelessBopomofoService.userHapticFeedbackStrength)
-        EventBus.getDefault().post(Events.PrintingKeyDown(keyCodeString))
+        EventBus.getDefault().post(ImeAction.PrintingKeyDown(keyCodeString))
     }
 }

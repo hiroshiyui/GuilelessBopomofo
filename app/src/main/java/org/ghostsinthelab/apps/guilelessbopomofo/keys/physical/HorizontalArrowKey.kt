@@ -23,7 +23,7 @@ import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -38,7 +38,7 @@ abstract class HorizontalArrowKey(private val direction: DirectionKey) : Physica
                 DirectionKey.LEFT -> ChewingBridge.chewing.handleHome()
                 DirectionKey.RIGHT -> ChewingBridge.chewing.handleEnd()
             }
-            EventBus.getDefault().post(Events.UpdateCursorPosition())
+            EventBus.getDefault().post(ImeAction.UpdateCursorPosition)
             return true
         }
 

@@ -21,7 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.greenrobot.eventbus.EventBus
@@ -36,12 +36,12 @@ object PunctuationFunctionKey : VirtualKey {
 
     override fun onTap(context: Context) {
         ChewingUtil.handleShiftComma()
-        EventBus.getDefault().post(Events.UpdateBufferViews())
+        EventBus.getDefault().post(ImeAction.UpdateBufferViews)
     }
 
     override fun onLongPress(context: Context) {
         performVibration(context, Vibratable.VibrationStrength.STRONG)
         ChewingUtil.openFrequentlyUsedCandidates()
-        EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
+        EventBus.getDefault().post(ImeAction.SwitchToLayout(Layout.CANDIDATES))
     }
 }

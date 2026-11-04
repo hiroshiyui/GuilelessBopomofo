@@ -21,7 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.appSharedPreferences
@@ -54,6 +54,6 @@ object ImeSwitchFunctionKey : VirtualKey {
         context.appSharedPreferences.getBoolean(USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, false)
 
     private fun switchNextInputMethod() {
-        EventBus.getDefault().post(Events.SwitchToNextInputMethod())
+        EventBus.getDefault().post(ImeAction.SwitchToNextInputMethod)
     }
 }

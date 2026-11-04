@@ -20,7 +20,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
 import android.content.Context
 import android.view.KeyEvent
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.greenrobot.eventbus.EventBus
 
 class Escape : PhysicalKeyHandler {
@@ -29,9 +29,9 @@ class Escape : PhysicalKeyHandler {
         keyCode: Int,
         event: KeyEvent?,
     ): Boolean {
-        EventBus.getDefault().post(Events.RequestHideIme())
-        EventBus.getDefault().post(Events.ExitKeyboardSubLayouts())
-        EventBus.getDefault().post(Events.UpdateCursorPosition())
+        EventBus.getDefault().post(ImeAction.RequestHideIme)
+        EventBus.getDefault().post(ImeAction.ExitKeyboardSubLayouts)
+        EventBus.getDefault().post(ImeAction.UpdateCursorPosition)
         return true
     }
 }

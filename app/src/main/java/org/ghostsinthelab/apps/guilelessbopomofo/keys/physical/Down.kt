@@ -23,7 +23,7 @@ import android.util.Log
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.greenrobot.eventbus.EventBus
 
 class Down : PhysicalKeyHandler {
@@ -32,7 +32,7 @@ class Down : PhysicalKeyHandler {
         if (ChewingBridge.chewing.bufferLen() > 0) {
             ChewingUtil.openCandidates()
         } else {
-            EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN))
+            EventBus.getDefault().post(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_DOWN))
         }
         return true
     }

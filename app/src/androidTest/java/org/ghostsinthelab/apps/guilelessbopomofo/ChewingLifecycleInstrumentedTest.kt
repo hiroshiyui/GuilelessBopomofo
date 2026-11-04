@@ -20,7 +20,8 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ChewingReconnected
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.junit.After
@@ -38,7 +39,7 @@ class ChewingLifecycleInstrumentedTest {
     private var reconnections = 0
 
     @Subscribe
-    fun onChewingReconnected(event: Events.ChewingReconnected) {
+    fun onChewingReconnected(event: ChewingReconnected) {
         reconnections += 1
     }
 

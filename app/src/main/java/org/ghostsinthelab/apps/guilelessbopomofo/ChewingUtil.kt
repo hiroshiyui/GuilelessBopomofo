@@ -24,7 +24,8 @@ import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.EnterKeyIntent
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ChewingReconnected
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.io.FileOutputStream
@@ -90,7 +91,7 @@ object ChewingUtil {
         ChewingBridge.chewing.setChiEngMode(chiEngMode)
         ChewingBridge.chewing.setShapeMode(shapeMode)
         // The rest of its settings the input method, if it is running, puts back itself.
-        EventBus.getDefault().post(Events.ChewingReconnected())
+        EventBus.getDefault().post(ChewingReconnected())
     }
 
     fun setupChewingData(context: Context, dataPath: String) {
@@ -205,9 +206,9 @@ object ChewingUtil {
     fun handleBackspaceAction() {
         if (anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.handleBackspace()
-            EventBus.getDefault().post(Events.UpdateBufferViews())
+            EventBus.getDefault().post(ImeAction.UpdateBufferViews)
         } else {
-            EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_DEL))
+            EventBus.getDefault().post(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_DEL))
         }
     }
 
@@ -218,28 +219,28 @@ object ChewingUtil {
     fun handleEnterAction(intent: EnterKeyIntent = EnterKeyIntent.EDITOR_ACTION) {
         if (anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.commitPreeditBuf(ChewingBridge.chewing.context)
-            EventBus.getDefault().post(Events.UpdateBufferViews())
+            EventBus.getDefault().post(ImeAction.UpdateBufferViews)
             return
         }
 
         when (intent) {
             EnterKeyIntent.LINE_BREAK ->
-                EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER))
+                EventBus.getDefault().post(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER))
 
             EnterKeyIntent.EDITOR_ACTION ->
-                EventBus.getDefault().post(Events.EnterKeyDownWhenBufferIsEmpty())
+                EventBus.getDefault().post(ImeAction.EnterKeyDownWhenBufferIsEmpty)
         }
     }
 
     fun handleSpaceAction() {
         if (anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.handleSpace()
-            EventBus.getDefault().post(Events.UpdateBufferViews())
+            EventBus.getDefault().post(ImeAction.UpdateBufferViews)
             if (ChewingBridge.chewing.getSpaceAsSelection() == 1 && candidateWindowOpened()) {
                 openCandidates()
             }
         } else {
-            EventBus.getDefault().post(Events.SendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE))
+            EventBus.getDefault().post(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE))
         }
     }
 
@@ -252,13 +253,13 @@ object ChewingUtil {
             DirectionKey.LEFT -> ChewingBridge.chewing.handleLeft()
             DirectionKey.RIGHT -> ChewingBridge.chewing.handleRight()
         }
-        EventBus.getDefault().post(Events.DirectionKeyDown(direction))
+        EventBus.getDefault().post(ImeAction.DirectionKeyDown(direction))
     }
 
     fun openCandidates() {
         ChewingBridge.chewing.candClose()
         ChewingBridge.chewing.candOpen()
-        EventBus.getDefault().post(Events.SwitchToLayout(Layout.CANDIDATES))
+        EventBus.getDefault().post(ImeAction.SwitchToLayout(Layout.CANDIDATES))
     }
 
     // simulates [Shift] + [,]

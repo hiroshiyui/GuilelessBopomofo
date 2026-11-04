@@ -80,7 +80,7 @@ import androidx.compose.ui.unit.dp
 import org.ghostsinthelab.apps.guilelessbopomofo.BuildConfig
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
-import org.ghostsinthelab.apps.guilelessbopomofo.events.Events
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.SuggestionButton
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.KeyboardSpecs
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.KeyboardVariant
@@ -241,7 +241,7 @@ private fun PreEditBufferText(uiState: ImeUiState) {
                     val offset = uiState.preEditText.characterIndexOf(utf16Offset)
                     Haptics.performVibration(context, Vibratable.VibrationStrength.LIGHT)
                     if (waitForUpOrCancellation() != null) {
-                        EventBus.getDefault().post(Events.PreEditBufferTouched(offset))
+                        EventBus.getDefault().post(ImeAction.PreEditBufferTouched(offset))
                     }
                 }
             }
