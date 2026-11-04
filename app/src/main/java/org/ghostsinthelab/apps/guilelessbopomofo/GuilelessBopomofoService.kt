@@ -77,6 +77,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.prediction.ScowlWordPredictor
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeRoot
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessTheme
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyAction
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyBehavior
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyBehaviorResolver
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -498,18 +499,8 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
         val behavior = currentInputEditorInfo?.let(EnterKeyBehaviorResolver::resolve)
             ?: EnterKeyBehavior.NewLine
-
-        when (behavior) {
-            is EnterKeyBehavior.EditorAction -> {
-                // A false return means the input connection died under us, never that the
-                // text field turned the action down. The plain Enter is a last resort that
-                // will quietly do nothing in that case.
-                if (currentInputConnection?.performEditorAction(behavior.actionId) != true) {
-                    sendDownUpKeyEvents(KEYCODE_ENTER)
-                }
-            }
-
-            EnterKeyBehavior.NewLine -> sendDownUpKeyEvents(KEYCODE_ENTER)
+        if (!EnterKeyAction.perform(behavior, currentInputConnection)) {
+            sendDownUpKeyEvents(KEYCODE_ENTER)
         }
     }
 
