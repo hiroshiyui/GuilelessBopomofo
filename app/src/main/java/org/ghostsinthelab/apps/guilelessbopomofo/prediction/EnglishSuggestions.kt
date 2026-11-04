@@ -17,7 +17,6 @@
  */
 package org.ghostsinthelab.apps.guilelessbopomofo.prediction
 
-import android.content.SharedPreferences
 import android.view.inputmethod.InputConnection
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
@@ -79,14 +78,15 @@ class EnglishSuggestions(
     }
 
     /**
-     * Follows the preference under [key] if it is one of English prediction's.
+     * Follows the preference under [key] if it is one of English prediction's, reading its
+     * value through [isOn].
      *
      * @return whether it was.
      */
-    fun onPreferenceChanged(key: String?, preferences: SharedPreferences): Boolean {
+    fun onPreferenceChanged(key: String?, isOn: (String) -> Boolean): Boolean {
         when (key) {
-            USER_ENABLE_ENGLISH_PREDICTION -> isEnabled = preferences.getBoolean(key, false)
-            USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION -> isNextWordEnabled = preferences.getBoolean(key, false)
+            USER_ENABLE_ENGLISH_PREDICTION -> isEnabled = isOn(key)
+            USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION -> isNextWordEnabled = isOn(key)
             else -> return false
         }
         return true

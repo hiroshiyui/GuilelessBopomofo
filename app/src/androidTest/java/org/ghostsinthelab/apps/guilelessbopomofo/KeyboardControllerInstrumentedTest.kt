@@ -465,6 +465,9 @@ class KeyboardControllerInstrumentedTest {
     }
 
     // ========== preferences ==========
+    // These write the app's real preferences. The keyboard service, if it is running in
+    // this process, listens to them too and rebuilds its own keyboard; harmless, but worth
+    // knowing when a UI test runs after this one.
 
     @Test
     fun onPreferenceChanged_rebuildsTheMainKeyboard_forALayoutPreference() {

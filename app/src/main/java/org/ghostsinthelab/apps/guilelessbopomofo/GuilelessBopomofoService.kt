@@ -536,10 +536,11 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     // Each part of the input method answers for its own preferences; the haptic strength is
     // read by every key, so it stays here, and the fullscreen ones are read when evaluated.
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (sharedPreferences == null) return
         if (chewingSettings.onPreferenceChanged(key)) return
         if (keyboardController.onPreferenceChanged(key)) return
-        if (englishSuggestions.onPreferenceChanged(key, sharedPreferences)) return
+        // the rest read the value, and the owners above read their own copy
+        if (sharedPreferences == null) return
+        if (englishSuggestions.onPreferenceChanged(key) { sharedPreferences.getBoolean(it, false) }) return
         if (key == USER_HAPTIC_FEEDBACK_STRENGTH) {
             userHapticFeedbackStrength = sharedPreferences.getInt(key, defaultHapticFeedbackStrength)
         }

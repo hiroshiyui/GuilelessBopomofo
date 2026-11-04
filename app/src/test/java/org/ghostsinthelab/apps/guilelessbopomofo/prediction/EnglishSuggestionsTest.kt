@@ -17,7 +17,6 @@
  */
 package org.ghostsinthelab.apps.guilelessbopomofo.prediction
 
-import android.content.SharedPreferences
 import android.text.InputType
 import android.view.inputmethod.InputConnection
 import java.lang.reflect.Proxy
@@ -210,16 +209,9 @@ class EnglishSuggestionsTest {
 
     // --- preferences ---
 
-    private fun preferencesSaying(vararg values: Pair<String, Boolean>): SharedPreferences {
+    private fun preferencesSaying(vararg values: Pair<String, Boolean>): (String) -> Boolean {
         val map = values.toMap()
-        return Proxy.newProxyInstance(
-            SharedPreferences::class.java.classLoader, arrayOf(SharedPreferences::class.java)
-        ) { _, method, args ->
-            when (method.name) {
-                "getBoolean" -> map[args[0] as String] ?: (args[1] as Boolean)
-                else -> error("unexpected ${method.name}")
-            }
-        } as SharedPreferences
+        return { key -> map[key] ?: false }
     }
 
     @Test
