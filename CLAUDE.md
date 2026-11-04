@@ -40,7 +40,10 @@ git clone --recursive https://github.com/hiroshiyui/GuilelessBopomofo.git
 
 - **`Chewing.kt`** - JNI wrapper class with `external` function declarations; loads `libchewing_android_jni` native library
 - **`ChewingBridge.kt`** - Singleton holding the global `Chewing` instance; defines enums for input modes (`ChiEngMode`, `ShapeMode`) and keyboard layouts
-- **`GuilelessBopomofoService.kt`** - Main `InputMethodService` implementation; handles key events, composition, candidate selection for both virtual and physical keyboards. Hosts the Compose input view (it is its own `LifecycleOwner`/`SavedStateRegistryOwner`)
+- **`GuilelessBopomofoService.kt`** - The `InputMethodService`: lifecycle, the Compose input view (it is its own `LifecycleOwner`/`SavedStateRegistryOwner`), and the `ImeAction` dispatcher that carries out what keys and panels ask for. The heavier jobs are delegated:
+  - **`keys/physical/PhysicalKeyInput.kt`** - hardware key events, the printing-key path through libchewing, Shift bookkeeping, and the table of `PhysicalKeyHandler`s
+  - **`prediction/EnglishSuggestions.kt`** - the English suggestion strip: when it shows, what it offers, choosing a word, and the auto-space taken back before punctuation
+  - **`ChewingSettings.kt`** - connecting libchewing and keeping the user's preferences applied to its context
 - **`KeyboardController.kt`** - Decides which panel the input view shows (keyboard, candidates, compact bar) and keeps libchewing in step; writes `ImeUiState`, draws nothing
 - **`ui/ime/`** - Compose input view: `ImeUiState` (all state the view reads), `ImeRoot`, `Keyboard`, `CandidatesPanel`, and the `keyGestures` modifier (GestureDetector-like tap/double-tap/long-press/repeat)
 - **`ui/ime/layouts/KeyboardSpecs.kt`** - Every on-screen keyboard as data; landscape/sw600dp differences are weight overrides chosen by `KeyboardVariant`
