@@ -35,6 +35,8 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.SoftKeyboard
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -409,5 +411,55 @@ class KeyboardControllerInstrumentedTest {
         sharedPreferences.edit()
             .putBoolean(key, enabled)
             .apply()
+    }
+
+    // ========== leaving sub layouts ==========
+
+    @Test
+    fun exitSubLayout_fromTheSymbols_returnsToMain() {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            keyboardController.switchToLayout(Layout.SYMBOLS)
+            keyboardController.exitSubLayout()
+        }
+        assertEquals(Layout.MAIN, keyboardController.currentLayout)
+        assertTrue(keyboardController.isDismissible)
+    }
+
+    @Test
+    fun exitSubLayout_fromTheMainKeyboard_changesNothing() {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            keyboardController.switchToLayout(Layout.MAIN)
+            keyboardController.exitSubLayout()
+        }
+        assertEquals(Layout.MAIN, keyboardController.currentLayout)
+    }
+
+    @Test
+    fun theSymbolPicker_cannotBeDismissedFrom_onlySteppedOutOf() {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            keyboardController.switchToLayout(Layout.SYMBOLS)
+        }
+        // the picker shows its symbols as candidates
+        assertNotEquals(Layout.MAIN, keyboardController.currentLayout)
+        assertFalse(keyboardController.isDismissible)
+    }
+
+    @Test
+    fun returnToMainLayout_fromTheCandidates_closesTheCandidateWindow() {
+        val keys = arrayOf('x', 'm', '4', 't', '8', '6')
+        for (key in keys) {
+            ChewingBridge.chewing.handleDefault(key)
+        }
+        ChewingBridge.chewing.handleSpace()
+        ChewingBridge.chewing.candOpen()
+
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            keyboardController.switchToLayout(Layout.CANDIDATES)
+            keyboardController.returnToMainLayout()
+        }
+        assertEquals(Layout.MAIN, keyboardController.currentLayout)
+        assertTrue(ChewingUtil.candidateWindowClosed())
+
+        ChewingBridge.chewing.cleanPreeditBuf()
     }
 }

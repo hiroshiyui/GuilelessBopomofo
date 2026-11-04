@@ -193,13 +193,6 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     override val context: Context get() = this
 
     companion object {
-        // The layouts one can leave the keyboard from, rather than merely stepping back
-        // into the main one.
-        private val DISMISSIBLE_LAYOUTS = setOf(Layout.MAIN, Layout.COMPACT, Layout.QWERTY)
-
-        // The layouts that are a detour from the main one, and can be stepped out of.
-        private val SUB_LAYOUTS = setOf(Layout.SYMBOLS, Layout.CANDIDATES)
-
         val defaultHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
 
         @Volatile
@@ -374,7 +367,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     private fun onChewingReconnected() {
         Log.d(logTag, "onChewingReconnected()")
         chewingSettings.applyAll()
-        returnToMainLayout()
+        keyboardController.returnToMainLayout()
     }
 
     /**
@@ -424,30 +417,11 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     }
 
     private fun onRequestHideIme() {
-        if (keyboardController.currentLayout in DISMISSIBLE_LAYOUTS) {
-            requestHideSelf(0)
-        }
+        if (keyboardController.isDismissible) requestHideSelf(0)
     }
 
     private fun onExitKeyboardSubLayouts() {
-        Log.d(logTag, "onExitKeyboardSubLayouts()")
-        if (keyboardController.currentLayout in SUB_LAYOUTS) {
-            returnToMainLayout()
-        }
-    }
-
-    /**
-     * Back to the main keyboard, from wherever the panel is. Leaving the candidates or the
-     * symbols closes libchewing's candidate window too, or the next selection key would still
-     * pick from it, out of sight behind the keyboard.
-     */
-    private fun returnToMainLayout() {
-        if (keyboardController.currentLayout in SUB_LAYOUTS) {
-            ChewingBridge.chewing.candClose()
-            // reset last cursor position
-            keyboardController.lastChewingCursor = 0
-        }
-        keyboardController.switchToLayout(Layout.MAIN)
+        keyboardController.exitSubLayout()
     }
 
     private fun onCommitTextInChewingCommitBuffer(action: ImeAction.CommitTextInChewingCommitBuffer) {
@@ -568,7 +542,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         if (isInputViewShown) {
             Log.d(logTag, "onConfigurationChanged(): refresh the input view.")
             // toggle main layout automatically between physical keyboard being connected and disconnected
-            returnToMainLayout()
+            keyboardController.returnToMainLayout()
             // there will be a short (time) window that InputMethod.hideSoftInput() will be called when user turn own physical keyboard on/off,
             // so have to call showWindow() here to make the soft input visible:
             showWindow(true)
@@ -593,7 +567,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH,
                 -> {
                 // The keyboards are built from these, so switch again to pick them up.
-                returnToMainLayout()
+                keyboardController.returnToMainLayout()
             }
 
             USER_HAPTIC_FEEDBACK_STRENGTH -> {

@@ -47,7 +47,7 @@ class KeyboardController(
 ) {
     private val logTag: String = "KeyboardController"
 
-    internal var lastChewingCursor: Int = 0
+    private var lastChewingCursor: Int = 0
     private var currentCandidatesList: Int = 0
 
     var currentLayout: Layout
@@ -280,6 +280,38 @@ class KeyboardController(
         if (uiState.shiftKeyState != ShiftKey.ShiftKeyState.RELEASED) {
             ShiftKey.switchToState(uiState, ShiftKey.ShiftKeyState.RELEASED)
         }
+    }
+
+    /** Whether the keyboard can be put away from here, rather than merely stepped back out of. */
+    val isDismissible: Boolean get() = currentLayout in DISMISSIBLE_LAYOUTS
+
+    /** Steps back out of the candidates or the symbols to the main keyboard, if in one of them. */
+    fun exitSubLayout() {
+        Log.d(logTag, "exitSubLayout()")
+        if (currentLayout in SUB_LAYOUTS) returnToMainLayout()
+    }
+
+    /**
+     * Back to the main keyboard, from wherever the panel is. Leaving the candidates or the
+     * symbols closes libchewing's candidate window too, or the next selection key would still
+     * pick from it, out of sight behind the keyboard.
+     */
+    fun returnToMainLayout() {
+        if (currentLayout in SUB_LAYOUTS) {
+            ChewingBridge.chewing.candClose()
+            // reset last cursor position
+            lastChewingCursor = 0
+        }
+        switchToMainLayout()
+    }
+
+    companion object {
+        // The layouts one can leave the keyboard from, rather than merely stepping back
+        // into the main one.
+        private val DISMISSIBLE_LAYOUTS = setOf(Layout.MAIN, Layout.COMPACT, Layout.QWERTY)
+
+        // The layouts that are a detour from the main one, and can be stepped out of.
+        private val SUB_LAYOUTS = setOf(Layout.SYMBOLS, Layout.CANDIDATES)
     }
 }
 
