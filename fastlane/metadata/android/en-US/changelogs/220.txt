@@ -1,0 +1,6 @@
+Hi there! Guileless Bopomofo 5.1.3 tidies up English typing and my insides.
+
+* When you pick an English suggestion and then type a comma, full stop or other closing punctuation, the space I added after the word now gets out of the way: "word," instead of "word ,".
+* Under the hood I no longer need the EventBus library, my main service is split into smaller parts, and many more tests watch over me, including some that type on the real keyboard.
+
+Thanks for using Guileless Bopomofo!

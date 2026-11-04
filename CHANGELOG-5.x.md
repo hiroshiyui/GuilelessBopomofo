@@ -1,11 +1,11 @@
 # Changelog — 5.x
 
-## Unreleased
+## 5.1.3
+- Made punctuation typed right after a chosen English suggestion close up against the word: the space the suggestion was committed with is taken back before `, . ! ? ; : ) ] }` and `'`, so `word ,` becomes `word,`. The space is only taken back while the cursor is still right after that word; moving the cursor, deleting, pressing Enter or selecting text leaves it alone.
 - Added UI Automator tests that drive the real keyboard in the engineering screen's text field, typing Bopomofo, converting, choosing a candidate, Backspace, Enter and the mode switch to English, and walk the settings tabs and a preference switch.
 - Added tests for what had none: a JVM unit test for the action queue behind `ImeAction` dispatch, now its own `ActionQueue` class, and instrumented tests for `PhysicalKeyInput`, `ChewingSettings` and every on-screen key.
 - Split `GuilelessBopomofoService` by concern: hardware key handling moved to `PhysicalKeyInput`, the English suggestion strip to `EnglishSuggestions` (now covered by JVM unit tests with a fake text field), libchewing configuration to `ChewingSettings`, and stepping back out of the candidates or symbols to `KeyboardController`. No change in behavior.
 - Replaced the `physicalKeyboardPresented` global in `GuilelessBopomofoEnv` with a `PhysicalKeyboard` object the service owns and hands to the classes that read it, and gave the suggestion strip an explicit `shutDown()` for teardown so nothing touches libchewing after its context is freed.
-- Made punctuation typed right after a chosen English suggestion close up against the word: the space the suggestion was committed with is taken back before `, . ! ? ; : ) ] }` and `'`, so `word ,` becomes `word,`. The space is only taken back while the cursor is still right after that word; moving the cursor, deleting, pressing Enter or selecting text leaves it alone.
 - Removed greenrobot EventBus. Everything a key or panel asks of the input method is now a sealed `ImeAction` handed to an `ImeDispatcher` the service implements; keys receive it as an `ImeHost` and Compose reads it from `LocalImeHost`. Actions asked for while one is being carried out still run after it, as nested EventBus posts did; dispatch is checked to be on the main thread, and a failing handler is logged by action kind rather than taking the keyboard down. The settings screens tell the service about a libchewing reconnection through a listener on `ChewingBridge`. Dropped the dependency, its ProGuard keep rules and its notice.
 
 ## 5.1.2
