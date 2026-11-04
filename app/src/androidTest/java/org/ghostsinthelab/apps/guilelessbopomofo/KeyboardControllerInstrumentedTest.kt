@@ -19,17 +19,20 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import java.io.File
+import java.io.FileOutputStream
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.APP_SHARED_PREFERENCES
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeDispatcher
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyboard
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ShiftKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.SoftKeyboard
@@ -41,8 +44,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.File
-import java.io.FileOutputStream
 
 @RunWith(AndroidJUnit4::class)
 class KeyboardControllerInstrumentedTest {
@@ -80,7 +81,7 @@ class KeyboardControllerInstrumentedTest {
             APP_SHARED_PREFERENCES, Context.MODE_PRIVATE
         )
 
-        keyboardController = KeyboardController(uiState, sharedPreferences, ImeDispatcher {})
+        keyboardController = KeyboardController(uiState, sharedPreferences, PhysicalKeyboard(), ImeDispatcher {})
     }
 
     @After

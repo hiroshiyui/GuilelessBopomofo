@@ -49,6 +49,7 @@ class EnglishSuggestions(
     // the space the last chosen suggestion was committed with
     private val autoSpace = AutoSpace()
 
+    /** Turning prediction on or off shows or hides the strip right away. */
     var isEnabled: Boolean
         get() = prediction.isEnabled
         set(value) {
@@ -56,12 +57,23 @@ class EnglishSuggestions(
             refresh()
         }
 
+    /** Turning next-word prediction on or off refreshes the strip right away. */
     var isNextWordEnabled: Boolean
         get() = prediction.isNextWordEnabled
         set(value) {
             prediction.isNextWordEnabled = value
             refresh()
         }
+
+    /**
+     * Lets go of the word lists for good. Unlike turning [isEnabled] off, nothing is looked
+     * at again: the input method is on its way out, and libchewing may be gone already.
+     */
+    fun shutDown() {
+        prediction.isEnabled = false
+        uiState.suggestions = emptyList()
+        uiState.showBuffers = true
+    }
 
     /** A text field was just started: its [inputType] says whether it wants suggestions. */
     fun onStartInput(inputType: Int?) {

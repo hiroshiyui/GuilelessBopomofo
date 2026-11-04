@@ -19,23 +19,23 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDIDATE_SELECTION_KEYS_OPTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_SPACE_AS_SELECTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyboard
 
 /**
  * What this input method sets on a libchewing context, from the user's preferences and its
  * own constants. A fresh context starts without any of it, so [applyAll] goes with every
  * connection, and [onPreferenceChanged] keeps the context in step afterwards.
  */
-class ChewingSettings(private val sharedPreferences: SharedPreferences) {
-    private val logTag = "ChewingSettings"
-
+class ChewingSettings(
+    private val sharedPreferences: SharedPreferences,
+    private val physicalKeyboard: PhysicalKeyboard,
+) {
     /**
      * Installs the dictionaries if need be, connects libchewing and sets it up for Bopomofo.
      *
@@ -47,7 +47,6 @@ class ChewingSettings(private val sharedPreferences: SharedPreferences) {
         val dataPath = context.applicationInfo.dataDir
         ChewingUtil.setupChewingData(context, dataPath)
         ChewingBridge.chewing.connect(dataPath)
-        Log.d(logTag, "Chewing context ptr: ${ChewingBridge.chewing.context}")
 
         ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         applyAll()
@@ -64,7 +63,7 @@ class ChewingSettings(private val sharedPreferences: SharedPreferences) {
 
     /** The engine depends on which keyboard is in use, so this goes with every change of that. */
     fun applyConversionEngine() {
-        val key = if (physicalKeyboardPresented)
+        val key = if (physicalKeyboard.isPresent)
             USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD
         else
             USER_CONVERSION_ENGINE

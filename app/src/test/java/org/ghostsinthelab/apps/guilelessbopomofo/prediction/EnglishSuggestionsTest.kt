@@ -36,6 +36,7 @@ class EnglishSuggestionsTest {
             InputConnection::class.java.classLoader, arrayOf(InputConnection::class.java)
         ) { _, method, args ->
             when (method.name) {
+                // plain text only: the flags that would ask for styled text are ignored
                 "getTextBeforeCursor" -> text.takeLast(args[0] as Int)
                 "deleteSurroundingText" -> {
                     text = text.dropLast(args[0] as Int); edits += "delete ${args[0]}"; true
@@ -192,5 +193,15 @@ class EnglishSuggestionsTest {
         startPlainTextField()
         suggestions.commit(",")
         assertEquals("hello ,", field.text)
+    }
+
+    @Test
+    fun shutDown_clearsTheStripWithoutLookingAtAnything() {
+        enabledInPlainTextField()
+        assertFalse(uiState.showBuffers)
+        suggestions.shutDown()
+        assertTrue(uiState.showBuffers)
+        assertEquals(emptyList<String>(), uiState.suggestions)
+        assertFalse(predictor.isEnabled)
     }
 }

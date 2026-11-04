@@ -66,21 +66,6 @@ class GuilelessBopomofoEnvTest {
     }
 
     @Test
-    fun physicalKeyboardPresented_defaultIsFalse() {
-        // Reset to default in case other tests modified it
-        GuilelessBopomofoEnv.physicalKeyboardPresented = false
-        assertFalse(GuilelessBopomofoEnv.physicalKeyboardPresented)
-    }
-
-    @Test
-    fun physicalKeyboardPresented_canBeToggled() {
-        GuilelessBopomofoEnv.physicalKeyboardPresented = true
-        assertTrue(GuilelessBopomofoEnv.physicalKeyboardPresented)
-        GuilelessBopomofoEnv.physicalKeyboardPresented = false
-        assertFalse(GuilelessBopomofoEnv.physicalKeyboardPresented)
-    }
-
-    @Test
     fun deviceIsEmulator_defaultIsFalse() {
         GuilelessBopomofoEnv.deviceIsEmulator = false
         assertFalse(GuilelessBopomofoEnv.deviceIsEmulator)

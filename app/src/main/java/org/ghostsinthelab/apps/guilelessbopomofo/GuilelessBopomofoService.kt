@@ -62,13 +62,13 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_B
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.deviceIsEmulator
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBuffer
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyInput
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyboard
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.BigramPredictor
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishPrediction
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishSuggestions
@@ -90,26 +90,43 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
     // What the input view shows; it lives as long as the service, the view only reads it.
     private val uiState = ImeUiState()
+
+    // The little the keys and the suggestion strip need of the service and of libchewing.
+    private val serviceEditor = ServiceEditor()
+
+    private inner class ServiceEditor : PhysicalKeyInput.Editor, EnglishSuggestions.Host {
+        override val isInputViewShown: Boolean get() = this@GuilelessBopomofoService.isInputViewShown
+        override val inputConnection: InputConnection? get() = currentInputConnection
+        override val currentLayout: Layout get() = keyboardController.currentLayout
+
+        override fun hideKeyboard() = requestHideSelf(0)
+        override fun physicalKeyboardDetected() = chewingSettings.applyConversionEngine()
+        override fun showInputMethodPicker() {
+            (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)?.showInputMethodPicker()
+        }
+
+        override fun sendKeyEventToField(event: KeyEvent) {
+            // the cursor moves on past the chosen word, if there was one
+            englishSuggestions.forgetAutoSpace()
+            currentInputConnection?.sendKeyEvent(event)
+        }
+
+        override fun typingHalfWidthEnglish(): Boolean =
+            ChewingBridge.chewing.context != 0L &&
+                    ChewingBridge.chewing.getChiEngMode() == ChiEngMode.SYMBOL.mode &&
+                    ChewingBridge.chewing.getShapeMode() == ShapeMode.HALF.mode
+
+        override fun buffersAreEmpty(): Boolean = !ChewingUtil.anyBufferIsNotEmpty()
+    }
     private lateinit var keyboardController: KeyboardController
     private val preEditBuffer = PreEditBuffer(uiState, this)
 
+    // whether a hardware keyboard is in use; onStartInputView() finds out, a key press tells
+    private val physicalKeyboard = PhysicalKeyboard()
+
     // keyboardController is created in onCreate(), and the keys only arrive after that
     private val physicalKeyInput by lazy {
-        PhysicalKeyInput(this, uiState, keyboardController, object : PhysicalKeyInput.Editor {
-            override val isInputViewShown: Boolean get() = this@GuilelessBopomofoService.isInputViewShown
-            override val inputConnection: InputConnection? get() = currentInputConnection
-            override fun hideKeyboard() = requestHideSelf(0)
-            override fun physicalKeyboardDetected() = chewingSettings.applyConversionEngine()
-            override fun showInputMethodPicker() {
-                (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)?.showInputMethodPicker()
-            }
-
-            override fun sendKeyEventToField(event: KeyEvent) {
-                // the cursor moves on past the chosen word, if there was one
-                englishSuggestions.forgetAutoSpace()
-                currentInputConnection?.sendKeyEvent(event)
-            }
-        })
+        PhysicalKeyInput(this, uiState, keyboardController, physicalKeyboard, serviceEditor)
     }
 
     // InputMethodService is no Activity: Compose wants a lifecycle and saved state to hang
@@ -126,15 +143,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             openBigramList = { assets.open(BigramPredictor.ASSET_PATH) },
         ),
         uiState,
-        object : EnglishSuggestions.Host {
-            override val currentLayout: Layout get() = keyboardController.currentLayout
-            override val inputConnection: InputConnection? get() = currentInputConnection
-            override fun typingHalfWidthEnglish(): Boolean =
-                ChewingBridge.chewing.context != 0L &&
-                        ChewingBridge.chewing.getChiEngMode() == ChiEngMode.SYMBOL.mode &&
-                        ChewingBridge.chewing.getShapeMode() == ShapeMode.HALF.mode
-            override fun buffersAreEmpty(): Boolean = !ChewingUtil.anyBufferIsNotEmpty()
-        },
+        serviceEditor,
     )
 
     // Actions asked for while one is being carried out wait their turn, as they did on
@@ -218,8 +227,8 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
         sharedPreferences = appSharedPreferences
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-        keyboardController = KeyboardController(uiState, sharedPreferences, this)
-        chewingSettings = ChewingSettings(sharedPreferences)
+        keyboardController = KeyboardController(uiState, sharedPreferences, physicalKeyboard, this)
+        chewingSettings = ChewingSettings(sharedPreferences, physicalKeyboard)
 
         try {
             chewingSettings.initialize(this)
@@ -293,7 +302,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         Log.d(logTag, "onStartInputView()")
 
         // detect if physical keyboard is presented
-        physicalKeyboardPresented =
+        physicalKeyboard.isPresent =
             (resources.configuration.keyboard == Configuration.KEYBOARD_QWERTY) && (resources.configuration.hardKeyboardHidden ==
                     Configuration.HARDKEYBOARDHIDDEN_NO) && (!deviceIsEmulator)
 
@@ -337,7 +346,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             Log.e(logTag, "Failed to cleanup Chewing context", e)
         }
         ChewingBridge.removeReconnectListener(::onChewingReconnected)
-        englishSuggestions.isEnabled = false
+        englishSuggestions.shutDown()
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     }
 
@@ -352,7 +361,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
     override fun onFinishInputView(finishingInput: Boolean) {
         super.onFinishInputView(finishingInput)
-        physicalKeyboardPresented = false
+        physicalKeyboard.isPresent = false
         physicalKeyInput.onInputViewFinished()
         // restore the soft-keyboard conversion engine for the next session
         if (ChewingBridge.chewing.context != 0L) {
@@ -548,7 +557,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             showWindow(true)
         }
 
-        if (physicalKeyboardPresented) {
+        if (physicalKeyboard.isPresent) {
             keyboardController.switchToCompactLayout()
         }
     }

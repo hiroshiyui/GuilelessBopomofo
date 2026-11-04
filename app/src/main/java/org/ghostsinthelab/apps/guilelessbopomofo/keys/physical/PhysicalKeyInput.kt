@@ -36,7 +36,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.BopomofoPhysicalKeyboards
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.ChiEngMode
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.KeyboardController
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
@@ -56,6 +55,7 @@ class PhysicalKeyInput(
     private val host: ImeHost,
     private val uiState: ImeUiState,
     private val keyboardController: KeyboardController,
+    private val physicalKeyboard: PhysicalKeyboard,
     private val editor: Editor,
 ) : KeyEventExtension {
     /** The little the keys need of the input method service itself. */
@@ -120,8 +120,8 @@ class PhysicalKeyInput(
 
         if (event != null && event.isPrintingKey) {
             // if a printing key has been pressed, assume that user have a physical keyboard connected anyway...
-            if (!physicalKeyboardPresented) {
-                physicalKeyboardPresented = true
+            if (!physicalKeyboard.isPresent) {
+                physicalKeyboard.isPresent = true
                 editor.physicalKeyboardDetected()
             }
             onPrintingKeyDown(event)
@@ -177,7 +177,7 @@ class PhysicalKeyInput(
         // Skip while the candidates window is shown (e.g. the `‵` symbol picker): a printing key here
         // is a selection key, and switching away would tear down the candidates view before onKeyUp()
         // can render the next-level list, leaving sub-menus invisible (still effective in libchewing).
-        if (physicalKeyboardPresented &&
+        if (physicalKeyboard.isPresent &&
             keyboardController.currentLayout != Layout.COMPACT &&
             keyboardController.currentLayout != Layout.CANDIDATES
         ) {

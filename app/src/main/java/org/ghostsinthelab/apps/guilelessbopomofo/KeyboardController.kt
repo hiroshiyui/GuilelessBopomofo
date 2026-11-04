@@ -26,10 +26,10 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABL
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeDispatcher
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyboard
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ShiftKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState.CandidateLayoutStyle
@@ -43,6 +43,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessDimens
 class KeyboardController(
     private val uiState: ImeUiState,
     private val sharedPreferences: SharedPreferences,
+    private val physicalKeyboard: PhysicalKeyboard,
     private val ime: ImeDispatcher,
 ) {
     private val logTag: String = "KeyboardController"
@@ -77,6 +78,11 @@ class KeyboardController(
         }
     }
 
+    /**
+     * Shows [layout], or for [Layout.MAIN] whichever main keyboard the current mode calls for.
+     * To get back to the main keyboard from the candidates or the symbols use
+     * [returnToMainLayout] instead, which also closes libchewing's candidate window.
+     */
     // Each switch sets currentLayout itself, once it knows what it ends up showing: MAIN may
     // turn out to be QWERTY or COMPACT, and setting it here first would announce two switches.
     fun switchToLayout(layout: Layout) {
@@ -128,7 +134,7 @@ class KeyboardController(
         Log.d(logTag, "switchToBopomofoLayout()")
 
         // Toggle to compact layout when physical keyboard is enabled:
-        if (physicalKeyboardPresented) {
+        if (physicalKeyboard.isPresent) {
             switchToCompactLayout()
             return
         }
@@ -187,7 +193,7 @@ class KeyboardController(
     private fun switchToAlphanumericalLayout() {
         Log.d(logTag, "switchToAlphanumericalLayout()")
 
-        if (physicalKeyboardPresented) {
+        if (physicalKeyboard.isPresent) {
             switchToCompactLayout()
             return
         }
@@ -264,7 +270,7 @@ class KeyboardController(
         Log.d(logTag, "renderCandidatesLayout")
         currentLayout = Layout.CANDIDATES
 
-        if (physicalKeyboardPresented) {
+        if (physicalKeyboard.isPresent) {
             uiState.candidateLayoutStyle = CandidateLayoutStyle.LIST
             uiState.candidates = ChewingUtil.getCandidatesByPage(ChewingBridge.chewing.candCurrentPage())
         } else {
