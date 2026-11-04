@@ -52,7 +52,7 @@ User input -> `GuilelessBopomofoService` -> `Chewing` (JNI) -> libchewing (nativ
 
 ### Key Patterns
 
-- **EventBus** (greenrobot) for decoupled event communication between components. ProGuard rules preserve `@Subscribe` methods.
+- **`ImeAction` / `ImeDispatcher`** (`events/`): everything a key or panel asks of the input method is a sealed `ImeAction`, handed to the `ImeDispatcher` the service implements. Keys get it as an `ImeHost` (dispatcher plus Android `Context`); Compose reads it from `LocalImeHost`. No event bus.
 - **Key handlers** are split: `keys/virtual/` for soft keyboard keys (`VirtualKey` behaviours, no Views), `keys/physical/` for hardware keyboard keys.
 - **`GuilelessBopomofoEnv`** holds SharedPreferences keys and device state constants.
 - **Jetpack Compose** for all UI; there are no XML layouts. Only the window theme (`AppTheme`) stays in `styles.xml`.
@@ -72,7 +72,7 @@ User input -> `GuilelessBopomofoService` -> `Chewing` (JNI) -> libchewing (nativ
 - **Thread safety**: correct use of coroutines; synchronized access to shared state.
 - **Resource management**: no leaked cursors, streams, or native resources.
 - **Error handling**: appropriate try/catch usage; never silently swallow exceptions.
-- **Consistency**: follow existing codebase patterns (EventBus for events, Compose for UI, etc.).
+- **Consistency**: follow existing codebase patterns (`ImeAction` dispatch for key actions, Compose for UI, etc.).
 - **No dead code**: remove unused imports, unreachable logic, and redundant code.
 
 ### Code Smells to Avoid
@@ -90,7 +90,7 @@ User input -> `GuilelessBopomofoService` -> `Chewing` (JNI) -> libchewing (nativ
 - Replace complex `when`/`if-else` chains that switch on type with polymorphic dispatch.
 - Model related constants/states with sealed classes or enums instead of loose strings/ints.
 - Consolidate duplicate logic between `keys/virtual/` and `keys/physical/` handlers where appropriate.
-- Reduce coupling via dependency injection, EventBus, or interface abstractions.
+- Reduce coupling via dependency injection or interface abstractions such as `ImeDispatcher`.
 - Structure code for testability — avoid direct static calls and hidden dependencies.
 
 ### JNI / Native Safety

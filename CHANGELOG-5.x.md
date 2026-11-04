@@ -1,6 +1,7 @@
 # Changelog — 5.x
 
 ## Unreleased
+- Replaced greenrobot EventBus with a sealed `ImeAction` hierarchy dispatched straight to the input method service, and dropped the dependency and its ProGuard rules.
 - Made punctuation typed right after a chosen English suggestion close up against the word: the space the suggestion was committed with is taken back before `, . ! ? ; : ) ] }` and `'`, so `word ,` becomes `word,`. The space is only taken back while the cursor is still right after that word; moving the cursor, deleting, pressing Enter or selecting text leaves it alone.
 
 ## 5.1.2

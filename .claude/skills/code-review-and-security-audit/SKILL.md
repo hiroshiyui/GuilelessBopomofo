@@ -23,7 +23,7 @@ This skill covers two complementary concerns:
 - Thread safety: correct use of coroutines, synchronized access to shared state.
 - Resource management: no leaked cursors, streams, or native resources.
 - Error handling: appropriate use of try/catch; no silently swallowed exceptions.
-- Consistency: follows existing patterns in the codebase (EventBus for events, ViewBinding for views, etc.).
+- Consistency: follows existing patterns in the codebase (`ImeAction` dispatch for key actions, Compose for UI, etc.).
 - No dead code, unused imports, or redundant logic.
 
 ### Code Smells
@@ -47,7 +47,7 @@ This skill covers two complementary concerns:
 - **Introduce sealed class/enum**: when a set of related constants or states is represented loosely (strings, ints), suggest modeling with a sealed class or enum.
 - **Use Kotlin idioms**: replace Java-style patterns with idiomatic Kotlin — e.g., `let`/`apply`/`also` scope functions, destructuring, extension functions, `buildList`/`buildString`.
 - **Simplify lifecycle management**: leverage `lifecycleScope`, `repeatOnLifecycle`, or `LifecycleObserver` to reduce manual lifecycle bookkeeping.
-- **Reduce coupling**: identify tight coupling between components and suggest dependency injection, event-driven patterns (EventBus is already used), or interface abstractions.
+- **Reduce coupling**: identify tight coupling between components and suggest dependency injection, or interface abstractions such as `ImeDispatcher`.
 - **Consolidate duplicate logic**: when similar logic appears in virtual and physical key handlers (`keys/virtual/` vs `keys/physical/`), suggest a shared base or utility.
 - **Improve testability**: flag code that is hard to unit test (e.g., direct static calls, hidden dependencies) and suggest restructuring for easier testing.
 

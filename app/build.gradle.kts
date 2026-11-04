@@ -230,7 +230,6 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.core.ktx)
-    implementation(libs.eventbus)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.junit)

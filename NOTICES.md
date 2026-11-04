@@ -29,11 +29,6 @@
     - https://dumps.wikimedia.org/simplewiki/20261001/
     - https://creativecommons.org/licenses/by-sa/4.0/
 
-* EventBus: Apache License, Version 2.0
-    - https://greenrobot.org/eventbus/license/
-    - https://github.com/greenrobot/EventBus/blob/master/LICENSE
-    - http://www.apache.org/licenses/LICENSE-2.0
-
 * LeakCanary: Apache License Version 2.0
     - https://github.com/square/leakcanary/blob/main/LICENSE.txt
     - https://github.com/square/leakcanary
