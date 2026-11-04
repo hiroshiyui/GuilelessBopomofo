@@ -28,6 +28,20 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.Locale
 
+/** What the suggestion strip asks of English prediction; [EnglishPrediction] is the real one. */
+interface EnglishPredictor {
+    var isEnabled: Boolean
+
+    /** Next-word prediction, which only works along with [isEnabled]. */
+    var isNextWordEnabled: Boolean
+
+    /**
+     * @param previous the word before the one being typed, if only spaces part them.
+     * @param prefix the part of the word typed so far, empty right after a space.
+     */
+    fun suggest(previous: String, prefix: String): List<String>
+}
+
 /**
  * Keeps the word list, and the list of which word follows which, in memory only while the
  * user has the prediction they serve turned on, and reads them off the main thread. Meant
@@ -41,7 +55,7 @@ class EnglishPrediction(
     private val scope: CoroutineScope,
     private val openWordList: () -> InputStream,
     private val openBigramList: () -> InputStream,
-) {
+) : EnglishPredictor {
     private val logTag = "EnglishPrediction"
 
     private var predictor: WordPredictor? = null
@@ -50,7 +64,7 @@ class EnglishPrediction(
     private var bigramPredictor: BigramPredictor? = null
     private var bigramLoadingJob: Job? = null
 
-    var isEnabled: Boolean = false
+    override var isEnabled: Boolean = false
         set(value) {
             field = value
             if (value) load() else unload()
@@ -58,7 +72,7 @@ class EnglishPrediction(
         }
 
     /** Next-word prediction, which only works along with [isEnabled]. */
-    var isNextWordEnabled: Boolean = false
+    override var isNextWordEnabled: Boolean = false
         set(value) {
             field = value
             updateBigrams()
@@ -70,7 +84,7 @@ class EnglishPrediction(
      * @param previous the word before the one being typed, if only spaces part them.
      * @param prefix the part of the word typed so far, empty right after a space.
      */
-    fun suggest(previous: String, prefix: String): List<String> {
+    override fun suggest(previous: String, prefix: String): List<String> {
         val followers = previous.takeIf { it.isNotEmpty() }
             ?.let { bigramPredictor?.followers(it) }
             .orEmpty()

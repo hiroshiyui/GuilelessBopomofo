@@ -101,10 +101,9 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Space
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Up
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeDown
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeUp
-import org.ghostsinthelab.apps.guilelessbopomofo.prediction.AutoSpace
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.BigramPredictor
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishPrediction
-import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishWords
+import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishSuggestions
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.ScowlWordPredictor
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeRoot
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
@@ -133,10 +132,22 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     override val lifecycle: Lifecycle get() = lifecycleRegistry
     override val savedStateRegistry: SavedStateRegistry get() = savedStateRegistryController.savedStateRegistry
 
-    private val englishPrediction = EnglishPrediction(
-        lifecycleScope,
-        openWordList = { assets.open(ScowlWordPredictor.ASSET_PATH) },
-        openBigramList = { assets.open(BigramPredictor.ASSET_PATH) },
+    private val englishSuggestions = EnglishSuggestions(
+        EnglishPrediction(
+            lifecycleScope,
+            openWordList = { assets.open(ScowlWordPredictor.ASSET_PATH) },
+            openBigramList = { assets.open(BigramPredictor.ASSET_PATH) },
+        ),
+        uiState,
+        object : EnglishSuggestions.Host {
+            override val currentLayout: Layout get() = keyboardController.currentLayout
+            override val inputConnection: InputConnection? get() = currentInputConnection
+            override fun typingHalfWidthEnglish(): Boolean =
+                ChewingBridge.chewing.context != 0L &&
+                        ChewingBridge.chewing.getChiEngMode() == ChiEngMode.SYMBOL.mode &&
+                        ChewingBridge.chewing.getShapeMode() == ShapeMode.HALF.mode
+            override fun buffersAreEmpty(): Boolean = !ChewingUtil.anyBufferIsNotEmpty()
+        },
     )
 
     // Actions asked for while one is being carried out wait their turn, as they did on
@@ -194,12 +205,6 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
     override val context: Context get() = this
 
-    // whether the text field being edited wants word suggestions, see onStartInputView()
-    private var fieldAllowsSuggestions: Boolean = false
-
-    // the space the last chosen suggestion was committed with, see onSuggestionSelected()
-    private val autoSpace = AutoSpace()
-
     // Both Shift keys share this one: it follows a press through to tell a tap from a chord.
     private val shift = Shift()
 
@@ -234,12 +239,6 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
         // The layouts that are a detour from the main one, and can be stepped out of.
         private val SUB_LAYOUTS = setOf(Layout.SYMBOLS, Layout.CANDIDATES)
-
-        // The layouts English words are typed on, and so the ones the suggestion strip goes with.
-        private val PREDICTION_LAYOUTS = setOf(Layout.QWERTY, Layout.COMPACT)
-
-        // Far enough back to find the start of any word worth predicting.
-        private const val PREDICTION_LOOKBEHIND = 48
 
         val defaultHapticFeedbackStrength: Int = Vibratable.VibrationStrength.NORMAL.strength
 
@@ -284,8 +283,8 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         userHapticFeedbackStrength =
             sharedPreferences.getInt(USER_HAPTIC_FEEDBACK_STRENGTH, defaultHapticFeedbackStrength)
 
-        englishPrediction.isEnabled = sharedPreferences.getBoolean(USER_ENABLE_ENGLISH_PREDICTION, false)
-        englishPrediction.isNextWordEnabled =
+        englishSuggestions.isEnabled = sharedPreferences.getBoolean(USER_ENABLE_ENGLISH_PREDICTION, false)
+        englishSuggestions.isNextWordEnabled =
             sharedPreferences.getBoolean(USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION, false)
     }
 
@@ -353,8 +352,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
         }
 
-        fieldAllowsSuggestions = info?.let { EnglishWords.fieldAllowsSuggestions(it.inputType) } ?: false
-        autoSpace.forget()
+        englishSuggestions.onStartInput(info?.inputType)
 
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
@@ -370,9 +368,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd)
         // the selection moving while Shift is held, e.g. a Shift-click with a mouse, is no tap
         shift.onOtherInput()
-        // text selected by hand: whatever comes next replaces it rather than follows the space
-        if (newSelStart != newSelEnd) autoSpace.forget()
-        refreshSuggestions()
+        englishSuggestions.onSelectionUpdated(newSelStart, newSelEnd)
     }
 
     override fun onDestroy() {
@@ -387,7 +383,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             Log.e(logTag, "Failed to cleanup Chewing context", e)
         }
         ChewingBridge.removeReconnectListener(::onChewingReconnected)
-        englishPrediction.isEnabled = false
+        englishSuggestions.isEnabled = false
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     }
 
@@ -604,7 +600,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
     private fun handleNumPadKey(event: KeyEvent): Boolean {
         if (!event.isNumPadKey()) return false
-        autoSpace.forget()
+        englishSuggestions.forgetAutoSpace()
         currentInputConnection?.sendKeyEvent(event)
         dispatch(ImeAction.UpdateBufferViews)
         return true
@@ -653,77 +649,19 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         currentInputConnection?.sendKeyEvent(KeyEvent(ACTION_UP, KEYCODE_SHIFT_LEFT))
     }
 
-    /**
-     * English word prediction goes with typing half-width English on the alphanumerical
-     * keyboard, in a text field that welcomes suggestions. Anywhere else the keyboard stays
-     * exactly as it has always been.
-     */
-    private fun suggestionStripApplies(): Boolean =
-        englishPrediction.isEnabled &&
-                fieldAllowsSuggestions &&
-                ChewingBridge.chewing.context != 0L &&
-                ChewingBridge.chewing.getChiEngMode() == ChiEngMode.SYMBOL.mode &&
-                ChewingBridge.chewing.getShapeMode() == ShapeMode.HALF.mode &&
-                keyboardController.currentLayout in PREDICTION_LAYOUTS
-
-    /**
-     * The suggestion strip and the buffers take turns above the keyboard: the strip while
-     * predicting, and only when it has something to offer, the buffers whenever there is
-     * something in them. English typed after Han characters still waiting in the pre-edit
-     * buffer goes into that buffer rather than the text field, so there is nothing to predict
-     * from then anyway.
-     */
-    private fun refreshSuggestions() {
-        val predicting = suggestionStripApplies() && !ChewingUtil.anyBufferIsNotEmpty()
-        uiState.showBuffers = !predicting
-        uiState.suggestions = if (predicting) englishSuggestions() else emptyList()
-    }
-
-    private fun englishSuggestions(): List<String> {
-        val textBeforeCursor = currentInputConnection?.getTextBeforeCursor(PREDICTION_LOOKBEHIND, 0) ?: ""
-        return englishPrediction.suggest(
-            previous = EnglishWords.previousWord(textBeforeCursor),
-            prefix = EnglishWords.trailingWord(textBeforeCursor),
-        )
-    }
-
-    private fun englishWordBeforeCursor(): String =
-        currentInputConnection?.getTextBeforeCursor(PREDICTION_LOOKBEHIND, 0)
-            ?.let(EnglishWords::trailingWord)
-            .orEmpty()
-
     private fun onUpdateBufferViews() {
         Log.d(logTag, "onUpdateBufferViews()")
         preEditBuffer.update()
         uiState.bopomofoText = ChewingBridge.chewing.bopomofoStringStatic()
-        refreshSuggestions()
+        englishSuggestions.refresh()
     }
 
     private fun onKeyboardLayoutSwitched() {
-        refreshSuggestions()
+        englishSuggestions.refresh()
     }
 
     private fun onSuggestionSelected(action: ImeAction.SuggestionSelected) {
-        val inputConnection = currentInputConnection ?: return
-        // Look the word up again rather than trust what the strip was built from, the text
-        // field may have changed under us in between.
-        val typedWord = englishWordBeforeCursor()
-        inputConnection.beginBatchEdit()
-        inputConnection.deleteSurroundingText(typedWord.length, 0)
-        inputConnection.commitText("${action.word} ", 1)
-        inputConnection.endBatchEdit()
-        autoSpace.committed(action.word)
-    }
-
-    /**
-     * Takes back the space a chosen suggestion came with when what follows is punctuation
-     * that belongs right after the word, so that `word ,` becomes `word,`.
-     */
-    private fun takeBackAutoSpaceIfNeeded(inputConnection: InputConnection, committed: String) {
-        val lookbehind = autoSpace.lookbehind
-        if (lookbehind == 0) return
-        val before = inputConnection.getTextBeforeCursor(lookbehind, 0)
-        if (autoSpace.takesBack(before, committed)) inputConnection.deleteSurroundingText(1, 0)
+        englishSuggestions.choose(action.word)
     }
 
     private fun onUpdateCursorPosition() {
@@ -774,11 +712,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
     private fun onCommitTextInChewingCommitBuffer(action: ImeAction.CommitTextInChewingCommitBuffer) {
         Log.d(logTag, "onCommitTextInChewingCommitBuffer()")
-        val inputConnection = currentInputConnection ?: return
-        inputConnection.beginBatchEdit()
-        takeBackAutoSpaceIfNeeded(inputConnection, action.text)
-        inputConnection.commitText(action.text, 1)
-        inputConnection.endBatchEdit()
+        englishSuggestions.commit(action.text)
     }
 
     private fun onSwitchToNextInputMethod() {
@@ -796,7 +730,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
     private fun onSendDownUpKeyEvents(action: ImeAction.SendDownUpKeyEvents) {
         // backspace, arrows and the like: the space is no longer right behind the cursor
-        autoSpace.forget()
+        englishSuggestions.forgetAutoSpace()
         sendDownUpKeyEvents(action.keycode)
     }
 
@@ -820,7 +754,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         releaseShiftKey()
         keyboardController.toggleMainLayoutMode()
         // the compact layout stays the same layout whichever mode it is in
-        refreshSuggestions()
+        englishSuggestions.refresh()
     }
 
     private fun onToggleFullOrHalfWidthMode() {
@@ -836,7 +770,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             }
         }
 
-        refreshSuggestions()
+        englishSuggestions.refresh()
 
         if (keyboardController.currentLayout == Layout.COMPACT) {
             keyboardController.refreshCompactIndicators()
@@ -849,7 +783,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
     private fun onEnterKeyDownWhenBufferIsEmpty() {
         Log.d(logTag, "onEnterKeyDownWhenBufferIsEmpty()")
-        autoSpace.forget()
+        englishSuggestions.forgetAutoSpace()
 
         val behavior = currentInputEditorInfo?.let(EnterKeyBehaviorResolver::resolve)
             ?: EnterKeyBehavior.NewLine
@@ -873,7 +807,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             preEditBuffer.cursorMovedBy(PreEditBuffer.CursorMovedFrom.PHYSICAL_KEYBOARD)
         } else if (ChewingUtil.candidateWindowClosed()) {
             // Nothing of ours to move through, so let the text field move its own cursor.
-            autoSpace.forget()
+            englishSuggestions.forgetAutoSpace()
             when (action.direction) {
                 DirectionKey.LEFT -> sendDownUpKeyEvents(KEYCODE_DPAD_LEFT)
                 DirectionKey.RIGHT -> sendDownUpKeyEvents(KEYCODE_DPAD_RIGHT)
@@ -953,13 +887,11 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             }
 
             USER_ENABLE_ENGLISH_PREDICTION -> {
-                englishPrediction.isEnabled = sharedPreferences?.getBoolean(key, false) ?: false
-                refreshSuggestions()
+                englishSuggestions.isEnabled = sharedPreferences?.getBoolean(key, false) ?: false
             }
 
             USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION -> {
-                englishPrediction.isNextWordEnabled = sharedPreferences?.getBoolean(key, false) ?: false
-                refreshSuggestions()
+                englishSuggestions.isNextWordEnabled = sharedPreferences?.getBoolean(key, false) ?: false
             }
         }
     }
