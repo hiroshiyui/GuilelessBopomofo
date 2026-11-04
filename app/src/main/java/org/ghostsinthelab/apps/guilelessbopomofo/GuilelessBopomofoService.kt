@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.view.inputmethod.InputConnection
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -139,6 +140,10 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
 
     // whether the text field being edited wants word suggestions, see onStartInputView()
     private var fieldAllowsSuggestions: Boolean = false
+
+    // whether the last thing committed was a chosen suggestion along with its trailing space,
+    // which punctuation typed right after takes back, see onSuggestionSelected()
+    private var autoSpacePending: Boolean = false
 
     // Both Shift keys share this one: it follows a press through to tell a tap from a chord.
     private val shift = Shift()
@@ -294,6 +299,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
         }
 
         fieldAllowsSuggestions = info?.let { EnglishWords.fieldAllowsSuggestions(it.inputType) } ?: false
+        autoSpacePending = false
 
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
@@ -652,6 +658,19 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
         inputConnection.deleteSurroundingText(typedWord.length, 0)
         inputConnection.commitText("${event.word} ", 1)
         inputConnection.endBatchEdit()
+        autoSpacePending = true
+    }
+
+    /**
+     * Takes back the space a chosen suggestion came with when what follows is punctuation
+     * that belongs right after the word, so that `word ,` becomes `word,`.
+     */
+    private fun takeBackAutoSpaceIfNeeded(inputConnection: InputConnection, committed: String) {
+        if (!autoSpacePending) return
+        autoSpacePending = false
+        if (!EnglishWords.closesUpToPreviousWord(committed)) return
+        val before = inputConnection.getTextBeforeCursor(1, 0) ?: return
+        if (before.endsWith(" ")) inputConnection.deleteSurroundingText(1, 0)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -709,7 +728,11 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCommitTextInChewingCommitBuffer(event: Events.CommitTextInChewingCommitBuffer) {
         Log.d(logTag, event::class.simpleName ?: "Event")
-        currentInputConnection?.commitText(event.text, 1)
+        val inputConnection = currentInputConnection ?: return
+        inputConnection.beginBatchEdit()
+        takeBackAutoSpaceIfNeeded(inputConnection, event.text)
+        inputConnection.commitText(event.text, 1)
+        inputConnection.endBatchEdit()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -728,6 +751,8 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSendDownUpKeyEvents(event: Events.SendDownUpKeyEvents) {
+        // backspace, arrows and the like: the space is no longer right behind the cursor
+        autoSpacePending = false
         sendDownUpKeyEvents(event.keycode)
     }
 
@@ -786,6 +811,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEnterKeyDownWhenBufferIsEmpty(event: Events.EnterKeyDownWhenBufferIsEmpty) {
         Log.d(logTag, event::class.simpleName ?: "Event")
+        autoSpacePending = false
 
         val behavior = currentInputEditorInfo?.let(EnterKeyBehaviorResolver::resolve)
             ?: EnterKeyBehavior.NewLine
@@ -810,6 +836,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
             preEditBuffer.cursorMovedBy(PreEditBuffer.CursorMovedFrom.PHYSICAL_KEYBOARD)
         } else if (ChewingUtil.candidateWindowClosed()) {
             // Nothing of ours to move through, so let the text field move its own cursor.
+            autoSpacePending = false
             when (event.direction) {
                 DirectionKey.LEFT -> sendDownUpKeyEvents(KEYCODE_DPAD_LEFT)
                 DirectionKey.RIGHT -> sendDownUpKeyEvents(KEYCODE_DPAD_RIGHT)

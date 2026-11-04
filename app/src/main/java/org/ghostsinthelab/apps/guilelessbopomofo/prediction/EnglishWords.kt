@@ -50,6 +50,15 @@ object EnglishWords {
     private fun trailingWordStart(text: CharSequence): Int = text.indexOfLast { !it.isWordChar() } + 1
 
     /**
+     * Whether [committed] opens with a mark that closes up against the word before it, so
+     * that the space a chosen suggestion came with should go: `word,` not `word ,`.
+     */
+    fun closesUpToPreviousWord(committed: CharSequence): Boolean =
+        committed.isNotEmpty() && committed[0] in CLOSING_PUNCTUATION
+
+    private const val CLOSING_PUNCTUATION = ",.!?;:)]}'\""
+
+    /**
      * Writes [word] the way [prefix] was typed: `TH` makes it all capitals, `Th` capitalizes
      * it, and anything else leaves it as the dictionary spells it, so that `i` still gives `I`.
      */

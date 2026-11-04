@@ -173,4 +173,28 @@ class EnglishWordsTest {
         assertFalse(EnglishWords.fieldAllowsSuggestions(InputType.TYPE_CLASS_PHONE))
         assertFalse(EnglishWords.fieldAllowsSuggestions(InputType.TYPE_NULL))
     }
+
+    // --- closesUpToPreviousWord ---
+
+    @Test
+    fun closesUpToPreviousWord_sentencePunctuation() {
+        for (mark in listOf(",", ".", "!", "?", ";", ":", ")", "]", "}", "'", "\"")) {
+            assertTrue(mark, EnglishWords.closesUpToPreviousWord(mark))
+        }
+    }
+
+    @Test
+    fun closesUpToPreviousWord_looksOnlyAtTheFirstCharacter() {
+        assertTrue(EnglishWords.closesUpToPreviousWord("..."))
+        assertFalse(EnglishWords.closesUpToPreviousWord("a,"))
+    }
+
+    @Test
+    fun closesUpToPreviousWord_notForWordsOrOpeningMarks() {
+        assertFalse(EnglishWords.closesUpToPreviousWord(""))
+        assertFalse(EnglishWords.closesUpToPreviousWord("a"))
+        assertFalse(EnglishWords.closesUpToPreviousWord("("))
+        assertFalse(EnglishWords.closesUpToPreviousWord("-"))
+        assertFalse(EnglishWords.closesUpToPreviousWord(" "))
+    }
 }
