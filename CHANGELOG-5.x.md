@@ -1,6 +1,7 @@
 # Changelog — 5.x
 
 ## Unreleased
+- Added tests for what had none: a JVM unit test for the action queue behind `ImeAction` dispatch, now its own `ActionQueue` class, and instrumented tests for `PhysicalKeyInput`, `ChewingSettings` and every on-screen key.
 - Split `GuilelessBopomofoService` by concern: hardware key handling moved to `PhysicalKeyInput`, the English suggestion strip to `EnglishSuggestions` (now covered by JVM unit tests with a fake text field), libchewing configuration to `ChewingSettings`, and stepping back out of the candidates or symbols to `KeyboardController`. No change in behavior.
 - Replaced the `physicalKeyboardPresented` global in `GuilelessBopomofoEnv` with a `PhysicalKeyboard` object the service owns and hands to the classes that read it, and gave the suggestion strip an explicit `shutDown()` for teardown so nothing touches libchewing after its context is freed.
 - Made punctuation typed right after a chosen English suggestion close up against the word: the space the suggestion was committed with is taken back before `, . ! ? ; : ) ] }` and `'`, so `word ,` becomes `word,`. The space is only taken back while the cursor is still right after that word; moving the cursor, deleting, pressing Enter or selecting text leaves it alone.

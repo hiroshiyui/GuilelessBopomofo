@@ -65,6 +65,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.deviceIsEm
 import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBuffer
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ActionQueue
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyInput
@@ -146,35 +147,15 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         serviceEditor,
     )
 
-    // Actions asked for while one is being carried out wait their turn, as they did on
-    // EventBus: a handler that asks for another action sees it done after it returns, not
-    // in the middle of its own work.
-    private val pendingActions = ArrayDeque<ImeAction>()
-    private var dispatching = false
+    // Only the action's kind is logged when a handler fails: some actions carry the user's text.
+    private val actions = ActionQueue(::handle) { action, exception ->
+        Log.e(logTag, "${action::class.simpleName} failed", exception)
+    }
 
     override fun dispatch(action: ImeAction) {
         // libchewing, and everything the handlers touch, is main-thread only
         check(Looper.getMainLooper().isCurrentThread) { "ImeAction dispatched off the main thread" }
-        pendingActions.addLast(action)
-        if (dispatching) return
-        dispatching = true
-        try {
-            while (pendingActions.isNotEmpty()) carryOut(pendingActions.removeFirst())
-        } finally {
-            // whatever happened, the next key press starts with a clean slate
-            pendingActions.clear()
-            dispatching = false
-        }
-    }
-
-    // A handler that fails must not take the input method down with it, nor the actions
-    // queued behind it. Only the action's kind is logged: some carry the user's text.
-    private fun carryOut(action: ImeAction) {
-        try {
-            handle(action)
-        } catch (exception: RuntimeException) {
-            Log.e(logTag, "${action::class.simpleName} failed", exception)
-        }
+        actions.dispatch(action)
     }
 
     private fun handle(action: ImeAction) = when (action) {
