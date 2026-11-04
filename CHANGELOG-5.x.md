@@ -1,5 +1,8 @@
 # Changelog — 5.x
 
+## Unreleased
+- Made punctuation typed right after a chosen English suggestion close up against the word: the space the suggestion was committed with is taken back before `, . ! ? ; : ) ] }` and `'`, so `word ,` becomes `word,`. The space is only taken back while the cursor is still right after that word; moving the cursor, deleting, pressing Enter or selecting text leaves it alone.
+
 ## 5.1.2
 - Made a Shift tap toggle Bopomofo and English only when it is a quick press on its own: Shift pressed while Ctrl, Alt or another modifier is held, a held-down Shift that auto-repeats, or a Shift + mouse click no longer toggles the mode.
 - Kept the tap timeout below the system long-press timeout.
