@@ -23,6 +23,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
 import android.os.Build
+import android.os.Looper
 import android.text.InputType
 import android.util.Log
 import android.view.KeyEvent
@@ -145,13 +146,27 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     private var dispatching = false
 
     override fun dispatch(action: ImeAction) {
+        // libchewing, and everything the handlers touch, is main-thread only
+        check(Looper.getMainLooper().isCurrentThread) { "ImeAction dispatched off the main thread" }
         pendingActions.addLast(action)
         if (dispatching) return
         dispatching = true
         try {
-            while (pendingActions.isNotEmpty()) handle(pendingActions.removeFirst())
+            while (pendingActions.isNotEmpty()) carryOut(pendingActions.removeFirst())
         } finally {
+            // whatever happened, the next key press starts with a clean slate
+            pendingActions.clear()
             dispatching = false
+        }
+    }
+
+    // A handler that fails must not take the input method down with it, nor the actions
+    // queued behind it. Only the action's kind is logged: some carry the user's text.
+    private fun carryOut(action: ImeAction) {
+        try {
+            handle(action)
+        } catch (exception: RuntimeException) {
+            Log.e(logTag, "${action::class.simpleName} failed", exception)
         }
     }
 
