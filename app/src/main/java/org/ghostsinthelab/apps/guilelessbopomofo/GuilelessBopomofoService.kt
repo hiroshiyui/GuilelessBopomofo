@@ -49,21 +49,16 @@ import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import java.io.IOException
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDIDATE_SELECTION_KEYS_OPTION
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_IME_SWITCH
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_SPACE_AS_SELECTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_LANDSCAPE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_PORTRAIT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_HAPTIC_FEEDBACK_STRENGTH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT
-import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.deviceIsEmulator
@@ -71,7 +66,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKe
 import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBuffer
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
-import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyInput
@@ -92,6 +86,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     private val logTag = "GuilelessBopomofoSvc"
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var chewingSettings: ChewingSettings
 
     // What the input view shows; it lives as long as the service, the view only reads it.
     private val uiState = ImeUiState()
@@ -104,7 +99,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             override val isInputViewShown: Boolean get() = this@GuilelessBopomofoService.isInputViewShown
             override val inputConnection: InputConnection? get() = currentInputConnection
             override fun hideKeyboard() = requestHideSelf(0)
-            override fun physicalKeyboardDetected() = applyConversionEngine()
+            override fun physicalKeyboardDetected() = chewingSettings.applyConversionEngine()
             override fun showInputMethodPicker() {
                 (getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager)?.showInputMethodPicker()
             }
@@ -198,8 +193,6 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     override val context: Context get() = this
 
     companion object {
-        private const val CANDIDATES_PER_PAGE = 10
-
         // The layouts one can leave the keyboard from, rather than merely stepping back
         // into the main one.
         private val DISMISSIBLE_LAYOUTS = setOf(Layout.MAIN, Layout.COMPACT, Layout.QWERTY)
@@ -233,9 +226,10 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         sharedPreferences = appSharedPreferences
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
         keyboardController = KeyboardController(uiState, sharedPreferences, this)
+        chewingSettings = ChewingSettings(sharedPreferences)
 
         try {
-            initializeChewing()
+            chewingSettings.initialize(this)
         } catch (exception: UnsatisfiedLinkError) {
             reportChewingInitFailure("Failed to load native library", exception)
         } catch (exception: Chewing.ChewingInitException) {
@@ -311,7 +305,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
                     Configuration.HARDKEYBOARDHIDDEN_NO) && (!deviceIsEmulator)
 
         // re-apply the conversion engine to match the just-detected keyboard state
-        applyConversionEngine()
+        chewingSettings.applyConversionEngine()
 
         // if the input type is phone or number, switch to symbol (alphanumeric) mode
         val inputType = info?.inputType?.and(InputType.TYPE_MASK_CLASS)
@@ -369,50 +363,17 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         physicalKeyInput.onInputViewFinished()
         // restore the soft-keyboard conversion engine for the next session
         if (ChewingBridge.chewing.context != 0L) {
-            applyConversionEngine()
+            chewingSettings.applyConversionEngine()
         }
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
         Log.d(logTag, "onFinishInputView()")
-    }
-
-    private fun initializeChewing() {
-        val dataPath = applicationInfo.dataDir
-        ChewingUtil.setupChewingData(this, dataPath)
-        ChewingBridge.chewing.connect(dataPath)
-        Log.d(logTag, "Chewing context ptr: ${ChewingBridge.chewing.context}")
-
-        ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
-        applyChewingSettings()
-    }
-
-    /**
-     * What this input method sets on a libchewing context, from the user's preferences and
-     * its own constants. A context starts without any of it.
-     */
-    private fun applyChewingSettings() {
-        ChewingBridge.chewing.setSpaceAsSelection(
-            if (sharedPreferences.getBoolean(USER_ENABLE_SPACE_AS_SELECTION, true)) 1 else 0
-        )
-        ChewingBridge.chewing.setPhraseChoiceRearward(
-            if (sharedPreferences.getBoolean(USER_PHRASE_CHOICE_REARWARD, false)) 1 else 0
-        )
-
-        // set conversion engine (traditional, fuzzy or default (chewing))
-        applyConversionEngine()
-
-        ChewingBridge.chewing.setCandPerPage(CANDIDATES_PER_PAGE)
-        ChewingBridge.chewing.configSetInt("chewing.sort_candidates_by_frequency", 1)
-
-        applySelectionKeys(
-            sharedPreferences.getString(USER_CANDIDATE_SELECTION_KEYS_OPTION, SelectionKeys.NUMBER_ROW.set)
-        )
     }
 
     // The user phrase manager flushes libchewing by swapping in a fresh context, which knows
     // none of the settings above; neither does it know the keyboard type the layout set.
     private fun onChewingReconnected() {
         Log.d(logTag, "onChewingReconnected()")
-        applyChewingSettings()
+        chewingSettings.applyAll()
         returnToMainLayout()
     }
 
@@ -426,23 +387,6 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         Toast.makeText(
             applicationContext, getString(R.string.libchewing_init_fail, exception.message), Toast.LENGTH_LONG
         ).show()
-    }
-
-    private fun applySelectionKeys(selectionKeysOption: String?) {
-        selectionKeysOption?.let {
-            ChewingBridge.chewing.setSelKey(SelectionKeys.valueOf(it).keys, CANDIDATES_PER_PAGE)
-        }
-    }
-
-    private fun applyConversionEngine() {
-        val key = if (physicalKeyboardPresented)
-            USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD
-        else
-            USER_CONVERSION_ENGINE
-        val mode = sharedPreferences.getInt(
-            key, ConversionEngines.CHEWING_CONVERSION_ENGINE.mode
-        )
-        ChewingBridge.chewing.configSetInt("chewing.conversion_engine", mode)
     }
 
     private fun onUpdateBufferViews() {
@@ -637,6 +581,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
     // triggered if any sharedPreference has been changed
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (chewingSettings.onPreferenceChanged(key)) return
         when (key) {
             // Reload the main layout
             USER_SOFT_KEYBOARD_LAYOUT,
@@ -651,16 +596,6 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
                 returnToMainLayout()
             }
 
-            USER_ENABLE_SPACE_AS_SELECTION -> {
-                val enabled = sharedPreferences?.getBoolean(key, true) ?: true
-                ChewingBridge.chewing.setSpaceAsSelection(if (enabled) 1 else 0)
-            }
-
-            USER_PHRASE_CHOICE_REARWARD -> {
-                val enabled = sharedPreferences?.getBoolean(key, false) ?: false
-                ChewingBridge.chewing.setPhraseChoiceRearward(if (enabled) 1 else 0)
-            }
-
             USER_HAPTIC_FEEDBACK_STRENGTH -> {
                 userHapticFeedbackStrength =
                     sharedPreferences?.getInt(key, defaultHapticFeedbackStrength)
@@ -672,15 +607,6 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             USER_FULLSCREEN_WHEN_IN_LANDSCAPE,
             USER_FULLSCREEN_WHEN_IN_PORTRAIT,
                 -> {}
-
-            USER_CANDIDATE_SELECTION_KEYS_OPTION -> {
-                applySelectionKeys(sharedPreferences?.getString(key, SelectionKeys.NUMBER_ROW.set))
-            }
-
-            USER_CONVERSION_ENGINE,
-            USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD -> {
-                applyConversionEngine()
-            }
 
             USER_ENABLE_ENGLISH_PREDICTION -> {
                 englishSuggestions.isEnabled = sharedPreferences?.getBoolean(key, false) ?: false
