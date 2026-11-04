@@ -18,17 +18,17 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
-import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 object EnterKey : VirtualKey {
-    override fun onDown(context: Context) {
-        performVibration(context, Vibratable.VibrationStrength.NORMAL)
+    override fun onDown(host: ImeHost) {
+        performVibration(host.context, Vibratable.VibrationStrength.NORMAL)
     }
 
-    override fun onTap(context: Context) {
-        ChewingUtil.handleEnterAction()
+    override fun onTap(host: ImeHost) {
+        ChewingUtil.handleEnterAction(host)
     }
 }

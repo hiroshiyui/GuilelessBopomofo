@@ -18,20 +18,19 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
-import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-import org.greenrobot.eventbus.EventBus
 
 object ModeSwitchFunctionKey : VirtualKey {
     override val detectsDoubleTap: Boolean = true
 
-    override fun onDown(context: Context) {
-        performVibration(context, Vibratable.VibrationStrength.NORMAL)
+    override fun onDown(host: ImeHost) {
+        performVibration(host.context, Vibratable.VibrationStrength.NORMAL)
     }
 
-    override fun onTap(context: Context) {
-        EventBus.getDefault().post(ImeAction.ToggleKeyboardMainLayoutMode)
+    override fun onTap(host: ImeHost) {
+        host.dispatch(ImeAction.ToggleKeyboardMainLayoutMode)
     }
 }

@@ -29,6 +29,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPL
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeDispatcher
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ShiftKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.SoftKeyboard
@@ -77,7 +78,7 @@ class KeyboardControllerInstrumentedTest {
             APP_SHARED_PREFERENCES, Context.MODE_PRIVATE
         )
 
-        keyboardController = KeyboardController(uiState, sharedPreferences)
+        keyboardController = KeyboardController(uiState, sharedPreferences, ImeDispatcher {})
     }
 
     @After

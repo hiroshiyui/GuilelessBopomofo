@@ -21,14 +21,15 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.content.Context
 import android.util.Log
 import android.view.KeyEvent
+import java.io.File
+import java.io.FileOutputStream
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.EnterKeyIntent
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ChewingReconnected
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeDispatcher
 import org.greenrobot.eventbus.EventBus
-import java.io.File
-import java.io.FileOutputStream
 
 object ChewingUtil {
     private const val logTag = "ChewingUtil"
@@ -203,44 +204,45 @@ object ChewingUtil {
             }
     }
 
-    fun handleBackspaceAction() {
+    fun handleBackspaceAction(ime: ImeDispatcher) {
         if (anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.handleBackspace()
-            EventBus.getDefault().post(ImeAction.UpdateBufferViews)
+            ime.dispatch(ImeAction.UpdateBufferViews)
         } else {
-            EventBus.getDefault().post(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_DEL))
+            ime.dispatch(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_DEL))
         }
     }
 
     /**
+     * @param ime Who carries out what the key asks for.
      * @param intent What the user meant by the key press. Committing what is still in the
      * buffer always comes first, whichever intent is given.
      */
-    fun handleEnterAction(intent: EnterKeyIntent = EnterKeyIntent.EDITOR_ACTION) {
+    fun handleEnterAction(ime: ImeDispatcher, intent: EnterKeyIntent = EnterKeyIntent.EDITOR_ACTION) {
         if (anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.commitPreeditBuf(ChewingBridge.chewing.context)
-            EventBus.getDefault().post(ImeAction.UpdateBufferViews)
+            ime.dispatch(ImeAction.UpdateBufferViews)
             return
         }
 
         when (intent) {
             EnterKeyIntent.LINE_BREAK ->
-                EventBus.getDefault().post(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER))
+                ime.dispatch(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER))
 
             EnterKeyIntent.EDITOR_ACTION ->
-                EventBus.getDefault().post(ImeAction.EnterKeyDownWhenBufferIsEmpty)
+                ime.dispatch(ImeAction.EnterKeyDownWhenBufferIsEmpty)
         }
     }
 
-    fun handleSpaceAction() {
+    fun handleSpaceAction(ime: ImeDispatcher) {
         if (anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.handleSpace()
-            EventBus.getDefault().post(ImeAction.UpdateBufferViews)
+            ime.dispatch(ImeAction.UpdateBufferViews)
             if (ChewingBridge.chewing.getSpaceAsSelection() == 1 && candidateWindowOpened()) {
-                openCandidates()
+                openCandidates(ime)
             }
         } else {
-            EventBus.getDefault().post(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE))
+            ime.dispatch(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE))
         }
     }
 
@@ -248,18 +250,18 @@ object ChewingUtil {
      * Moves the chewing cursor one character to either side, and lets whoever is showing the
      * buffer or the candidates know about it.
      */
-    fun moveCursorHorizontally(direction: DirectionKey) {
+    fun moveCursorHorizontally(ime: ImeDispatcher, direction: DirectionKey) {
         when (direction) {
             DirectionKey.LEFT -> ChewingBridge.chewing.handleLeft()
             DirectionKey.RIGHT -> ChewingBridge.chewing.handleRight()
         }
-        EventBus.getDefault().post(ImeAction.DirectionKeyDown(direction))
+        ime.dispatch(ImeAction.DirectionKeyDown(direction))
     }
 
-    fun openCandidates() {
+    fun openCandidates(ime: ImeDispatcher) {
         ChewingBridge.chewing.candClose()
         ChewingBridge.chewing.candOpen()
-        EventBus.getDefault().post(ImeAction.SwitchToLayout(Layout.CANDIDATES))
+        ime.dispatch(ImeAction.SwitchToLayout(Layout.CANDIDATES))
     }
 
     // simulates [Shift] + [,]

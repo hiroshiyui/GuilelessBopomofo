@@ -29,12 +29,12 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.physicalKeyboardPresented
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeDispatcher
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ShiftKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState.CandidateLayoutStyle
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.SoftKeyboard
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessDimens
-import org.greenrobot.eventbus.EventBus
 
 /**
  * Decides which panel the input view shows (a keyboard, the candidates, the compact bar) and
@@ -43,6 +43,7 @@ import org.greenrobot.eventbus.EventBus
 class KeyboardController(
     private val uiState: ImeUiState,
     private val sharedPreferences: SharedPreferences,
+    private val ime: ImeDispatcher,
 ) {
     private val logTag: String = "KeyboardController"
 
@@ -57,7 +58,7 @@ class KeyboardController(
             // Read lazily from libchewing, the candidates are only good while they show.
             if (value != Layout.CANDIDATES && value != Layout.SYMBOLS) uiState.candidates = emptyList()
             // what sits around the panel, the suggestion strip say, depends on it too
-            EventBus.getDefault().post(ImeAction.KeyboardLayoutSwitched)
+            ime.dispatch(ImeAction.KeyboardLayoutSwitched)
         }
 
     fun toggleMainLayoutMode() {
@@ -227,9 +228,9 @@ class KeyboardController(
     private fun leaveCandidatesLayout(moveCursorToEnd: Boolean) {
         ChewingBridge.chewing.candClose()
         currentCandidatesList = 0
-        EventBus.getDefault().post(ImeAction.UpdateBufferViews)
+        ime.dispatch(ImeAction.UpdateBufferViews)
         if (moveCursorToEnd) {
-            EventBus.getDefault().post(ImeAction.UpdateCursorPositionToEnd)
+            ime.dispatch(ImeAction.UpdateCursorPositionToEnd)
         }
         switchToMainLayout()
     }

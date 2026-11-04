@@ -18,11 +18,13 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.ui
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
@@ -33,12 +35,14 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.R
+import org.ghostsinthelab.apps.guilelessbopomofo.RecordingImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.CANDIDATE_TEST_TAG
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.CandidatesPanel
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.KEY_TEST_TAG
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.Keyboard
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.LocalImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.PhoneKeypad
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.FunctionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.KeySpec
@@ -48,13 +52,10 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.SoftKeyboard
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.BooleanPreferenceSwitch
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessTheme
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.appSharedPreferences
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -65,22 +66,19 @@ class ImeComposeInstrumentedTest {
     val composeRule = createComposeRule()
 
     private val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-    private val selectedCandidates = mutableListOf<Candidate>()
-
-    @Subscribe
-    fun onCandidateButtonSelected(event: ImeAction.CandidateButtonSelected) {
-        selectedCandidates += event.candidate
-    }
-
-    @Before
-    fun setUp() {
-        EventBus.getDefault().register(this)
-    }
+    private val host = RecordingImeHost(appContext)
+    private val selectedCandidates: List<Candidate>
+        get() = host.received<ImeAction.CandidateButtonSelected>().map { it.candidate }
 
     @After
     fun tearDown() {
-        EventBus.getDefault().unregister(this)
         appContext.appSharedPreferences.edit().remove(TEST_PREFERENCE_KEY).commit()
+    }
+
+    /** The theme, with [host] standing in for the input method the keys act through. */
+    @Composable
+    private fun TestTheme(content: @Composable () -> Unit) {
+        CompositionLocalProvider(LocalImeHost provides host) { GuilelessTheme(content) }
     }
 
     @Test
@@ -88,7 +86,7 @@ class ImeComposeInstrumentedTest {
         val uiState = ImeUiState().apply { imeSwitchEnabled = true }
         var keyboard by mutableStateOf(SoftKeyboard.DACHEN)
         composeRule.setContent {
-            GuilelessTheme { Keyboard(rowsOf(keyboard), uiState) }
+            TestTheme { Keyboard(rowsOf(keyboard), uiState) }
         }
         (SoftKeyboard.entries - SoftKeyboard.DACHEN_COMPACT).forEach { softKeyboard ->
             keyboard = softKeyboard
@@ -101,7 +99,7 @@ class ImeComposeInstrumentedTest {
     @Test
     fun phoneKeypad_drawsTheNumberPadAndItsFunctionKeys() {
         val uiState = ImeUiState().apply { imeSwitchEnabled = true }
-        composeRule.setContent { GuilelessTheme { PhoneKeypad(uiState) } }
+        composeRule.setContent { TestTheme { PhoneKeypad(uiState) } }
         // 11 symbol keys and # (punctuation), then Aa, symbols, IME switch, Backspace, Space, Enter
         assertEquals(12 + 6, composeRule.onAllNodesWithTag(KEY_TEST_TAG).fetchSemanticsNodes().size)
     }
@@ -110,7 +108,7 @@ class ImeComposeInstrumentedTest {
     fun keyboard_leavesOutTheImeSwitchKeyUnlessEnabled() {
         val uiState = ImeUiState().apply { imeSwitchEnabled = false }
         val spec = rowsOf(SoftKeyboard.DACHEN)
-        composeRule.setContent { GuilelessTheme { Keyboard(spec, uiState) } }
+        composeRule.setContent { TestTheme { Keyboard(spec, uiState) } }
         val imeSwitchKeys = spec.rows.flatten().count { it is KeySpec.Function && it.key == FunctionKey.IME_SWITCH }
         assertEquals(1, imeSwitchKeys)
         assertEquals(
@@ -125,7 +123,7 @@ class ImeComposeInstrumentedTest {
             candidates = listOf(Candidate(0, "測"), Candidate(1, "試"))
             candidateLayoutStyle = ImeUiState.CandidateLayoutStyle.GRID
         }
-        composeRule.setContent { GuilelessTheme { CandidatesPanel(uiState) } }
+        composeRule.setContent { TestTheme { CandidatesPanel(uiState) } }
         composeRule.onAllNodesWithTag(CANDIDATE_TEST_TAG).assertCountEquals(2)
         composeRule.onNodeWithText("試").performTouchInput { down(center); up() }
         composeRule.waitForIdle()

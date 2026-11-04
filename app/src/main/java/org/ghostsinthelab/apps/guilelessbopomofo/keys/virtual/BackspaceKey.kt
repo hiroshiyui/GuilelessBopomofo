@@ -18,9 +18,9 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
-import android.content.Context
 import android.os.SystemClock
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
@@ -31,21 +31,21 @@ object BackspaceKey : VirtualKey {
 
     override val repeatsWhileHeld: Boolean = true
 
-    override fun onDown(context: Context) {
+    override fun onDown(host: ImeHost) {
         // avoids buzzing on every one of too fast repeat clicks
         val now = SystemClock.elapsedRealtime()
         if (now - lastBackspaceDownTime < BACKSPACE_DEBOUNCE_MS) return
         lastBackspaceDownTime = now
-        performVibration(context, Vibratable.VibrationStrength.NORMAL)
+        performVibration(host.context, Vibratable.VibrationStrength.NORMAL)
     }
 
-    override fun onTap(context: Context) {
-        ChewingUtil.handleBackspaceAction()
+    override fun onTap(host: ImeHost) {
+        ChewingUtil.handleBackspaceAction(host)
     }
 
     // Deleting goes through libchewing, whose context may only be touched from the main
     // thread; the gesture that repeats this runs there too.
-    override fun onRepeat(context: Context) {
-        ChewingUtil.handleBackspaceAction()
+    override fun onRepeat(host: ImeHost) {
+        ChewingUtil.handleBackspaceAction(host)
     }
 }

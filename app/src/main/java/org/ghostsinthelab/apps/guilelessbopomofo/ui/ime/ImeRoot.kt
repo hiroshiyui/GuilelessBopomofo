@@ -49,6 +49,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,7 +63,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -81,6 +81,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.BuildConfig
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.SuggestionButton
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.KeyboardSpecs
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.KeyboardVariant
@@ -92,7 +93,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessFonts
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.LocalGuilelessThemeExtras
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Haptics
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-import org.greenrobot.eventbus.EventBus
 
 /**
  * Resource id the input view answers to, for UI Automator, as the root of the old
@@ -103,28 +103,30 @@ const val IME_ROOT_TEST_TAG = "keyboardView"
 /** The whole input view: buffers or suggestions, then whichever panel [uiState] asks for. */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ImeRoot(uiState: ImeUiState) {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            // UI Automator tests (debug builds) find the input view by this tag.
-            .then(if (BuildConfig.DEBUG) Modifier.semantics { testTagsAsResourceId = true } else Modifier)
-            .testTag(IME_ROOT_TEST_TAG),
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        contentColor = MaterialTheme.colorScheme.onSurface,
-    ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            if (uiState.showBuffers) {
-                BufferArea(uiState)
+fun ImeRoot(uiState: ImeUiState, host: ImeHost) {
+    CompositionLocalProvider(LocalImeHost provides host) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                // UI Automator tests (debug builds) find the input view by this tag.
+                .then(if (BuildConfig.DEBUG) Modifier.semantics { testTagsAsResourceId = true } else Modifier)
+                .testTag(IME_ROOT_TEST_TAG),
+            color = MaterialTheme.colorScheme.surfaceContainer,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                if (uiState.showBuffers) {
+                    BufferArea(uiState)
+                }
+                if (uiState.suggestions.isNotEmpty()) {
+                    SuggestionStrip(uiState.suggestions)
+                }
+                KeyboardPanel(
+                    uiState,
+                    Modifier.padding(vertical = GuilelessDimens.KeyboardPanelVerticalPadding),
+                )
+                BottomGradientSpacer()
             }
-            if (uiState.suggestions.isNotEmpty()) {
-                SuggestionStrip(uiState.suggestions)
-            }
-            KeyboardPanel(
-                uiState,
-                Modifier.padding(vertical = GuilelessDimens.KeyboardPanelVerticalPadding),
-            )
-            BottomGradientSpacer()
         }
     }
 }
@@ -207,7 +209,8 @@ private val BufferTextStyle = TextStyle(
  */
 @Composable
 private fun PreEditBufferText(uiState: ImeUiState) {
-    val context = LocalContext.current
+    val host = LocalImeHost.current
+    val context = host.context
     val layoutDirection = LocalLayoutDirection.current
     var textLayout by remember { mutableStateOf<TextLayoutResult?>(null) }
     val text = uiState.preEditText
@@ -241,7 +244,7 @@ private fun PreEditBufferText(uiState: ImeUiState) {
                     val offset = uiState.preEditText.characterIndexOf(utf16Offset)
                     Haptics.performVibration(context, Vibratable.VibrationStrength.LIGHT)
                     if (waitForUpOrCancellation() != null) {
-                        EventBus.getDefault().post(ImeAction.PreEditBufferTouched(offset))
+                        host.dispatch(ImeAction.PreEditBufferTouched(offset))
                     }
                 }
             }

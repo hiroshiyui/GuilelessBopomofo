@@ -18,6 +18,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.inputmethodservice.InputMethodService
@@ -41,12 +42,12 @@ import android.view.KeyEvent.KEYCODE_X
 import android.view.KeyEvent.KEYCODE_Z
 import android.view.KeyEvent.META_SHIFT_ON
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputConnection
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.view.inputmethod.InputConnection
-import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -56,6 +57,7 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import java.io.IOException
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.SAME_HAPTIC_FEEDBACK_TO_FUNCTION_BUTTONS
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDIDATE_SELECTION_KEYS_OPTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
@@ -82,7 +84,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ChewingReconnected
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
-import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeDispatcher
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.CapsLock
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Del
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Down
@@ -115,9 +117,8 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.appSharedPreferences
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.io.IOException
 
-class GuilelessBopomofoService : InputMethodService(), ImeDispatcher, SharedPreferences.OnSharedPreferenceChangeListener,
+class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreferences.OnSharedPreferenceChangeListener,
     KeyEventExtension, LifecycleOwner, SavedStateRegistryOwner {
     private val logTag = "GuilelessBopomofoSvc"
 
@@ -126,7 +127,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeDispatcher, SharedPref
     // What the input view shows; it lives as long as the service, the view only reads it.
     private val uiState = ImeUiState()
     private lateinit var keyboardController: KeyboardController
-    private val preEditBuffer = PreEditBuffer(uiState)
+    private val preEditBuffer = PreEditBuffer(uiState, this)
 
     // InputMethodService is no Activity: Compose wants a lifecycle and saved state to hang
     // on to, so the service provides both itself.
@@ -146,6 +147,8 @@ class GuilelessBopomofoService : InputMethodService(), ImeDispatcher, SharedPref
     override fun dispatch(action: ImeAction) {
         EventBus.getDefault().post(action)
     }
+
+    override val context: Context get() = this
 
     // whether the text field being edited wants word suggestions, see onStartInputView()
     private var fieldAllowsSuggestions: Boolean = false
@@ -219,7 +222,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeDispatcher, SharedPref
 
         sharedPreferences = appSharedPreferences
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-        keyboardController = KeyboardController(uiState, sharedPreferences)
+        keyboardController = KeyboardController(uiState, sharedPreferences, this)
 
         try {
             initializeChewing()
@@ -275,7 +278,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeDispatcher, SharedPref
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
             setContent {
                 GuilelessTheme {
-                    ImeRoot(uiState)
+                    ImeRoot(uiState, this@GuilelessBopomofoService)
                 }
             }
         }
@@ -312,7 +315,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeDispatcher, SharedPref
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
         keyboardController.switchToLayout(Layout.MAIN)
-        EventBus.getDefault().post(ImeAction.UpdateBufferViews)
+        dispatch(ImeAction.UpdateBufferViews)
     }
 
     // The text field tells us here about every change of its own, what we have just committed
@@ -550,8 +553,8 @@ class GuilelessBopomofoService : InputMethodService(), ImeDispatcher, SharedPref
         }
 
         ChewingBridge.chewing.handleDefault(keyPressed)
-        EventBus.getDefault().post(ImeAction.UpdateBufferViews)
-        EventBus.getDefault().post(ImeAction.UpdateCursorPosition)
+        dispatch(ImeAction.UpdateBufferViews)
+        dispatch(ImeAction.UpdateCursorPosition)
 
         releaseShiftKeyIfNeeded()
     }
@@ -560,7 +563,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeDispatcher, SharedPref
         if (!event.isNumPadKey()) return false
         autoSpace.forget()
         currentInputConnection?.sendKeyEvent(event)
-        EventBus.getDefault().post(ImeAction.UpdateBufferViews)
+        dispatch(ImeAction.UpdateBufferViews)
         return true
     }
 

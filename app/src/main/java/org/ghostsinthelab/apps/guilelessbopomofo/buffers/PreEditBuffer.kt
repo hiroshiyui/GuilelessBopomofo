@@ -24,14 +24,14 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.ConversionEngines
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeDispatcher
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
-import org.greenrobot.eventbus.EventBus
 
 /**
  * The pre-edit buffer: the Han characters converted so far but not yet committed, and the
  * cursor among them. Keeps [uiState] in step with libchewing's buffer.
  */
-class PreEditBuffer(private val uiState: ImeUiState) {
+class PreEditBuffer(private val uiState: ImeUiState, private val ime: ImeDispatcher) {
     private val logTag = "PreEditBuffer"
     private var offset: Int = 0
 
@@ -104,7 +104,7 @@ class PreEditBuffer(private val uiState: ImeUiState) {
             // Take the text along with the event: posted from within another event's handler,
             // it is only delivered after that handler returns, and ack() below empties the
             // commit buffer long before then.
-            EventBus.getDefault().post(ImeAction.CommitTextInChewingCommitBuffer(ChewingBridge.chewing.commitString()))
+            ime.dispatch(ImeAction.CommitTextInChewingCommitBuffer(ChewingBridge.chewing.commitString()))
             // 讓 chewing.commitCheck() 歸 0 (also cleans the commit buffer)
             ChewingBridge.chewing.ack()
         }
@@ -123,7 +123,7 @@ class PreEditBuffer(private val uiState: ImeUiState) {
     private fun openCandidatesForSimpleConversionEngine() {
         if (ChewingBridge.chewing.configGetInt("chewing.conversion_engine") == ConversionEngines.SIMPLE_CONVERSION_ENGINE.mode) {
             if (ChewingUtil.candidateWindowOpened()) {
-                EventBus.getDefault().post(ImeAction.SwitchToLayout(Layout.CANDIDATES))
+                ime.dispatch(ImeAction.SwitchToLayout(Layout.CANDIDATES))
             }
         }
     }

@@ -22,6 +22,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import java.io.File
+import java.io.FileOutputStream
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeDispatcher
 import org.junit.After
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
@@ -30,11 +33,12 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.File
-import java.io.FileOutputStream
 
 @RunWith(AndroidJUnit4::class)
 class ChewingUtilInstrumentedTest {
+    // what the key would ask of the input method is of no interest here
+    private val ime = ImeDispatcher {}
+
     private val appContext = InstrumentationRegistry.getInstrumentation().targetContext
     private val dataPath: String = appContext.dataDir.absolutePath
     private val chewingDataDir = File(dataPath)
@@ -84,15 +88,15 @@ class ChewingUtilInstrumentedTest {
         ChewingBridge.chewing.handleDefault('w')
         assertTrue(ChewingUtil.anyBufferIsNotEmpty())
 
-        ChewingUtil.handleBackspaceAction()
+        ChewingUtil.handleBackspaceAction(ime)
         assertFalse(ChewingUtil.anyBufferIsNotEmpty())
     }
 
     @Test
     fun handleBackspaceAction_whenBufferIsEmpty_shouldNotCrash() {
         assertFalse(ChewingUtil.anyBufferIsNotEmpty())
-        // Should not throw; in a real IME it would send KEYCODE_DEL via EventBus
-        ChewingUtil.handleBackspaceAction()
+        // Should not throw; in a real IME it would send KEYCODE_DEL to the input method
+        ChewingUtil.handleBackspaceAction(ime)
         assertFalse(ChewingUtil.anyBufferIsNotEmpty())
     }
 
@@ -109,7 +113,7 @@ class ChewingUtilInstrumentedTest {
         }
         assertTrue(ChewingUtil.anyBufferIsNotEmpty())
 
-        ChewingUtil.handleEnterAction()
+        ChewingUtil.handleEnterAction(ime)
         // After committing, the pre-edit buffer should be empty
         assertEquals("", ChewingBridge.chewing.bufferStringStatic())
     }
@@ -117,8 +121,8 @@ class ChewingUtilInstrumentedTest {
     @Test
     fun handleEnterAction_whenBufferIsEmpty_shouldNotCrash() {
         assertFalse(ChewingUtil.anyBufferIsNotEmpty())
-        // Should not throw; in a real IME it would post EnterKeyDownWhenBufferIsEmpty via EventBus
-        ChewingUtil.handleEnterAction()
+        // Should not throw; in a real IME it would post EnterKeyDownWhenBufferIsEmpty to the input method
+        ChewingUtil.handleEnterAction(ime)
         assertFalse(ChewingUtil.anyBufferIsNotEmpty())
     }
 
@@ -145,8 +149,8 @@ class ChewingUtilInstrumentedTest {
     @Test
     fun handleSpaceAction_whenBufferIsEmpty_shouldNotCrash() {
         assertFalse(ChewingUtil.anyBufferIsNotEmpty())
-        // Should not throw; in a real IME it would send KEYCODE_SPACE via EventBus
-        ChewingUtil.handleSpaceAction()
+        // Should not throw; in a real IME it would send KEYCODE_SPACE to the input method
+        ChewingUtil.handleSpaceAction(ime)
         assertFalse(ChewingUtil.anyBufferIsNotEmpty())
     }
 

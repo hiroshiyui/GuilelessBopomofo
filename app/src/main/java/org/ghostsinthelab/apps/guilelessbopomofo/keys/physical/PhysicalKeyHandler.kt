@@ -18,30 +18,30 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.content.Context
 import android.view.KeyEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
 interface PhysicalKeyHandler {
     /**
      * Called when a key down event occurs for the key this handler is responsible for.
      *
-     * @param context The context.
+     * @param host The input method the key acts through.
      * @param keyCode The value in event.getKeyCode().
      * @param event The key event. May be null if triggered from a soft key.
      * @return True if the event was handled, false otherwise.
      */
-    fun onKeyDown(context: Context, keyCode: Int, event: KeyEvent?): Boolean
+    fun onKeyDown(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean
 
     /**
      * (Optional) Called when a key up event occurs.
      * You might not need this for all keys if onKeyDown handles everything.
      *
-     * @param context The context.
+     * @param host The input method the key acts through.
      * @param keyCode The value in event.getKeyCode().
      * @param event The key event. May be null if triggered from a soft key.
      * @return True if the event was handled, false otherwise.
      */
-    fun onKeyUp(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+    fun onKeyUp(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         // Default implementation: if not overridden, assume not handled by onKeyUp
         return false
     }
@@ -50,12 +50,12 @@ interface PhysicalKeyHandler {
      * (Optional) Called when a key long press event occurs.
      * You might not need this for all keys if onKeyDown handles everything.
      *
-     * @param context The context.
+     * @param host The input method the key acts through.
      * @param keyCode The value in event.getKeyCode().
      * @param event The key event. May be null if triggered from a soft key.
      * @return True if the event was handled, false otherwise.
      */
-    fun onKeyLongPress(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+    fun onKeyLongPress(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         // Default implementation: if not overridden, assume not handled by onKeyLongPress
         return false
     }

@@ -18,19 +18,19 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.content.Context
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
 /**
  * While candidates are on offer, the volume keys are a second pair of arrow keys, so that
  * one can pick a candidate without reaching for the screen.
  */
 abstract class VolumeKey(private val direction: DirectionKey) : PhysicalKeyHandler {
-    override fun onKeyDown(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyDown(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         if (ChewingUtil.candidateWindowOpened()) {
-            ChewingUtil.moveCursorHorizontally(direction)
+            ChewingUtil.moveCursorHorizontally(host, direction)
         }
         return true
     }

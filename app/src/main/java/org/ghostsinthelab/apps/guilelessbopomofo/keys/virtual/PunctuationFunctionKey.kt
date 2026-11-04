@@ -18,30 +18,29 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
-import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-import org.greenrobot.eventbus.EventBus
 
 object PunctuationFunctionKey : VirtualKey {
     override val detectsDoubleTap: Boolean = true
     override val detectsLongPress: Boolean = true
 
-    override fun onDown(context: Context) {
-        performVibration(context, Vibratable.VibrationStrength.NORMAL)
+    override fun onDown(host: ImeHost) {
+        performVibration(host.context, Vibratable.VibrationStrength.NORMAL)
     }
 
-    override fun onTap(context: Context) {
+    override fun onTap(host: ImeHost) {
         ChewingUtil.handleShiftComma()
-        EventBus.getDefault().post(ImeAction.UpdateBufferViews)
+        host.dispatch(ImeAction.UpdateBufferViews)
     }
 
-    override fun onLongPress(context: Context) {
-        performVibration(context, Vibratable.VibrationStrength.STRONG)
+    override fun onLongPress(host: ImeHost) {
+        performVibration(host.context, Vibratable.VibrationStrength.STRONG)
         ChewingUtil.openFrequentlyUsedCandidates()
-        EventBus.getDefault().post(ImeAction.SwitchToLayout(Layout.CANDIDATES))
+        host.dispatch(ImeAction.SwitchToLayout(Layout.CANDIDATES))
     }
 }

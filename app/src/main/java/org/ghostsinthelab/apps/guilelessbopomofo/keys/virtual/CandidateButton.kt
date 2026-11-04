@@ -18,21 +18,20 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
-import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-import org.greenrobot.eventbus.EventBus
 
 class CandidateButton(private val candidate: Candidate) : VirtualKey {
     override val detectsDoubleTap: Boolean = true
 
-    override fun onDown(context: Context) {
-        performVibration(context, Vibratable.VibrationStrength.LIGHT)
+    override fun onDown(host: ImeHost) {
+        performVibration(host.context, Vibratable.VibrationStrength.LIGHT)
     }
 
-    override fun onTap(context: Context) {
-        EventBus.getDefault().post(ImeAction.CandidateButtonSelected(candidate))
+    override fun onTap(host: ImeHost) {
+        host.dispatch(ImeAction.CandidateButtonSelected(candidate))
     }
 }

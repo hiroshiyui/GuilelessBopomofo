@@ -18,7 +18,6 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.ui.ime
 
-import android.content.Context
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -36,6 +35,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.SwipeDirection
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 
@@ -68,7 +68,7 @@ private val SWIPE_THRESHOLD = 20.dp
  */
 fun Modifier.keyGestures(
     key: VirtualKey,
-    context: Context,
+    host: ImeHost,
     interactionSource: MutableInteractionSource,
     onSwipeDirectionChange: (SwipeDirection?) -> Unit = {},
 ): Modifier = pointerInput(key) {
@@ -88,17 +88,17 @@ fun Modifier.keyGestures(
             } == true
             lastTapUpTime = null
 
-            key.onDown(context)
-            if (isSecondTap) key.onDoubleTap(context)
+            key.onDown(host)
+            if (isSecondTap) key.onDoubleTap(host)
 
             if (key.detectsSwipes) {
-                handleSwipe(key, context, down, onSwipeDirectionChange, interactionSource, press)
+                handleSwipe(key, host, down, onSwipeDirectionChange, interactionSource, press)
                 return@awaitEachGesture
             }
 
             var up: PointerInputChange? = null
             try {
-                up = awaitUpOrLongPress(key, context, down, gestureScope)
+                up = awaitUpOrLongPress(key, host, down, gestureScope)
             } finally {
                 interactionSource.tryEmit(
                     if (up != null) PressInteraction.Release(press) else PressInteraction.Cancel(press)
@@ -106,7 +106,7 @@ fun Modifier.keyGestures(
             }
 
             if (up != null && !isSecondTap) {
-                key.onTap(context)
+                key.onTap(host)
                 lastTapUpTime = up.uptimeMillis
             }
         }
@@ -119,21 +119,21 @@ fun Modifier.keyGestures(
  */
 private suspend fun AwaitPointerEventScope.awaitUpOrLongPress(
     key: VirtualKey,
-    context: Context,
+    host: ImeHost,
     down: PointerInputChange,
     gestureScope: CoroutineScope,
 ): PointerInputChange? {
     try {
         return withTimeout(viewConfiguration.longPressTimeoutMillis) { awaitUpInPlace(down) }
     } catch (_: PointerEventTimeoutCancellationException) {
-        if (key.detectsLongPress) key.onLongPress(context)
+        if (key.detectsLongPress) key.onLongPress(host)
         // Deleting goes through libchewing, which may only be touched from the main thread;
         // the gesture scope runs there.
         val repeating = if (key.repeatsWhileHeld) {
             gestureScope.launch {
                 delay(REPEAT_INITIAL_DELAY_MS)
                 while (isActive) {
-                    key.onRepeat(context)
+                    key.onRepeat(host)
                     delay(REPEAT_INTERVAL_MS)
                 }
             }
@@ -154,7 +154,7 @@ private class SwipeEnd(val direction: SwipeDirection?)
 
 private suspend fun AwaitPointerEventScope.handleSwipe(
     key: VirtualKey,
-    context: Context,
+    host: ImeHost,
     down: PointerInputChange,
     onSwipeDirectionChange: (SwipeDirection?) -> Unit,
     interactionSource: MutableInteractionSource,
@@ -170,8 +170,8 @@ private suspend fun AwaitPointerEventScope.handleSwipe(
         )
     }
     when (val direction = end?.direction) {
-        null -> if (end != null) key.onTap(context)
-        else -> key.onSwipe(context, direction)
+        null -> if (end != null) key.onTap(host)
+        else -> key.onSwipe(host, direction)
     }
 }
 

@@ -18,7 +18,6 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.ui
 
-import android.content.Context
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -33,6 +32,8 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipe
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.ghostsinthelab.apps.guilelessbopomofo.RecordingImeHost
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.SwipeDirection
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.keyGestures
@@ -55,23 +56,23 @@ class KeyGesturesInstrumentedTest {
         override val detectsSwipes: Boolean = false,
     ) : VirtualKey {
         val calls = mutableListOf<String>()
-        override fun onDown(context: Context) { calls += "down" }
-        override fun onTap(context: Context) { calls += "tap" }
-        override fun onDoubleTap(context: Context) { calls += "doubleTap" }
-        override fun onLongPress(context: Context) { calls += "longPress" }
-        override fun onRepeat(context: Context) { calls += "repeat" }
-        override fun onSwipe(context: Context, direction: SwipeDirection) { calls += "swipe $direction" }
+        override fun onDown(host: ImeHost) { calls += "down" }
+        override fun onTap(host: ImeHost) { calls += "tap" }
+        override fun onDoubleTap(host: ImeHost) { calls += "doubleTap" }
+        override fun onLongPress(host: ImeHost) { calls += "longPress" }
+        override fun onRepeat(host: ImeHost) { calls += "repeat" }
+        override fun onSwipe(host: ImeHost, direction: SwipeDirection) { calls += "swipe $direction" }
     }
 
     private fun setKey(key: VirtualKey) {
         composeRule.setContent {
-            val context = LocalContext.current
+            val host = RecordingImeHost(LocalContext.current)
             val interactionSource = remember { MutableInteractionSource() }
             Box(
                 Modifier
                     .size(64.dp)
                     .testTag(TAG)
-                    .keyGestures(key, context, interactionSource)
+                    .keyGestures(key, host, interactionSource)
             )
         }
     }

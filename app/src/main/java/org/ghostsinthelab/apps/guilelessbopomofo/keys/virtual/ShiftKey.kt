@@ -18,8 +18,8 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
-import android.content.Context
 import android.util.Log
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
@@ -39,11 +39,11 @@ class ShiftKey(private val uiState: ImeUiState) : VirtualKey {
         fun next(): ShiftKeyState = entries[(ordinal + 1) % entries.size]
     }
 
-    override fun onDown(context: Context) {
-        performVibration(context, Vibratable.VibrationStrength.NORMAL)
+    override fun onDown(host: ImeHost) {
+        performVibration(host.context, Vibratable.VibrationStrength.NORMAL)
     }
 
-    override fun onTap(context: Context) {
+    override fun onTap(host: ImeHost) {
         switchToState(uiState, uiState.shiftKeyState.next())
     }
 

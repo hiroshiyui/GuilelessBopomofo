@@ -18,17 +18,17 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.content.Context
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
 class Del : PhysicalKeyHandler {
     override fun onKeyDown(
-        context: Context,
+        host: ImeHost,
         keyCode: Int,
         event: KeyEvent?,
     ): Boolean {
-        ChewingUtil.handleBackspaceAction()
+        ChewingUtil.handleBackspaceAction(host)
         return true
     }
 }

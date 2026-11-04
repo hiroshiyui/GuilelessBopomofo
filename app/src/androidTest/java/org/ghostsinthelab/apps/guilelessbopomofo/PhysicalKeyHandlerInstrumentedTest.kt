@@ -24,6 +24,8 @@ import android.util.Log
 import android.view.KeyEvent
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import java.io.File
+import java.io.FileOutputStream
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.CapsLock
@@ -36,9 +38,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyHandle
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Right
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Shift
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Space
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -46,8 +45,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.File
-import java.io.FileOutputStream
 
 @RunWith(AndroidJUnit4::class)
 class PhysicalKeyHandlerInstrumentedTest {
@@ -57,70 +54,7 @@ class PhysicalKeyHandlerInstrumentedTest {
     private val chewingDataFiles =
         listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
 
-    // Event tracking lists
-    private val receivedUpdateBufferViews = mutableListOf<ImeAction.UpdateBufferViews>()
-    private val receivedSendDownUpKeyEvents = mutableListOf<ImeAction.SendDownUpKeyEvents>()
-    private val receivedEnterKeyDownWhenBufferIsEmpty =
-        mutableListOf<ImeAction.EnterKeyDownWhenBufferIsEmpty>()
-    private val receivedRequestHideIme = mutableListOf<ImeAction.RequestHideIme>()
-    private val receivedExitKeyboardSubLayouts = mutableListOf<ImeAction.ExitKeyboardSubLayouts>()
-    private val receivedUpdateCursorPosition = mutableListOf<ImeAction.UpdateCursorPosition>()
-    private val receivedDirectionKeyDown = mutableListOf<ImeAction.DirectionKeyDown>()
-    private val receivedToggleKeyboardMainLayoutMode =
-        mutableListOf<ImeAction.ToggleKeyboardMainLayoutMode>()
-    private val receivedToggleFullOrHalfWidthMode =
-        mutableListOf<ImeAction.ToggleFullOrHalfWidthMode>()
-    private val receivedSwitchToLayout = mutableListOf<ImeAction.SwitchToLayout>()
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onUpdateBufferViews(event: ImeAction.UpdateBufferViews) {
-        receivedUpdateBufferViews.add(event)
-    }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onSendDownUpKeyEvents(event: ImeAction.SendDownUpKeyEvents) {
-        receivedSendDownUpKeyEvents.add(event)
-    }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onEnterKeyDownWhenBufferIsEmpty(event: ImeAction.EnterKeyDownWhenBufferIsEmpty) {
-        receivedEnterKeyDownWhenBufferIsEmpty.add(event)
-    }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onRequestHideIme(event: ImeAction.RequestHideIme) {
-        receivedRequestHideIme.add(event)
-    }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onExitKeyboardSubLayouts(event: ImeAction.ExitKeyboardSubLayouts) {
-        receivedExitKeyboardSubLayouts.add(event)
-    }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onUpdateCursorPosition(event: ImeAction.UpdateCursorPosition) {
-        receivedUpdateCursorPosition.add(event)
-    }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onDirectionKeyDown(event: ImeAction.DirectionKeyDown) {
-        receivedDirectionKeyDown.add(event)
-    }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onToggleKeyboardMainLayoutMode(event: ImeAction.ToggleKeyboardMainLayoutMode) {
-        receivedToggleKeyboardMainLayoutMode.add(event)
-    }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onToggleFullOrHalfWidthMode(event: ImeAction.ToggleFullOrHalfWidthMode) {
-        receivedToggleFullOrHalfWidthMode.add(event)
-    }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    fun onSwitchToLayout(event: ImeAction.SwitchToLayout) {
-        receivedSwitchToLayout.add(event)
-    }
+    private val host = RecordingImeHost(appContext)
 
     @Before
     fun setupChewingEngine() {
@@ -147,30 +81,16 @@ class PhysicalKeyHandlerInstrumentedTest {
         // Initialize Chewing
         ChewingBridge.chewing.connect(dataPath)
 
-        // Register this test instance as an EventBus subscriber
-        EventBus.getDefault().register(this)
     }
 
     @After
     fun tearDown() {
-        // Unregister EventBus subscriber
-        EventBus.getDefault().unregister(this)
-
         // Close Chewing
         ChewingBridge.chewing.delete()
     }
 
     private fun clearEventLists() {
-        receivedUpdateBufferViews.clear()
-        receivedSendDownUpKeyEvents.clear()
-        receivedEnterKeyDownWhenBufferIsEmpty.clear()
-        receivedRequestHideIme.clear()
-        receivedExitKeyboardSubLayouts.clear()
-        receivedUpdateCursorPosition.clear()
-        receivedDirectionKeyDown.clear()
-        receivedToggleKeyboardMainLayoutMode.clear()
-        receivedToggleFullOrHalfWidthMode.clear()
-        receivedSwitchToLayout.clear()
+        host.actions.clear()
     }
 
     /**
@@ -194,10 +114,10 @@ class PhysicalKeyHandlerInstrumentedTest {
         assertTrue(ChewingBridge.chewing.bopomofoStringStatic().isNotEmpty())
 
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)
-        val result = del.onKeyDown(appContext, KeyEvent.KEYCODE_DEL, event)
+        val result = del.onKeyDown(host, KeyEvent.KEYCODE_DEL, event)
 
         assertTrue(result)
-        assertEquals(1, receivedUpdateBufferViews.size)
+        assertEquals(1, host.received<ImeAction.UpdateBufferViews>().size)
     }
 
     @Test
@@ -208,11 +128,11 @@ class PhysicalKeyHandlerInstrumentedTest {
         assertTrue(ChewingBridge.chewing.bopomofoStringStatic().isEmpty())
 
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)
-        val result = del.onKeyDown(appContext, KeyEvent.KEYCODE_DEL, event)
+        val result = del.onKeyDown(host, KeyEvent.KEYCODE_DEL, event)
 
         assertTrue(result)
-        assertEquals(1, receivedSendDownUpKeyEvents.size)
-        assertEquals(KeyEvent.KEYCODE_DEL, receivedSendDownUpKeyEvents[0].keycode)
+        assertEquals(1, host.received<ImeAction.SendDownUpKeyEvents>().size)
+        assertEquals(KeyEvent.KEYCODE_DEL, host.received<ImeAction.SendDownUpKeyEvents>()[0].keycode)
     }
 
     // ========== Enter tests ==========
@@ -229,10 +149,10 @@ class PhysicalKeyHandlerInstrumentedTest {
 
         clearEventLists()
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER)
-        val result = enter.onKeyDown(appContext, KeyEvent.KEYCODE_ENTER, event)
+        val result = enter.onKeyDown(host, KeyEvent.KEYCODE_ENTER, event)
 
         assertTrue(result)
-        assertEquals(1, receivedUpdateBufferViews.size)
+        assertEquals(1, host.received<ImeAction.UpdateBufferViews>().size)
     }
 
     @Test
@@ -242,10 +162,10 @@ class PhysicalKeyHandlerInstrumentedTest {
         assertTrue(ChewingBridge.chewing.bopomofoStringStatic().isEmpty())
 
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER)
-        val result = enter.onKeyDown(appContext, KeyEvent.KEYCODE_ENTER, event)
+        val result = enter.onKeyDown(host, KeyEvent.KEYCODE_ENTER, event)
 
         assertTrue(result)
-        assertEquals(1, receivedEnterKeyDownWhenBufferIsEmpty.size)
+        assertEquals(1, host.received<ImeAction.EnterKeyDownWhenBufferIsEmpty>().size)
     }
 
     // ========== Space tests ==========
@@ -259,7 +179,7 @@ class PhysicalKeyHandlerInstrumentedTest {
 
         clearEventLists()
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE)
-        val result = space.onKeyDown(appContext, KeyEvent.KEYCODE_SPACE, event)
+        val result = space.onKeyDown(host, KeyEvent.KEYCODE_SPACE, event)
 
         assertTrue(result)
     }
@@ -271,11 +191,11 @@ class PhysicalKeyHandlerInstrumentedTest {
         assertTrue(ChewingBridge.chewing.bopomofoStringStatic().isEmpty())
 
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SPACE)
-        val result = space.onKeyDown(appContext, KeyEvent.KEYCODE_SPACE, event)
+        val result = space.onKeyDown(host, KeyEvent.KEYCODE_SPACE, event)
 
         assertTrue(result)
-        assertEquals(1, receivedSendDownUpKeyEvents.size)
-        assertEquals(KeyEvent.KEYCODE_SPACE, receivedSendDownUpKeyEvents[0].keycode)
+        assertEquals(1, host.received<ImeAction.SendDownUpKeyEvents>().size)
+        assertEquals(KeyEvent.KEYCODE_SPACE, host.received<ImeAction.SendDownUpKeyEvents>()[0].keycode)
     }
 
     @Test
@@ -290,10 +210,10 @@ class PhysicalKeyHandlerInstrumentedTest {
             KeyEvent.META_SHIFT_ON
         )
 
-        val result = space.onKeyDown(appContext, KeyEvent.KEYCODE_SPACE, event)
+        val result = space.onKeyDown(host, KeyEvent.KEYCODE_SPACE, event)
 
         assertTrue(result)
-        assertEquals(1, receivedToggleKeyboardMainLayoutMode.size)
+        assertEquals(1, host.received<ImeAction.ToggleKeyboardMainLayoutMode>().size)
     }
 
     @Test
@@ -308,10 +228,10 @@ class PhysicalKeyHandlerInstrumentedTest {
             KeyEvent.META_ALT_ON
         )
 
-        val result = space.onKeyDown(appContext, KeyEvent.KEYCODE_SPACE, event)
+        val result = space.onKeyDown(host, KeyEvent.KEYCODE_SPACE, event)
 
         assertTrue(result)
-        assertEquals(1, receivedToggleFullOrHalfWidthMode.size)
+        assertEquals(1, host.received<ImeAction.ToggleFullOrHalfWidthMode>().size)
     }
 
     // ========== Left tests ==========
@@ -320,11 +240,11 @@ class PhysicalKeyHandlerInstrumentedTest {
     fun left_onKeyDown_plainLeft_postsDirectionKeyDown() {
         val left = Left()
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT)
-        val result = left.onKeyDown(appContext, KeyEvent.KEYCODE_DPAD_LEFT, event)
+        val result = left.onKeyDown(host, KeyEvent.KEYCODE_DPAD_LEFT, event)
 
         assertTrue(result)
-        assertEquals(1, receivedDirectionKeyDown.size)
-        assertEquals(DirectionKey.LEFT, receivedDirectionKeyDown[0].direction)
+        assertEquals(1, host.received<ImeAction.DirectionKeyDown>().size)
+        assertEquals(DirectionKey.LEFT, host.received<ImeAction.DirectionKeyDown>()[0].direction)
     }
 
     @Test
@@ -339,12 +259,12 @@ class PhysicalKeyHandlerInstrumentedTest {
             KeyEvent.META_CTRL_ON
         )
 
-        val result = left.onKeyDown(appContext, KeyEvent.KEYCODE_DPAD_LEFT, event)
+        val result = left.onKeyDown(host, KeyEvent.KEYCODE_DPAD_LEFT, event)
 
         assertTrue(result)
-        assertEquals(1, receivedUpdateCursorPosition.size)
+        assertEquals(1, host.received<ImeAction.UpdateCursorPosition>().size)
         // Should NOT post DirectionKeyDown when Ctrl is pressed
-        assertEquals(0, receivedDirectionKeyDown.size)
+        assertEquals(0, host.received<ImeAction.DirectionKeyDown>().size)
     }
 
     // ========== Right tests ==========
@@ -353,11 +273,11 @@ class PhysicalKeyHandlerInstrumentedTest {
     fun right_onKeyDown_plainRight_postsDirectionKeyDown() {
         val right = Right()
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT)
-        val result = right.onKeyDown(appContext, KeyEvent.KEYCODE_DPAD_RIGHT, event)
+        val result = right.onKeyDown(host, KeyEvent.KEYCODE_DPAD_RIGHT, event)
 
         assertTrue(result)
-        assertEquals(1, receivedDirectionKeyDown.size)
-        assertEquals(DirectionKey.RIGHT, receivedDirectionKeyDown[0].direction)
+        assertEquals(1, host.received<ImeAction.DirectionKeyDown>().size)
+        assertEquals(DirectionKey.RIGHT, host.received<ImeAction.DirectionKeyDown>()[0].direction)
     }
 
     @Test
@@ -372,11 +292,11 @@ class PhysicalKeyHandlerInstrumentedTest {
             KeyEvent.META_CTRL_ON
         )
 
-        val result = right.onKeyDown(appContext, KeyEvent.KEYCODE_DPAD_RIGHT, event)
+        val result = right.onKeyDown(host, KeyEvent.KEYCODE_DPAD_RIGHT, event)
 
         assertTrue(result)
-        assertEquals(1, receivedUpdateCursorPosition.size)
-        assertEquals(0, receivedDirectionKeyDown.size)
+        assertEquals(1, host.received<ImeAction.UpdateCursorPosition>().size)
+        assertEquals(0, host.received<ImeAction.DirectionKeyDown>().size)
     }
 
     // ========== Escape tests ==========
@@ -385,12 +305,12 @@ class PhysicalKeyHandlerInstrumentedTest {
     fun escape_onKeyDown_postsRequestHideIme() {
         val escape = Escape()
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ESCAPE)
-        val result = escape.onKeyDown(appContext, KeyEvent.KEYCODE_ESCAPE, event)
+        val result = escape.onKeyDown(host, KeyEvent.KEYCODE_ESCAPE, event)
 
         assertTrue(result)
-        assertEquals(1, receivedRequestHideIme.size)
-        assertEquals(1, receivedExitKeyboardSubLayouts.size)
-        assertEquals(1, receivedUpdateCursorPosition.size)
+        assertEquals(1, host.received<ImeAction.RequestHideIme>().size)
+        assertEquals(1, host.received<ImeAction.ExitKeyboardSubLayouts>().size)
+        assertEquals(1, host.received<ImeAction.UpdateCursorPosition>().size)
     }
 
     // ========== Shift tests ==========
@@ -399,7 +319,7 @@ class PhysicalKeyHandlerInstrumentedTest {
     fun shift_rightKey_onKeyDown_returnsTrue() {
         val shift = Shift()
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_RIGHT)
-        val result = shift.onKeyDown(appContext, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
+        val result = shift.onKeyDown(host, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
 
         assertTrue(result)
     }
@@ -410,10 +330,10 @@ class PhysicalKeyHandlerInstrumentedTest {
         val downTime = SystemClock.uptimeMillis()
         val left = KeyEvent.KEYCODE_SHIFT_LEFT
 
-        assertFalse(shift.onKeyDown(appContext, left, shiftEvent(KeyEvent.ACTION_DOWN, left, downTime, downTime)))
-        assertFalse(shift.onKeyUp(appContext, left, shiftEvent(KeyEvent.ACTION_UP, left, downTime, downTime + 80)))
+        assertFalse(shift.onKeyDown(host, left, shiftEvent(KeyEvent.ACTION_DOWN, left, downTime, downTime)))
+        assertFalse(shift.onKeyUp(host, left, shiftEvent(KeyEvent.ACTION_UP, left, downTime, downTime + 80)))
         // passing it on doesn't stop the tap from counting
-        assertEquals(1, receivedToggleKeyboardMainLayoutMode.size)
+        assertEquals(1, host.received<ImeAction.ToggleKeyboardMainLayoutMode>().size)
     }
 
     @Test
@@ -424,10 +344,10 @@ class PhysicalKeyHandlerInstrumentedTest {
         assertEquals(ChiEngMode.CHINESE.mode, ChewingBridge.chewing.getChiEngMode())
 
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_RIGHT)
-        val result = shift.onKeyLongPress(appContext, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
+        val result = shift.onKeyLongPress(host, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
 
         assertTrue(result)
-        assertEquals(1, receivedSwitchToLayout.size)
+        assertEquals(1, host.received<ImeAction.SwitchToLayout>().size)
     }
 
     @Test
@@ -438,10 +358,10 @@ class PhysicalKeyHandlerInstrumentedTest {
         assertEquals(ChiEngMode.SYMBOL.mode, ChewingBridge.chewing.getChiEngMode())
 
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_RIGHT)
-        val result = shift.onKeyLongPress(appContext, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
+        val result = shift.onKeyLongPress(host, KeyEvent.KEYCODE_SHIFT_RIGHT, event)
 
         assertFalse(result)
-        assertEquals(0, receivedSwitchToLayout.size)
+        assertEquals(0, host.received<ImeAction.SwitchToLayout>().size)
     }
 
     private fun shiftEvent(action: Int, keyCode: Int, downTime: Long, eventTime: Long) =
@@ -449,9 +369,9 @@ class PhysicalKeyHandlerInstrumentedTest {
 
     private fun tapShift(shift: Shift, keyCode: Int, heldMs: Long, between: () -> Unit = {}) {
         val downTime = SystemClock.uptimeMillis()
-        shift.onKeyDown(appContext, keyCode, shiftEvent(KeyEvent.ACTION_DOWN, keyCode, downTime, downTime))
+        shift.onKeyDown(host, keyCode, shiftEvent(KeyEvent.ACTION_DOWN, keyCode, downTime, downTime))
         between()
-        shift.onKeyUp(appContext, keyCode, shiftEvent(KeyEvent.ACTION_UP, keyCode, downTime, downTime + heldMs))
+        shift.onKeyUp(host, keyCode, shiftEvent(KeyEvent.ACTION_UP, keyCode, downTime, downTime + heldMs))
     }
 
     @Test
@@ -460,7 +380,7 @@ class PhysicalKeyHandlerInstrumentedTest {
         tapShift(shift, KeyEvent.KEYCODE_SHIFT_LEFT, heldMs = 80)
         tapShift(shift, KeyEvent.KEYCODE_SHIFT_RIGHT, heldMs = 80)
 
-        assertEquals(2, receivedToggleKeyboardMainLayoutMode.size)
+        assertEquals(2, host.received<ImeAction.ToggleKeyboardMainLayoutMode>().size)
     }
 
     @Test
@@ -468,7 +388,7 @@ class PhysicalKeyHandlerInstrumentedTest {
         val shift = Shift()
         tapShift(shift, KeyEvent.KEYCODE_SHIFT_LEFT, heldMs = Shift.TAP_TIMEOUT_MS + 1)
 
-        assertEquals(0, receivedToggleKeyboardMainLayoutMode.size)
+        assertEquals(0, host.received<ImeAction.ToggleKeyboardMainLayoutMode>().size)
     }
 
     @Test
@@ -477,12 +397,12 @@ class PhysicalKeyHandlerInstrumentedTest {
         val downTime = SystemClock.uptimeMillis()
         val left = KeyEvent.KEYCODE_SHIFT_LEFT
         val down = shiftEvent(KeyEvent.ACTION_DOWN, left, downTime, downTime)
-        shift.onKeyDown(appContext, left, down)
-        shift.onKeyDown(appContext, left, KeyEvent.changeTimeRepeat(down, downTime + 400, 1))
+        shift.onKeyDown(host, left, down)
+        shift.onKeyDown(host, left, KeyEvent.changeTimeRepeat(down, downTime + 400, 1))
         // a key-up stamped with the key-down's time, as `adb shell input --longpress` sends it
-        shift.onKeyUp(appContext, left, shiftEvent(KeyEvent.ACTION_UP, left, downTime, downTime))
+        shift.onKeyUp(host, left, shiftEvent(KeyEvent.ACTION_UP, left, downTime, downTime))
 
-        assertEquals(0, receivedToggleKeyboardMainLayoutMode.size)
+        assertEquals(0, host.received<ImeAction.ToggleKeyboardMainLayoutMode>().size)
     }
 
     @Test
@@ -490,7 +410,7 @@ class PhysicalKeyHandlerInstrumentedTest {
         val shift = Shift()
         tapShift(shift, KeyEvent.KEYCODE_SHIFT_LEFT, heldMs = 80) { shift.onOtherInput() }
 
-        assertEquals(0, receivedToggleKeyboardMainLayoutMode.size)
+        assertEquals(0, host.received<ImeAction.ToggleKeyboardMainLayoutMode>().size)
     }
 
     @Test
@@ -499,12 +419,12 @@ class PhysicalKeyHandlerInstrumentedTest {
         val downTime = SystemClock.uptimeMillis()
         val left = KeyEvent.KEYCODE_SHIFT_LEFT
         val right = KeyEvent.KEYCODE_SHIFT_RIGHT
-        shift.onKeyDown(appContext, left, shiftEvent(KeyEvent.ACTION_DOWN, left, downTime, downTime))
-        shift.onKeyDown(appContext, right, shiftEvent(KeyEvent.ACTION_DOWN, right, downTime + 10, downTime + 10))
-        shift.onKeyUp(appContext, left, shiftEvent(KeyEvent.ACTION_UP, left, downTime, downTime + 50))
-        shift.onKeyUp(appContext, right, shiftEvent(KeyEvent.ACTION_UP, right, downTime + 10, downTime + 60))
+        shift.onKeyDown(host, left, shiftEvent(KeyEvent.ACTION_DOWN, left, downTime, downTime))
+        shift.onKeyDown(host, right, shiftEvent(KeyEvent.ACTION_DOWN, right, downTime + 10, downTime + 10))
+        shift.onKeyUp(host, left, shiftEvent(KeyEvent.ACTION_UP, left, downTime, downTime + 50))
+        shift.onKeyUp(host, right, shiftEvent(KeyEvent.ACTION_UP, right, downTime + 10, downTime + 60))
 
-        assertEquals(0, receivedToggleKeyboardMainLayoutMode.size)
+        assertEquals(0, host.received<ImeAction.ToggleKeyboardMainLayoutMode>().size)
     }
 
     @Test
@@ -513,10 +433,10 @@ class PhysicalKeyHandlerInstrumentedTest {
         val downTime = SystemClock.uptimeMillis()
         val keyCode = KeyEvent.KEYCODE_SHIFT_LEFT
         val ctrl = KeyEvent.META_CTRL_ON or KeyEvent.META_CTRL_LEFT_ON
-        shift.onKeyDown(appContext, keyCode, KeyEvent(downTime, downTime, KeyEvent.ACTION_DOWN, keyCode, 0, ctrl))
-        shift.onKeyUp(appContext, keyCode, KeyEvent(downTime, downTime + 80, KeyEvent.ACTION_UP, keyCode, 0, ctrl))
+        shift.onKeyDown(host, keyCode, KeyEvent(downTime, downTime, KeyEvent.ACTION_DOWN, keyCode, 0, ctrl))
+        shift.onKeyUp(host, keyCode, KeyEvent(downTime, downTime + 80, KeyEvent.ACTION_UP, keyCode, 0, ctrl))
 
-        assertEquals(0, receivedToggleKeyboardMainLayoutMode.size)
+        assertEquals(0, host.received<ImeAction.ToggleKeyboardMainLayoutMode>().size)
     }
 
     @Test
@@ -525,10 +445,10 @@ class PhysicalKeyHandlerInstrumentedTest {
         val downTime = SystemClock.uptimeMillis()
         val keyCode = KeyEvent.KEYCODE_SHIFT_LEFT
         val capsLock = KeyEvent.META_CAPS_LOCK_ON
-        shift.onKeyDown(appContext, keyCode, KeyEvent(downTime, downTime, KeyEvent.ACTION_DOWN, keyCode, 0, capsLock))
-        shift.onKeyUp(appContext, keyCode, KeyEvent(downTime, downTime + 80, KeyEvent.ACTION_UP, keyCode, 0, capsLock))
+        shift.onKeyDown(host, keyCode, KeyEvent(downTime, downTime, KeyEvent.ACTION_DOWN, keyCode, 0, capsLock))
+        shift.onKeyUp(host, keyCode, KeyEvent(downTime, downTime + 80, KeyEvent.ACTION_UP, keyCode, 0, capsLock))
 
-        assertEquals(1, receivedToggleKeyboardMainLayoutMode.size)
+        assertEquals(1, host.received<ImeAction.ToggleKeyboardMainLayoutMode>().size)
     }
 
     @Test
@@ -537,11 +457,11 @@ class PhysicalKeyHandlerInstrumentedTest {
         val downTime = SystemClock.uptimeMillis()
         val left = KeyEvent.KEYCODE_SHIFT_LEFT
         // Left Shift goes down, then the input view closes before its key-up arrives
-        shift.onKeyDown(appContext, left, shiftEvent(KeyEvent.ACTION_DOWN, left, downTime, downTime))
+        shift.onKeyDown(host, left, shiftEvent(KeyEvent.ACTION_DOWN, left, downTime, downTime))
         shift.reset()
         tapShift(shift, KeyEvent.KEYCODE_SHIFT_RIGHT, heldMs = 80)
 
-        assertEquals(1, receivedToggleKeyboardMainLayoutMode.size)
+        assertEquals(1, host.received<ImeAction.ToggleKeyboardMainLayoutMode>().size)
     }
 
     @Test
@@ -550,10 +470,10 @@ class PhysicalKeyHandlerInstrumentedTest {
         ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
 
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT)
-        val result = shift.onKeyLongPress(appContext, KeyEvent.KEYCODE_SHIFT_LEFT, event)
+        val result = shift.onKeyLongPress(host, KeyEvent.KEYCODE_SHIFT_LEFT, event)
 
         assertFalse(result)
-        assertEquals(0, receivedSwitchToLayout.size)
+        assertEquals(0, host.received<ImeAction.SwitchToLayout>().size)
     }
 
     // ========== CapsLock tests ==========
@@ -562,7 +482,7 @@ class PhysicalKeyHandlerInstrumentedTest {
     fun capsLock_onKeyDown_returnsTrue() {
         val capsLock = CapsLock()
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_CAPS_LOCK)
-        val result = capsLock.onKeyDown(appContext, KeyEvent.KEYCODE_CAPS_LOCK, event)
+        val result = capsLock.onKeyDown(host, KeyEvent.KEYCODE_CAPS_LOCK, event)
 
         assertTrue(result)
     }
@@ -574,7 +494,7 @@ class PhysicalKeyHandlerInstrumentedTest {
         // CapsLock.onKeyUp shows a Toast, which requires the main thread Looper
         var result = false
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
-            result = capsLock.onKeyUp(appContext, KeyEvent.KEYCODE_CAPS_LOCK, event)
+            result = capsLock.onKeyUp(host, KeyEvent.KEYCODE_CAPS_LOCK, event)
         }
         assertTrue(result)
     }
@@ -585,7 +505,7 @@ class PhysicalKeyHandlerInstrumentedTest {
     fun leftAlt_onKeyDown_returnsTrue() {
         val leftAlt = LeftAlt()
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ALT_LEFT)
-        val result = leftAlt.onKeyDown(appContext, KeyEvent.KEYCODE_ALT_LEFT, event)
+        val result = leftAlt.onKeyDown(host, KeyEvent.KEYCODE_ALT_LEFT, event)
 
         assertTrue(result)
     }
@@ -597,7 +517,7 @@ class PhysicalKeyHandlerInstrumentedTest {
         // Use a concrete handler that does NOT override onKeyUp (e.g. Del)
         val del = Del()
         val event = KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL)
-        val result = del.onKeyUp(appContext, KeyEvent.KEYCODE_DEL, event)
+        val result = del.onKeyUp(host, KeyEvent.KEYCODE_DEL, event)
 
         assertFalse(result)
     }
@@ -607,7 +527,7 @@ class PhysicalKeyHandlerInstrumentedTest {
         // Use a concrete handler that does NOT override onKeyLongPress (e.g. Del)
         val del = Del()
         val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)
-        val result = del.onKeyLongPress(appContext, KeyEvent.KEYCODE_DEL, event)
+        val result = del.onKeyLongPress(host, KeyEvent.KEYCODE_DEL, event)
 
         assertFalse(result)
     }

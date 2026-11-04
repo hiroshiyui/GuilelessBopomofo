@@ -18,11 +18,11 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.content.Context
 import android.view.KeyEvent
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
 class LeftAlt : PhysicalKeyHandler {
-    override fun onKeyDown(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyDown(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         event?.startTracking()
         return true
     }

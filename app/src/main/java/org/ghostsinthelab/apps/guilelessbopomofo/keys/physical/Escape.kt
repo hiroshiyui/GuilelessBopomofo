@@ -18,20 +18,19 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.content.Context
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
-import org.greenrobot.eventbus.EventBus
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
 class Escape : PhysicalKeyHandler {
     override fun onKeyDown(
-        context: Context,
+        host: ImeHost,
         keyCode: Int,
         event: KeyEvent?,
     ): Boolean {
-        EventBus.getDefault().post(ImeAction.RequestHideIme)
-        EventBus.getDefault().post(ImeAction.ExitKeyboardSubLayouts)
-        EventBus.getDefault().post(ImeAction.UpdateCursorPosition)
+        host.dispatch(ImeAction.RequestHideIme)
+        host.dispatch(ImeAction.ExitKeyboardSubLayouts)
+        host.dispatch(ImeAction.UpdateCursorPosition)
         return true
     }
 }

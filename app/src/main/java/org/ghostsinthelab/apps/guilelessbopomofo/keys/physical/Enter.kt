@@ -18,20 +18,20 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.content.Context
 import android.util.Log
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.EnterKeyIntent
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
 class Enter : PhysicalKeyHandler {
     override fun onKeyDown(
-        context: Context,
+        host: ImeHost,
         keyCode: Int,
         event: KeyEvent?,
     ): Boolean {
         Log.d("Enter", "onKeyDown()")
-        ChewingUtil.handleEnterAction(EnterKeyIntent.forMetaState(event?.metaState ?: 0))
+        ChewingUtil.handleEnterAction(host, EnterKeyIntent.forMetaState(event?.metaState ?: 0))
         return true
     }
 

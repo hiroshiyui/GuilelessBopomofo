@@ -22,38 +22,38 @@ import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.appSharedPreferences
-import org.greenrobot.eventbus.EventBus
 
 /** Shown only when the user turns it on, see `USER_ENABLE_IME_SWITCH`. */
 object ImeSwitchFunctionKey : VirtualKey {
     override val detectsDoubleTap: Boolean = true
     override val detectsLongPress: Boolean = true
 
-    override fun onDown(context: Context) {
-        performVibration(context, Vibratable.VibrationStrength.NORMAL)
+    override fun onDown(host: ImeHost) {
+        performVibration(host.context, Vibratable.VibrationStrength.NORMAL)
     }
 
-    override fun onTap(context: Context) {
-        if (!switchesOnDoubleTap(context)) switchNextInputMethod()
+    override fun onTap(host: ImeHost) {
+        if (!switchesOnDoubleTap(host)) switchNextInputMethod(host)
     }
 
-    override fun onDoubleTap(context: Context) {
-        if (switchesOnDoubleTap(context)) switchNextInputMethod()
+    override fun onDoubleTap(host: ImeHost) {
+        if (switchesOnDoubleTap(host)) switchNextInputMethod(host)
     }
 
-    override fun onLongPress(context: Context) {
-        performVibration(context, Vibratable.VibrationStrength.STRONG)
-        val imm = context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    override fun onLongPress(host: ImeHost) {
+        performVibration(host.context, Vibratable.VibrationStrength.STRONG)
+        val imm = host.context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showInputMethodPicker()
     }
 
-    private fun switchesOnDoubleTap(context: Context): Boolean =
-        context.appSharedPreferences.getBoolean(USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, false)
+    private fun switchesOnDoubleTap(host: ImeHost): Boolean =
+        host.context.appSharedPreferences.getBoolean(USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, false)
 
-    private fun switchNextInputMethod() {
-        EventBus.getDefault().post(ImeAction.SwitchToNextInputMethod)
+    private fun switchNextInputMethod(host: ImeHost) {
+        host.dispatch(ImeAction.SwitchToNextInputMethod)
     }
 }

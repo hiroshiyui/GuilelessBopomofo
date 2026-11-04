@@ -18,22 +18,22 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.content.Context
 import android.view.KeyEvent
 import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.R
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
 class CapsLock : PhysicalKeyHandler {
     override fun onKeyDown(
-        context: Context, keyCode: Int, event: KeyEvent?
+        host: ImeHost, keyCode: Int, event: KeyEvent?
     ): Boolean {
         return true
     }
 
-    override fun onKeyUp(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyUp(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         event?.let {
             val message = if (it.isCapsLockOn) R.string.capsLockIsOn else R.string.capsLockIsOff
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(host.context, message, Toast.LENGTH_SHORT).show()
         }
         return true
     }

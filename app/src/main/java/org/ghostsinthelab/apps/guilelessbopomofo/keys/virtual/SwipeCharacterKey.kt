@@ -18,14 +18,13 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
-import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.SwipeDirection
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.BopomofoGlyph
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.SwipeKeySpec
-import org.greenrobot.eventbus.EventBus
 
 /**
  * A phone-keypad key of the compact Dachen keyboard: a tap types [spec]'s tap symbol, a
@@ -35,20 +34,20 @@ import org.greenrobot.eventbus.EventBus
 class SwipeCharacterKey(private val spec: SwipeKeySpec) : VirtualKey {
     override val detectsSwipes: Boolean = true
 
-    override fun onDown(context: Context) {
-        performVibration(context, GuilelessBopomofoService.userHapticFeedbackStrength)
+    override fun onDown(host: ImeHost) {
+        performVibration(host.context, GuilelessBopomofoService.userHapticFeedbackStrength)
     }
 
-    override fun onTap(context: Context) {
-        type(spec.tap)
+    override fun onTap(host: ImeHost) {
+        host.type(spec.tap)
     }
 
-    override fun onSwipe(context: Context, direction: SwipeDirection) {
+    override fun onSwipe(host: ImeHost, direction: SwipeDirection) {
         // A way with no symbol on it types nothing.
-        spec.glyphFor(direction)?.let(::type)
+        spec.glyphFor(direction)?.let { host.type(it) }
     }
 
-    private fun type(glyph: BopomofoGlyph) {
-        EventBus.getDefault().post(ImeAction.PrintingKeyDown(glyph.dachenKeyCode))
+    private fun ImeHost.type(glyph: BopomofoGlyph) {
+        dispatch(ImeAction.PrintingKeyDown(glyph.dachenKeyCode))
     }
 }

@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBuffer
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeDispatcher
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -74,7 +75,7 @@ class ChewingWithoutContextInstrumentedTest {
     fun updatingTheBuffers_doesNotCrash() {
         val uiState = ImeUiState()
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
-            PreEditBuffer(uiState).update()
+            PreEditBuffer(uiState, ImeDispatcher {}).update()
             uiState.bopomofoText = ChewingBridge.chewing.bopomofoStringStatic()
         }
         assertEquals("", uiState.preEditText)

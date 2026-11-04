@@ -18,18 +18,17 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.content.Context
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
-import org.greenrobot.eventbus.EventBus
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
 class Home : PhysicalKeyHandler {
-    override fun onKeyDown(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyDown(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         if (ChewingBridge.chewing.bufferLen() > 0) {
-            EventBus.getDefault().post(ImeAction.UpdateCursorPositionToBegin)
+            host.dispatch(ImeAction.UpdateCursorPositionToBegin)
         } else {
-            EventBus.getDefault().post(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_MOVE_HOME))
+            host.dispatch(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_MOVE_HOME))
         }
         return true
     }

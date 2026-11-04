@@ -18,31 +18,30 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.content.Context
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
-import org.greenrobot.eventbus.EventBus
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
 /**
  * The `Left` and `Right` keys, which walk the cursor through the pre-edit buffer one
  * character at a time, or jump to either end of it when `Ctrl` is held down.
  */
 abstract class HorizontalArrowKey(private val direction: DirectionKey) : PhysicalKeyHandler {
-    override fun onKeyDown(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyDown(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         // simulate Ctrl-Left as Home key, Ctrl-Right as End key
         if (event?.isCtrlPressed == true && ChewingUtil.candidateWindowClosed()) {
             when (direction) {
                 DirectionKey.LEFT -> ChewingBridge.chewing.handleHome()
                 DirectionKey.RIGHT -> ChewingBridge.chewing.handleEnd()
             }
-            EventBus.getDefault().post(ImeAction.UpdateCursorPosition)
+            host.dispatch(ImeAction.UpdateCursorPosition)
             return true
         }
 
-        ChewingUtil.moveCursorHorizontally(direction)
+        ChewingUtil.moveCursorHorizontally(host, direction)
         return true
     }
 }

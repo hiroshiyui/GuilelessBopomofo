@@ -18,29 +18,28 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.content.Context
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
-import org.greenrobot.eventbus.EventBus
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
 class Space : PhysicalKeyHandler {
     override fun onKeyDown(
-        context: Context,
+        host: ImeHost,
         keyCode: Int,
         event: KeyEvent?,
     ): Boolean {
         if (event?.isShiftPressed == true) {
-            EventBus.getDefault().post(ImeAction.ToggleKeyboardMainLayoutMode)
+            host.dispatch(ImeAction.ToggleKeyboardMainLayoutMode)
             return true
         }
 
         if (event?.isAltPressed == true) {
-            EventBus.getDefault().post(ImeAction.ToggleFullOrHalfWidthMode)
+            host.dispatch(ImeAction.ToggleFullOrHalfWidthMode)
             return true
         }
 
-        ChewingUtil.handleSpaceAction()
+        ChewingUtil.handleSpaceAction(host)
 
         return true
     }

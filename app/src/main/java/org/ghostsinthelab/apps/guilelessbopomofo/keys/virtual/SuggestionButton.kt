@@ -18,21 +18,20 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
-import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
-import org.greenrobot.eventbus.EventBus
 
 /** One of the English words offered on the suggestion strip. */
 class SuggestionButton(private val word: String) : VirtualKey {
-    override fun onDown(context: Context) {
-        performVibration(context, Vibratable.VibrationStrength.LIGHT)
+    override fun onDown(host: ImeHost) {
+        performVibration(host.context, Vibratable.VibrationStrength.LIGHT)
     }
 
-    override fun onTap(context: Context) {
+    override fun onTap(host: ImeHost) {
         if (word.isNotEmpty()) {
-            EventBus.getDefault().post(ImeAction.SuggestionSelected(word))
+            host.dispatch(ImeAction.SuggestionSelected(word))
         }
     }
 }

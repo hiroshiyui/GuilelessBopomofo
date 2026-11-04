@@ -37,7 +37,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
@@ -167,13 +166,13 @@ fun KeySurface(
     onSwipeDirectionChange: (SwipeDirection?) -> Unit = {},
     content: @Composable () -> Unit,
 ) {
-    val context = LocalContext.current
+    val host = LocalImeHost.current
     val interactionSource = remember { MutableInteractionSource() }
     Box(
         modifier = modifier
             .testTag(testTag)
             .heightIn(min = minHeight)
-            .keyGestures(key, context, interactionSource, onSwipeDirectionChange)
+            .keyGestures(key, host, interactionSource, onSwipeDirectionChange)
             .padding(horizontal = GuilelessDimens.KeyHorizontalInset, vertical = GuilelessDimens.KeyVerticalInset),
         propagateMinConstraints = true,
     ) {

@@ -18,17 +18,16 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
-import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
-import org.greenrobot.eventbus.EventBus
 
 /** A key that types: [keyCodeString] is the name of the key code it stands for, `KEYCODE_A` say. */
 class CharacterKey(private val keyCodeString: String) : VirtualKey {
     // Everything happens on the way down, so that fast typing never waits for a finger to lift.
-    override fun onDown(context: Context) {
-        performVibration(context, GuilelessBopomofoService.userHapticFeedbackStrength)
-        EventBus.getDefault().post(ImeAction.PrintingKeyDown(keyCodeString))
+    override fun onDown(host: ImeHost) {
+        performVibration(host.context, GuilelessBopomofoService.userHapticFeedbackStrength)
+        host.dispatch(ImeAction.PrintingKeyDown(keyCodeString))
     }
 }

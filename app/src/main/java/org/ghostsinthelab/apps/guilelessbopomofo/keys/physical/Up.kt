@@ -18,22 +18,21 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.content.Context
 import android.util.Log
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
-import org.greenrobot.eventbus.EventBus
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
 class Up : PhysicalKeyHandler {
     override fun onKeyDown(
-        context: Context,
+        host: ImeHost,
         keyCode: Int,
         event: KeyEvent?,
     ): Boolean {
         Log.d("Up", "onKeyDown()")
         if (ChewingBridge.chewing.bufferLen() == 0) {
-            EventBus.getDefault().post(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_UP))
+            host.dispatch(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_UP))
         }
         return true
     }

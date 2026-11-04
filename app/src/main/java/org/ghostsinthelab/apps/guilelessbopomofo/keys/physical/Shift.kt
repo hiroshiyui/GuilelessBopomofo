@@ -18,7 +18,6 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
-import android.content.Context
 import android.view.KeyEvent
 import android.view.ViewConfiguration
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
@@ -26,7 +25,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.ChiEngMode
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
-import org.greenrobot.eventbus.EventBus
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
 /**
  * Both `Shift` keys. Tapping either one on its own, a quick press and release with no other
@@ -48,7 +47,7 @@ class Shift : PhysicalKeyHandler {
     // making it a chord, or Shift started repeating because it was held down
     private var chorded = false
 
-    override fun onKeyDown(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyDown(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         event?.startTracking()
         if (event?.repeatCount == 0) {
             // Pressing one Shift while the other is held is no tap of either, nor is pressing it
@@ -63,22 +62,22 @@ class Shift : PhysicalKeyHandler {
         return keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT
     }
 
-    override fun onKeyUp(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyUp(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         val tapped = keyCode == heldKeyCode && !chorded && event != null && event.isQuickTap()
         reset()
         if (tapped) {
-            EventBus.getDefault().post(ImeAction.ToggleKeyboardMainLayoutMode)
+            host.dispatch(ImeAction.ToggleKeyboardMainLayoutMode)
         }
         return keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT
     }
 
-    override fun onKeyLongPress(context: Context, keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyLongPress(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT && ChewingBridge.chewing.getChiEngMode() == ChiEngMode.CHINESE.mode) {
             ChewingUtil.openFrequentlyUsedCandidates()
-            EventBus.getDefault().post(ImeAction.SwitchToLayout(Layout.CANDIDATES))
+            host.dispatch(ImeAction.SwitchToLayout(Layout.CANDIDATES))
             return true
         }
-        return super.onKeyLongPress(context, keyCode, event)
+        return super.onKeyLongPress(host, keyCode, event)
     }
 
     /**

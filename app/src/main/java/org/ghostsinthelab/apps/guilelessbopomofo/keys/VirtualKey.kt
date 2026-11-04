@@ -18,7 +18,6 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.keys
 
-import android.content.Context
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
 /** Which way a key was swiped. */
@@ -27,7 +26,7 @@ enum class SwipeDirection { UP, RIGHT, LEFT, DOWN }
 /**
  * What an on-screen key does when touched. The gestures are recognised for it by
  * [org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.keyGestures]; a key only says how it
- * answers them.
+ * answers them, through the [ImeHost] it is handed.
  */
 interface VirtualKey : Vibratable {
     /**
@@ -52,10 +51,10 @@ interface VirtualKey : Vibratable {
      */
     val detectsSwipes: Boolean get() = false
 
-    fun onDown(context: Context) {}
-    fun onTap(context: Context) {}
-    fun onDoubleTap(context: Context) {}
-    fun onLongPress(context: Context) {}
-    fun onRepeat(context: Context) {}
-    fun onSwipe(context: Context, direction: SwipeDirection) {}
+    fun onDown(host: ImeHost) {}
+    fun onTap(host: ImeHost) {}
+    fun onDoubleTap(host: ImeHost) {}
+    fun onLongPress(host: ImeHost) {}
+    fun onRepeat(host: ImeHost) {}
+    fun onSwipe(host: ImeHost, direction: SwipeDirection) {}
 }
