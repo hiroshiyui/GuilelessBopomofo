@@ -178,7 +178,7 @@ class EnglishWordsTest {
 
     @Test
     fun closesUpToPreviousWord_sentencePunctuation() {
-        for (mark in listOf(",", ".", "!", "?", ";", ":", ")", "]", "}", "'", "\"")) {
+        for (mark in listOf(",", ".", "!", "?", ";", ":", ")", "]", "}", "'")) {
             assertTrue(mark, EnglishWords.closesUpToPreviousWord(mark))
         }
     }
@@ -194,6 +194,7 @@ class EnglishWordsTest {
         assertFalse(EnglishWords.closesUpToPreviousWord(""))
         assertFalse(EnglishWords.closesUpToPreviousWord("a"))
         assertFalse(EnglishWords.closesUpToPreviousWord("("))
+        assertFalse(EnglishWords.closesUpToPreviousWord("\""))
         assertFalse(EnglishWords.closesUpToPreviousWord("-"))
         assertFalse(EnglishWords.closesUpToPreviousWord(" "))
     }

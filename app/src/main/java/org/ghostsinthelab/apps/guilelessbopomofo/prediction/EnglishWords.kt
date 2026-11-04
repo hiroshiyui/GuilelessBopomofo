@@ -56,7 +56,8 @@ object EnglishWords {
     fun closesUpToPreviousWord(committed: CharSequence): Boolean =
         committed.isNotEmpty() && committed[0] in CLOSING_PUNCTUATION
 
-    private const val CLOSING_PUNCTUATION = ",.!?;:)]}'\""
+    // No double quote: after a chosen word one is as likely to open a quotation as to close it.
+    private const val CLOSING_PUNCTUATION = ",.!?;:)]}'"
 
     /**
      * Writes [word] the way [prefix] was typed: `TH` makes it all capitals, `Th` capitalizes

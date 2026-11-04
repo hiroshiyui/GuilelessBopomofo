@@ -97,6 +97,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Space
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.Up
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeDown
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.VolumeUp
+import org.ghostsinthelab.apps.guilelessbopomofo.prediction.AutoSpace
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.BigramPredictor
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishPrediction
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishWords
@@ -141,9 +142,8 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     // whether the text field being edited wants word suggestions, see onStartInputView()
     private var fieldAllowsSuggestions: Boolean = false
 
-    // whether the last thing committed was a chosen suggestion along with its trailing space,
-    // which punctuation typed right after takes back, see onSuggestionSelected()
-    private var autoSpacePending: Boolean = false
+    // the space the last chosen suggestion was committed with, see onSuggestionSelected()
+    private val autoSpace = AutoSpace()
 
     // Both Shift keys share this one: it follows a press through to tell a tap from a chord.
     private val shift = Shift()
@@ -299,7 +299,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
         }
 
         fieldAllowsSuggestions = info?.let { EnglishWords.fieldAllowsSuggestions(it.inputType) } ?: false
-        autoSpacePending = false
+        autoSpace.forget()
 
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
@@ -315,6 +315,8 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
         super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd)
         // the selection moving while Shift is held, e.g. a Shift-click with a mouse, is no tap
         shift.onOtherInput()
+        // text selected by hand: whatever comes next replaces it rather than follows the space
+        if (newSelStart != newSelEnd) autoSpace.forget()
         refreshSuggestions()
     }
 
@@ -548,6 +550,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
 
     private fun handleNumPadKey(event: KeyEvent): Boolean {
         if (!event.isNumPadKey()) return false
+        autoSpace.forget()
         currentInputConnection?.sendKeyEvent(event)
         EventBus.getDefault().post(Events.UpdateBufferViews())
         return true
@@ -658,7 +661,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
         inputConnection.deleteSurroundingText(typedWord.length, 0)
         inputConnection.commitText("${event.word} ", 1)
         inputConnection.endBatchEdit()
-        autoSpacePending = true
+        autoSpace.committed(event.word)
     }
 
     /**
@@ -666,11 +669,10 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
      * that belongs right after the word, so that `word ,` becomes `word,`.
      */
     private fun takeBackAutoSpaceIfNeeded(inputConnection: InputConnection, committed: String) {
-        if (!autoSpacePending) return
-        autoSpacePending = false
-        if (!EnglishWords.closesUpToPreviousWord(committed)) return
-        val before = inputConnection.getTextBeforeCursor(1, 0) ?: return
-        if (before.endsWith(" ")) inputConnection.deleteSurroundingText(1, 0)
+        val lookbehind = autoSpace.lookbehind
+        if (lookbehind == 0) return
+        val before = inputConnection.getTextBeforeCursor(lookbehind, 0)
+        if (autoSpace.takesBack(before, committed)) inputConnection.deleteSurroundingText(1, 0)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -752,7 +754,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSendDownUpKeyEvents(event: Events.SendDownUpKeyEvents) {
         // backspace, arrows and the like: the space is no longer right behind the cursor
-        autoSpacePending = false
+        autoSpace.forget()
         sendDownUpKeyEvents(event.keycode)
     }
 
@@ -811,7 +813,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEnterKeyDownWhenBufferIsEmpty(event: Events.EnterKeyDownWhenBufferIsEmpty) {
         Log.d(logTag, event::class.simpleName ?: "Event")
-        autoSpacePending = false
+        autoSpace.forget()
 
         val behavior = currentInputEditorInfo?.let(EnterKeyBehaviorResolver::resolve)
             ?: EnterKeyBehavior.NewLine
@@ -836,7 +838,7 @@ class GuilelessBopomofoService : InputMethodService(), SharedPreferences.OnShare
             preEditBuffer.cursorMovedBy(PreEditBuffer.CursorMovedFrom.PHYSICAL_KEYBOARD)
         } else if (ChewingUtil.candidateWindowClosed()) {
             // Nothing of ours to move through, so let the text field move its own cursor.
-            autoSpacePending = false
+            autoSpace.forget()
             when (event.direction) {
                 DirectionKey.LEFT -> sendDownUpKeyEvents(KEYCODE_DPAD_LEFT)
                 DirectionKey.RIGHT -> sendDownUpKeyEvents(KEYCODE_DPAD_RIGHT)
