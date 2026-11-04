@@ -23,6 +23,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
+/** The on-screen Enter: commits the buffer, or does what the text field wants Enter to do. */
 object EnterKey : VirtualKey {
     override fun onDown(host: ImeHost) {
         performVibration(host.context, Vibratable.VibrationStrength.NORMAL)

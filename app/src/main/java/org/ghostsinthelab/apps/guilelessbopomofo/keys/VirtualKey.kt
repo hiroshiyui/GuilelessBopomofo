@@ -51,10 +51,16 @@ interface VirtualKey : Vibratable {
      */
     val detectsSwipes: Boolean get() = false
 
+    /** A finger landed on the key: haptics, and for character keys the typing itself. */
     fun onDown(host: ImeHost) {}
+    /** The finger lifted again in time, and this was no second tap of a double tap. */
     fun onTap(host: ImeHost) {}
+    /** The second of two quick taps, for keys that [detectsDoubleTap]. */
     fun onDoubleTap(host: ImeHost) {}
+    /** The key was held past the long-press timeout, for keys that [detectsLongPress]. */
     fun onLongPress(host: ImeHost) {}
+    /** Every so often while held, after [onLongPress], for keys that [repeatsWhileHeld]. */
     fun onRepeat(host: ImeHost) {}
+    /** The finger swiped off in [direction], for keys that [detectsSwipes]. */
     fun onSwipe(host: ImeHost, direction: SwipeDirection) {}
 }

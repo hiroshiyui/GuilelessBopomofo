@@ -20,6 +20,12 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.util.Log
 
+/**
+ * The JNI face of libchewing: one native context, kept as a raw pointer in [context], and
+ * the C API as `external` functions that default to it. Loading the native library happens
+ * on construction; everything here must be called from the main thread, as the context is
+ * not thread-safe.
+ */
 class Chewing {
     private val logTag = "Chewing"
 
@@ -35,6 +41,7 @@ class Chewing {
         }
     }
 
+    /** The native library could not be loaded, so there is nothing to type with. */
     object ChewingInitException : Throwable() {
         private fun readResolve(): Any = ChewingInitException
         override val message: String = "Unable to initialize Chewing"

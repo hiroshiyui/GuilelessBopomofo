@@ -74,6 +74,10 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.EdgeToEdgeFollowingThe
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessTheme
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.applyThemeModeToWindow
 
+/**
+ * The settings app: one screen with a tab per settings page. Tapping the app icon in its
+ * header several times opens the engineering mode.
+ */
 class MainActivity : ComponentActivity() {
     private val logTag: String = "MainActivity"
 

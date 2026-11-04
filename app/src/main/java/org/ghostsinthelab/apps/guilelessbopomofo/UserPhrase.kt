@@ -18,4 +18,5 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+/** A phrase the user taught libchewing, with the Bopomofo it is typed as. */
 data class UserPhrase(val phrase: String, val bopomofo: String)

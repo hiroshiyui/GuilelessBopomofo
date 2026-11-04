@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
+/** Left Alt: tracked so that its long press can be told apart, and otherwise kept from the text field. */
 class LeftAlt : PhysicalKeyHandler {
     override fun onKeyDown(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         event?.startTracking()

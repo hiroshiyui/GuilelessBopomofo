@@ -82,6 +82,13 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyBehaviorResolver
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.appSharedPreferences
 
+/**
+ * The input method itself. It owns the libchewing context for as long as it runs, hosts the
+ * Compose input view, and carries out every [ImeAction] the keys and panels ask for, in
+ * order, on the main thread. The heavier work is delegated: hardware keys to
+ * [PhysicalKeyInput], the English suggestion strip to [EnglishSuggestions], libchewing's
+ * settings to [ChewingSettings] and the layouts to [KeyboardController].
+ */
 class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreferences.OnSharedPreferenceChangeListener,
     LifecycleOwner, SavedStateRegistryOwner {
     private val logTag = "GuilelessBopomofoSvc"

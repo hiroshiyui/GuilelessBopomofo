@@ -18,4 +18,8 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.enums
 
+/**
+ * The panels the input view can show: the main Bopomofo keyboard, the symbol picker, the
+ * candidates, the alphanumerical keyboard, and the compact bar for a physical keyboard.
+ */
 enum class Layout { MAIN, SYMBOLS, CANDIDATES, QWERTY, COMPACT }

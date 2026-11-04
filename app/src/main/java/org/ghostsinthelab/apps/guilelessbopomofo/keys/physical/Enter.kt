@@ -24,6 +24,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.EnterKeyIntent
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
+/** Enter: commits the buffer, or does what the text field wants Enter to do; with Shift or Alt a line break. */
 class Enter : PhysicalKeyHandler {
     override fun onKeyDown(
         host: ImeHost,

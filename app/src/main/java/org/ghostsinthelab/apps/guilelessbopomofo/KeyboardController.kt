@@ -62,6 +62,7 @@ class KeyboardController(
             ime.dispatch(ImeAction.KeyboardLayoutSwitched)
         }
 
+    /** Switches libchewing and the keyboard between Bopomofo and alphanumerical input. */
     fun toggleMainLayoutMode() {
         Log.d(logTag, "toggleMainLayoutMode()")
 
@@ -107,6 +108,10 @@ class KeyboardController(
         }
     }
 
+    /**
+     * Shows the compact bar for typing on a physical keyboard, and tells libchewing which
+     * Bopomofo arrangement that keyboard has.
+     */
     fun switchToCompactLayout() {
         Log.d(logTag, "switchToCompactLayout")
         currentLayout = Layout.COMPACT
@@ -218,6 +223,7 @@ class KeyboardController(
         }
     }
 
+    /** A candidate was tapped on screen: pick it, then show its sub-list or leave the candidates. */
     fun candidateButtonSelected(candidate: Candidate) {
         ChewingBridge.chewing.candChooseByIndex(candidate.index)
         if (ChewingUtil.candidateWindowClosed()) {
@@ -266,6 +272,10 @@ class KeyboardController(
         renderCandidatesLayout()
     }
 
+    /**
+     * Shows libchewing's current candidates: a paged list with selection keys alongside a
+     * physical keyboard, a scrollable grid of all of them otherwise.
+     */
     fun renderCandidatesLayout() {
         Log.d(logTag, "renderCandidatesLayout")
         currentLayout = Layout.CANDIDATES
@@ -280,6 +290,7 @@ class KeyboardController(
         uiState.candidatesGeneration += 1
     }
 
+    /** Lets go of the on-screen Shift key, if it was pressed or held. */
     fun releaseShiftKey() {
         Log.d(logTag, "releaseShiftKey()")
         // Only the alphanumerical keyboard has a Shift key to release.

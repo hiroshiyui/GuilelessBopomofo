@@ -18,6 +18,7 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+/** The names of the shared preferences, and the little device state that is global. */
 object GuilelessBopomofoEnv {
     const val APP_SHARED_PREFERENCES: String = "GuilelessBopomofoService"
     @Volatile

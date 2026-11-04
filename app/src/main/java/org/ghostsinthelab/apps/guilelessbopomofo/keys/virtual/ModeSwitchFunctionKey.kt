@@ -23,6 +23,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
+/** The key that switches between Bopomofo and English. */
 object ModeSwitchFunctionKey : VirtualKey {
     override val detectsDoubleTap: Boolean = true
 

@@ -20,7 +20,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo.utils
 
 import android.view.KeyEvent
 
+/** Extra questions to ask a [KeyEvent]; implemented by whoever handles them. */
 interface KeyEventExtension {
+    /** Whether the key is on the numeric keypad, which types past libchewing. */
     fun KeyEvent.isNumPadKey(): Boolean {
         return this.keyCode in KeyEvent.KEYCODE_NUMPAD_0..KeyEvent.KEYCODE_NUMPAD_SUBTRACT
     }

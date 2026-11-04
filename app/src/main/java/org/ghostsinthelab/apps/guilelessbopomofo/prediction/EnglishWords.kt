@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.prediction
 import android.text.InputType
 import java.util.Locale
 
+/** Pure text helpers for English prediction: finding words around the cursor, matching case, and which fields want suggestions. */
 object EnglishWords {
     private const val APOSTROPHE = '\''
     private const val SPACE = ' '

@@ -52,6 +52,7 @@ class ChewingSettings(
         applyAll()
     }
 
+    /** Puts every setting on the current context, as after connecting or reconnecting. */
     fun applyAll() {
         applySpaceAsSelection()
         applyPhraseChoiceRearward()

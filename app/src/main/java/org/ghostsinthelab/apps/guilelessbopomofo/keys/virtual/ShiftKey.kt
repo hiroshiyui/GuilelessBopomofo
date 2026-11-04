@@ -50,6 +50,7 @@ class ShiftKey(private val uiState: ImeUiState) : VirtualKey {
     companion object {
         private const val LOG_TAG = "ShiftKey"
 
+        /** Puts the Shift key in [state]; the service reads the state when it types the next character. */
         fun switchToState(uiState: ImeUiState, state: ShiftKeyState) {
             Log.d(LOG_TAG, "Switch to state: $state")
             // the service reads it from here too, when it types the next character

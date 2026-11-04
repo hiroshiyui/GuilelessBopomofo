@@ -23,6 +23,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
+/** The on-screen Space: converts or opens the candidates while there is a buffer, types a space otherwise. */
 object SpaceKey : VirtualKey {
     override fun onDown(host: ImeHost) {
         performVibration(host.context, Vibratable.VibrationStrength.LIGHT)

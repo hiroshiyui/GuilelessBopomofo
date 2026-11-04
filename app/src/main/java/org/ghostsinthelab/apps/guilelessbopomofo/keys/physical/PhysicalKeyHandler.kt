@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
+/** What one physical key does; [PhysicalKeyInput] keeps a table of these by key code. */
 interface PhysicalKeyHandler {
     /**
      * Called when a key down event occurs for the key this handler is responsible for.

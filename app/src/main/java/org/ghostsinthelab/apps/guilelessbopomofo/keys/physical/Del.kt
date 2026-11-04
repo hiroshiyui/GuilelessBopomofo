@@ -22,6 +22,7 @@ import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
+/** Backspace: edits the buffers, or deletes in the text field once they are empty. */
 class Del : PhysicalKeyHandler {
     override fun onKeyDown(
         host: ImeHost,

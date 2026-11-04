@@ -23,6 +23,7 @@ import android.widget.Toast
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
+/** Caps Lock: swallowed, and the new state shown in a toast on release. */
 class CapsLock : PhysicalKeyHandler {
     override fun onKeyDown(
         host: ImeHost, keyCode: Int, event: KeyEvent?

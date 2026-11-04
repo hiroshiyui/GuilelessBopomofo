@@ -24,6 +24,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
+/** Up arrow: swallowed while there is a buffer, moves in the text field otherwise. */
 class Up : PhysicalKeyHandler {
     override fun onKeyDown(
         host: ImeHost,

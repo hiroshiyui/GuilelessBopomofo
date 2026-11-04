@@ -19,5 +19,6 @@ package org.ghostsinthelab.apps.guilelessbopomofo.events
 
 /** Whoever carries out an [ImeAction]: the input method service, or a stand-in under test. */
 fun interface ImeDispatcher {
+    /** Carries [action] out, now or once the action being carried out has finished. */
     fun dispatch(action: ImeAction)
 }

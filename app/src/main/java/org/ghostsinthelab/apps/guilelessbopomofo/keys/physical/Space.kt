@@ -23,6 +23,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
+/** Space: Shift + Space toggles Bopomofo and English, Alt + Space half and full width, plain Space converts or types. */
 class Space : PhysicalKeyHandler {
     override fun onKeyDown(
         host: ImeHost,

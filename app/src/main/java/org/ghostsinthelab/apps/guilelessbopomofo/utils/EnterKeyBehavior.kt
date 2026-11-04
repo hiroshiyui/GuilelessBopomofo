@@ -37,12 +37,14 @@ sealed interface EnterKeyBehavior {
  * so that we behave like every other well-mannered IME.
  */
 object EnterKeyBehaviorResolver {
+    /** What Enter should do in the text field described by [editorInfo]. */
     fun resolve(editorInfo: EditorInfo): EnterKeyBehavior = resolve(
         imeOptions = editorInfo.imeOptions,
         actionId = editorInfo.actionId,
         hasCustomActionLabel = editorInfo.actionLabel != null,
     )
 
+    /** The same, from the parts of an [EditorInfo], for tests that have no real one. */
     fun resolve(imeOptions: Int, actionId: Int, hasCustomActionLabel: Boolean): EnterKeyBehavior {
         // The text field explicitly wants Enter to remain Enter. Multiple line text fields
         // land here as well, since TextView sets this flag for them on our behalf.

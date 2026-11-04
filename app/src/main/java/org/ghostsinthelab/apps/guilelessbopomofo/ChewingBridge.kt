@@ -18,13 +18,12 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
-// ChiEngMode:
-// 0: Symbol (alphanumeric) mode
-// 1: Chinese (Bopomofo) mode
+/** Whether libchewing is typing Bopomofo ([CHINESE]) or passing letters through ([SYMBOL]). */
 enum class ChiEngMode(val mode: Int) {
     SYMBOL(0), CHINESE(1)
 }
 
+/** Whether the alphanumerical keyboard types half-width (ASCII) or full-width characters. */
 enum class ShapeMode(val mode: Int) {
     HALF(0), FULL(1)
 }
@@ -51,6 +50,10 @@ enum class BopomofoSoftKeyboards(val layout: String, val chewingLayout: String =
     }
 }
 
+/**
+ * The Bopomofo arrangements a physical keyboard can be used with, named as libchewing names
+ * them; [layout] is what the preference stores and what libchewing is told.
+ */
 enum class BopomofoPhysicalKeyboards(val layout: String) {
     KB_DEFAULT("KB_DEFAULT"),
     KB_HSU("KB_HSU"),
@@ -71,6 +74,10 @@ enum class BopomofoPhysicalKeyboards(val layout: String) {
     KB_COLEMAK("KB_COLEMAK"),
 }
 
+/**
+ * How libchewing turns Bopomofo into Han characters: one syllable at a time, with automatic
+ * phrase segmentation, or segmentation that forgives incomplete syllables.
+ */
 enum class ConversionEngines(val mode: Int) {
     SIMPLE_CONVERSION_ENGINE(0),
     CHEWING_CONVERSION_ENGINE(1),
@@ -94,10 +101,12 @@ object ChewingBridge {
         reconnectListeners += listener
     }
 
+    /** Undoes [addReconnectListener]; a listener may remove itself while being called. */
     fun removeReconnectListener(listener: () -> Unit) {
         reconnectListeners -= listener
     }
 
+    /** Called by [ChewingUtil] once a fresh context is connected. */
     internal fun notifyReconnected() {
         // a listener may remove itself while being called
         reconnectListeners.toList().forEach { it() }

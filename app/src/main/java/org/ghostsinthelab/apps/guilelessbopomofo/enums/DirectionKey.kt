@@ -18,4 +18,5 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.enums
 
+/** Which way an arrow or volume key moves the cursor through the buffer or the candidates. */
 enum class DirectionKey { RIGHT, LEFT }

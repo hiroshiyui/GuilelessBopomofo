@@ -29,6 +29,11 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeDispatcher
 
+/**
+ * Helpers around the libchewing context in [ChewingBridge]: installing and resetting its
+ * data files, reading its candidates and user phrases, and the key actions that the
+ * on-screen and physical keys share. Main thread only, like the context itself.
+ */
 object ChewingUtil {
     private const val logTag = "ChewingUtil"
 
@@ -44,8 +49,13 @@ object ChewingUtil {
     // guaranteed to be 0-9, so reaching for it by index is the safer way.
     private const val FREQUENTLY_USED_SYMBOLS_INDEX = 2
 
+    /** The dictionary files shipped as assets, for the settings screens to check on. */
     fun listOfDataFiles(): List<String> = DATA_FILES
 
+    /**
+     * Connects libchewing if nothing has yet, installing the dictionaries first if need be.
+     * The settings screens call this, as they may run without the input method.
+     */
     fun ensureChewingConnected(context: Context) {
         if (ChewingBridge.chewing.context != 0L) return
         val dataPath = context.applicationInfo.dataDir
@@ -93,6 +103,10 @@ object ChewingUtil {
         ChewingBridge.notifyReconnected()
     }
 
+    /**
+     * Makes sure the dictionaries under [dataPath] are present and belong to this version of
+     * the app, reinstalling them from the assets otherwise.
+     */
     fun setupChewingData(context: Context, dataPath: String) {
         val chewingDataDir = File(dataPath)
 
@@ -141,6 +155,10 @@ object ChewingUtil {
         return DATA_FILES.all { File(chewingDataDir, it).exists() }
     }
 
+    /**
+     * The phrases the user added, for the user phrase manager. Single characters are left
+     * out: libchewing learns those on its own as text is committed.
+     */
     fun enumerateUserPhrases(): List<UserPhrase> {
         val results = ChewingBridge.chewing.userphraseGetAll() ?: return emptyList()
         return results.mapNotNull { pair ->
@@ -153,22 +171,27 @@ object ChewingUtil {
         }
     }
 
+    /** Whether libchewing has candidates on offer right now. */
     fun candidateWindowOpened(): Boolean {
         return ChewingBridge.chewing.candTotalChoice() > 0
     }
 
+    /** The opposite of [candidateWindowOpened]. */
     fun candidateWindowClosed(): Boolean {
         return ChewingBridge.chewing.candTotalChoice() <= 0
     }
 
+    /** Whether anything, converted or still Bopomofo, is waiting to be committed. */
     fun anyBufferIsNotEmpty(): Boolean {
         return ChewingBridge.chewing.bufferStringStatic().isNotEmpty() || ChewingBridge.chewing.bopomofoStringStatic().isNotEmpty()
     }
 
+    /** Opens the symbol picker at its top level, as the `‵` key does. */
     fun openSymbolCandidates() {
         openSymbolPicker()
     }
 
+    /** Opens the symbol picker straight at its「常用符號」(frequently used symbols) page. */
     fun openFrequentlyUsedCandidates() {
         openSymbolPicker { ChewingBridge.chewing.candChooseByIndex(FREQUENTLY_USED_SYMBOLS_INDEX) }
     }
@@ -184,6 +207,10 @@ object ChewingUtil {
         ChewingBridge.chewing.candOpen()
     }
 
+    /**
+     * One page of the current candidates, each paired with the selection key that picks it,
+     * for the paged list shown alongside a physical keyboard.
+     */
     fun getCandidatesByPage(page: Int = 0): List<Candidate> {
         val candidatesPerPage = ChewingBridge.chewing.candChoicePerPage()
         val selectionKeys = ChewingBridge.chewing.getSelKey()
@@ -202,6 +229,10 @@ object ChewingUtil {
             }
     }
 
+    /**
+     * Backspace: edits libchewing's buffers while they hold anything, and goes to the text
+     * field otherwise.
+     */
     fun handleBackspaceAction(ime: ImeDispatcher) {
         if (anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.handleBackspace()
@@ -232,6 +263,10 @@ object ChewingUtil {
         }
     }
 
+    /**
+     * Space: converts or opens the candidates while the buffers hold anything, as the user's
+     * preferences say, and types a space into the text field otherwise.
+     */
     fun handleSpaceAction(ime: ImeDispatcher) {
         if (anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.handleSpace()
@@ -256,6 +291,7 @@ object ChewingUtil {
         ime.dispatch(ImeAction.DirectionKeyDown(direction))
     }
 
+    /** Opens the candidates for the character under libchewing's cursor and shows them. */
     fun openCandidates(ime: ImeDispatcher) {
         ChewingBridge.chewing.candClose()
         ChewingBridge.chewing.candOpen()
@@ -294,6 +330,7 @@ object ChewingUtil {
     private val dvorakToQwertyKeyMappingMap: Map<Char, Char> =
         dvorakKeysList.zip(qwertyKeysList).toMap()
 
+    /** The QWERTY key at the position [key] has on a Dvorak keyboard, or [key] itself. */
     fun dvorakToQwertyKeyMapping(key: Char): Char {
         return dvorakToQwertyKeyMappingMap[key] ?: key
     }
@@ -301,6 +338,7 @@ object ChewingUtil {
     private val qwertyToDvorakKeyMappingMap: Map<Char, Char> =
         qwertyKeysList.zip(dvorakKeysList).toMap()
 
+    /** The Dvorak key at the position [key] has on a QWERTY keyboard, or [key] itself. */
     fun qwertyToDvorakKeyMapping(key: Char): Char {
         return qwertyToDvorakKeyMappingMap[key] ?: key
     }

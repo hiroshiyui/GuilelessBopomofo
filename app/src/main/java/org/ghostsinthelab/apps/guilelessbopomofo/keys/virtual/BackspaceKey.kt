@@ -24,6 +24,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
+/** The on-screen Backspace, which repeats while held. */
 object BackspaceKey : VirtualKey {
     private const val BACKSPACE_DEBOUNCE_MS = 100L
 

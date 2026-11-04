@@ -35,6 +35,7 @@ class PreEditBuffer(private val uiState: ImeUiState, private val ime: ImeDispatc
     private val logTag = "PreEditBuffer"
     private var offset: Int = 0
 
+    /** How the user moved the cursor, which decides what the move leads to. */
     enum class CursorMovedFrom {
         TOUCHSCREEN,
         PHYSICAL_KEYBOARD
@@ -48,6 +49,10 @@ class PreEditBuffer(private val uiState: ImeUiState, private val ime: ImeDispatc
         cursorMovedBy(CursorMovedFrom.TOUCHSCREEN)
     }
 
+    /**
+     * Moves libchewing's cursor to where the user asked: a touch opens the candidates for
+     * that character, arrow keys only move and redraw.
+     */
     fun cursorMovedBy(source: CursorMovedFrom) {
         when (source) {
             CursorMovedFrom.TOUCHSCREEN -> {
@@ -80,21 +85,29 @@ class PreEditBuffer(private val uiState: ImeUiState, private val ime: ImeDispatc
         uiState.preEditCursorIndex = offset.takeIf { it >= 0 && it + 1 <= ChewingBridge.chewing.bufferLen() } ?: -1
     }
 
+    /** Redraws the cursor where libchewing has it. */
     fun updateCursorPosition() {
         cursor.syncOffsetWithCursor()
         renderCursor()
     }
 
+    /** Moves the cursor to the start of the buffer and redraws it. */
     fun updateCursorPositionToBegin() {
         cursor.moveToBegin()
         renderCursor()
     }
 
+    /** Moves the cursor to the end of the buffer and redraws it. */
     fun updateCursorPositionToEnd() {
         cursor.moveToEnd()
         renderCursor()
     }
 
+    /**
+     * Reads the buffer back from libchewing after a key: commits what it has already pushed
+     * out of the pre-edit buffer, redraws the text and cursor, and with the simple conversion
+     * engine shows the candidates for a character just converted.
+     */
     fun update() {
         Log.d(logTag, "offset: ${offset}, cursor: ${ChewingBridge.chewing.cursorCurrent()}")
         // chewing.setMaxChiSymbolLen() 到達閾值時，
@@ -128,7 +141,9 @@ class PreEditBuffer(private val uiState: ImeUiState, private val ime: ImeDispatc
         }
     }
 
+    /** Moves libchewing's cursor and keeps [offset] in step with it. */
     inner class Cursor {
+        /** Walks from the start to character [offset] and opens the candidates there. */
         fun moveToOffset(offset: Int) {
             // close if any been opened candidate window first
             ChewingBridge.chewing.candClose()
@@ -140,6 +155,7 @@ class PreEditBuffer(private val uiState: ImeUiState, private val ime: ImeDispatc
             ChewingBridge.chewing.candOpen()
         }
 
+        /** To the end of the buffer, candidates closed. */
         fun moveToEnd() {
             // close if any been opened candidate window first
             ChewingBridge.chewing.candClose()
@@ -148,12 +164,14 @@ class PreEditBuffer(private val uiState: ImeUiState, private val ime: ImeDispatc
             offset = (ChewingBridge.chewing.cursorCurrent() - 1).coerceAtLeast(0)
         }
 
+        /** To the start of the buffer, candidates closed. */
         fun moveToBegin() {
             ChewingBridge.chewing.candClose()
             ChewingBridge.chewing.handleHome()
             offset = 0
         }
 
+        /** Reads the cursor back from libchewing, kept within the buffer. */
         fun syncOffsetWithCursor() {
             offset = ChewingBridge.chewing.cursorCurrent()
                 .coerceIn(0, (ChewingBridge.chewing.bufferLen() - 1).coerceAtLeast(0))

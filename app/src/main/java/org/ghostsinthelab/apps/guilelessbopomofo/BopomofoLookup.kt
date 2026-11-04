@@ -31,6 +31,7 @@ object BopomofoLookup {
     @Volatile
     private var charToBopomofoMap: Map<Char, List<String>>? = null
 
+    /** Loads the dictionary once; safe to call again, and meant for a background thread. */
     fun init(context: Context) {
         if (charToBopomofoMap != null) return
         charToBopomofoMap = loadWordCsv(context)

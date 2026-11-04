@@ -24,6 +24,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
+/** The key that opens the symbol picker. */
 object SymbolFunctionKey : VirtualKey {
     override val detectsDoubleTap: Boolean = true
 

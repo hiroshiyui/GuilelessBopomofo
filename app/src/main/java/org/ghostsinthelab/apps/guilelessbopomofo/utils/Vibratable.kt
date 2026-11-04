@@ -27,7 +27,9 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.SAME_HAPTI
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_HAPTIC_FEEDBACK_STRENGTH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 
+/** Haptic feedback for a key press, honoring the user's strength and "same for all keys" preferences. */
 interface Vibratable {
+    /** The amplitudes the keys ask for, light for ordinary keys and strong for long presses. */
     enum class VibrationStrength(val strength: Int) {
         LIGHT(25), NORMAL(50), STRONG(100)
     }
@@ -35,10 +37,12 @@ interface Vibratable {
     val vibrationMilliSeconds: Long
         get() = 50
 
+    /** Vibrates at [vibrationStrength], unless the user turned haptics off. */
     fun performVibration(context: Context, vibrationStrength: VibrationStrength) {
         performVibration(context, vibrationStrength.strength)
     }
 
+    /** Vibrates at [amplitude] (1 to 255), or at the user's one strength for every key if they asked for that. */
     fun performVibration(context: Context, amplitude: Int) {
         val vibrator = ContextCompat.getSystemService(context, Vibrator::class.java) ?: return
 

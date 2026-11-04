@@ -21,6 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 import android.app.Application
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.applyThemeModeToApp
 
+/** Applies the theme the user picked before any activity or the input method draws. */
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()

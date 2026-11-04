@@ -34,6 +34,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessDimens
  * again at any time without losing anything.
  */
 class ImeUiState {
+    /** A paged list with selection keys for a physical keyboard, or a grid to tap through. */
     enum class CandidateLayoutStyle { LIST, GRID }
 
     /** Which panel is showing below the buffers. */

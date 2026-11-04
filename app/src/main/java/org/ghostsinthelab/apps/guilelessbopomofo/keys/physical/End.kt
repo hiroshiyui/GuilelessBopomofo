@@ -23,6 +23,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingBridge
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
+/** End: to the end of the buffer, or of the text field once the buffer is empty. */
 class End : PhysicalKeyHandler {
     override fun onKeyDown(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         if (ChewingBridge.chewing.bufferLen() > 0) {

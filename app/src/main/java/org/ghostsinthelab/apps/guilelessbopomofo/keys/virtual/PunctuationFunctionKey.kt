@@ -25,6 +25,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
+/** The punctuation key: a tap types `，` or `,`, a long press opens the frequently used symbols. */
 object PunctuationFunctionKey : VirtualKey {
     override val detectsDoubleTap: Boolean = true
     override val detectsLongPress: Boolean = true

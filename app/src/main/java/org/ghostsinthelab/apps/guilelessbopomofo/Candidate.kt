@@ -18,4 +18,8 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+/**
+ * One of the candidates libchewing offers: its [index] in the whole list, the text, and the
+ * [selectionKey] that picks it on a physical keyboard, `\u0000` when it has none.
+ */
 data class Candidate(val index: Int, val candidateString: String, var selectionKey: Char = '\u0000')

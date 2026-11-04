@@ -62,10 +62,12 @@ class PhysicalKeyInput(
     interface Editor {
         val isInputViewShown: Boolean
         val inputConnection: InputConnection?
+        /** Puts the input view away, as Back does. */
         fun hideKeyboard()
 
         /** A key was pressed on a physical keyboard nobody knew was there. */
         fun physicalKeyboardDetected()
+        /** Shows the system's list of keyboards to switch to. */
         fun showInputMethodPicker()
 
         /** Types [event] straight into the text field, past libchewing. */
@@ -99,6 +101,7 @@ class PhysicalKeyInput(
         // Add more mappings here for each physical key you want to handle separately
     )
 
+    /** @return whether the key was taken; otherwise the service falls back to Android's handling. */
     fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(logTag, "onKeyDown()")
 
@@ -135,6 +138,7 @@ class PhysicalKeyInput(
         return false
     }
 
+    /** @return whether the key was taken; otherwise the service falls back to Android's handling. */
     fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(logTag, "onKeyUp()")
 
@@ -153,6 +157,7 @@ class PhysicalKeyInput(
         return false
     }
 
+    /** @return whether the key was taken; otherwise the service falls back to Android's handling. */
     fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(logTag, "onKeyLongPress()")
         if (!editor.isInputViewShown) return false

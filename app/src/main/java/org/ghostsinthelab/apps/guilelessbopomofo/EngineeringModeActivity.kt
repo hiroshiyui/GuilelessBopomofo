@@ -66,6 +66,10 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.EdgeToEdgeFollowingThe
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessTheme
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.applyThemeModeToWindow
 
+/**
+ * A hidden screen for trying the keyboard out: two text fields, one of them numeric, and a
+ * few facts about the dictionaries and the hardware keyboard.
+ */
 class EngineeringModeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

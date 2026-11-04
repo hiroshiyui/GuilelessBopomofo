@@ -26,23 +26,42 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
  * [ImeDispatcher], which the input method service implements.
  */
 sealed interface ImeAction {
+    /** A candidate was tapped on screen. */
     data class CandidateButtonSelected(val candidate: Candidate) : ImeAction
+    /** libchewing has [text] ready to go into the text field. */
     data class CommitTextInChewingCommitBuffer(val text: String) : ImeAction
+    /** An arrow or volume key moved libchewing's cursor; the panels follow. */
     data class DirectionKeyDown(val direction: DirectionKey) : ImeAction
+    /** Enter with nothing to commit: do what the text field wants Enter to do. */
     data object EnterKeyDownWhenBufferIsEmpty : ImeAction
+    /** The panel changed; whatever sits around it may need to change too. */
     data object KeyboardLayoutSwitched : ImeAction
+    /** Back to the main keyboard from the candidates or the symbols. */
     data object ExitKeyboardSubLayouts : ImeAction
+    /** The user touched character [offset] of the pre-edit buffer. */
     data class PreEditBufferTouched(val offset: Int) : ImeAction
+    /** An on-screen character key went down; [keyCodeString] names the [android.view.KeyEvent] key code. */
     data class PrintingKeyDown(val keyCodeString: String) : ImeAction
+    /** Put the keyboard away, if the current panel allows it. */
     data object RequestHideIme : ImeAction
+    /** Send a key press straight to the text field, past libchewing. */
     data class SendDownUpKeyEvents(val keycode: Int) : ImeAction
+    /** An English suggestion was tapped. */
     data class SuggestionSelected(val word: String) : ImeAction
+    /** Show [layout]. */
     data class SwitchToLayout(val layout: Layout) : ImeAction
+    /** Hand over to the next input method the user has enabled. */
     data object SwitchToNextInputMethod : ImeAction
+    /** Switch the alphanumerical keyboard between half-width and full-width characters. */
     data object ToggleFullOrHalfWidthMode : ImeAction
+    /** Switch between Bopomofo and alphanumerical input. */
     data object ToggleKeyboardMainLayoutMode : ImeAction
+    /** libchewing's buffers changed: read them back and redraw. */
     data object UpdateBufferViews : ImeAction
+    /** libchewing's cursor moved: redraw it. */
     data object UpdateCursorPosition : ImeAction
+    /** Move the cursor to the start of the pre-edit buffer. */
     data object UpdateCursorPositionToBegin : ImeAction
+    /** Move the cursor to the end of the pre-edit buffer. */
     data object UpdateCursorPositionToEnd : ImeAction
 }

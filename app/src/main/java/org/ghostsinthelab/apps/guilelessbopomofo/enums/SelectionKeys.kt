@@ -18,6 +18,10 @@
 
 package org.ghostsinthelab.apps.guilelessbopomofo.enums
 
+/**
+ * The rows of keys that pick candidates on a physical keyboard; [set] is what the
+ * preference stores, [keys] the key codes libchewing is given.
+ */
 enum class SelectionKeys(val keys: IntArray, val set: String) {
     NUMBER_ROW(
         charArrayOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0').map { it.code }.toIntArray(),

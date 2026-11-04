@@ -41,6 +41,7 @@ object UserPhraseCsv {
 
     /** What came out of a file the user asked us to restore from. */
     sealed interface ParseResult {
+        /** Every row was a well-formed phrase. */
         data class Success(val phrases: List<UserPhrase>) : ParseResult
 
         /** Not a phrase list at all: empty, or far too big to be one. */
@@ -56,6 +57,7 @@ object UserPhraseCsv {
         data class InvalidBopomofo(val lineNumber: Int) : ParseResult
     }
 
+    /** The file to back [phrases] up to, header included. */
     fun format(phrases: List<UserPhrase>): String = buildString {
         append(HEADER).append('\n')
         phrases.forEach {
@@ -81,6 +83,7 @@ object UserPhraseCsv {
         return parse(text.lines())
     }
 
+    /** Reads a file back, turning it away at the first thing that is not as [format] writes it. */
     fun parse(lines: List<String>): ParseResult {
         if (lines.isEmpty() || lines.sumOf { it.length } > MAX_TOTAL_LENGTH) {
             return ParseResult.UnreadableFile
@@ -120,6 +123,7 @@ object UserPhraseCsv {
     private fun isValidField(field: String, maxLength: Int): Boolean =
         field.isNotEmpty() && field.length <= maxLength && field.none { it.isISOControl() }
 
+    /** Whether [bopomofo] is made only of Bopomofo symbols, tone marks and the spaces between syllables. */
     fun isValidBopomofo(bopomofo: String): Boolean = bopomofo.all { char ->
         char == ' '
                 || char in '\u3100'..'\u312F' // Bopomofo block

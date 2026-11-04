@@ -22,6 +22,7 @@ import android.view.KeyEvent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
+/** Escape: steps out of the candidates or the symbols, and puts the keyboard away from the main one. */
 class Escape : PhysicalKeyHandler {
     override fun onKeyDown(
         host: ImeHost,

@@ -25,6 +25,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 
+/** Down arrow: opens the candidates while there is a buffer, moves in the text field otherwise. */
 class Down : PhysicalKeyHandler {
     override fun onKeyDown(host: ImeHost, keyCode: Int, event: KeyEvent?): Boolean {
         Log.d("Down", "onKeyDown()")

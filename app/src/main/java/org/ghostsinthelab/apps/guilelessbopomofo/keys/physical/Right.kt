@@ -20,4 +20,5 @@ package org.ghostsinthelab.apps.guilelessbopomofo.keys.physical
 
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 
+/** Right arrow; see [HorizontalArrowKey]. */
 class Right : HorizontalArrowKey(DirectionKey.RIGHT)
