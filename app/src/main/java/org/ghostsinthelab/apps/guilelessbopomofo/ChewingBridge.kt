@@ -83,10 +83,23 @@ enum class ConversionEngines(val mode: Int) {
 object ChewingBridge {
     val chewing: Chewing = Chewing()
 
+    private val reconnectListeners = mutableListOf<() -> Unit>()
+
     /**
-     * Told when libchewing has been given a fresh context, without the settings the input
-     * method put on the old one. The settings screens do that, whether or not the input
-     * method is running; it listens here while it is.
+     * Asks to be told when libchewing has been given a fresh context, without the settings
+     * the input method put on the old one. The settings screens do that, whether or not the
+     * input method is running; it listens while it is. Listeners are called on the main thread.
      */
-    var onReconnected: (() -> Unit)? = null
+    fun addReconnectListener(listener: () -> Unit) {
+        reconnectListeners += listener
+    }
+
+    fun removeReconnectListener(listener: () -> Unit) {
+        reconnectListeners -= listener
+    }
+
+    internal fun notifyReconnected() {
+        // a listener may remove itself while being called
+        reconnectListeners.toList().forEach { it() }
+    }
 }

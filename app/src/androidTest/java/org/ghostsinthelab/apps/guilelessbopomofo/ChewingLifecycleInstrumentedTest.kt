@@ -34,17 +34,18 @@ class ChewingLifecycleInstrumentedTest {
     private val appContext = InstrumentationRegistry.getInstrumentation().targetContext
     private val dataPath = appContext.dataDir.absolutePath
     private var reconnections = 0
+    private val countReconnection: () -> Unit = { reconnections += 1 }
 
     @Before
     fun setUp() {
         ChewingUtil.setupChewingData(appContext, dataPath)
         ChewingBridge.chewing.connect(dataPath)
-        ChewingBridge.onReconnected = { reconnections += 1 }
+        ChewingBridge.addReconnectListener(countReconnection)
     }
 
     @After
     fun tearDown() {
-        ChewingBridge.onReconnected = null
+        ChewingBridge.removeReconnectListener(countReconnection)
     }
 
     @Test

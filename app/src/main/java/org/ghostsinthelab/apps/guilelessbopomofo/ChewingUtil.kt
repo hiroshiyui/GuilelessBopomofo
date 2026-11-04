@@ -90,7 +90,7 @@ object ChewingUtil {
         ChewingBridge.chewing.setChiEngMode(chiEngMode)
         ChewingBridge.chewing.setShapeMode(shapeMode)
         // The rest of its settings the input method, if it is running, puts back itself.
-        ChewingBridge.onReconnected?.invoke()
+        ChewingBridge.notifyReconnected()
     }
 
     fun setupChewingData(context: Context, dataPath: String) {
