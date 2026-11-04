@@ -26,10 +26,8 @@ import java.io.FileOutputStream
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.EnterKeyIntent
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
-import org.ghostsinthelab.apps.guilelessbopomofo.events.ChewingReconnected
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeDispatcher
-import org.greenrobot.eventbus.EventBus
 
 object ChewingUtil {
     private const val logTag = "ChewingUtil"
@@ -92,7 +90,7 @@ object ChewingUtil {
         ChewingBridge.chewing.setChiEngMode(chiEngMode)
         ChewingBridge.chewing.setShapeMode(shapeMode)
         // The rest of its settings the input method, if it is running, puts back itself.
-        EventBus.getDefault().post(ChewingReconnected())
+        ChewingBridge.onReconnected?.invoke()
     }
 
     fun setupChewingData(context: Context, dataPath: String) {

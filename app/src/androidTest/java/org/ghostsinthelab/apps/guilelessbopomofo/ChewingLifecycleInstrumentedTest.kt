@@ -20,10 +20,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import org.ghostsinthelab.apps.guilelessbopomofo.events.ChewingReconnected
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -38,21 +35,16 @@ class ChewingLifecycleInstrumentedTest {
     private val dataPath = appContext.dataDir.absolutePath
     private var reconnections = 0
 
-    @Subscribe
-    fun onChewingReconnected(event: ChewingReconnected) {
-        reconnections += 1
-    }
-
     @Before
     fun setUp() {
         ChewingUtil.setupChewingData(appContext, dataPath)
         ChewingBridge.chewing.connect(dataPath)
-        EventBus.getDefault().register(this)
+        ChewingBridge.onReconnected = { reconnections += 1 }
     }
 
     @After
     fun tearDown() {
-        EventBus.getDefault().unregister(this)
+        ChewingBridge.onReconnected = null
     }
 
     @Test

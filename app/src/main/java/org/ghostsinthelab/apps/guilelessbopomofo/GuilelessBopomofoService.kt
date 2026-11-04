@@ -82,7 +82,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.buffers.PreEditBuffer
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
-import org.ghostsinthelab.apps.guilelessbopomofo.events.ChewingReconnected
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.CapsLock
@@ -114,9 +113,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyBehaviorResolver
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.KeyEventExtension
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.appSharedPreferences
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreferences.OnSharedPreferenceChangeListener,
     KeyEventExtension, LifecycleOwner, SavedStateRegistryOwner {
@@ -142,10 +138,43 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         openBigramList = { assets.open(BigramPredictor.ASSET_PATH) },
     )
 
-    // Every action still travels over EventBus for now; the @Subscribe handlers below are
-    // where it is carried out.
+    // Actions asked for while one is being carried out wait their turn, as they did on
+    // EventBus: a handler that asks for another action sees it done after it returns, not
+    // in the middle of its own work.
+    private val pendingActions = ArrayDeque<ImeAction>()
+    private var dispatching = false
+
     override fun dispatch(action: ImeAction) {
-        EventBus.getDefault().post(action)
+        pendingActions.addLast(action)
+        if (dispatching) return
+        dispatching = true
+        try {
+            while (pendingActions.isNotEmpty()) handle(pendingActions.removeFirst())
+        } finally {
+            dispatching = false
+        }
+    }
+
+    private fun handle(action: ImeAction) = when (action) {
+        is ImeAction.UpdateBufferViews -> onUpdateBufferViews(action)
+        is ImeAction.KeyboardLayoutSwitched -> onKeyboardLayoutSwitched(action)
+        is ImeAction.SuggestionSelected -> onSuggestionSelected(action)
+        is ImeAction.UpdateCursorPosition -> onUpdateCursorPosition(action)
+        is ImeAction.UpdateCursorPositionToBegin -> onUpdateCursorPositionToBegin(action)
+        is ImeAction.UpdateCursorPositionToEnd -> onUpdateCursorPositionToEnd(action)
+        is ImeAction.SwitchToLayout -> onSwitchToLayout(action)
+        is ImeAction.RequestHideIme -> onRequestHideIme(action)
+        is ImeAction.ExitKeyboardSubLayouts -> onExitKeyboardSubLayouts(action)
+        is ImeAction.CommitTextInChewingCommitBuffer -> onCommitTextInChewingCommitBuffer(action)
+        is ImeAction.SwitchToNextInputMethod -> onSwitchToNextInputMethod(action)
+        is ImeAction.SendDownUpKeyEvents -> onSendDownUpKeyEvents(action)
+        is ImeAction.CandidateButtonSelected -> onCandidateButtonSelected(action)
+        is ImeAction.PrintingKeyDown -> onPrintingKeyDown(action)
+        is ImeAction.PreEditBufferTouched -> onPreEditBufferTouched(action)
+        is ImeAction.ToggleKeyboardMainLayoutMode -> onToggleKeyboardMainLayoutMode(action)
+        is ImeAction.ToggleFullOrHalfWidthMode -> onToggleFullOrHalfWidthMode(action)
+        is ImeAction.EnterKeyDownWhenBufferIsEmpty -> onEnterKeyDownWhenBufferIsEmpty(action)
+        is ImeAction.DirectionKeyDown -> onDirectionKeyDown(action)
     }
 
     override val context: Context get() = this
@@ -234,8 +263,8 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             reportChewingInitFailure("Failed to setup Chewing data", exception)
         }
 
-        // Register EventBus after initialization so handlers won't fire on uninitialized state
-        EventBus.getDefault().register(this)
+        // Listen only once initialized, so that a reconnection never finds a half-built service.
+        ChewingBridge.onReconnected = ::onChewingReconnected
 
         userHapticFeedbackStrength =
             sharedPreferences.getInt(USER_HAPTIC_FEEDBACK_STRENGTH, defaultHapticFeedbackStrength)
@@ -342,7 +371,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         } catch (e: Exception) {
             Log.e(logTag, "Failed to cleanup Chewing context", e)
         }
-        EventBus.getDefault().unregister(this)
+        ChewingBridge.onReconnected = null
         englishPrediction.isEnabled = false
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     }
@@ -482,9 +511,8 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
     // The user phrase manager flushes libchewing by swapping in a fresh context, which knows
     // none of the settings above; neither does it know the keyboard type the layout set.
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onChewingReconnected(event: ChewingReconnected) {
-        Log.d(logTag, event::class.simpleName ?: "Event")
+    private fun onChewingReconnected() {
+        Log.d(logTag, "onChewingReconnected()")
         applyChewingSettings()
         returnToMainLayout()
     }
@@ -649,21 +677,18 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             ?.let(EnglishWords::trailingWord)
             .orEmpty()
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onUpdateBufferViews(event: ImeAction.UpdateBufferViews) {
+    private fun onUpdateBufferViews(event: ImeAction.UpdateBufferViews) {
         Log.d(logTag, event::class.simpleName ?: "Event")
         preEditBuffer.update()
         uiState.bopomofoText = ChewingBridge.chewing.bopomofoStringStatic()
         refreshSuggestions()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onKeyboardLayoutSwitched(event: ImeAction.KeyboardLayoutSwitched) {
+    private fun onKeyboardLayoutSwitched(event: ImeAction.KeyboardLayoutSwitched) {
         refreshSuggestions()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSuggestionSelected(event: ImeAction.SuggestionSelected) {
+    private fun onSuggestionSelected(event: ImeAction.SuggestionSelected) {
         val inputConnection = currentInputConnection ?: return
         // Look the word up again rather than trust what the strip was built from, the text
         // field may have changed under us in between.
@@ -686,38 +711,32 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         if (autoSpace.takesBack(before, committed)) inputConnection.deleteSurroundingText(1, 0)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onUpdateCursorPosition(event: ImeAction.UpdateCursorPosition) {
+    private fun onUpdateCursorPosition(event: ImeAction.UpdateCursorPosition) {
         Log.d(logTag, event::class.simpleName ?: "Event")
         preEditBuffer.updateCursorPosition()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onUpdateCursorPositionToBegin(event: ImeAction.UpdateCursorPositionToBegin) {
+    private fun onUpdateCursorPositionToBegin(event: ImeAction.UpdateCursorPositionToBegin) {
         Log.d(logTag, event::class.simpleName ?: "Event")
         preEditBuffer.updateCursorPositionToBegin()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onUpdateCursorPositionToEnd(event: ImeAction.UpdateCursorPositionToEnd) {
+    private fun onUpdateCursorPositionToEnd(event: ImeAction.UpdateCursorPositionToEnd) {
         Log.d(logTag, event::class.simpleName ?: "Event")
         preEditBuffer.updateCursorPositionToEnd()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSwitchToLayout(event: ImeAction.SwitchToLayout) {
+    private fun onSwitchToLayout(event: ImeAction.SwitchToLayout) {
         keyboardController.switchToLayout(event.layout)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onRequestHideIme(event: ImeAction.RequestHideIme) {
+    private fun onRequestHideIme(event: ImeAction.RequestHideIme) {
         if (keyboardController.currentLayout in DISMISSIBLE_LAYOUTS) {
             requestHideSelf(0)
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onExitKeyboardSubLayouts(event: ImeAction.ExitKeyboardSubLayouts) {
+    private fun onExitKeyboardSubLayouts(event: ImeAction.ExitKeyboardSubLayouts) {
         Log.d(logTag, event::class.simpleName ?: "Event")
         if (keyboardController.currentLayout in SUB_LAYOUTS) {
             returnToMainLayout()
@@ -738,8 +757,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         keyboardController.switchToLayout(Layout.MAIN)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onCommitTextInChewingCommitBuffer(event: ImeAction.CommitTextInChewingCommitBuffer) {
+    private fun onCommitTextInChewingCommitBuffer(event: ImeAction.CommitTextInChewingCommitBuffer) {
         Log.d(logTag, event::class.simpleName ?: "Event")
         val inputConnection = currentInputConnection ?: return
         inputConnection.beginBatchEdit()
@@ -748,8 +766,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         inputConnection.endBatchEdit()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSwitchToNextInputMethod(event: ImeAction.SwitchToNextInputMethod) {
+    private fun onSwitchToNextInputMethod(event: ImeAction.SwitchToNextInputMethod) {
         Log.d(logTag, event::class.simpleName ?: "Event")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             switchToNextInputMethod(false)
@@ -762,32 +779,27 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSendDownUpKeyEvents(event: ImeAction.SendDownUpKeyEvents) {
+    private fun onSendDownUpKeyEvents(event: ImeAction.SendDownUpKeyEvents) {
         // backspace, arrows and the like: the space is no longer right behind the cursor
         autoSpace.forget()
         sendDownUpKeyEvents(event.keycode)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onCandidateButtonSelected(event: ImeAction.CandidateButtonSelected) {
+    private fun onCandidateButtonSelected(event: ImeAction.CandidateButtonSelected) {
         keyboardController.candidateButtonSelected(event.candidate)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onPrintingKeyDown(event: ImeAction.PrintingKeyDown) {
+    private fun onPrintingKeyDown(event: ImeAction.PrintingKeyDown) {
         val keyEvent = KeyEvent(ACTION_DOWN, KeyEvent.keyCodeFromString(event.keyCodeString))
         this@GuilelessBopomofoService.onPrintingKeyDown(keyEvent)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onPreEditBufferTouched(event: ImeAction.PreEditBufferTouched) {
+    private fun onPreEditBufferTouched(event: ImeAction.PreEditBufferTouched) {
         preEditBuffer.touchedAt(event.offset)
         keyboardController.switchToLayout(Layout.CANDIDATES)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onToggleKeyboardMainLayoutMode(event: ImeAction.ToggleKeyboardMainLayoutMode) {
+    private fun onToggleKeyboardMainLayoutMode(event: ImeAction.ToggleKeyboardMainLayoutMode) {
         Log.d(logTag, event::class.simpleName ?: "Event")
         // Always reset Shift state when switching main layouts.
         releaseShiftKey()
@@ -796,8 +808,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         refreshSuggestions()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onToggleFullOrHalfWidthMode(event: ImeAction.ToggleFullOrHalfWidthMode) {
+    private fun onToggleFullOrHalfWidthMode(event: ImeAction.ToggleFullOrHalfWidthMode) {
         val shapeMode: String = when (ChewingBridge.chewing.getShapeMode()) {
             ShapeMode.HALF.mode -> {
                 ChewingBridge.chewing.setShapeMode(ShapeMode.FULL.mode)
@@ -821,8 +832,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEnterKeyDownWhenBufferIsEmpty(event: ImeAction.EnterKeyDownWhenBufferIsEmpty) {
+    private fun onEnterKeyDownWhenBufferIsEmpty(event: ImeAction.EnterKeyDownWhenBufferIsEmpty) {
         Log.d(logTag, event::class.simpleName ?: "Event")
         autoSpace.forget()
 
@@ -843,8 +853,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDirectionKeyDown(event: ImeAction.DirectionKeyDown) {
+    private fun onDirectionKeyDown(event: ImeAction.DirectionKeyDown) {
         if (ChewingBridge.chewing.bufferLen() > 0) {
             preEditBuffer.cursorMovedBy(PreEditBuffer.CursorMovedFrom.PHYSICAL_KEYBOARD)
         } else if (ChewingUtil.candidateWindowClosed()) {

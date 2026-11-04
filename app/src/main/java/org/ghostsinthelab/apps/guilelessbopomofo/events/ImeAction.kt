@@ -46,6 +46,3 @@ sealed interface ImeAction {
     data object UpdateCursorPositionToBegin : ImeAction
     data object UpdateCursorPositionToEnd : ImeAction
 }
-
-/** libchewing was given a fresh context, without the settings the input method put on the old one. */
-class ChewingReconnected

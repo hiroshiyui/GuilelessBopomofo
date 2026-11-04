@@ -77,9 +77,16 @@ enum class ConversionEngines(val mode: Int) {
     FUZZY_CHEWING_CONVERSION_ENGINE(2)
 }
 
-// All access to ChewingBridge.chewing must be from the main thread.
-// InputMethodService callbacks and EventBus @Subscribe(threadMode = ThreadMode.MAIN)
-// handlers satisfy this requirement. The underlying native ChewingContext is not thread-safe.
+// All access to ChewingBridge.chewing must be from the main thread. InputMethodService
+// callbacks, and the ImeAction handling they lead to, satisfy this requirement. The
+// underlying native ChewingContext is not thread-safe.
 object ChewingBridge {
     val chewing: Chewing = Chewing()
+
+    /**
+     * Told when libchewing has been given a fresh context, without the settings the input
+     * method put on the old one. The settings screens do that, whether or not the input
+     * method is running; it listens here while it is.
+     */
+    var onReconnected: (() -> Unit)? = null
 }
