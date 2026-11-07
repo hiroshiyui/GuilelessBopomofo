@@ -1,5 +1,10 @@
 # Changelog — 5.x
 
+## 5.1.5
+- Set the physical key names in the physical keyboard tips (Shift, Alt, Space, I) in Libertinus Keyboard, whose `liga` ligatures draw each name as one key cap. The Traditional Chinese and Japanese tips now name the space bar "Space", since the font only ligates the English key names. The font (SIL Open Font License 1.1) ships as a font resource with its license in assets, credited in `NOTICES.md`.
+- Drew the candidate selection key choices (`1234567890`, `asdfghjkl;` and the rest) as a row of key caps in the same typeface, one cap per key.
+- Generalized the settings' bold-markup string helper into `markupStringResource`, which takes the span style the `<b>` markup stands for, and gave `RadioGroupPreference` an optional label style.
+
 ## 5.1.4
 - Moved the last logic out of `GuilelessBopomofoService`: carrying out the Enter key into `EnterKeyAction`, and preference changes to the classes that own them, `KeyboardController` for the layout keys and `EnglishSuggestions` for the prediction keys, each covered by tests.
 

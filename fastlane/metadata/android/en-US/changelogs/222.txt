@@ -1,0 +1,6 @@
+Hi there! Guileless Bopomofo 5.1.5 dresses up my physical keyboard settings a little.
+
+* The key names in the physical keyboard tips, such as Shift, Alt and Space, are now drawn as key caps, set in the Libertinus Keyboard typeface.
+* The candidate selection key choices, like 1234567890 and asdfghjkl;, are drawn as a row of key caps too.
+
+Nothing changes in how I type. Thanks for using Guileless Bopomofo!
