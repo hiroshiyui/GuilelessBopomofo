@@ -36,6 +36,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -245,6 +246,11 @@ object GuilelessFonts {
     val Candidate = FontFamily.Serif
     val SelectionKey = FontFamily.Monospace
     val Buffer = FontFamily.Serif
+
+    /** Libertinus Keyboard: draws physical key names (`Shift`, `Alt`, `Space`, ...) as key caps. */
+    val PhysicalKey = FontFamily(Font(R.font.libertinus_keyboard))
+    /** The key-cap ligatures of [PhysicalKey]; off unless asked for, which leaves each letter its own cap. */
+    const val PhysicalKeyFeatures = "liga"
 }
 
 /** Fixed (not day/night aware) colours from `colors.xml`. */

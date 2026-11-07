@@ -93,19 +93,22 @@ fun SettingsScreen(modifier: Modifier = Modifier, content: @Composable ColumnSco
 }
 
 /**
- * A string resource with its bold markup kept, which [stringResource] would drop: the
- * `<b>` spans become bold [SpanStyle]s.
+ * The string resource [id] as an [AnnotatedString], with every `<b>` span of it styled as [markupStyle]:
+ * bold by default, or whatever the caller uses the markup for, such as [GuilelessFonts.PhysicalKey].
  */
 @Composable
 @ReadOnlyComposable
-fun boldMarkupStringResource(@StringRes id: Int): AnnotatedString {
+fun markupStringResource(
+    @StringRes id: Int,
+    markupStyle: SpanStyle = SpanStyle(fontWeight = FontWeight.Bold),
+): AnnotatedString {
     val text = LocalResources.current.getText(id)
     if (text !is Spanned) return AnnotatedString(text.toString())
     return buildAnnotatedString {
         append(text.toString())
         text.getSpans(0, text.length, StyleSpan::class.java)
             .filter { it.style and Typeface.BOLD != 0 }
-            .forEach { addStyle(SpanStyle(fontWeight = FontWeight.Bold), text.getSpanStart(it), text.getSpanEnd(it)) }
+            .forEach { addStyle(markupStyle, text.getSpanStart(it), text.getSpanEnd(it)) }
     }
 }
 

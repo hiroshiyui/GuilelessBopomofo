@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.unit.dp
 import org.ghostsinthelab.apps.guilelessbopomofo.BopomofoPhysicalKeyboards
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDIDATE_SELECTION_KEYS_OPTION
@@ -37,12 +38,20 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessFonts
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberStringPreference
 
 private val DropdownSpacing = 8.dp
 private val SelectionKeysSpacing = 16.dp
 private val TipsSpacing = 24.dp
 private val TipsIconSpacing = 8.dp
+
+// Key names in the tips are set in Libertinus Keyboard, whose ligatures draw a whole name
+// ("Shift", "Space", ...) as one key cap.
+private val PhysicalKeyStyle = SpanStyle(
+    fontFamily = GuilelessFonts.PhysicalKey,
+    fontFeatureSettings = GuilelessFonts.PhysicalKeyFeatures,
+)
 
 // In the order R.array.physical_bopomofo_keyboard_layouts names them.
 private val PHYSICAL_KEYBOARD_LAYOUTS: List<String> = listOf(
@@ -106,7 +115,10 @@ fun PhysicalKeyboardSettingsScreen(modifier: Modifier = Modifier) {
 
         Row(modifier = Modifier.padding(top = TipsSpacing)) {
             Image(painter = painterResource(android.R.drawable.ic_menu_info_details), contentDescription = null)
-            Text(boldMarkupStringResource(R.string.tips_using_physical_keyboard), Modifier.padding(start = TipsIconSpacing))
+            Text(
+                markupStringResource(R.string.tips_using_physical_keyboard, PhysicalKeyStyle),
+                Modifier.padding(start = TipsIconSpacing),
+            )
         }
     }
 }

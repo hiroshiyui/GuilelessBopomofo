@@ -10,6 +10,11 @@
 * 本產品之軟體鍵盤繪製原始檔、成品，基於 Noto CJK fonts 與 PT Serif 者，係 YOU, HUI-HONG 以「姓名標示-禁止改作 3.0 台灣 (CC BY-ND 3.0 TW)」相同方式授權。
     - https://creativecommons.org/licenses/by-nd/3.0/tw/deed.zh_TW
 
+* [Libertinus Keyboard](https://github.com/alerque/libertinus) (`app/src/main/res/font/libertinus_keyboard.ttf`), used to draw physical key names as key caps in the settings: Copyright © 2012-2024 The Libertinus Project Authors, licensed under the SIL Open Font License, Version 1.1. The license ships with this product at `app/src/main/assets/fonts/LIBERTINUS-OFL.txt`.
+    - https://github.com/alerque/libertinus
+    - https://github.com/alerque/libertinus/blob/master/OFL.txt
+    - https://openfontlicense.org/
+
 * libchewing: GNU Lesser General Public License v2.1
     - https://github.com/chewing/libchewing/blob/master/COPYING
     - https://github.com/chewing/libchewing
