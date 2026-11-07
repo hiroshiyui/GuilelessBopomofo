@@ -26,21 +26,22 @@ For minor or major bumps, edit `app/build.gradle.kts` manually — the task only
 The established release workflow follows this pattern:
 
 1. **Ensure all changes are committed** on the working branch.
-2. **Bump version** — run `./gradlew bumpPatchVersion` or edit `app/build.gradle.kts` manually for minor/major bumps.
-3. **Write changelogs** for F-Droid (see Changelog section below), and add the release to the project changelog (see Project Changelog below).
-4. **Run the tests** — `./gradlew :app:test`, so the tag lands on a known good state.
-5. **Create release commit** — commit message format: `Release <versionName>` with `Signed-off-by` trailer.
-6. **Tag the release** — lightweight tag matching versionName (e.g. `3.7.5`). Tags are NOT annotated.
-7. **Build signed APKs** — only now, after the commit and tag: F-Droid builds reproducibly from the tagged commit, so the published APKs have to be built from exactly that commit. Signing requires a keystore passphrase, so **do not run the build automatically**. Prompt the user to build the signed APKs manually in Android Studio (Build > Generate Signed APK) or via the command line. Output: `app/build/outputs/apk/release/` (debug builds go to `app/build/outputs/apk/debug/`). Android Studio may also leave copies in `app/release/` and `app/debug/`, but the user signs the ones under `app/build/outputs/apk/`. Wait for the user to confirm the build is complete before proceeding.
-8. **GPG-sign** the APKs (see GPG Signing below). Once the user confirms signing and the signatures verify, **push** the release branch and tag to `origin` and `gitlab` without asking. Push only to these two remotes, even if `git remote` lists others, then create the GitHub Release.
-9. **Merge `current` into `master`** — once the GitHub Release is published, bring `master` up to the release and push everything to both remotes without asking:
+2. **Bring `master` up to `current` and push every branch first** — before touching the version, so the remotes already carry the work being released:
    ```bash
    git checkout master
    git merge --ff-only current
-   git push origin master && git push gitlab master
    git checkout current
+   git push origin master current && git push gitlab master current
    ```
-   `master` has always been fast-forwarded to `current`, so it never gets merge commits of its own. If `--ff-only` fails, `master` has commits that `current` lacks: stop and ask the user instead of creating a merge commit. Afterwards `current`, `master` and the release tag should be on `origin` and `gitlab`, all at the release commit (`git ls-remote origin` and `git ls-remote gitlab` to check).
+   `master` has always been fast-forwarded to `current`, so it never gets merge commits of its own. If `--ff-only` fails, `master` has commits that `current` lacks: stop and ask the user instead of creating a merge commit. Push without asking; the user has pre-approved these two remotes for releases.
+3. **Bump version** — run `./gradlew bumpPatchVersion` or edit `app/build.gradle.kts` manually for minor/major bumps.
+4. **Write changelogs** for F-Droid (see Changelog section below), and add the release to the project changelog (see Project Changelog below).
+5. **Run the tests** — `./gradlew :app:test`, so the tag lands on a known good state.
+6. **Create release commit** — commit message format: `Release <versionName>` with `Signed-off-by` trailer.
+7. **Tag the release** — lightweight tag matching versionName (e.g. `3.7.5`). Tags are NOT annotated.
+8. **Build signed APKs** — only now, after the commit and tag: F-Droid builds reproducibly from the tagged commit, so the published APKs have to be built from exactly that commit. Signing requires a keystore passphrase, so **do not run the build automatically**. Prompt the user to build the signed APKs manually in Android Studio (Build > Generate Signed APK) or via the command line. Output: `app/build/outputs/apk/release/` (debug builds go to `app/build/outputs/apk/debug/`). Android Studio may also leave copies in `app/release/` and `app/debug/`, but the user signs the ones under `app/build/outputs/apk/`. Wait for the user to confirm the build is complete before proceeding.
+9. **GPG-sign** the APKs (see GPG Signing below). Once the user confirms signing and the signatures verify, **push** the release branch and tag to `origin` and `gitlab` without asking. Push only to these two remotes, even if `git remote` lists others, then create the GitHub Release.
+10. **Fast-forward `master` to the release** — once the GitHub Release is published, repeat step 2 so `master` moves from the pre-release commit to the release commit, and push it to both remotes without asking. Afterwards `current`, `master` and the release tag should be on `origin` and `gitlab`, all at the release commit (`git ls-remote origin` and `git ls-remote gitlab` to check).
 
 ### Git Conventions
 
