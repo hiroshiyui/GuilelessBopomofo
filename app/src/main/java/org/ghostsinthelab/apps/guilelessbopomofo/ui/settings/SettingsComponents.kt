@@ -43,6 +43,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -62,6 +63,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
@@ -192,12 +194,16 @@ fun SwitchPreferenceRow(
     }
 }
 
-/** A vertical radio group; [options] pairs each label with the value it stands for. */
+/**
+ * A vertical radio group; [options] pairs each label with the value it stands for.
+ * [labelStyle] is for labels that are not plain prose, such as key names set in [GuilelessFonts.PhysicalKey].
+ */
 @Composable
 fun <T> RadioGroupPreference(
     options: List<Pair<String, T>>,
     selected: T,
     onSelected: (T) -> Unit,
+    labelStyle: TextStyle = LocalTextStyle.current,
 ) {
     Column(modifier = Modifier.selectableGroup()) {
         options.forEach { (label, value) ->
@@ -208,7 +214,7 @@ fun <T> RadioGroupPreference(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 RadioButton(selected = value == selected, onClick = null)
-                Text(text = label, modifier = Modifier.padding(start = RadioLabelSpacing))
+                Text(text = label, modifier = Modifier.padding(start = RadioLabelSpacing), style = labelStyle)
             }
         }
     }

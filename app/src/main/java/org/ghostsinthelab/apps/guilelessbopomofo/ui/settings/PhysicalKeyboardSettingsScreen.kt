@@ -22,6 +22,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -106,7 +107,13 @@ fun PhysicalKeyboardSettingsScreen(modifier: Modifier = Modifier) {
             USER_CANDIDATE_SELECTION_KEYS_OPTION, SelectionKeys.NUMBER_ROW.set
         )
         Column(Modifier.padding(top = SelectionKeysSpacing)) {
-            RadioGroupPreference(SELECTION_KEY_OPTIONS, selectionKeys) { selectionKeys = it }
+            // No ligatures here: each selection key is its own key cap.
+            RadioGroupPreference(
+                SELECTION_KEY_OPTIONS,
+                selectionKeys,
+                onSelected = { selectionKeys = it },
+                labelStyle = LocalTextStyle.current.copy(fontFamily = GuilelessFonts.PhysicalKey),
+            )
         }
 
         SettingsLabel(stringResource(R.string.textViewSettingsConversionEnginesPhysical))
