@@ -47,6 +47,8 @@ class ImeUiState {
     // The user's key preferences, read again whenever the main keyboard is switched to.
     var keyHeightDp: Int by mutableIntStateOf(GuilelessDimens.KeyMinHeightDefault.value.toInt())
     var imeSwitchEnabled: Boolean by mutableStateOf(false)
+    /** A border around every key face, for whom the shadow alone does not mark the keys off. */
+    var outlineKeys: Boolean by mutableStateOf(true)
 
     var shiftKeyState: ShiftKey.ShiftKeyState by mutableStateOf(ShiftKey.ShiftKeyState.RELEASED)
 

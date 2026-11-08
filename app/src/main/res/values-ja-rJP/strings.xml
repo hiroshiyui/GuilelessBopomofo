@@ -89,6 +89,9 @@
     <string name="tips_using_physical_keyboard_intro">物理キーボードを使用する場合：</string>
     <string name="tips_using_physical_keyboard">● 注音と英数字の入力モードを切り替える：いずれかの <b>Shift</b> キーだけを軽く押すか、<b>Shift</b> + <b>Space</b> を押します。\n● 全角と半角を切り替える：<b>Alt</b> + <b>Space</b>。\n● 他の入力方法に切り替える：<b>Alt</b> + <b>I</b>。\n● 改行を入力する（<b>Enter</b> で送信・確定される入力欄でも、注音バッファが空のとき）：<b>Shift</b> + <b>Enter</b> または <b>Alt</b> + <b>Enter</b>。\n● よく使う句読点の候補一覧を開く：右側の <b>Shift</b> キーを長押しします。<b>←</b> <b>→</b> キーでページを切り替えます。\n● 各カテゴリの記号候補一覧を開く：キーボード左上の <b>`</b> キーを押します。<b>←</b> <b>→</b> キーでページを切り替えます。</string>
     <string name="physical_selection_keys">物理的な候補選択キー</string>
+    <string name="accessibility_settings_label">アクセシビリティ</string>
+    <string name="accessibility_settings_description">キーボードを見やすく、支援技術と併用しやすくするための設定です。キーは TalkBack などのスクリーンリーダーにも読み上げられます。</string>
+    <string name="outline_keys_switch">キーに枠線を付けますか？枠線は、影だけでは分かりにくい場合に各キーを背景から際立たせます。</string>
     <string name="key_button_height_label">キーの高さを調整する</string>
     <string name="key_button_height_description">キーの高さを調整する（デフォルトの高さ：%1$ddp）</string>
     <string name="switch_display_hsu_qwerty_layout">許氏配列使用時にQWERTYキーキャップを表示しますか？</string>

@@ -34,6 +34,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLS
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_PORTRAIT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_HAPTIC_FEEDBACK_STRENGTH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_OUTLINE_KEYS
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_THEME_MODE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.R
@@ -100,6 +101,10 @@ fun UserInterfaceSettingsScreen(modifier: Modifier = Modifier) {
             )
             SettingsCurrentValue(stringResource(R.string.key_button_height_setting, keyButtonHeight))
         }
+
+        SettingsLabel(stringResource(R.string.accessibility_settings_label))
+        SettingsDescription(stringResource(R.string.accessibility_settings_description))
+        BooleanPreferenceSwitch(R.string.outline_keys_switch, USER_OUTLINE_KEYS, true)
 
         SettingsLabel(stringResource(R.string.text_view_setting_ime_switch))
         BooleanPreferenceSwitch(R.string.switch_setting_enable_ime_switch, USER_ENABLE_IME_SWITCH, false)

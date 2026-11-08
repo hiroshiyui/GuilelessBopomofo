@@ -37,6 +37,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -144,6 +145,9 @@ internal fun virtualKeyFor(functionKey: FunctionKey, uiState: ImeUiState): Virtu
     FunctionKey.ENTER -> EnterKey
     FunctionKey.SHIFT -> ShiftKey(uiState)
 }
+
+/** Whether key faces are outlined; [ImeRoot] provides it from [ImeUiState.outlineKeys]. */
+val LocalOutlineKeys = compositionLocalOf { true }
 
 /** A small shape under a key's icon that tells its state apart from the others without colour. */
 enum class KeyMarker { DOT, BAR }
@@ -267,7 +271,11 @@ fun KeySurface(
         Surface(
             shape = GuilelessDimens.KeyShape,
             color = background,
-            border = BorderStroke(GuilelessDimens.KeyBorderWidth, MaterialTheme.colorScheme.outline),
+            border = if (LocalOutlineKeys.current) {
+                BorderStroke(GuilelessDimens.KeyBorderWidth, MaterialTheme.colorScheme.outline)
+            } else {
+                null
+            },
             shadowElevation = GuilelessDimens.KeyElevation,
         ) {
             Box(

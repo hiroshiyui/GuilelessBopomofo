@@ -89,6 +89,9 @@
     <string name="tips_using_physical_keyboard_intro">While using a physical keyboard:</string>
     <string name="tips_using_physical_keyboard">● Toggle between Bopomofo and English modes: tap <b>Shift</b> (either one) on its own, or press <b>Shift</b> + <b>Space</b>.\n● Toggle full-width and half-width modes: <b>Alt</b> + <b>Space</b>.\n● Switch to other input methods: <b>Alt</b> + <b>I</b>.\n● Insert a line break, even where <b>Enter</b> would send or submit the text field (once the Bopomofo buffer is empty): <b>Shift</b> + <b>Enter</b> or <b>Alt</b> + <b>Enter</b>.\n● Open the common punctuation candidate list: long press the right <b>Shift</b>; switch pages with <b>←</b> <b>→</b>.\n● Open the symbol candidate list for various categories: <b>`</b> (top-left of the keyboard); switch pages with <b>←</b> <b>→</b>.</string>
     <string name="physical_selection_keys">Physical candidate selection keys</string>
+    <string name="accessibility_settings_label">Accessibility</string>
+    <string name="accessibility_settings_description">Options that make the keyboard easier to see and to use with assistive technology. The keys also announce themselves to screen readers such as TalkBack.</string>
+    <string name="outline_keys_switch">Outline the keys? A border marks each key off from the keyboard background where the shadow alone is hard to see.</string>
     <string name="key_button_height_label">Adjust height of key buttons</string>
     <string name="key_button_height_description">Adjust height of key buttons. (Default value: %1$ddp)</string>
     <string name="switch_display_hsu_qwerty_layout">Enable QWERTY keycaps for Hsu layout?</string>

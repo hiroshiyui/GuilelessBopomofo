@@ -109,7 +109,7 @@ const val IME_ROOT_TEST_TAG = "keyboardView"
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ImeRoot(uiState: ImeUiState, host: ImeHost) {
-    CompositionLocalProvider(LocalImeHost provides host) {
+    CompositionLocalProvider(LocalImeHost provides host, LocalOutlineKeys provides uiState.outlineKeys) {
         Surface(
             modifier = Modifier
                 .fillMaxWidth()

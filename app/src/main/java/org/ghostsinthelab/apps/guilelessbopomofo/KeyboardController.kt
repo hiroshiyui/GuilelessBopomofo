@@ -25,6 +25,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPL
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_IME_SWITCH
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_OUTLINE_KEYS
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
@@ -195,6 +196,7 @@ class KeyboardController(
             USER_KEY_BUTTON_HEIGHT, GuilelessDimens.KeyMinHeightDefault.value.toInt()
         ).coerceIn(GuilelessDimens.KeyHeightRangeDp)
         uiState.imeSwitchEnabled = sharedPreferences.getBoolean(USER_ENABLE_IME_SWITCH, false)
+        uiState.outlineKeys = sharedPreferences.getBoolean(USER_OUTLINE_KEYS, true)
     }
 
     private fun switchToAlphanumericalLayout() {
@@ -330,12 +332,19 @@ class KeyboardController(
      * @return whether it was.
      */
     fun onPreferenceChanged(key: String?): Boolean {
+        if (key in KEY_PREFERENCES) {
+            applyKeyPreferences()
+            return true
+        }
         if (key !in LAYOUT_PREFERENCES) return false
         returnToMainLayout()
         return true
     }
 
     companion object {
+        // The preferences every key is drawn with; a change shows at once, whichever panel is up.
+        private val KEY_PREFERENCES = setOf(USER_KEY_BUTTON_HEIGHT, USER_ENABLE_IME_SWITCH, USER_OUTLINE_KEYS)
+
         // The preferences the keyboards are built from; a change to any means switching again.
         private val LAYOUT_PREFERENCES = setOf(
             USER_SOFT_KEYBOARD_LAYOUT,

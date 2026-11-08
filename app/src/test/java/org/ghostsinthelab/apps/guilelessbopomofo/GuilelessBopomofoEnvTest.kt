@@ -28,6 +28,7 @@ class GuilelessBopomofoEnvTest {
             GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT,
             GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT,
             GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT,
+            GuilelessBopomofoEnv.USER_OUTLINE_KEYS,
             GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD,
         )
         assertEquals(
@@ -58,6 +59,7 @@ class GuilelessBopomofoEnvTest {
             GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT,
             GuilelessBopomofoEnv.USER_PHYSICAL_KEYBOARD_LAYOUT,
             GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT,
+            GuilelessBopomofoEnv.USER_OUTLINE_KEYS,
             GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD,
         )
         keys.forEach { key ->
