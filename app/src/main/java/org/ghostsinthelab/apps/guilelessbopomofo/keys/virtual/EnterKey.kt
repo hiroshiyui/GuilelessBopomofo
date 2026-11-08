@@ -19,17 +19,21 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual
 
 import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.EnterKeyIntent
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
-/** The on-screen Enter: commits the buffer, or does what the text field wants Enter to do. */
+/**
+ * The on-screen Enter: commits the buffer, or does what the text field wants Enter to do,
+ * a line break in a multiple line field. The icon on it follows, see [org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.enterKeyIcon].
+ */
 object EnterKey : VirtualKey {
     override fun onDown(host: ImeHost) {
         performVibration(host.context, Vibratable.VibrationStrength.NORMAL)
     }
 
     override fun onTap(host: ImeHost) {
-        ChewingUtil.handleEnterAction(host)
+        ChewingUtil.handleEnterAction(host, EnterKeyIntent.DEFAULT)
     }
 }

@@ -176,7 +176,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         is ImeAction.PreEditBufferTouched -> onPreEditBufferTouched(action)
         is ImeAction.ToggleKeyboardMainLayoutMode -> onToggleKeyboardMainLayoutMode()
         is ImeAction.ToggleFullOrHalfWidthMode -> onToggleFullOrHalfWidthMode()
-        is ImeAction.EnterKeyDownWhenBufferIsEmpty -> onEnterKeyDownWhenBufferIsEmpty()
+        is ImeAction.EnterKeyDownWhenBufferIsEmpty -> onEnterKeyDownWhenBufferIsEmpty(action)
         is ImeAction.DirectionKeyDown -> onDirectionKeyDown(action)
     }
 
@@ -297,6 +297,9 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         }
 
         englishSuggestions.onStartInput(info?.inputType)
+
+        // the on-screen Enter shows what it will do in this text field
+        uiState.enterKeyBehavior = enterKeyBehavior(info, lineBreakInMultiLineFields = true)
 
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
@@ -485,16 +488,19 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         }
     }
 
-    private fun onEnterKeyDownWhenBufferIsEmpty() {
+    private fun onEnterKeyDownWhenBufferIsEmpty(action: ImeAction.EnterKeyDownWhenBufferIsEmpty) {
         Log.d(logTag, "onEnterKeyDownWhenBufferIsEmpty()")
         englishSuggestions.forgetAutoSpace()
 
-        val behavior = currentInputEditorInfo?.let(EnterKeyBehaviorResolver::resolve)
-            ?: EnterKeyBehavior.NewLine
+        val behavior = enterKeyBehavior(currentInputEditorInfo, action.lineBreakInMultiLineFields)
         if (!EnterKeyAction.perform(behavior, currentInputConnection)) {
             sendDownUpKeyEvents(KEYCODE_ENTER)
         }
     }
+
+    private fun enterKeyBehavior(editorInfo: EditorInfo?, lineBreakInMultiLineFields: Boolean): EnterKeyBehavior =
+        editorInfo?.let { EnterKeyBehaviorResolver.resolve(it, lineBreakInMultiLineFields) }
+            ?: EnterKeyBehavior.NewLine
 
     private fun onDirectionKeyDown(action: ImeAction.DirectionKeyDown) {
         if (ChewingBridge.chewing.bufferLen() > 0) {

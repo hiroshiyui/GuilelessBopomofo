@@ -247,7 +247,7 @@ object ChewingUtil {
      * @param intent What the user meant by the key press. Committing what is still in the
      * buffer always comes first, whichever intent is given.
      */
-    fun handleEnterAction(ime: ImeDispatcher, intent: EnterKeyIntent = EnterKeyIntent.EDITOR_ACTION) {
+    fun handleEnterAction(ime: ImeDispatcher, intent: EnterKeyIntent) {
         if (anyBufferIsNotEmpty()) {
             ChewingBridge.chewing.commitPreeditBuf(ChewingBridge.chewing.context)
             ime.dispatch(ImeAction.UpdateBufferViews)
@@ -259,7 +259,10 @@ object ChewingUtil {
                 ime.dispatch(ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER))
 
             EnterKeyIntent.EDITOR_ACTION ->
-                ime.dispatch(ImeAction.EnterKeyDownWhenBufferIsEmpty)
+                ime.dispatch(ImeAction.EnterKeyDownWhenBufferIsEmpty(lineBreakInMultiLineFields = false))
+
+            EnterKeyIntent.DEFAULT ->
+                ime.dispatch(ImeAction.EnterKeyDownWhenBufferIsEmpty(lineBreakInMultiLineFields = true))
         }
     }
 

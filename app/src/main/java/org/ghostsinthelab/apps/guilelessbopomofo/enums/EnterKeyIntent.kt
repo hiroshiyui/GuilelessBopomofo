@@ -24,11 +24,22 @@ import android.view.KeyEvent
  * What the user meant by pressing the Enter key.
  */
 enum class EnterKeyIntent {
-    /** Leave it to the text field: go, search, send, or a line break when it asks for none. */
+    /**
+     * The action the text field declares (go, search, send, ...), a multiple line field
+     * included, or a line break when it declares none. A bare physical Enter: the line
+     * break is one Shift or Alt away there.
+     */
     EDITOR_ACTION,
 
     /** A line break, whichever action the text field declares. */
     LINE_BREAK,
+
+    /**
+     * Android's own rule, for the on-screen Enter that has no modifiers: the declared
+     * action, except that a multiple line field gets a line break, since such a field
+     * brings its own Send button.
+     */
+    DEFAULT,
 
     ;
 

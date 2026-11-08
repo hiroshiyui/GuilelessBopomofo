@@ -133,7 +133,7 @@ class VirtualKeysInstrumentedTest {
             listOf<ImeAction>(
                 ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_DEL),
                 ImeAction.SendDownUpKeyEvents(KeyEvent.KEYCODE_SPACE),
-                ImeAction.EnterKeyDownWhenBufferIsEmpty,
+                ImeAction.EnterKeyDownWhenBufferIsEmpty(lineBreakInMultiLineFields = true),
             ),
             host.actions,
         )

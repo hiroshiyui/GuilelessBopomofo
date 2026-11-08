@@ -33,22 +33,34 @@ sealed interface EnterKeyBehavior {
 
 /**
  * Works out whether Enter should commit an editor action or stay an ordinary Enter key,
- * following the same rules as [android.inputmethodservice.InputMethodService.sendDefaultEditorAction]
- * so that we behave like every other well-mannered IME.
+ * following the rules of [android.inputmethodservice.InputMethodService.sendDefaultEditorAction].
+ *
+ * One of those rules is optional here: [EditorInfo.IME_FLAG_NO_ENTER_ACTION], which TextView
+ * sets for every multiple line field, forces a line break only when
+ * `lineBreakInMultiLineFields` says so. The on-screen Enter keeps that rule, like every
+ * other IME. A physical Enter drops it, so that a field that declares an action (Send,
+ * Done, ...) gets that action from a bare Enter and a line break from Shift+Enter or
+ * Alt+Enter, see [org.ghostsinthelab.apps.guilelessbopomofo.enums.EnterKeyIntent].
  */
 object EnterKeyBehaviorResolver {
     /** What Enter should do in the text field described by [editorInfo]. */
-    fun resolve(editorInfo: EditorInfo): EnterKeyBehavior = resolve(
+    fun resolve(editorInfo: EditorInfo, lineBreakInMultiLineFields: Boolean): EnterKeyBehavior = resolve(
         imeOptions = editorInfo.imeOptions,
         actionId = editorInfo.actionId,
         hasCustomActionLabel = editorInfo.actionLabel != null,
+        lineBreakInMultiLineFields = lineBreakInMultiLineFields,
     )
 
     /** The same, from the parts of an [EditorInfo], for tests that have no real one. */
-    fun resolve(imeOptions: Int, actionId: Int, hasCustomActionLabel: Boolean): EnterKeyBehavior {
+    fun resolve(
+        imeOptions: Int,
+        actionId: Int,
+        hasCustomActionLabel: Boolean,
+        lineBreakInMultiLineFields: Boolean,
+    ): EnterKeyBehavior {
         // The text field explicitly wants Enter to remain Enter. Multiple line text fields
         // land here as well, since TextView sets this flag for them on our behalf.
-        if ((imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION) != 0) {
+        if (lineBreakInMultiLineFields && (imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION) != 0) {
             return EnterKeyBehavior.NewLine
         }
 

@@ -24,6 +24,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import java.io.File
 import java.io.FileOutputStream
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.EnterKeyIntent
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeDispatcher
 import org.junit.After
 import org.junit.Assert.assertArrayEquals
@@ -113,7 +114,7 @@ class ChewingUtilInstrumentedTest {
         }
         assertTrue(ChewingUtil.anyBufferIsNotEmpty())
 
-        ChewingUtil.handleEnterAction(ime)
+        ChewingUtil.handleEnterAction(ime, EnterKeyIntent.DEFAULT)
         // After committing, the pre-edit buffer should be empty
         assertEquals("", ChewingBridge.chewing.bufferStringStatic())
     }
@@ -122,7 +123,7 @@ class ChewingUtilInstrumentedTest {
     fun handleEnterAction_whenBufferIsEmpty_shouldNotCrash() {
         assertFalse(ChewingUtil.anyBufferIsNotEmpty())
         // Should not throw; in a real IME it would post EnterKeyDownWhenBufferIsEmpty to the input method
-        ChewingUtil.handleEnterAction(ime)
+        ChewingUtil.handleEnterAction(ime, EnterKeyIntent.DEFAULT)
         assertFalse(ChewingUtil.anyBufferIsNotEmpty())
     }
 

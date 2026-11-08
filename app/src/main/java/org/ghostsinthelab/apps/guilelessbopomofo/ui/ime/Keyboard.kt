@@ -102,7 +102,7 @@ private fun KeyFor(keySpec: KeySpec, uiState: ImeUiState, keyHeight: Dp, modifie
         is KeySpec.Function -> {
             val key = remember(keySpec.key, uiState) { virtualKeyFor(keySpec.key, uiState) }
             val shiftBackground = if (keySpec.key == FunctionKey.SHIFT) shiftKeyColor(uiState.shiftKeyState) else null
-            KeyButton(key, keySpec.key.style, keySpec.key.icon, keyHeight, modifier, shiftBackground)
+            KeyButton(key, keySpec.key.style, keySpec.key.iconFor(uiState), keyHeight, modifier, shiftBackground)
         }
     }
 }

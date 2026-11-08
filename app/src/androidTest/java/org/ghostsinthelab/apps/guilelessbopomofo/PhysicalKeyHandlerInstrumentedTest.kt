@@ -165,7 +165,10 @@ class PhysicalKeyHandlerInstrumentedTest {
         val result = enter.onKeyDown(host, KeyEvent.KEYCODE_ENTER, event)
 
         assertTrue(result)
-        assertEquals(1, host.received<ImeAction.EnterKeyDownWhenBufferIsEmpty>().size)
+        assertEquals(
+            listOf(ImeAction.EnterKeyDownWhenBufferIsEmpty(lineBreakInMultiLineFields = false)),
+            host.received<ImeAction.EnterKeyDownWhenBufferIsEmpty>(),
+        )
     }
 
     // ========== Space tests ==========

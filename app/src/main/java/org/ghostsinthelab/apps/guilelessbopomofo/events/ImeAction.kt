@@ -32,8 +32,12 @@ sealed interface ImeAction {
     data class CommitTextInChewingCommitBuffer(val text: String) : ImeAction
     /** An arrow or volume key moved libchewing's cursor; the panels follow. */
     data class DirectionKeyDown(val direction: DirectionKey) : ImeAction
-    /** Enter with nothing to commit: do what the text field wants Enter to do. */
-    data object EnterKeyDownWhenBufferIsEmpty : ImeAction
+    /**
+     * Enter with nothing to commit: do what the text field wants Enter to do.
+     * @param lineBreakInMultiLineFields whether a multiple line field gets a line break
+     * rather than the action it declares, see [org.ghostsinthelab.apps.guilelessbopomofo.enums.EnterKeyIntent].
+     */
+    data class EnterKeyDownWhenBufferIsEmpty(val lineBreakInMultiLineFields: Boolean) : ImeAction
     /** The panel changed; whatever sits around it may need to change too. */
     data object KeyboardLayoutSwitched : ImeAction
     /** Back to the main keyboard from the candidates or the symbols. */

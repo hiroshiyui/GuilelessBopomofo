@@ -108,7 +108,7 @@ private fun FunctionKeyCell(functionKey: FunctionKey, uiState: ImeUiState, heigh
     KeyButton(
         key = key,
         style = functionKey.style,
-        icon = functionKey.icon,
+        icon = functionKey.iconFor(uiState),
         minHeight = height,
         modifier = Modifier
             .fillMaxWidth()

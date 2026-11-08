@@ -27,6 +27,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ShiftKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.SoftKeyboard
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessDimens
+import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyBehavior
 
 /**
  * Everything the input view shows, in one place. The service and [KeyboardController] write
@@ -48,6 +49,9 @@ class ImeUiState {
     var imeSwitchEnabled: Boolean by mutableStateOf(false)
 
     var shiftKeyState: ShiftKey.ShiftKeyState by mutableStateOf(ShiftKey.ShiftKeyState.RELEASED)
+
+    /** What the on-screen Enter does in the current text field; its icon follows. */
+    var enterKeyBehavior: EnterKeyBehavior by mutableStateOf(EnterKeyBehavior.NewLine)
 
     var preEditText: String by mutableStateOf("")
 

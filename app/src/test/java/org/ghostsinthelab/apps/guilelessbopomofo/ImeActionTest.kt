@@ -95,7 +95,7 @@ class ImeActionTest {
 
     @Test
     fun enterKeyDownWhenBufferIsEmpty_canBeInstantiated() {
-        val event = ImeAction.EnterKeyDownWhenBufferIsEmpty
+        val event = ImeAction.EnterKeyDownWhenBufferIsEmpty(lineBreakInMultiLineFields = true)
         assertNotNull(event)
     }
 

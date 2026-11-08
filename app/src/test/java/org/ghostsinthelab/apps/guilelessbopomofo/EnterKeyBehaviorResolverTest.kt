@@ -8,11 +8,22 @@ import org.junit.Test
 
 class EnterKeyBehaviorResolverTest {
 
+    /** A physical Enter: a multiple line field gets its declared action. */
     private fun resolve(
         imeOptions: Int,
         actionId: Int = EditorInfo.IME_ACTION_UNSPECIFIED,
         hasCustomActionLabel: Boolean = false,
-    ): EnterKeyBehavior = EnterKeyBehaviorResolver.resolve(imeOptions, actionId, hasCustomActionLabel)
+        lineBreakInMultiLineFields: Boolean = false,
+    ): EnterKeyBehavior = EnterKeyBehaviorResolver.resolve(
+        imeOptions, actionId, hasCustomActionLabel, lineBreakInMultiLineFields
+    )
+
+    /** The on-screen Enter: a multiple line field gets a line break. */
+    private fun resolveForSoftKey(
+        imeOptions: Int,
+        actionId: Int = EditorInfo.IME_ACTION_UNSPECIFIED,
+        hasCustomActionLabel: Boolean = false,
+    ): EnterKeyBehavior = resolve(imeOptions, actionId, hasCustomActionLabel, lineBreakInMultiLineFields = true)
 
     @Test
     fun noImeOptions_isAPlainEnterKey() {
@@ -25,22 +36,50 @@ class EnterKeyBehaviorResolverTest {
     }
 
     @Test
-    fun noEnterActionFlag_winsOverAnyDeclaredAction() {
+    fun noEnterActionFlag_doesNotHideADeclaredAction_fromAPhysicalEnter() {
         assertEquals(
-            EnterKeyBehavior.NewLine,
+            EnterKeyBehavior.EditorAction(EditorInfo.IME_ACTION_SEND),
             resolve(EditorInfo.IME_ACTION_SEND or EditorInfo.IME_FLAG_NO_ENTER_ACTION)
         )
     }
 
     @Test
-    fun noEnterActionFlag_winsOverACustomActionLabel() {
+    fun noEnterActionFlag_doesNotHideACustomActionLabel_fromAPhysicalEnter() {
         assertEquals(
-            EnterKeyBehavior.NewLine,
+            EnterKeyBehavior.EditorAction(42),
             resolve(
                 imeOptions = EditorInfo.IME_FLAG_NO_ENTER_ACTION,
                 actionId = 42,
                 hasCustomActionLabel = true,
             )
+        )
+    }
+
+    @Test
+    fun noEnterActionFlag_winsOverAnyDeclaredAction_onTheSoftKey() {
+        assertEquals(
+            EnterKeyBehavior.NewLine,
+            resolveForSoftKey(EditorInfo.IME_ACTION_SEND or EditorInfo.IME_FLAG_NO_ENTER_ACTION)
+        )
+    }
+
+    @Test
+    fun noEnterActionFlag_winsOverACustomActionLabel_onTheSoftKey() {
+        assertEquals(
+            EnterKeyBehavior.NewLine,
+            resolveForSoftKey(
+                imeOptions = EditorInfo.IME_FLAG_NO_ENTER_ACTION,
+                actionId = 42,
+                hasCustomActionLabel = true,
+            )
+        )
+    }
+
+    @Test
+    fun withoutTheFlag_theSoftKeyPerformsTheDeclaredAction() {
+        assertEquals(
+            EnterKeyBehavior.EditorAction(EditorInfo.IME_ACTION_SEARCH),
+            resolveForSoftKey(EditorInfo.IME_ACTION_SEARCH)
         )
     }
 
@@ -147,17 +186,30 @@ class EnterKeyBehaviorResolverEditorInfoTest {
     fun aSearchField_performsTheSearch() {
         assertEquals(
             EnterKeyBehavior.EditorAction(EditorInfo.IME_ACTION_SEARCH),
-            EnterKeyBehaviorResolver.resolve(editorInfo(EditorInfo.IME_ACTION_SEARCH))
+            EnterKeyBehaviorResolver.resolve(editorInfo(EditorInfo.IME_ACTION_SEARCH), lineBreakInMultiLineFields = true)
         )
     }
 
     @Test
-    fun aMultipleLineField_insertsALineBreak() {
+    fun aMultipleLineField_insertsALineBreak_fromTheSoftKey() {
         // What TextView hands us for android:inputType="textMultiLine".
         assertEquals(
             EnterKeyBehavior.NewLine,
             EnterKeyBehaviorResolver.resolve(
-                editorInfo(EditorInfo.IME_ACTION_DONE or EditorInfo.IME_FLAG_NO_ENTER_ACTION)
+                editorInfo(EditorInfo.IME_ACTION_DONE or EditorInfo.IME_FLAG_NO_ENTER_ACTION),
+                lineBreakInMultiLineFields = true,
+            )
+        )
+    }
+
+    @Test
+    fun aMultipleLineField_performsItsDeclaredAction_fromAPhysicalEnter() {
+        // A line break is Shift+Enter or Alt+Enter there.
+        assertEquals(
+            EnterKeyBehavior.EditorAction(EditorInfo.IME_ACTION_DONE),
+            EnterKeyBehaviorResolver.resolve(
+                editorInfo(EditorInfo.IME_ACTION_DONE or EditorInfo.IME_FLAG_NO_ENTER_ACTION),
+                lineBreakInMultiLineFields = false,
             )
         )
     }
@@ -171,13 +223,14 @@ class EnterKeyBehaviorResolverEditorInfoTest {
                     imeOptions = EditorInfo.IME_ACTION_UNSPECIFIED,
                     actionId = 7,
                     actionLabel = "Send",
-                )
+                ),
+                lineBreakInMultiLineFields = true,
             )
         )
     }
 
     @Test
     fun anUntouchedEditorInfo_insertsALineBreak() {
-        assertEquals(EnterKeyBehavior.NewLine, EnterKeyBehaviorResolver.resolve(EditorInfo()))
+        assertEquals(EnterKeyBehavior.NewLine, EnterKeyBehaviorResolver.resolve(EditorInfo(), lineBreakInMultiLineFields = false))
     }
 }
