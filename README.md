@@ -8,6 +8,9 @@
 
 ![Screenshot of Guileless Bopomofo](./media/Screenshot_20261109_000829.png)
 ![Screenshot of Guileless Bopomofo](./media/Screenshot_20261109_001100.png)
+![Screenshot of Guileless Bopomofo](./media/Screenshot_20261109_001501.png)
+![Screenshot of Guileless Bopomofo](./media/Screenshot_20261109_001503.png)
+![Screenshot of Guileless Bopomofo](./media/Screenshot_20261109_001505.png)
 
 ## About 這是啥 概要
 
