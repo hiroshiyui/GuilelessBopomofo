@@ -64,7 +64,8 @@
     <string name="mode_bopomofo">注音</string>
     <string name="mode_alphanumerical">英數</string>
     <string name="physical_keyboard_settings">實體鍵盤設定</string>
-    <string name="tips_using_physical_keyboard">使用實體鍵盤時：\n• 單獨輕按任一 <b>Shift</b> 鍵，或按下 <b>Shift</b> + <b>Space</b>，可切換注音與英數字輸入模式。\n• 按下 <b>Alt</b> + <b>Space</b> 切換全形、半形。\n• 按下 <b>Alt</b> + <b>I</b> 可選擇切換其他輸入法。\n• 按下 <b>Shift</b> + <b>Enter</b> 或 <b>Alt</b> + <b>Enter</b> 換行，即使該文字欄位的 <b>Enter</b> 是送出或提交（注音緩衝區為空時）。\n• 長按右側 <b>Shift</b> 鍵開啟常用標點符號候選清單，按 <b>←</b> <b>→</b> 鍵換頁。\n• 按下鍵盤左上方的 <b>`</b> 鍵開啟各種類別的符號候選清單，按 <b>←</b> <b>→</b> 鍵換頁。</string>
+    <string name="tips_using_physical_keyboard_intro">使用實體鍵盤時：</string>
+    <string name="tips_using_physical_keyboard">● 切換注音與英數字輸入模式：單獨輕按任一 <b>Shift</b> 鍵，或按下 <b>Shift</b> + <b>Space</b>。\n● 切換全形、半形：<b>Alt</b> + <b>Space</b>。\n● 切換其他輸入法：<b>Alt</b> + <b>I</b>。\n● 換行，即使該文字欄位的 <b>Enter</b> 是送出或提交（注音緩衝區為空時）：<b>Shift</b> + <b>Enter</b> 或 <b>Alt</b> + <b>Enter</b>。\n● 開啟常用標點符號候選清單：長按右側 <b>Shift</b> 鍵；按 <b>←</b> <b>→</b> 鍵換頁。\n● 開啟各種類別的符號候選清單：按下鍵盤左上方的 <b>`</b> 鍵；按 <b>←</b> <b>→</b> 鍵換頁。</string>
     <string name="physical_selection_keys">實體候選字詞選擇鍵</string>
     <string name="key_button_height_label">調整按鍵高度</string>
     <string name="key_button_height_description">調整按鍵高度（預設高度：%1$ddp）</string>

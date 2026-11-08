@@ -19,6 +19,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.ui.settings
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -27,10 +28,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.unit.dp
 import org.ghostsinthelab.apps.guilelessbopomofo.BopomofoPhysicalKeyboards
@@ -46,6 +49,7 @@ private val DropdownSpacing = 8.dp
 private val SelectionKeysSpacing = 16.dp
 private val TipsSpacing = 24.dp
 private val TipsIconSpacing = 8.dp
+private val TipItemSpacing = 8.dp
 
 // Key names in the tips are set in Libertinus Keyboard, whose ligatures draw a whole name
 // ("Shift", "Space", ...) as one key cap.
@@ -120,12 +124,34 @@ fun PhysicalKeyboardSettingsScreen(modifier: Modifier = Modifier) {
         SettingsDescription(stringResource(R.string.textViewSettingsDescriptionConversionEnginesPhysical))
         ConversionEnginePreference(USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD)
 
-        Row(modifier = Modifier.padding(top = TipsSpacing)) {
+        Row(
+            modifier = Modifier.padding(top = TipsSpacing),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Image(painter = painterResource(android.R.drawable.ic_menu_info_details), contentDescription = null)
             Text(
-                markupStringResource(R.string.tips_using_physical_keyboard, PhysicalKeyStyle),
+                stringResource(R.string.tips_using_physical_keyboard_intro),
                 Modifier.padding(start = TipsIconSpacing),
             )
         }
+        // The tips run the full width, so the icon does not indent them, one per line
+        // with a gap between them.
+        val tips = markupStringResource(R.string.tips_using_physical_keyboard, PhysicalKeyStyle)
+        Column(
+            Modifier.padding(top = TipsIconSpacing),
+            verticalArrangement = Arrangement.spacedBy(TipItemSpacing),
+        ) {
+            tips.lines().forEach { Text(it) }
+        }
+    }
+}
+
+/** The lines of this string, each keeping the spans that fall within it. */
+private fun AnnotatedString.lines(): List<AnnotatedString> = buildList {
+    var start = 0
+    while (start <= text.length) {
+        val end = text.indexOf('\n', start).let { if (it < 0) text.length else it }
+        add(subSequence(start, end))
+        start = end + 1
     }
 }
