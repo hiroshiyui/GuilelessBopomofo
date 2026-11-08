@@ -63,7 +63,7 @@
     <string name="mode_bopomofo">Bopomofo</string>
     <string name="mode_alphanumerical">Alphanumerical</string>
     <string name="physical_keyboard_settings">Physical keyboard settings</string>
-    <string name="tips_using_physical_keyboard">While using a physical keyboard, toggle between Bopomofo &amp; English modes by tapping <b>Shift</b> (either one) on its own, or by pressing <b>Shift</b> + <b>Space</b>; switch to other input methods by pressing <b>Alt</b> + <b>I</b>; toggle full-width and half-width modes by pressing <b>Alt</b> + <b>Space</b>.</string>
+    <string name="tips_using_physical_keyboard">While using a physical keyboard:\n• Tap <b>Shift</b> (either one) on its own, or press <b>Shift</b> + <b>Space</b>, to toggle between Bopomofo and English modes.\n• Press <b>Alt</b> + <b>Space</b> to toggle full-width and half-width modes.\n• Press <b>Alt</b> + <b>I</b> to switch to other input methods.\n• Press <b>Shift</b> + <b>Enter</b> or <b>Alt</b> + <b>Enter</b> to insert a line break, even where <b>Enter</b> would send or submit the text field (once the Bopomofo buffer is empty).\n• Long press the right <b>Shift</b> to open the common punctuation candidate list; use <b>←</b> <b>→</b> to switch pages.\n• Press <b>`</b> (top-left of the keyboard) to open the symbol candidate list for various categories; use <b>←</b> <b>→</b> to switch pages.</string>
     <string name="physical_selection_keys">Physical candidate selection keys</string>
     <string name="key_button_height_label">Adjust height of key buttons</string>
     <string name="key_button_height_description">Adjust height of key buttons. (Default value: %1$ddp)</string>
