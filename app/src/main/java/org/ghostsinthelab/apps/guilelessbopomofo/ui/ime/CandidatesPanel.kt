@@ -45,6 +45,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.paneTitle
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
@@ -70,7 +72,14 @@ private val SelectionKeyShape = RoundedCornerShape(4.dp)
 /** The candidates to choose from, and a key back to the keyboard. */
 @Composable
 fun CandidatesPanel(uiState: ImeUiState, modifier: Modifier = Modifier) {
-    Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+    // A pane title is announced as the panel appears, so one hears the candidates arrive.
+    val paneTitle = stringResource(R.string.candidates_pane_title)
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .semantics { this.paneTitle = paneTitle },
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         when (uiState.candidateLayoutStyle) {
             ImeUiState.CandidateLayoutStyle.GRID -> key(uiState.candidatesGeneration) {
                 CandidatesGrid(uiState.candidates)
@@ -145,8 +154,11 @@ private fun PagedCandidates(candidates: List<Candidate>) {
     val textColor = if (LocalGuilelessThemeExtras.current.isDark) Color.White else PagedCandidateTextLight
     FlowRow(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center) {
         candidates.forEach { candidate ->
+            // Read as one: the selection key, then the candidate
             Row(
-                modifier = Modifier.testTag(CANDIDATE_TEST_TAG),
+                modifier = Modifier
+                    .testTag(CANDIDATE_TEST_TAG)
+                    .semantics(mergeDescendants = true) {},
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(

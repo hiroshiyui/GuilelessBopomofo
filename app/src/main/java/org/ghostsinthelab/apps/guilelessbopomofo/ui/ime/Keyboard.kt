@@ -19,6 +19,9 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.ui.ime
 
 import android.content.res.Configuration
+import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -27,6 +30,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -40,13 +45,19 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.SwipeDirection
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.VirtualKey
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.BackspaceKey
@@ -111,10 +122,13 @@ private fun KeyFor(keySpec: KeySpec, uiState: ImeUiState, keyHeight: Dp, modifie
 
         is KeySpec.Function -> {
             val key = remember(keySpec.key, uiState) { virtualKeyFor(keySpec.key, uiState) }
-            val shiftBackground = if (keySpec.key == FunctionKey.SHIFT) shiftKeyColor(uiState.shiftKeyState) else null
+            val shift = if (keySpec.key == FunctionKey.SHIFT) shiftKeyAppearance(uiState.shiftKeyState) else null
             KeyButton(
                 key, keySpec.key.style, keySpec.key.iconFor(uiState), keySpec.key.labelFor(uiState),
-                keyHeight, modifier, shiftBackground,
+                keyHeight, modifier,
+                colorsOverride = shift?.colors,
+                marker = shift?.marker,
+                stateDescription = shift?.let { stringResource(it.stateDescription) },
             )
         }
     }
@@ -131,11 +145,25 @@ internal fun virtualKeyFor(functionKey: FunctionKey, uiState: ImeUiState): Virtu
     FunctionKey.SHIFT -> ShiftKey(uiState)
 }
 
+/** A small shape under a key's icon that tells its state apart from the others without colour. */
+enum class KeyMarker { DOT, BAR }
+
+/** How the Shift key looks and is described in one of its states. */
+internal class ShiftKeyAppearance(
+    val colors: Pair<Color, Color>,
+    val marker: KeyMarker?,
+    @param:StringRes val stateDescription: Int,
+)
+
+/** Each state in its own colour pair (glyph on face, so the glyph keeps its contrast) and marker. */
 @Composable
-private fun shiftKeyColor(state: ShiftKey.ShiftKeyState): Color = when (state) {
-    ShiftKey.ShiftKeyState.RELEASED -> MaterialTheme.colorScheme.tertiary
-    ShiftKey.ShiftKeyState.PRESSED -> MaterialTheme.colorScheme.secondary
-    ShiftKey.ShiftKeyState.HOLD -> MaterialTheme.colorScheme.primary
+internal fun shiftKeyAppearance(state: ShiftKey.ShiftKeyState): ShiftKeyAppearance = with(MaterialTheme.colorScheme) {
+    when (state) {
+        ShiftKey.ShiftKeyState.RELEASED -> ShiftKeyAppearance(tertiary to onTertiary, null, R.string.shift_state_off)
+        ShiftKey.ShiftKeyState.PRESSED ->
+            ShiftKeyAppearance(secondary to onSecondary, KeyMarker.DOT, R.string.shift_state_next_key)
+        ShiftKey.ShiftKeyState.HOLD -> ShiftKeyAppearance(primary to onPrimary, KeyMarker.BAR, R.string.shift_state_locked)
+    }
 }
 
 /** The background and content colours of a key in [style]. */
@@ -148,7 +176,10 @@ internal fun keyColors(style: KeyStyle): Pair<Color, Color> = with(MaterialTheme
     }
 }
 
-/** One key with an icon on it; [label] is what a screen reader says for it. */
+/**
+ * One key with an icon on it; [label] is what a screen reader says for it, [stateDescription]
+ * what it adds for a key with a state, which [marker] shows under the icon.
+ */
 @Composable
 fun KeyButton(
     key: VirtualKey,
@@ -157,12 +188,36 @@ fun KeyButton(
     label: String,
     minHeight: Dp,
     modifier: Modifier = Modifier,
-    backgroundOverride: Color? = null,
+    colorsOverride: Pair<Color, Color>? = null,
+    marker: KeyMarker? = null,
+    stateDescription: String? = null,
 ) {
-    val (background, content) = keyColors(style)
-    KeySurface(key, minHeight, backgroundOverride ?: background, modifier, label = label) {
-        Icon(painter = painterResource(icon), contentDescription = null, tint = content)
+    val (background, content) = colorsOverride ?: keyColors(style)
+    KeySurface(key, minHeight, background, modifier, label = label, stateDescription = stateDescription) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(painter = painterResource(icon), contentDescription = null, tint = content)
+            if (marker != null) KeyMarkerShape(marker, content)
+        }
     }
+}
+
+private val MarkerDotSize = 4.dp
+private val MarkerBarWidth = 14.dp
+private val MarkerBarHeight = 3.dp
+private val MarkerSpacing = 2.dp
+
+@Composable
+private fun KeyMarkerShape(marker: KeyMarker, color: Color) {
+    val size = when (marker) {
+        KeyMarker.DOT -> DpSize(MarkerDotSize, MarkerDotSize)
+        KeyMarker.BAR -> DpSize(MarkerBarWidth, MarkerBarHeight)
+    }
+    Box(
+        modifier = Modifier
+            .padding(top = MarkerSpacing)
+            .size(size)
+            .background(color, CircleShape),
+    )
 }
 
 /**
@@ -171,7 +226,8 @@ fun KeyButton(
  * face fills whatever size the slot is given, and wraps its content otherwise.
  *
  * To accessibility services the key is one button that a click taps. It is read as [label],
- * or as the text on its face when there is none.
+ * or as the text on its face when there is none, then [stateDescription] for a key that
+ * has a state; [customActions] are what it does besides a tap, a swipe say.
  */
 @Composable
 fun KeySurface(
@@ -181,6 +237,8 @@ fun KeySurface(
     modifier: Modifier = Modifier,
     testTag: String = KEY_TEST_TAG,
     label: String? = null,
+    stateDescription: String? = null,
+    customActions: List<CustomAccessibilityAction> = emptyList(),
     onSwipeDirectionChange: (SwipeDirection?) -> Unit = {},
     content: @Composable () -> Unit,
 ) {
@@ -192,6 +250,8 @@ fun KeySurface(
             .semantics(mergeDescendants = true) {
                 role = Role.Button
                 if (label != null) contentDescription = label
+                if (stateDescription != null) this.stateDescription = stateDescription
+                if (customActions.isNotEmpty()) this.customActions = customActions
                 // a tap is a down and an up, and a key may act on either
                 onClick {
                     key.onDown(host)
@@ -207,6 +267,7 @@ fun KeySurface(
         Surface(
             shape = GuilelessDimens.KeyShape,
             color = background,
+            border = BorderStroke(GuilelessDimens.KeyBorderWidth, MaterialTheme.colorScheme.outline),
             shadowElevation = GuilelessDimens.KeyElevation,
         ) {
             Box(

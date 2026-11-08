@@ -175,7 +175,8 @@ private fun wineColorScheme(): ColorScheme {
         onPrimaryContainer = base4,
         inversePrimary = colorResource(R.color.colorGuilelessBopomofoMorandiThemeBase6),
         secondary = colorResource(R.color.colorGuilelessBopomofoWineThemeBase2),
-        onSecondary = base4,
+        // base10, not base4: base4 on the Enter key's red reaches only 2.8:1 contrast
+        onSecondary = base10,
         secondaryContainer = base8,
         onSecondaryContainer = base4,
         tertiary = base8,
@@ -208,7 +209,11 @@ object GuilelessDimens {
     // sits inside it, inset as MaterialButton insets its background.
     val KeyShape = RoundedCornerShape(6.dp)
     val KeyElevation = 1.dp
+    /** Marks the key face off from the keyboard behind it, which the shadow alone hardly does. */
+    val KeyBorderWidth = 1.dp
     val KeyMinHeightDefault = 52.dp
+    /** The key heights the user may choose; the floor is the 48dp touch target a key slot owes. */
+    val KeyHeightRangeDp = 48..80
     val KeyHorizontalInset = 2.dp
     val KeyVerticalInset = 6.dp
     val TextKeyMinHeight = 48.dp

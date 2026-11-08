@@ -64,6 +64,11 @@
     <string name="key_punctuation">Punctuation</string>
     <string name="pre_edit_move_cursor_left">Move cursor left</string>
     <string name="pre_edit_move_cursor_right">Move cursor right</string>
+    <string name="shift_state_off">Off</string>
+    <string name="shift_state_next_key">On for the next key</string>
+    <string name="shift_state_locked">Locked</string>
+    <string name="candidates_pane_title">Candidates</string>
+    <string name="key_action_type">Type %1$s</string>
     <string name="space_as_selection_key">Use Space key as candidates selection shortcut key</string>
     <string name="space_as_selection_key_description">If enabled, when Space key is being pressed, candidates selection list will be opened for the last word or phrase in the pre-edit buffer</string>
     <string name="space_as_selection_key_switch_label">Use Space key as candidates selection shortcut key?</string>

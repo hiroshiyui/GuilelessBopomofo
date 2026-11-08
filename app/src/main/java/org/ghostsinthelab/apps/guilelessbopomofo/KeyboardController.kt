@@ -190,9 +190,10 @@ class KeyboardController(
     }
 
     private fun applyKeyPreferences() {
+        // a height saved before the floor was raised is lifted to it
         uiState.keyHeightDp = sharedPreferences.getInt(
             USER_KEY_BUTTON_HEIGHT, GuilelessDimens.KeyMinHeightDefault.value.toInt()
-        )
+        ).coerceIn(GuilelessDimens.KeyHeightRangeDp)
         uiState.imeSwitchEnabled = sharedPreferences.getBoolean(USER_ENABLE_IME_SWITCH, false)
     }
 

@@ -338,7 +338,10 @@ private val CompactBarValueSpacing = 2.dp
 @Composable
 private fun CompactBar(uiState: ImeUiState, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        // one thing to a screen reader: "Mode: Bopomofo, half width"
+        modifier = modifier
+            .fillMaxWidth()
+            .semantics(mergeDescendants = true) {},
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {

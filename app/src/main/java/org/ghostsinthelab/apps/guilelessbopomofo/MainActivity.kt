@@ -63,6 +63,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -162,6 +163,7 @@ private fun SettingsApp(onAppIconClick: () -> Unit) {
 
 private val HeaderTopPadding = 16.dp
 private val HeaderBottomPadding = 8.dp
+private val HeaderHorizontalPadding = 16.dp
 private val AppNameSpacing = 4.dp
 private val VersionSpacing = 2.dp
 
@@ -172,7 +174,8 @@ private fun SettingsHeader(onAppIconClick: () -> Unit, modifier: Modifier = Modi
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = HeaderTopPadding, bottom = HeaderBottomPadding),
+            .padding(top = HeaderTopPadding, bottom = HeaderBottomPadding)
+            .padding(horizontal = HeaderHorizontalPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         AppIcon(
@@ -189,6 +192,7 @@ private fun SettingsHeader(onAppIconClick: () -> Unit, modifier: Modifier = Modi
         Text(
             text = stringResource(R.string.app_version, BuildConfig.VERSION_NAME, chewingVersion),
             modifier = Modifier.padding(top = VersionSpacing),
+            textAlign = TextAlign.Center,
         )
     }
 }

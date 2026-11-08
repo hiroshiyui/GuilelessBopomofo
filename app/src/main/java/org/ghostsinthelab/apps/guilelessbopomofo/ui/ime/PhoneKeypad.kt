@@ -38,8 +38,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import org.ghostsinthelab.apps.guilelessbopomofo.R
+import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.SwipeDirection
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.SwipeCharacterKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.BopomofoGlyph
@@ -125,6 +129,15 @@ private fun FunctionKeyCell(functionKey: FunctionKey, uiState: ImeUiState, heigh
 private fun SwipeKeyCell(spec: SwipeKeySpec, height: Dp) {
     val key = remember(spec) { SwipeCharacterKey(spec) }
     var aimedAt by remember { mutableStateOf<SwipeDirection?>(null) }
+    val host = LocalImeHost.current
+    // What the swipes type, offered as actions to whoever cannot swipe.
+    val swipeGlyphs = listOfNotNull(spec.up, spec.right, spec.left, spec.down)
+    val swipeActionLabels = swipeGlyphs.map { stringResource(R.string.key_action_type, it.symbol) }
+    val swipeActions = remember(spec, host, swipeActionLabels) {
+        swipeGlyphs.zip(swipeActionLabels) { glyph, actionLabel ->
+            CustomAccessibilityAction(actionLabel) { host.dispatch(ImeAction.PrintingKeyDown(glyph.dachenKeyCode)); true }
+        }
+    }
     val (background, content) = keyColors(KeyStyle.NORMAL)
     val highlight = LocalGuilelessThemeExtras.current.primaryText
     val aimedGlyph = aimedAt?.let(spec::glyphFor)
@@ -137,6 +150,7 @@ private fun SwipeKeyCell(spec: SwipeKeySpec, height: Dp) {
             .fillMaxWidth()
             .height(height),
         label = remember(spec) { KeyLabels.forSwipeKey(spec) },
+        customActions = swipeActions,
         onSwipeDirectionChange = { aimedAt = it },
     ) {
         Box(modifier = Modifier.fillMaxSize()) {

@@ -23,6 +23,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -41,13 +42,16 @@ import org.ghostsinthelab.apps.guilelessbopomofo.Candidate
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.RecordingImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
+import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.ShiftKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.CANDIDATE_TEST_TAG
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.CandidatesPanel
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.KEY_TEST_TAG
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.KeyLabels
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.Keyboard
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.LocalImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.PhoneKeypad
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.CompactDachenKeypad
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.FunctionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.KeySpec
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.KeyboardSpecs
@@ -78,6 +82,8 @@ class ImeComposeInstrumentedTest {
     fun tearDown() {
         appContext.appSharedPreferences.edit().remove(TEST_PREFERENCE_KEY).commit()
     }
+
+    private fun hasPaneTitle() = SemanticsMatcher.keyIsDefined(SemanticsProperties.PaneTitle)
 
     /** The theme, with [host] standing in for the input method the keys act through. */
     @Composable
@@ -169,6 +175,45 @@ class ImeComposeInstrumentedTest {
         composeRule.onNodeWithText("試").performClick()
         composeRule.waitForIdle()
         assertEquals(listOf(Candidate(1, "試")), selectedCandidates)
+    }
+
+    @Test
+    fun shiftKey_tellsItsStateWithoutColour() {
+        val uiState = ImeUiState()
+        composeRule.setContent { TestTheme { Keyboard(rowsOf(SoftKeyboard.QWERTY), uiState) } }
+        val shiftLabel = appContext.getString(R.string.key_shift)
+        fun stateDescription(): String? = composeRule.onNodeWithContentDescription(shiftLabel)
+            .fetchSemanticsNode().config.getOrNull(SemanticsProperties.StateDescription)
+        assertEquals(appContext.getString(R.string.shift_state_off), stateDescription())
+        composeRule.onNodeWithContentDescription(shiftLabel).performClick()
+        composeRule.waitForIdle()
+        assertEquals(ShiftKey.ShiftKeyState.PRESSED, uiState.shiftKeyState)
+        assertEquals(appContext.getString(R.string.shift_state_next_key), stateDescription())
+        composeRule.onNodeWithContentDescription(shiftLabel).performClick()
+        composeRule.waitForIdle()
+        assertEquals(appContext.getString(R.string.shift_state_locked), stateDescription())
+    }
+
+    @Test
+    fun swipeKeys_offerTheirSwipesAsActions() {
+        composeRule.setContent { TestTheme { PhoneKeypad(ImeUiState()) } }
+        val key = CompactDachenKeypad.rows.flatten().first { it.up != null && it.down != null }
+        val node = composeRule.onNodeWithContentDescription(KeyLabels.forSwipeKey(key)).fetchSemanticsNode()
+        val actions = node.config.getOrNull(SemanticsActions.CustomActions).orEmpty()
+        val expected = listOfNotNull(key.up, key.right, key.left, key.down)
+            .map { appContext.getString(R.string.key_action_type, it.symbol) }
+        assertEquals(expected, actions.map { it.label })
+        actions.first().action()
+        composeRule.waitForIdle()
+        assertEquals(listOf(ImeAction.PrintingKeyDown(key.up!!.dachenKeyCode)), host.received<ImeAction.PrintingKeyDown>())
+    }
+
+    @Test
+    fun candidatesPanel_isATitledPane() {
+        val uiState = ImeUiState().apply { candidates = listOf(Candidate(0, "測")) }
+        composeRule.setContent { TestTheme { CandidatesPanel(uiState) } }
+        val titled = composeRule.onAllNodes(hasPaneTitle()).fetchSemanticsNodes()
+        assertEquals(appContext.getString(R.string.candidates_pane_title), titled.single().config[SemanticsProperties.PaneTitle])
     }
 
     @Test

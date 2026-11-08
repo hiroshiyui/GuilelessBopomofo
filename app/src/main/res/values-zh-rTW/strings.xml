@@ -65,6 +65,11 @@
     <string name="key_punctuation">標點符號</string>
     <string name="pre_edit_move_cursor_left">游標左移</string>
     <string name="pre_edit_move_cursor_right">游標右移</string>
+    <string name="shift_state_off">關閉</string>
+    <string name="shift_state_next_key">僅下一個字元</string>
+    <string name="shift_state_locked">鎖定</string>
+    <string name="candidates_pane_title">候選字</string>
+    <string name="key_action_type">輸入 %1$s</string>
     <string name="space_as_selection_key">把空白鍵當成候選字詞快速鍵</string>
     <string name="space_as_selection_key_description">如果啟用本功能，按下空白鍵會立即開啟「預編輯緩衝區」最尾端字詞的候選字詞列表</string>
     <string name="space_as_selection_key_switch_label">把空白鍵當成候選字詞快速鍵？</string>

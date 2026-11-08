@@ -46,7 +46,6 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberIntPreference
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberStringPreference
 
 private val HAPTIC_FEEDBACK_STRENGTH_RANGE = 0..255
-private val KEY_BUTTON_HEIGHT_RANGE_DP = 40..80
 private val DEFAULT_KEY_BUTTON_HEIGHT_DP = GuilelessDimens.KeyMinHeightDefault.value.toInt()
 
 @Composable
@@ -95,7 +94,7 @@ fun UserInterfaceSettingsScreen(modifier: Modifier = Modifier) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IntSliderPreference(
                 value = keyButtonHeight,
-                range = KEY_BUTTON_HEIGHT_RANGE_DP,
+                range = GuilelessDimens.KeyHeightRangeDp,
                 onValueChange = { keyButtonHeight = it },
                 modifier = Modifier.weight(1f),
             )

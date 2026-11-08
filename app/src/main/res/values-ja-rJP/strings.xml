@@ -64,6 +64,11 @@
     <string name="key_punctuation">句読点</string>
     <string name="pre_edit_move_cursor_left">カーソルを左へ</string>
     <string name="pre_edit_move_cursor_right">カーソルを右へ</string>
+    <string name="shift_state_off">オフ</string>
+    <string name="shift_state_next_key">次の 1 文字のみ</string>
+    <string name="shift_state_locked">ロック</string>
+    <string name="candidates_pane_title">候補</string>
+    <string name="key_action_type">%1$s を入力</string>
     <string name="space_as_selection_key">スペースキーを候補選択のショートカットキーとして使用する</string>
     <string name="space_as_selection_key_description">本機能を有効にすると、スペースキーを押すと即座に「プリエディットバッファ」の末端単語の候補一覧を表示します</string>
     <string name="space_as_selection_key_switch_label">スペースキーを候補選択のショートカットキーとして使用する？</string>
