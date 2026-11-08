@@ -6,8 +6,8 @@
 
 # Guileless Bopomofo 樸實注音鍵盤
 
-![Screenshot of Guileless Bopomofo](./media/Screenshot_20251223_234723.png)
-![Screenshot of Guileless Bopomofo](./media/Screenshot_20251223_235026.png)
+![Screenshot of Guileless Bopomofo](./media/Screenshot_20261109_000829.png)
+![Screenshot of Guileless Bopomofo](./media/Screenshot_20261109_001100.png)
 
 ## About 這是啥 概要
 
