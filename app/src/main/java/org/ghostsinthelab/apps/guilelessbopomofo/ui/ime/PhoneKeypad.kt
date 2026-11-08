@@ -109,6 +109,7 @@ private fun FunctionKeyCell(functionKey: FunctionKey, uiState: ImeUiState, heigh
         key = key,
         style = functionKey.style,
         icon = functionKey.iconFor(uiState),
+        label = functionKey.labelFor(uiState),
         minHeight = height,
         modifier = Modifier
             .fillMaxWidth()
@@ -135,6 +136,7 @@ private fun SwipeKeyCell(spec: SwipeKeySpec, height: Dp) {
         modifier = Modifier
             .fillMaxWidth()
             .height(height),
+        label = remember(spec) { KeyLabels.forSwipeKey(spec) },
         onSwipeDirectionChange = { aimedAt = it },
     ) {
         Box(modifier = Modifier.fillMaxSize()) {

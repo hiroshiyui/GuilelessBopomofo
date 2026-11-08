@@ -46,6 +46,24 @@
     <string name="fullscreen_when_in_landscape_setting_switch">画面が横向きの場合、全画面モードを有効にしますか？</string>
     <string name="fullscreen_when_in_portrait_setting_switch">画面が縦向きの場合、全画面モードを有効にしますか？</string>
     <string name="back_to_main_layout">キーボードに戻る</string>
+    <!-- what a screen reader says for the on-screen keys and the pre-edit buffer -->
+    <string name="key_backspace">バックスペース</string>
+    <string name="key_space">スペース</string>
+    <string name="key_enter">Enter キー</string>
+    <string name="key_enter_send">送信</string>
+    <string name="key_enter_search">検索</string>
+    <string name="key_enter_go">移動</string>
+    <string name="key_enter_next">次へ</string>
+    <string name="key_enter_previous">前へ</string>
+    <string name="key_enter_done">完了</string>
+    <string name="key_shift">Shift キー</string>
+    <string name="key_symbols">記号</string>
+    <string name="key_ime_switch">入力方法を切り替え</string>
+    <string name="key_switch_to_english">英数字に切り替え</string>
+    <string name="key_switch_to_bopomofo">注音符号に切り替え</string>
+    <string name="key_punctuation">句読点</string>
+    <string name="pre_edit_move_cursor_left">カーソルを左へ</string>
+    <string name="pre_edit_move_cursor_right">カーソルを右へ</string>
     <string name="space_as_selection_key">スペースキーを候補選択のショートカットキーとして使用する</string>
     <string name="space_as_selection_key_description">本機能を有効にすると、スペースキーを押すと即座に「プリエディットバッファ」の末端単語の候補一覧を表示します</string>
     <string name="space_as_selection_key_switch_label">スペースキーを候補選択のショートカットキーとして使用する？</string>

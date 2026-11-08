@@ -24,10 +24,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
@@ -115,6 +119,56 @@ class ImeComposeInstrumentedTest {
             spec.rows.sumOf { it.size } - imeSwitchKeys,
             composeRule.onAllNodesWithTag(KEY_TEST_TAG).fetchSemanticsNodes().size,
         )
+    }
+
+    @Test
+    fun everyKey_isALabelledButtonToAccessibilityServices() {
+        val uiState = ImeUiState().apply { imeSwitchEnabled = true }
+        var keyboard by mutableStateOf(SoftKeyboard.DACHEN)
+        composeRule.setContent {
+            TestTheme { Keyboard(rowsOf(keyboard), uiState) }
+        }
+        (SoftKeyboard.entries - SoftKeyboard.DACHEN_COMPACT).forEach { softKeyboard ->
+            keyboard = softKeyboard
+            composeRule.waitForIdle()
+            composeRule.onAllNodesWithTag(KEY_TEST_TAG).fetchSemanticsNodes().forEach { node ->
+                val description = node.config.getOrNull(SemanticsProperties.ContentDescription)?.joinToString()
+                assertTrue("$softKeyboard: a key without a label", !description.isNullOrBlank())
+                assertTrue("$softKeyboard: '$description' cannot be clicked", node.config.contains(SemanticsActions.OnClick))
+            }
+        }
+    }
+
+    @Test
+    fun phoneKeypad_keysAreLabelledButtons() {
+        val uiState = ImeUiState().apply { imeSwitchEnabled = true }
+        composeRule.setContent { TestTheme { PhoneKeypad(uiState) } }
+        composeRule.onAllNodesWithTag(KEY_TEST_TAG).fetchSemanticsNodes().forEach { node ->
+            val description = node.config.getOrNull(SemanticsProperties.ContentDescription)?.joinToString()
+            assertTrue("a keypad key without a label", !description.isNullOrBlank())
+            assertTrue("'$description' cannot be clicked", node.config.contains(SemanticsActions.OnClick))
+        }
+    }
+
+    @Test
+    fun clickingAKeyThroughAccessibility_typesIt() {
+        val uiState = ImeUiState()
+        composeRule.setContent { TestTheme { Keyboard(rowsOf(SoftKeyboard.DACHEN), uiState) } }
+        composeRule.onNodeWithContentDescription("ㄅ").performClick()
+        composeRule.waitForIdle()
+        assertEquals(listOf(ImeAction.PrintingKeyDown("KEYCODE_1")), host.received<ImeAction.PrintingKeyDown>())
+    }
+
+    @Test
+    fun candidates_readTheirTextAndCanBeClicked() {
+        val uiState = ImeUiState().apply {
+            candidates = listOf(Candidate(0, "測"), Candidate(1, "試"))
+            candidateLayoutStyle = ImeUiState.CandidateLayoutStyle.GRID
+        }
+        composeRule.setContent { TestTheme { CandidatesPanel(uiState) } }
+        composeRule.onNodeWithText("試").performClick()
+        composeRule.waitForIdle()
+        assertEquals(listOf(Candidate(1, "試")), selectedCandidates)
     }
 
     @Test

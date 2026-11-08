@@ -46,6 +46,24 @@
     <string name="fullscreen_when_in_landscape_setting_switch">Enable fullscreen when in landscape?</string>
     <string name="fullscreen_when_in_portrait_setting_switch">Enable fullscreen when in portrait?</string>
     <string name="back_to_main_layout">Back to keyboard</string>
+    <!-- what a screen reader says for the on-screen keys and the pre-edit buffer -->
+    <string name="key_backspace">Backspace</string>
+    <string name="key_space">Space</string>
+    <string name="key_enter">Enter</string>
+    <string name="key_enter_send">Send</string>
+    <string name="key_enter_search">Search</string>
+    <string name="key_enter_go">Go</string>
+    <string name="key_enter_next">Next</string>
+    <string name="key_enter_previous">Previous</string>
+    <string name="key_enter_done">Done</string>
+    <string name="key_shift">Shift</string>
+    <string name="key_symbols">Symbols</string>
+    <string name="key_ime_switch">Switch input method</string>
+    <string name="key_switch_to_english">Switch to English</string>
+    <string name="key_switch_to_bopomofo">Switch to Bopomofo</string>
+    <string name="key_punctuation">Punctuation</string>
+    <string name="pre_edit_move_cursor_left">Move cursor left</string>
+    <string name="pre_edit_move_cursor_right">Move cursor right</string>
     <string name="space_as_selection_key">Use Space key as candidates selection shortcut key</string>
     <string name="space_as_selection_key_description">If enabled, when Space key is being pressed, candidates selection list will be opened for the last word or phrase in the pre-edit buffer</string>
     <string name="space_as_selection_key_switch_label">Use Space key as candidates selection shortcut key?</string>

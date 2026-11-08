@@ -20,6 +20,9 @@ package org.ghostsinthelab.apps.guilelessbopomofo.ui.ime
 
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts.FunctionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.EnterKeyBehavior
@@ -38,7 +41,26 @@ fun enterKeyIcon(behavior: EnterKeyBehavior): Int = when (behavior) {
     }
 }
 
+/** What a screen reader says for the on-screen Enter: the action it will perform. */
+@StringRes
+fun enterKeyLabel(behavior: EnterKeyBehavior): Int = when (behavior) {
+    EnterKeyBehavior.NewLine -> R.string.key_enter
+    is EnterKeyBehavior.EditorAction -> when (behavior.actionId) {
+        EditorInfo.IME_ACTION_SEND -> R.string.key_enter_send
+        EditorInfo.IME_ACTION_SEARCH -> R.string.key_enter_search
+        EditorInfo.IME_ACTION_GO -> R.string.key_enter_go
+        EditorInfo.IME_ACTION_NEXT -> R.string.key_enter_next
+        EditorInfo.IME_ACTION_PREVIOUS -> R.string.key_enter_previous
+        else -> R.string.key_enter_done
+    }
+}
+
 /** The icon to draw on this key right now; only Enter's changes with the text field. */
 @DrawableRes
 fun FunctionKey.iconFor(uiState: ImeUiState): Int =
     if (this == FunctionKey.ENTER) enterKeyIcon(uiState.enterKeyBehavior) else icon
+
+/** What a screen reader says for this key right now; only Enter's changes with the text field. */
+@Composable
+fun FunctionKey.labelFor(uiState: ImeUiState): String =
+    stringResource(if (this == FunctionKey.ENTER) enterKeyLabel(uiState.enterKeyBehavior) else label)

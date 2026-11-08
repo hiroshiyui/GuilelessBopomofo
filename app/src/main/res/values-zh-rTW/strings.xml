@@ -47,6 +47,24 @@
     <string name="fullscreen_when_in_landscape_setting_switch">當畫面橫置時，啟用全螢幕模式？</string>
     <string name="fullscreen_when_in_portrait_setting_switch">當畫面直立時，啟用全螢幕模式？</string>
     <string name="back_to_main_layout">回到鍵盤</string>
+    <!-- what a screen reader says for the on-screen keys and the pre-edit buffer -->
+    <string name="key_backspace">退格</string>
+    <string name="key_space">空白鍵</string>
+    <string name="key_enter">Enter 鍵</string>
+    <string name="key_enter_send">傳送</string>
+    <string name="key_enter_search">搜尋</string>
+    <string name="key_enter_go">前往</string>
+    <string name="key_enter_next">下一個</string>
+    <string name="key_enter_previous">上一個</string>
+    <string name="key_enter_done">完成</string>
+    <string name="key_shift">Shift 鍵</string>
+    <string name="key_symbols">符號</string>
+    <string name="key_ime_switch">切換輸入法</string>
+    <string name="key_switch_to_english">切換為英數</string>
+    <string name="key_switch_to_bopomofo">切換為注音</string>
+    <string name="key_punctuation">標點符號</string>
+    <string name="pre_edit_move_cursor_left">游標左移</string>
+    <string name="pre_edit_move_cursor_right">游標右移</string>
     <string name="space_as_selection_key">把空白鍵當成候選字詞快速鍵</string>
     <string name="space_as_selection_key_description">如果啟用本功能，按下空白鍵會立即開啟「預編輯緩衝區」最尾端字詞的候選字詞列表</string>
     <string name="space_as_selection_key_switch_label">把空白鍵當成候選字詞快速鍵？</string>

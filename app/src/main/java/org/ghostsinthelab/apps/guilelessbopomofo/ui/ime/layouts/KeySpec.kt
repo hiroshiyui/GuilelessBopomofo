@@ -19,22 +19,27 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.layouts
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 
 /** How a key is coloured. */
 enum class KeyStyle { NORMAL, SPECIAL, ENTER }
 
-/** The keys that do something other than type a character. */
-enum class FunctionKey(@param:DrawableRes val icon: Int, val style: KeyStyle) {
-    MODE_SWITCH_TO_ENGLISH(R.drawable.ic_keyboard_mode_switch_eng, KeyStyle.SPECIAL),
-    MODE_SWITCH_TO_BOPOMOFO(R.drawable.ic_keyboard_mode_switch_bopomofo, KeyStyle.SPECIAL),
-    SYMBOL(R.drawable.ic_keyboard_symbol_chooser_24, KeyStyle.SPECIAL),
-    IME_SWITCH(R.drawable.ic_keyboard_ime_switch_24, KeyStyle.SPECIAL),
-    SPACE(R.drawable.ic_keyboard_space_24, KeyStyle.NORMAL),
-    PUNCTUATION(R.drawable.guileless_bopomofo_keyboard_punctuation, KeyStyle.SPECIAL),
-    BACKSPACE(R.drawable.ic_keyboard_backspace_24, KeyStyle.SPECIAL),
-    ENTER(R.drawable.ic_keyboard_return_24, KeyStyle.ENTER),
-    SHIFT(R.drawable.ic_keyboard_shift_24, KeyStyle.SPECIAL),
+/**
+ * The keys that do something other than type a character. [label] is what a screen reader
+ * says for the key; Enter's follows the text field, see
+ * [org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.labelFor].
+ */
+enum class FunctionKey(@param:DrawableRes val icon: Int, val style: KeyStyle, @param:StringRes val label: Int) {
+    MODE_SWITCH_TO_ENGLISH(R.drawable.ic_keyboard_mode_switch_eng, KeyStyle.SPECIAL, R.string.key_switch_to_english),
+    MODE_SWITCH_TO_BOPOMOFO(R.drawable.ic_keyboard_mode_switch_bopomofo, KeyStyle.SPECIAL, R.string.key_switch_to_bopomofo),
+    SYMBOL(R.drawable.ic_keyboard_symbol_chooser_24, KeyStyle.SPECIAL, R.string.key_symbols),
+    IME_SWITCH(R.drawable.ic_keyboard_ime_switch_24, KeyStyle.SPECIAL, R.string.key_ime_switch),
+    SPACE(R.drawable.ic_keyboard_space_24, KeyStyle.NORMAL, R.string.key_space),
+    PUNCTUATION(R.drawable.guileless_bopomofo_keyboard_punctuation, KeyStyle.SPECIAL, R.string.key_punctuation),
+    BACKSPACE(R.drawable.ic_keyboard_backspace_24, KeyStyle.SPECIAL, R.string.key_backspace),
+    ENTER(R.drawable.ic_keyboard_return_24, KeyStyle.ENTER, R.string.key_enter),
+    SHIFT(R.drawable.ic_keyboard_shift_24, KeyStyle.SPECIAL, R.string.key_shift),
 }
 
 /** One key of an on-screen keyboard; [weight] is its share of the row's width. */

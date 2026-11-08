@@ -37,8 +37,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.SwipeDirection
@@ -96,13 +102,20 @@ private fun KeyFor(keySpec: KeySpec, uiState: ImeUiState, keyHeight: Dp, modifie
     when (keySpec) {
         is KeySpec.Character -> {
             val key = remember(keySpec.keyCode) { CharacterKey(keySpec.keyCode) }
-            KeyButton(key, KeyStyle.NORMAL, keySpec.icon, keyHeight, modifier)
+            val resources = LocalContext.current.resources
+            val label = remember(keySpec) {
+                KeyLabels.forCharacterKey(resources.getResourceEntryName(keySpec.icon), keySpec.keyCode)
+            }
+            KeyButton(key, KeyStyle.NORMAL, keySpec.icon, label, keyHeight, modifier)
         }
 
         is KeySpec.Function -> {
             val key = remember(keySpec.key, uiState) { virtualKeyFor(keySpec.key, uiState) }
             val shiftBackground = if (keySpec.key == FunctionKey.SHIFT) shiftKeyColor(uiState.shiftKeyState) else null
-            KeyButton(key, keySpec.key.style, keySpec.key.iconFor(uiState), keyHeight, modifier, shiftBackground)
+            KeyButton(
+                key, keySpec.key.style, keySpec.key.iconFor(uiState), keySpec.key.labelFor(uiState),
+                keyHeight, modifier, shiftBackground,
+            )
         }
     }
 }
@@ -135,18 +148,19 @@ internal fun keyColors(style: KeyStyle): Pair<Color, Color> = with(MaterialTheme
     }
 }
 
-/** One key with an icon on it. */
+/** One key with an icon on it; [label] is what a screen reader says for it. */
 @Composable
 fun KeyButton(
     key: VirtualKey,
     style: KeyStyle,
     icon: Int,
+    label: String,
     minHeight: Dp,
     modifier: Modifier = Modifier,
     backgroundOverride: Color? = null,
 ) {
     val (background, content) = keyColors(style)
-    KeySurface(key, minHeight, backgroundOverride ?: background, modifier) {
+    KeySurface(key, minHeight, backgroundOverride ?: background, modifier, label = label) {
         Icon(painter = painterResource(icon), contentDescription = null, tint = content)
     }
 }
@@ -155,6 +169,9 @@ fun KeyButton(
  * The raised, rounded face of a key. The whole of its slot, the gaps around the face
  * included, answers to touch, like the insets of the MaterialButton it replaces did. The
  * face fills whatever size the slot is given, and wraps its content otherwise.
+ *
+ * To accessibility services the key is one button that a click taps. It is read as [label],
+ * or as the text on its face when there is none.
  */
 @Composable
 fun KeySurface(
@@ -163,6 +180,7 @@ fun KeySurface(
     background: Color,
     modifier: Modifier = Modifier,
     testTag: String = KEY_TEST_TAG,
+    label: String? = null,
     onSwipeDirectionChange: (SwipeDirection?) -> Unit = {},
     content: @Composable () -> Unit,
 ) {
@@ -171,6 +189,16 @@ fun KeySurface(
     Box(
         modifier = modifier
             .testTag(testTag)
+            .semantics(mergeDescendants = true) {
+                role = Role.Button
+                if (label != null) contentDescription = label
+                // a tap is a down and an up, and a key may act on either
+                onClick {
+                    key.onDown(host)
+                    key.onTap(host)
+                    true
+                }
+            }
             .heightIn(min = minHeight)
             .keyGestures(key, host, interactionSource, onSwipeDirectionChange)
             .padding(horizontal = GuilelessDimens.KeyHorizontalInset, vertical = GuilelessDimens.KeyVerticalInset),

@@ -67,6 +67,10 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.SpanStyle
@@ -80,6 +84,7 @@ import androidx.compose.ui.unit.dp
 import org.ghostsinthelab.apps.guilelessbopomofo.BuildConfig
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
+import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.events.ImeAction
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.ImeHost
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.SuggestionButton
@@ -182,7 +187,12 @@ private fun BufferArea(uiState: ImeUiState) {
         color = MaterialTheme.colorScheme.surfaceContainer,
         shadowElevation = GuilelessDimens.BufferElevation,
     ) {
-        FlowRow(modifier = Modifier.fillMaxWidth()) {
+        // One thing to a screen reader, read again as it changes
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite },
+        ) {
             PreEditBufferText(uiState)
             Text(
                 text = uiState.bopomofoText,
@@ -227,6 +237,16 @@ private fun PreEditBufferText(uiState: ImeUiState) {
     }
     val currentPadding by rememberUpdatedState(padding)
 
+    // Without a touch, the cursor moves by these; the same arrows a physical keyboard sends.
+    val moveLeft = stringResource(R.string.pre_edit_move_cursor_left)
+    val moveRight = stringResource(R.string.pre_edit_move_cursor_right)
+    val cursorActions = remember(moveLeft, moveRight, host) {
+        listOf(
+            CustomAccessibilityAction(moveLeft) { host.dispatch(ImeAction.DirectionKeyDown(DirectionKey.LEFT)); true },
+            CustomAccessibilityAction(moveRight) { host.dispatch(ImeAction.DirectionKeyDown(DirectionKey.RIGHT)); true },
+        )
+    }
+
     Text(
         text = buildAnnotatedString {
             append(text)
@@ -248,7 +268,8 @@ private fun PreEditBufferText(uiState: ImeUiState) {
                     }
                 }
             }
-            .padding(padding),
+            .padding(padding)
+            .semantics { if (text.isNotEmpty()) customActions = cursorActions },
         color = GuilelessColors.PreEditBufferText,
         style = BufferTextStyle,
         onTextLayout = { textLayout = it },
