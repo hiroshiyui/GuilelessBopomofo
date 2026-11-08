@@ -7,11 +7,11 @@
 # Guileless Bopomofo 樸實注音鍵盤
 
 <p align="center">
-  <img src="./media/Screenshot_20261109_000829.png" alt="Screenshot of Guileless Bopomofo" width="180">
-  <img src="./media/Screenshot_20261109_001100.png" alt="Screenshot of Guileless Bopomofo" width="180">
-  <img src="./media/Screenshot_20261109_001501.png" alt="Screenshot of Guileless Bopomofo" width="180">
-  <img src="./media/Screenshot_20261109_001503.png" alt="Screenshot of Guileless Bopomofo" width="180">
-  <img src="./media/Screenshot_20261109_001505.png" alt="Screenshot of Guileless Bopomofo" width="180">
+  <img src="./media/Screenshot_20261109_000829.png" alt="Screenshot of Guileless Bopomofo" width="160">
+  <img src="./media/Screenshot_20261109_001100.png" alt="Screenshot of Guileless Bopomofo" width="160">
+  <img src="./media/Screenshot_20261109_001501.png" alt="Screenshot of Guileless Bopomofo" width="160">
+  <img src="./media/Screenshot_20261109_001503.png" alt="Screenshot of Guileless Bopomofo" width="160">
+  <img src="./media/Screenshot_20261109_001505.png" alt="Screenshot of Guileless Bopomofo" width="160">
 </p>
 
 ## About 這是啥 概要
