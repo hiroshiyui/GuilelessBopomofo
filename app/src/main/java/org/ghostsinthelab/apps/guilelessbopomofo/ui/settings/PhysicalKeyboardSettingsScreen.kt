@@ -75,14 +75,14 @@ private val PHYSICAL_KEYBOARD_LAYOUTS: List<String> = listOf(
     BopomofoPhysicalKeyboards.KB_COLEMAK.layout,
 )
 
-// The radio buttons are labelled with the keys themselves.
+// The radio buttons are labelled with the keys themselves, in capitals as key caps are printed.
 private val SELECTION_KEY_OPTIONS: List<Pair<String, String>> = listOf(
     "1234567890" to SelectionKeys.NUMBER_ROW.set,
-    "qwertyuiop" to SelectionKeys.TAB_ROW.set,
-    "asdfghjkl;" to SelectionKeys.HOME_ROW.set,
-    "asdfgqwert" to SelectionKeys.HOME_TAB_MIXED_MODE1.set,
-    "hjkl;yuiop" to SelectionKeys.HOME_TAB_MIXED_MODE2.set,
-    "aoeuidhtns" to SelectionKeys.DVORAK_HOME_ROW.set,
+    "QWERTYUIOP" to SelectionKeys.TAB_ROW.set,
+    "ASDFGHJKL;" to SelectionKeys.HOME_ROW.set,
+    "ASDFGQWERT" to SelectionKeys.HOME_TAB_MIXED_MODE1.set,
+    "HJKL;YUIOP" to SelectionKeys.HOME_TAB_MIXED_MODE2.set,
+    "AOEUIDHTNS" to SelectionKeys.DVORAK_HOME_ROW.set,
 )
 
 @Composable
