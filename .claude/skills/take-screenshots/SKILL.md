@@ -23,8 +23,9 @@ text, 3 interface settings tab, 4 physical keyboard settings tab, 5 user
 vocabulary tab. Tablet sets have only 1 (general settings) and 2 (keyboard).
 
 When replacing README images, `git rm` the old dated files and update the
-`![Screenshot of Guileless Bopomofo](./media/...)` lines. Leave unrelated
-images in `media/` alone.
+`<img src="./media/..." width="180">` tags inside the centred `<p>` block
+(HTML tags, not Markdown images, so the width is capped on desktop browsers).
+Leave unrelated images in `media/` alone.
 
 ## Shared setup
 
