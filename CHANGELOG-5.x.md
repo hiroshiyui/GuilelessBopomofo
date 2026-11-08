@@ -1,5 +1,11 @@
 # Changelog — 5.x
 
+## 5.1.6
+- Added the hotkeys the physical keyboard tips were missing against `README.md`: Shift+Enter or Alt+Enter for a line break where Enter would submit, a long press of the right Shift for the punctuation candidates, and the ` key for the symbol categories, with ← and → paging. Enter, the arrows and ` are drawn as key caps by Libertinus Keyboard like the other key names.
+- Reworded each tip to name the feature first and the keys after, and laid the tips out as a full-width list below the info icon, one tip per line with a solid bullet and a gap between tips. The lead-in line is its own string, `tips_using_physical_keyboard_intro`.
+- Labelled the candidate selection key choices in capitals (`QWERTYUIOP`, `ASDFGHJKL;` and the rest), as physical key caps are printed; the stored preference names and the key codes passed to libchewing are unchanged.
+- Upgraded the Android Gradle Plugin to 9.5.1.
+
 ## 5.1.5
 - Set the physical key names in the physical keyboard tips (Shift, Alt, Space, I) in Libertinus Keyboard, whose `liga` ligatures draw each name as one key cap. The Traditional Chinese and Japanese tips now name the space bar "Space", since the font only ligates the English key names. The font (SIL Open Font License 1.1) ships as a font resource with its license in assets, credited in `NOTICES.md`.
 - Drew the candidate selection key choices (`1234567890`, `asdfghjkl;` and the rest) as a row of key caps in the same typeface, one cap per key.

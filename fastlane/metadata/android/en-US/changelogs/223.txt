@@ -1,0 +1,7 @@
+Hi there! Guileless Bopomofo 5.1.6 polishes the physical keyboard tips.
+
+* The tips now list every hotkey from the README: Shift+Enter or Alt+Enter for a line break, a long press of the right Shift for punctuation, and the ` key for symbols, with ← → to switch pages.
+* Each tip names what it does first, then the keys, laid out as a roomier list.
+* The candidate selection keys are shown in capitals, like printed key caps.
+
+Nothing changes in how I type. Thanks for using Guileless Bopomofo!
