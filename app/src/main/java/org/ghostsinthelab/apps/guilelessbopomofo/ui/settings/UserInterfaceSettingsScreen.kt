@@ -104,7 +104,7 @@ fun UserInterfaceSettingsScreen(modifier: Modifier = Modifier) {
 
         SettingsLabel(stringResource(R.string.accessibility_settings_label))
         SettingsDescription(stringResource(R.string.accessibility_settings_description))
-        BooleanPreferenceSwitch(R.string.outline_keys_switch, USER_OUTLINE_KEYS, true)
+        BooleanPreferenceSwitch(R.string.outline_keys_switch, USER_OUTLINE_KEYS, false)
 
         SettingsLabel(stringResource(R.string.text_view_setting_ime_switch))
         BooleanPreferenceSwitch(R.string.switch_setting_enable_ime_switch, USER_ENABLE_IME_SWITCH, false)

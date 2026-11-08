@@ -196,7 +196,7 @@ class KeyboardController(
             USER_KEY_BUTTON_HEIGHT, GuilelessDimens.KeyMinHeightDefault.value.toInt()
         ).coerceIn(GuilelessDimens.KeyHeightRangeDp)
         uiState.imeSwitchEnabled = sharedPreferences.getBoolean(USER_ENABLE_IME_SWITCH, false)
-        uiState.outlineKeys = sharedPreferences.getBoolean(USER_OUTLINE_KEYS, true)
+        uiState.outlineKeys = sharedPreferences.getBoolean(USER_OUTLINE_KEYS, false)
     }
 
     private fun switchToAlphanumericalLayout() {

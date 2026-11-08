@@ -147,7 +147,7 @@ internal fun virtualKeyFor(functionKey: FunctionKey, uiState: ImeUiState): Virtu
 }
 
 /** Whether key faces are outlined; [ImeRoot] provides it from [ImeUiState.outlineKeys]. */
-val LocalOutlineKeys = compositionLocalOf { true }
+val LocalOutlineKeys = compositionLocalOf { false }
 
 /** A small shape under a key's icon that tells its state apart from the others without colour. */
 enum class KeyMarker { DOT, BAR }
