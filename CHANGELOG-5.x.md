@@ -1,5 +1,16 @@
 # Changelog — 5.x
 
+## 5.2.0
+- Made the on-screen keyboard usable with screen readers. Every key surface is one Button node with a label and a click action: Bopomofo keys read their symbols (taken from the keycap drawable's name, `KeyLabels`), function keys their action, Enter the editor action it will perform, candidates and suggestions their text. The compact keypad's swipe keys offer what their swipes type as accessibility actions.
+- Announced keyboard state: the Shift key carries a state description (off, on for the next key, locked) and shows a dot or a bar under its arrow so the state no longer rests on color alone; the pre-edit buffer is a polite live region with "move cursor left/right" actions; the candidates panel is a titled pane; the compact bar and each paged candidate read as one node.
+- Fixed glyph contrast on the colored keys: each Shift state draws its glyph in the color that belongs to its background, and the dark theme's Enter glyph uses base10, so every glyph-on-key pairing passes 3:1.
+- Added an Accessibility section to the user interface settings with an optional 1dp outline around every key face (`USER_OUTLINE_KEYS`, off by default). Key preferences (height, IME switch key, outline) now apply the moment they change rather than at the next layout switch.
+- Raised the key height floor to 48dp; a smaller saved value is lifted to it.
+- Named the settings sliders for screen readers and marked the screen and section titles as headings. The settings header keeps its version line clear of the edges at large font sizes.
+- Let a physical Enter perform the text field's editor action (Send, Done, ...) in multi-line fields too, with Shift+Enter or Alt+Enter for a line break; the on-screen Enter keeps Android's rule (a line break in multi-line fields) and shows an icon for the action it will perform (Send, Search, Go/Next, Previous, Done).
+- Stripped the off-canvas paths from the 181 keycap and 8 key icon vectors, which carried every other glyph of their Inkscape sheet: 10,073 of 10,446 paths never drew. Each was verified pixel for pixel against its original. The drawables shrink from 7.8MB to under 1MB, the release APK from 13.0MB to 10.3MB, and keyboard composition is markedly faster.
+- Added screenshots of every settings tab and refreshed the phone and tablet screenshots in `README.md` and the store listing.
+
 ## 5.1.6
 - Added the hotkeys the physical keyboard tips were missing against `README.md`: Shift+Enter or Alt+Enter for a line break where Enter would submit, a long press of the right Shift for the punctuation candidates, and the ` key for the symbol categories, with ← and → paging. Enter, the arrows and ` are drawn as key caps by Libertinus Keyboard like the other key names.
 - Reworded each tip to name the feature first and the keys after, and laid the tips out as a full-width list below the info icon, one tip per line with a solid bullet and a gap between tips. The lead-in line is its own string, `tips_using_physical_keyboard_intro`.

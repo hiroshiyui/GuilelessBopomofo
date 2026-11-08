@@ -1,0 +1,8 @@
+Hi there! Guileless Bopomofo 5.2.0 learns to speak with screen readers.
+
+* Every key, candidate and suggestion announces itself to TalkBack, Shift tells its state, and the pre-edit buffer offers cursor actions.
+* A new Accessibility section in the UI settings, with an optional outline around the keys.
+* On a physical keyboard, Enter sends or submits where the app asks; Shift+Enter or Alt+Enter breaks the line.
+* Lighter keycap graphics: a smaller app, faster switches.
+
+Thanks for using it!
