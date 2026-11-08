@@ -61,6 +61,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -114,22 +117,28 @@ fun markupStringResource(
     }
 }
 
-/** `Settings.PrimaryHeader` */
+/** `Settings.PrimaryHeader`: the title of a settings screen, a heading to a screen reader. */
 @Composable
 fun SettingsPrimaryHeader(text: String) {
     Text(
         text = text,
+        modifier = Modifier.semantics { heading() },
         style = MaterialTheme.typography.headlineMedium,
         color = LocalGuilelessThemeExtras.current.primaryText,
     )
 }
 
-/** `Settings.Label`: the title of a settings section, the same space above every one. */
+/**
+ * `Settings.Label`: the title of a settings section, the same space above every one, and a
+ * heading a screen reader can jump to.
+ */
 @Composable
 fun SettingsLabel(text: String) {
     Text(
         text = text,
-        modifier = Modifier.padding(top = LabelTopMargin),
+        modifier = Modifier
+            .padding(top = LabelTopMargin)
+            .semantics { heading() },
         style = MaterialTheme.typography.headlineSmall,
         fontWeight = FontWeight.Bold,
         color = LocalGuilelessThemeExtras.current.secondaryText,
@@ -268,12 +277,13 @@ fun DropdownPreference(
     }
 }
 
-/** A whole-number slider over [range]. */
+/** A whole-number slider over [range]; [label] is what a screen reader calls it. */
 @Composable
 fun IntSliderPreference(
     value: Int,
     range: IntRange,
     onValueChange: (Int) -> Unit,
+    label: String,
     modifier: Modifier = Modifier,
 ) {
     Slider(
@@ -281,6 +291,8 @@ fun IntSliderPreference(
         onValueChange = { onValueChange(it.roundToInt()) },
         // Continuous and rounded, rather than discrete steps, so no tick marks are drawn.
         valueRange = range.first.toFloat()..range.last.toFloat(),
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .semantics { contentDescription = label },
     )
 }

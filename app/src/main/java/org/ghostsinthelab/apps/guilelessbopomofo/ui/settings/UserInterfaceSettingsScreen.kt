@@ -56,7 +56,8 @@ fun UserInterfaceSettingsScreen(modifier: Modifier = Modifier) {
     SettingsScreen(modifier) {
         SettingsPrimaryHeader(stringResource(R.string.user_interface_settings))
 
-        SettingsLabel(stringResource(R.string.haptic_feedback_strength))
+        val hapticFeedbackLabel = stringResource(R.string.haptic_feedback_strength)
+        SettingsLabel(hapticFeedbackLabel)
         SettingsDescription(stringResource(R.string.haptic_feedback_strength_description))
         var hapticFeedbackStrength by rememberIntPreference(
             USER_HAPTIC_FEEDBACK_STRENGTH, GuilelessBopomofoService.defaultHapticFeedbackStrength
@@ -72,6 +73,7 @@ fun UserInterfaceSettingsScreen(modifier: Modifier = Modifier) {
                         hapticFeedbackStrength = strength
                     }
                 },
+                label = hapticFeedbackLabel,
                 modifier = Modifier.weight(1f),
             )
             SettingsCurrentValue(stringResource(R.string.haptic_feedback_strength_setting, hapticFeedbackStrength))
@@ -87,7 +89,8 @@ fun UserInterfaceSettingsScreen(modifier: Modifier = Modifier) {
         BooleanPreferenceSwitch(R.string.fullscreen_when_in_landscape_setting_switch, USER_FULLSCREEN_WHEN_IN_LANDSCAPE, true)
         BooleanPreferenceSwitch(R.string.fullscreen_when_in_portrait_setting_switch, USER_FULLSCREEN_WHEN_IN_PORTRAIT, false)
 
-        SettingsLabel(stringResource(R.string.key_button_height_label))
+        val keyButtonHeightLabel = stringResource(R.string.key_button_height_label)
+        SettingsLabel(keyButtonHeightLabel)
         SettingsDescription(stringResource(R.string.key_button_height_description, DEFAULT_KEY_BUTTON_HEIGHT_DP))
         var keyButtonHeight by rememberIntPreference(
             USER_KEY_BUTTON_HEIGHT, DEFAULT_KEY_BUTTON_HEIGHT_DP
@@ -97,6 +100,7 @@ fun UserInterfaceSettingsScreen(modifier: Modifier = Modifier) {
                 value = keyButtonHeight,
                 range = GuilelessDimens.KeyHeightRangeDp,
                 onValueChange = { keyButtonHeight = it },
+                label = keyButtonHeightLabel,
                 modifier = Modifier.weight(1f),
             )
             SettingsCurrentValue(stringResource(R.string.key_button_height_setting, keyButtonHeight))
