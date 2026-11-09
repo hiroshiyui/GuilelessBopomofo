@@ -1,5 +1,13 @@
 # Changelog — 5.x
 
+## 5.2.1
+- Fixed the pre-edit buffer's "move cursor left/right" accessibility actions, which only re-read libchewing's cursor and never moved it, leaving every character before the last out of a screen reader's reach. The buffer now also states the cursor position through a state description.
+- Exposed long presses (common punctuation, input method picker) to accessibility services, and made an accessibility click on the IME switch key work when the double-touch switch is enabled (`VirtualKey.onAccessibilityClick`).
+- Stopped announcing the buffers as a live region in password fields (`EnglishWords.isPasswordField`, `ImeUiState.inPasswordField`).
+- Capped the font scale of candidates (1.3x) and suggestions (1.5x), whose fixed-height boxes cut the text off at large font sizes.
+- Raised contrast in the settings: the selected tab label, and selected radio buttons, switches, sliders and focused text fields, now use the primary text color instead of the theme's too-faint secondary and primary.
+- Laid the physical keyboard tips out as a bulleted list with a hanging indent, the bullet drawn by Compose rather than typed into the translated strings and hidden from screen readers, and set them in an information card.
+
 ## 5.2.0
 - Made the on-screen keyboard usable with screen readers. Every key surface is one Button node with a label and a click action: Bopomofo keys read their symbols (taken from the keycap drawable's name, `KeyLabels`), function keys their action, Enter the editor action it will perform, candidates and suggestions their text. The compact keypad's swipe keys offer what their swipes type as accessibility actions.
 - Announced keyboard state: the Shift key carries a state description (off, on for the next key, locked) and shows a dot or a bar under its arrow so the state no longer rests on color alone; the pre-edit buffer is a polite live region with "move cursor left/right" actions; the candidates panel is a titled pane; the compact bar and each paged candidate read as one node.

@@ -1,0 +1,9 @@
+Hi there! Guileless Bopomofo 5.2.1 keeps getting easier to use for everyone.
+
+* With TalkBack, the cursor actions now really move the cursor, and it says where it is.
+* Long-press keys work with screen readers, and passwords stay unspoken.
+* Candidates no longer get cut off at large font sizes.
+* Clearer tabs, switches and radio buttons in the light theme.
+* Physical keyboard tips now sit in a tidy card.
+
+Thanks for using it!
