@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.unit.dp
@@ -50,6 +51,8 @@ private val SelectionKeysSpacing = 16.dp
 private val TipsSpacing = 24.dp
 private val TipsIconSpacing = 8.dp
 private val TipItemSpacing = 8.dp
+private val TipBulletSpacing = 8.dp
+private const val TIP_BULLET = "•"
 
 // Key names in the tips are set in Libertinus Keyboard, whose ligatures draw a whole name
 // ("Shift", "Space", ...) as one key cap.
@@ -141,8 +144,18 @@ fun PhysicalKeyboardSettingsScreen(modifier: Modifier = Modifier) {
             Modifier.padding(top = TipsIconSpacing),
             verticalArrangement = Arrangement.spacedBy(TipItemSpacing),
         ) {
-            tips.lines().forEach { Text(it) }
+            tips.lines().forEach { TipBulletItem(it) }
         }
+    }
+}
+
+/** One tip of the list: wrapped lines hang level with the text, clear of the bullet. */
+@Composable
+private fun TipBulletItem(tip: AnnotatedString) {
+    Row {
+        // Decoration only: a screen reader should read the tip alone.
+        Text(TIP_BULLET, Modifier.clearAndSetSemantics {})
+        Text(tip, Modifier.padding(start = TipBulletSpacing).weight(1f))
     }
 }
 
