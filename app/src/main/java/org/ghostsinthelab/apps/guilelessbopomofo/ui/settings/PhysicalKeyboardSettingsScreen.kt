@@ -22,7 +22,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,6 +51,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberStringPreference
 private val DropdownSpacing = 8.dp
 private val SelectionKeysSpacing = 16.dp
 private val TipsSpacing = 24.dp
+private val TipsCardPadding = 16.dp
 private val TipsIconSpacing = 8.dp
 private val TipItemSpacing = 8.dp
 private val TipBulletSpacing = 8.dp
@@ -127,24 +130,31 @@ fun PhysicalKeyboardSettingsScreen(modifier: Modifier = Modifier) {
         SettingsDescription(stringResource(R.string.textViewSettingsDescriptionConversionEnginesPhysical))
         ConversionEnginePreference(USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD)
 
-        Row(
-            modifier = Modifier.padding(top = TipsSpacing),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Image(painter = painterResource(android.R.drawable.ic_menu_info_details), contentDescription = null)
-            Text(
-                stringResource(R.string.tips_using_physical_keyboard_intro),
-                Modifier.padding(start = TipsIconSpacing),
-            )
-        }
-        // The tips run the full width, so the icon does not indent them, one per line
-        // with a gap between them.
-        val tips = markupStringResource(R.string.tips_using_physical_keyboard, PhysicalKeyStyle)
-        Column(
-            Modifier.padding(top = TipsIconSpacing),
-            verticalArrangement = Arrangement.spacedBy(TipItemSpacing),
-        ) {
-            tips.lines().forEach { TipBulletItem(it) }
+        KeybindingTipsCard(Modifier.padding(top = TipsSpacing))
+    }
+}
+
+/** The keybinding tips, set apart from the settings above them as an information card. */
+@Composable
+private fun KeybindingTipsCard(modifier: Modifier = Modifier) {
+    Card(modifier.fillMaxWidth()) {
+        Column(Modifier.padding(TipsCardPadding)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(painter = painterResource(android.R.drawable.ic_menu_info_details), contentDescription = null)
+                Text(
+                    stringResource(R.string.tips_using_physical_keyboard_intro),
+                    Modifier.padding(start = TipsIconSpacing),
+                )
+            }
+            // The tips run the full width, so the icon does not indent them, one per line
+            // with a gap between them.
+            val tips = markupStringResource(R.string.tips_using_physical_keyboard, PhysicalKeyStyle)
+            Column(
+                Modifier.padding(top = TipsIconSpacing),
+                verticalArrangement = Arrangement.spacedBy(TipItemSpacing),
+            ) {
+                tips.lines().forEach { TipBulletItem(it) }
+            }
         }
     }
 }
