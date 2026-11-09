@@ -77,8 +77,13 @@ object EnglishWords {
     fun fieldAllowsSuggestions(inputType: Int): Boolean {
         if (inputType and InputType.TYPE_MASK_CLASS != InputType.TYPE_CLASS_TEXT) return false
         if (inputType and InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS != 0) return false
-        return inputType and InputType.TYPE_MASK_VARIATION !in PASSWORD_VARIATIONS
+        return !isPasswordField(inputType)
     }
+
+    /** Whether a text field of the given input type holds a password. */
+    fun isPasswordField(inputType: Int): Boolean =
+        inputType and InputType.TYPE_MASK_CLASS == InputType.TYPE_CLASS_TEXT &&
+            inputType and InputType.TYPE_MASK_VARIATION in PASSWORD_VARIATIONS
 
     private val PASSWORD_VARIATIONS = setOf(
         InputType.TYPE_TEXT_VARIATION_PASSWORD,

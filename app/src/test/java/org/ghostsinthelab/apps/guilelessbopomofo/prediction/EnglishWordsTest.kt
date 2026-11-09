@@ -174,6 +174,26 @@ class EnglishWordsTest {
         assertFalse(EnglishWords.fieldAllowsSuggestions(InputType.TYPE_NULL))
     }
 
+    // --- isPasswordField ---
+
+    @Test
+    fun passwordVariations_areRecognized() {
+        listOf(
+            InputType.TYPE_TEXT_VARIATION_PASSWORD,
+            InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
+            InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD,
+        ).forEach { variation ->
+            assertTrue("variation $variation", EnglishWords.isPasswordField(InputType.TYPE_CLASS_TEXT or variation))
+        }
+    }
+
+    @Test
+    fun otherFields_areNotPasswordFields() {
+        assertFalse(EnglishWords.isPasswordField(InputType.TYPE_CLASS_TEXT))
+        assertFalse(EnglishWords.isPasswordField(InputType.TYPE_CLASS_PHONE))
+        assertFalse(EnglishWords.isPasswordField(InputType.TYPE_NULL))
+    }
+
     // --- closesUpToPreviousWord ---
 
     @Test

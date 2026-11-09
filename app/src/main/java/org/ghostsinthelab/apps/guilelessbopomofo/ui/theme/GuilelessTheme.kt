@@ -35,10 +35,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DYNAMIC_COLOR
@@ -203,6 +205,14 @@ private fun wineColorScheme(): ColorScheme {
     )
 }
 
+/** This size, grown with the user's font scale only as far as [maxScale]: for text in a box of a fixed height. */
+@Composable
+@ReadOnlyComposable
+fun TextUnit.cappedAtFontScale(maxScale: Float): TextUnit {
+    val fontScale = LocalDensity.current.fontScale
+    return if (fontScale > maxScale) this * (maxScale / fontScale) else this
+}
+
 /** Sizes and type that the XML styles used to carry. */
 object GuilelessDimens {
     // A key's slot is KeyMinHeightDefault (or the user's key height) tall; the raised face
@@ -227,6 +237,8 @@ object GuilelessDimens {
     val CandidateHorizontalInset = 4.dp
     val CandidateHorizontalPadding = 24.dp
     val CandidateTextSize = 24.sp
+    /** Candidate rows are of a fixed height, 55dp less the key insets; any larger and the text is cut off. */
+    const val CandidateMaxFontScale = 1.3f
     val PagedCandidateTextSize = 20.sp
     val SelectionKeyTextSize = 12.sp
 
@@ -236,6 +248,8 @@ object GuilelessDimens {
     val SuggestionHorizontalPadding = 16.dp
     val SuggestionMargin = 2.dp
     val SuggestionTextSize = 18.sp
+    /** The suggestion strip is of a fixed height too. */
+    const val SuggestionMaxFontScale = 1.5f
 
     val BufferElevation = 4.dp
     val BufferTextSize = 26.sp

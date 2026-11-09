@@ -52,6 +52,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.onLongClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
@@ -256,11 +257,16 @@ fun KeySurface(
                 if (label != null) contentDescription = label
                 if (stateDescription != null) this.stateDescription = stateDescription
                 if (customActions.isNotEmpty()) this.customActions = customActions
-                // a tap is a down and an up, and a key may act on either
                 onClick {
-                    key.onDown(host)
-                    key.onTap(host)
+                    key.onAccessibilityClick(host)
                     true
+                }
+                if (key.detectsLongPress) {
+                    onLongClick {
+                        key.onDown(host)
+                        key.onLongPress(host)
+                        true
+                    }
                 }
             }
             .heightIn(min = minHeight)

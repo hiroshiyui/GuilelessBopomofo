@@ -46,6 +46,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -73,6 +74,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.UserInterfaceSettin
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.settings.UserPhraseManagerScreen
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.EdgeToEdgeFollowingTheme
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessTheme
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.LocalGuilelessThemeExtras
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.applyThemeModeToWindow
 
 /**
@@ -154,6 +156,10 @@ private fun SettingsApp(onAppIconClick: () -> Unit) {
                         onClick = { currentTab = tab },
                         icon = { Icon(painterResource(tab.icon), contentDescription = null) },
                         label = { Text(stringResource(tab.title)) },
+                        // the default, the theme's secondary, is too faint on the bar to read
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedTextColor = LocalGuilelessThemeExtras.current.primaryText,
+                        ),
                     )
                 }
             }

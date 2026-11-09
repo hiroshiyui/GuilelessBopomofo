@@ -65,6 +65,8 @@
     <string name="key_punctuation">標點符號</string>
     <string name="pre_edit_move_cursor_left">游標左移</string>
     <string name="pre_edit_move_cursor_right">游標右移</string>
+    <string name="pre_edit_cursor_on">游標在「%1$s」，第 %2$d 字，共 %3$d 字</string>
+    <string name="pre_edit_cursor_at_end">游標在最後</string>
     <string name="shift_state_off">關閉</string>
     <string name="shift_state_next_key">僅下一個字元</string>
     <string name="shift_state_locked">鎖定</string>

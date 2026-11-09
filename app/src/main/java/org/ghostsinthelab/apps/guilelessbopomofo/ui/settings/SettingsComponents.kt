@@ -46,10 +46,15 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
@@ -58,6 +63,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -182,6 +188,18 @@ fun SettingsButton(text: String, onClick: () -> Unit, modifier: Modifier = Modif
     }
 }
 
+/** The colour a control is marked active in: the theme's primary is too faint against the light surfaces. */
+private val activeControlColor: Color
+    @Composable @ReadOnlyComposable get() = LocalGuilelessThemeExtras.current.primaryText
+
+/** An outlined text field whose focus can be made out against the light surfaces. */
+@Composable
+fun settingsTextFieldColors(): TextFieldColors = OutlinedTextFieldDefaults.colors(
+    focusedBorderColor = activeControlColor,
+    focusedLabelColor = activeControlColor,
+    cursorColor = activeControlColor,
+)
+
 /** A label with a switch at its end; the whole row toggles. */
 @Composable
 fun SwitchPreferenceRow(
@@ -199,7 +217,14 @@ fun SwitchPreferenceRow(
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(text = text, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-        Switch(checked = checked, onCheckedChange = null)
+        Switch(
+            checked = checked,
+            onCheckedChange = null,
+            colors = SwitchDefaults.colors(
+                checkedTrackColor = activeControlColor,
+                checkedThumbColor = MaterialTheme.colorScheme.surface,
+            ),
+        )
     }
 }
 
@@ -222,7 +247,11 @@ fun <T> RadioGroupPreference(
                     .selectable(selected = value == selected, role = Role.RadioButton) { onSelected(value) },
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                RadioButton(selected = value == selected, onClick = null)
+                RadioButton(
+                    selected = value == selected,
+                    onClick = null,
+                    colors = RadioButtonDefaults.colors(selectedColor = activeControlColor),
+                )
                 Text(text = label, modifier = Modifier.padding(start = RadioLabelSpacing), style = labelStyle)
             }
         }
@@ -256,6 +285,7 @@ fun DropdownPreference(
             onValueChange = {},
             readOnly = true,
             singleLine = true,
+            colors = settingsTextFieldColors(),
             label = label?.let { { Text(it) } },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
@@ -291,6 +321,7 @@ fun IntSliderPreference(
         onValueChange = { onValueChange(it.roundToInt()) },
         // Continuous and rounded, rather than discrete steps, so no tick marks are drawn.
         valueRange = range.first.toFloat()..range.last.toFloat(),
+        colors = SliderDefaults.colors(thumbColor = activeControlColor, activeTrackColor = activeControlColor),
         modifier = modifier
             .fillMaxWidth()
             .semantics { contentDescription = label },

@@ -68,6 +68,9 @@ class ImeUiState {
 
     var bopomofoText: String by mutableStateOf("")
 
+    /** The buffers are then not announced as they change, so that a password is not read out. */
+    var inPasswordField: Boolean by mutableStateOf(false)
+
     /** The buffers and the suggestion strip take turns above the keyboard. */
     var showBuffers: Boolean by mutableStateOf(true)
     var suggestions: List<String> by mutableStateOf(emptyList())

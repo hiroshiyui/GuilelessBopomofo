@@ -50,6 +50,12 @@ object ImeSwitchFunctionKey : VirtualKey {
         imm.showInputMethodPicker()
     }
 
+    // Whichever gesture the user set, a click is the one way a service has to ask.
+    override fun onAccessibilityClick(host: ImeHost) {
+        onDown(host)
+        switchNextInputMethod(host)
+    }
+
     private fun switchesOnDoubleTap(host: ImeHost): Boolean =
         host.context.appSharedPreferences.getBoolean(USER_ENABLE_DOUBLE_TOUCH_IME_SWITCH, false)
 

@@ -56,6 +56,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.virtual.CandidateButton
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessDimens
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessFonts
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.LocalGuilelessThemeExtras
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.cappedAtFontScale
 
 /** Test tag of every candidate, for counting them. */
 const val CANDIDATE_TEST_TAG = "candidate"
@@ -137,7 +138,7 @@ private fun CandidateItem(candidate: Candidate) {
                 .padding(horizontal = GuilelessDimens.CandidateHorizontalPadding),
             color = MaterialTheme.colorScheme.onSurface,
             fontFamily = GuilelessFonts.Candidate,
-            fontSize = GuilelessDimens.CandidateTextSize,
+            fontSize = GuilelessDimens.CandidateTextSize.cappedAtFontScale(GuilelessDimens.CandidateMaxFontScale),
             maxLines = 1,
             textAlign = TextAlign.Center,
         )

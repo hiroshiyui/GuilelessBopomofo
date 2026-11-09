@@ -64,6 +64,8 @@
     <string name="key_punctuation">句読点</string>
     <string name="pre_edit_move_cursor_left">カーソルを左へ</string>
     <string name="pre_edit_move_cursor_right">カーソルを右へ</string>
+    <string name="pre_edit_cursor_on">カーソル位置：%1$s（%3$d 文字中 %2$d 文字目）</string>
+    <string name="pre_edit_cursor_at_end">カーソルは末尾です</string>
     <string name="shift_state_off">オフ</string>
     <string name="shift_state_next_key">次の 1 文字のみ</string>
     <string name="shift_state_locked">ロック</string>

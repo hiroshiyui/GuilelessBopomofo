@@ -65,6 +65,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyboard
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.BigramPredictor
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishPrediction
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishSuggestions
+import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishWords
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.ScowlWordPredictor
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeRoot
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
@@ -297,6 +298,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         }
 
         englishSuggestions.onStartInput(info?.inputType)
+        uiState.inPasswordField = info?.inputType?.let(EnglishWords::isPasswordField) ?: false
 
         // the on-screen Enter shows what it will do in this text field
         uiState.enterKeyBehavior = enterKeyBehavior(info, lineBreakInMultiLineFields = true)

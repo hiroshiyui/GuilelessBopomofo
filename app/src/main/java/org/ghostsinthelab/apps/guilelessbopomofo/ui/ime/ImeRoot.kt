@@ -72,6 +72,7 @@ import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
@@ -82,6 +83,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import org.ghostsinthelab.apps.guilelessbopomofo.BuildConfig
+import org.ghostsinthelab.apps.guilelessbopomofo.ChewingUtil
 import org.ghostsinthelab.apps.guilelessbopomofo.R
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
@@ -96,6 +98,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessColors
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessDimens
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessFonts
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.LocalGuilelessThemeExtras
+import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.cappedAtFontScale
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Haptics
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.Vibratable
 
@@ -187,11 +190,13 @@ private fun BufferArea(uiState: ImeUiState) {
         color = MaterialTheme.colorScheme.surfaceContainer,
         shadowElevation = GuilelessDimens.BufferElevation,
     ) {
-        // One thing to a screen reader, read again as it changes
+        // One thing to a screen reader, read again as it changes; but never a password out loud
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite },
+                .semantics(mergeDescendants = true) {
+                    if (!uiState.inPasswordField) liveRegion = LiveRegionMode.Polite
+                },
         ) {
             PreEditBufferText(uiState)
             Text(
@@ -242,15 +247,21 @@ private fun PreEditBufferText(uiState: ImeUiState) {
     val moveRight = stringResource(R.string.pre_edit_move_cursor_right)
     val cursorActions = remember(moveLeft, moveRight, host) {
         listOf(
-            CustomAccessibilityAction(moveLeft) { host.dispatch(ImeAction.DirectionKeyDown(DirectionKey.LEFT)); true },
-            CustomAccessibilityAction(moveRight) { host.dispatch(ImeAction.DirectionKeyDown(DirectionKey.RIGHT)); true },
+            CustomAccessibilityAction(moveLeft) { ChewingUtil.moveCursorHorizontally(host, DirectionKey.LEFT); true },
+            CustomAccessibilityAction(moveRight) { ChewingUtil.moveCursorHorizontally(host, DirectionKey.RIGHT); true },
         )
     }
+
+    // The underline, for whom cannot see it.
+    val cursorRange = text.utf16RangeOfCharacter(cursorIndex)
+    val cursorPosition = cursorRange?.let {
+        stringResource(R.string.pre_edit_cursor_on, text.substring(it), cursorIndex + 1, text.codePointCount(0, text.length))
+    } ?: stringResource(R.string.pre_edit_cursor_at_end)
 
     Text(
         text = buildAnnotatedString {
             append(text)
-            text.utf16RangeOfCharacter(cursorIndex)?.let { range ->
+            cursorRange?.let { range ->
                 addStyle(SpanStyle(textDecoration = TextDecoration.Underline), range.first, range.last + 1)
             }
         },
@@ -269,7 +280,12 @@ private fun PreEditBufferText(uiState: ImeUiState) {
                 }
             }
             .padding(padding)
-            .semantics { if (text.isNotEmpty()) customActions = cursorActions },
+            .semantics {
+                if (text.isNotEmpty()) {
+                    customActions = cursorActions
+                    stateDescription = cursorPosition
+                }
+            },
         color = GuilelessColors.PreEditBufferText,
         style = BufferTextStyle,
         onTextLayout = { textLayout = it },
@@ -319,7 +335,7 @@ private fun SuggestionStrip(words: List<String>) {
                         .widthIn(min = GuilelessDimens.SuggestionMinWidth)
                         .padding(horizontal = GuilelessDimens.SuggestionHorizontalPadding),
                     color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = GuilelessDimens.SuggestionTextSize,
+                    fontSize = GuilelessDimens.SuggestionTextSize.cappedAtFontScale(GuilelessDimens.SuggestionMaxFontScale),
                     maxLines = 1,
                     textAlign = TextAlign.Center,
                 )

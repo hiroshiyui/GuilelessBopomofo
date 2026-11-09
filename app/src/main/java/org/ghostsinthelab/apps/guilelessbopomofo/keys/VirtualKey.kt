@@ -63,4 +63,13 @@ interface VirtualKey : Vibratable {
     fun onRepeat(host: ImeHost) {}
     /** The finger swiped off in [direction], for keys that [detectsSwipes]. */
     fun onSwipe(host: ImeHost, direction: SwipeDirection) {}
+
+    /**
+     * An accessibility service clicked the key: a down and an up, for a key may act on either.
+     * A key whose main action is a gesture a service cannot make does it here instead.
+     */
+    fun onAccessibilityClick(host: ImeHost) {
+        onDown(host)
+        onTap(host)
+    }
 }

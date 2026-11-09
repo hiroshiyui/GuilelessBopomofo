@@ -175,6 +175,7 @@ fun UserPhraseManagerScreen(modifier: Modifier = Modifier) {
                 placeholder = { Text(stringResource(R.string.search_user_phrases_hint)) },
                 leadingIcon = { Icon(painterResource(android.R.drawable.ic_menu_search), contentDescription = null) },
                 singleLine = true,
+                colors = settingsTextFieldColors(),
             )
             Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
                 if (shownPhrases.isEmpty()) {
@@ -339,6 +340,7 @@ private fun AddUserPhraseDialog(onDismiss: () -> Unit, onAdd: (phrase: String, b
                     },
                     label = { Text(stringResource(R.string.user_phrase_input_hint)) },
                     singleLine = true,
+                    colors = settingsTextFieldColors(),
                     modifier = Modifier.fillMaxWidth(),
                 )
                 FilledTonalButton(
@@ -375,6 +377,7 @@ private fun AddUserPhraseDialog(onDismiss: () -> Unit, onAdd: (phrase: String, b
                         onValueChange = { manualBopomofo = it },
                         label = { Text(stringResource(R.string.bopomofo_input_hint)) },
                         singleLine = true,
+                        colors = settingsTextFieldColors(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = DialogFieldSpacing),
