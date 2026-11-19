@@ -41,7 +41,7 @@ class Chewing {
         }
     }
 
-    /** The native library could not be loaded, so there is nothing to type with. */
+    /** The native library could not be loaded, or libchewing could not open a context. */
     object ChewingInitException : Throwable() {
         private fun readResolve(): Any = ChewingInitException
         override val message: String = "Unable to initialize Chewing"
@@ -133,9 +133,11 @@ class Chewing {
      * Opens a context on the data in [dataPath], first handing back any context still open,
      * which would otherwise be leaked.
      */
+    /** @throws ChewingInitException if libchewing cannot open a context in [dataPath]. */
     fun connect(dataPath: String): Long {
         delete()
         context = chewingNew(dataPath)
+        if (context == 0L) throw ChewingInitException
         return context
     }
 

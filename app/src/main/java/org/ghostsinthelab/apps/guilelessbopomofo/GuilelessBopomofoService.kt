@@ -299,6 +299,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
         englishSuggestions.onStartInput(info?.inputType)
         uiState.inPasswordField = info?.inputType?.let(EnglishWords::isPasswordField) ?: false
+        chewingSettings.applyLearningFor(info)
 
         // the on-screen Enter shows what it will do in this text field
         uiState.enterKeyBehavior = enterKeyBehavior(info, lineBreakInMultiLineFields = true)

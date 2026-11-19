@@ -4,6 +4,13 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
+// The libchewing commit this build ships, which pins its dictionary data too. Installs compare
+// it with what they last copied, so new dictionaries reach them without a version bump.
+val chewingRevision: String = providers.exec {
+    isIgnoreExitValue = true
+    commandLine("git", "-C", "${rootDir}/app/src/main/cpp/libs/libchewing", "rev-parse", "HEAD")
+}.standardOutput.asText.map { it.trim() }.getOrElse("").ifEmpty { "unknown" }
+
 android {
     compileSdk = 37
     buildToolsVersion = "37.0.0"
@@ -19,6 +26,8 @@ android {
         targetSdk = 37
         versionCode = 225
         versionName = "5.2.1"
+
+        buildConfigField("String", "CHEWING_REVISION", "\"$chewingRevision\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
@@ -96,7 +105,9 @@ tasks.matching { it.name.matches(Regex("sign\\w+Bundle")) }.configureEach {
 }
 
 val chewingLibraryPath: String = "${rootDir}/app/src/main/cpp/libs/libchewing"
-val chewingDataFiles = listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
+val chewingDataFiles = listOf(
+    "static_dict.bin", "rare_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
+)
 
 val rustupAvailable = providers.exec {
     isIgnoreExitValue = true
@@ -114,14 +125,16 @@ tasks.register<Exec>("prepareChewing") {
 tasks.register<Exec>("buildChewingData") {
     dependsOn("prepareChewing")
     workingDir("$chewingLibraryPath/build")
-    commandLine("make", "dict_chewing", "misc")
+    commandLine("make", "dict_chewing_v4", "misc")
 }
 
 tasks.register<Copy>("copyChewingDataFiles") {
     dependsOn("buildChewingData")
-    from("$chewingLibraryPath/build/data/dict/chewing") {
-        include("tsi.dat")
-        include("word.dat")
+    from("$chewingLibraryPath/build/data/dict/chewing_v4") {
+        include("static_dict.bin")
+        include("rare_dict.bin")
+        include("static_words.bin")
+        include("static_lm.bin")
     }
     from("$chewingLibraryPath/build/data/misc") {
         include("swkb.dat")

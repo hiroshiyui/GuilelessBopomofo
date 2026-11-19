@@ -19,6 +19,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.view.inputmethod.EditorInfo
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDIDATE_SELECTION_KEYS_OPTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD
@@ -26,6 +27,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABL
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyboard
+import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishWords
 
 /**
  * What this input method sets on a libchewing context, from the user's preferences and its
@@ -36,6 +38,10 @@ class ChewingSettings(
     private val sharedPreferences: SharedPreferences,
     private val physicalKeyboard: PhysicalKeyboard,
 ) {
+    // Whether the text field being typed in lets libchewing learn from it. Kept here, as a
+    // reconnected context starts out learning again and applyAll() has to put this back.
+    private var learningAllowed = true
+
     /**
      * Installs the dictionaries if need be, connects libchewing and sets it up for Bopomofo.
      *
@@ -46,7 +52,7 @@ class ChewingSettings(
     fun initialize(context: Context) {
         val dataPath = context.applicationInfo.dataDir
         ChewingUtil.setupChewingData(context, dataPath)
-        ChewingBridge.chewing.connect(dataPath)
+        ChewingUtil.connect(dataPath)
 
         ChewingBridge.chewing.setChiEngMode(ChiEngMode.CHINESE.mode)
         applyAll()
@@ -60,7 +66,27 @@ class ChewingSettings(
         ChewingBridge.chewing.setCandPerPage(CANDIDATES_PER_PAGE)
         ChewingBridge.chewing.configSetInt("chewing.sort_candidates_by_frequency", 1)
         applySelectionKeys()
+        applyLearning()
     }
+
+    /**
+     * Lets libchewing learn phrases and typing history from the text field [info] describes,
+     * unless it asks not to be learned from, as incognito tabs do, or holds a password.
+     */
+    fun applyLearningFor(info: EditorInfo?) {
+        learningAllowed = info?.let { !it.forbidsLearning() } ?: true
+        applyLearning()
+    }
+
+    // Also stops libchewing 0.14 recording the typing history in v4/history_dict.bin.
+    private fun applyLearning() {
+        ChewingBridge.chewing.configSetInt(OPTION_DISABLE_AUTO_LEARN, if (learningAllowed) 0 else 1)
+    }
+
+    // IME_FLAG_NO_PERSONALIZED_LEARNING is from API 26; older text fields never set it.
+    private fun EditorInfo.forbidsLearning(): Boolean =
+        imeOptions and EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING != 0 ||
+            EnglishWords.isPasswordField(inputType)
 
     /** The engine depends on which keyboard is in use, so this goes with every change of that. */
     fun applyConversionEngine() {
@@ -106,5 +132,6 @@ class ChewingSettings(
 
     companion object {
         private const val CANDIDATES_PER_PAGE = 10
+        private const val OPTION_DISABLE_AUTO_LEARN = "chewing.disable_auto_learn_phrase"
     }
 }

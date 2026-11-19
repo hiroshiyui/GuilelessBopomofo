@@ -50,7 +50,9 @@ class KeyboardControllerInstrumentedTest {
     private val logTag = "KeyboardControllerTest"
     private val appContext = InstrumentationRegistry.getInstrumentation().targetContext
     private val dataPath: String = appContext.dataDir.absolutePath
-    private val chewingDataFiles = listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
+    private val chewingDataFiles = listOf(
+        "static_dict.bin", "rare_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
+    )
 
     private lateinit var sharedPreferences: SharedPreferences
     private val uiState = ImeUiState()

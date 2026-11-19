@@ -10,6 +10,10 @@ If you choose to use my App, then you agree to the collection and use of informa
 
 For a better experience, while using my App, I may require you to provide me with certain personally identifiable information. The information that I request will be retained on your device and is not collected by me in any way.
 
+**What the Keyboard Learns on Your Device**
+
+To offer better candidates, the App learns from the Bopomofo text you type: the phrases you add or pick, and which words you tend to type one after another. This stays in the App's private storage on your device. It is never sent anywhere, and it is left out of device backups. The App does not learn from password fields, or from text fields that ask not to be learned from, such as incognito browser tabs. You can erase everything it has learned at any time with Reset in the User Phrase Manager.
+
 **Log Data**
 
 I want to inform you that whenever you use my App, in a case of an error in the app I collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing my App, the time and date of your use of the App, and other statistics.

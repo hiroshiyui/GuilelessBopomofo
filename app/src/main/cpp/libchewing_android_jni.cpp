@@ -138,22 +138,19 @@ Java_org_ghostsinthelab_apps_guilelessbopomofo_Chewing_chewingNew(
     __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "native_data_path: %s",
                         native_data_path.c_str());
 
-    std::string native_user_data_path = native_data_path + "/userhash.dat";
-
-    __android_log_print(ANDROID_LOG_VERBOSE, LOGTAG, "native_user_data_path: %s",
-                        native_user_data_path.c_str());
-
-    /* create chewing context */
-    ChewingContext *ctx = chewing_new2(native_data_path.c_str(), native_user_data_path.c_str(),
+    /* create chewing context; libchewing 0.14 keeps the user's data in v4/ under the same
+     * directory it reads the dictionaries from */
+    ChewingContext *ctx = chewing_new2(native_data_path.c_str(), native_data_path.c_str(),
                                        nullptr, nullptr);
 
-    /* check if we do chewing_new2() successfully */
-    if (!ctx || chewing_Reset(ctx) == -1) {
-        jclass Exception = env->FindClass("java/lang/Exception");
-        if (Exception) {
-            env->ThrowNew(Exception, "Unable to initialize Chewing engine.");
-            env->DeleteLocalRef(Exception);
-        }
+    /* a 0 tells the Kotlin side it failed, and it throws for us */
+    if (!ctx) {
+        __android_log_print(ANDROID_LOG_ERROR, LOGTAG, "chewing_new2() failed");
+        return 0;
+    }
+    if (chewing_Reset(ctx) == -1) {
+        __android_log_print(ANDROID_LOG_ERROR, LOGTAG, "chewing_Reset() failed");
+        chewing_delete(ctx);
         return 0;
     }
 

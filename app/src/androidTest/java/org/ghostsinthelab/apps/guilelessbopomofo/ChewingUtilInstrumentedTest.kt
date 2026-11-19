@@ -44,7 +44,9 @@ class ChewingUtilInstrumentedTest {
     private val dataPath: String = appContext.dataDir.absolutePath
     private val chewingDataDir = File(dataPath)
     private val chewingDataFiles =
-        listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
+        listOf(
+            "static_dict.bin", "rare_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
+        )
 
     @Before
     fun setupChewingEngine() {
@@ -291,18 +293,11 @@ class ChewingUtilInstrumentedTest {
         assertArrayEquals("$fileName should be empty again after reset", empty, file.readBytes())
     }
 
+    // libchewing 0.14 keeps added and removed phrases alike in this one file.
     @Test
-    fun resetUserPhraseData_shouldEmptyUserHashFile() {
-        assertResetEmpties("userhash.dat") {
+    fun resetUserPhraseData_shouldEmptyUserDictFile() {
+        assertResetEmpties("v4/user_dict.csv") {
             ChewingBridge.chewing.userphraseAdd("測試", "ㄘㄜˋ ㄕˋ")
-        }
-    }
-
-    @Test
-    fun resetUserPhraseData_shouldEmptyChewingDeletedFile() {
-        assertResetEmpties("chewing-deleted.dat") {
-            ChewingBridge.chewing.userphraseAdd("測試", "ㄘㄜˋ ㄕˋ")
-            ChewingBridge.chewing.userphraseRemove("測試", "ㄘㄜˋ ㄕˋ")
         }
     }
 
@@ -348,9 +343,11 @@ class ChewingUtilInstrumentedTest {
     @Test
     fun listOfDataFiles_shouldReturnCorrectFileList() {
         val dataFiles = ChewingUtil.listOfDataFiles()
-        assertEquals(4, dataFiles.size)
-        assertTrue(dataFiles.contains("tsi.dat"))
-        assertTrue(dataFiles.contains("word.dat"))
+        assertEquals(6, dataFiles.size)
+        assertTrue(dataFiles.contains("static_dict.bin"))
+        assertTrue(dataFiles.contains("rare_dict.bin"))
+        assertTrue(dataFiles.contains("static_words.bin"))
+        assertTrue(dataFiles.contains("static_lm.bin"))
         assertTrue(dataFiles.contains("swkb.dat"))
         assertTrue(dataFiles.contains("symbols.dat"))
     }

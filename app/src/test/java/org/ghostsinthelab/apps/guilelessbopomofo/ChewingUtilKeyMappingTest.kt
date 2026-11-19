@@ -92,7 +92,9 @@ class ChewingUtilKeyMappingTest {
     @Test
     fun listOfDataFiles_returnsExpectedFiles() {
         val files = ChewingUtil.listOfDataFiles()
-        assertEquals(4, files.size)
-        assertEquals(listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat"), files)
+        assertEquals(6, files.size)
+        assertEquals(listOf(
+            "static_dict.bin", "rare_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
+        ), files)
     }
 }

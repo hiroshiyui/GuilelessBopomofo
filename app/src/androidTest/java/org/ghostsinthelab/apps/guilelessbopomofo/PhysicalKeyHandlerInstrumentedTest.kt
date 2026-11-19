@@ -52,7 +52,9 @@ class PhysicalKeyHandlerInstrumentedTest {
     private val dataPath: String = appContext.dataDir.absolutePath
     private val chewingDataDir = File(dataPath)
     private val chewingDataFiles =
-        listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
+        listOf(
+            "static_dict.bin", "rare_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
+        )
 
     private val host = RecordingImeHost(appContext)
 

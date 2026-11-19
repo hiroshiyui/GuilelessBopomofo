@@ -23,6 +23,7 @@ import android.util.Log
 import android.view.KeyEvent
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.DirectionKey
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.EnterKeyIntent
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
@@ -38,10 +39,27 @@ object ChewingUtil {
     private const val logTag = "ChewingUtil"
 
     // The dictionaries shipped as assets, which libchewing reads from the app's data directory.
-    private val DATA_FILES: List<String> = listOf("tsi.dat", "word.dat", "swkb.dat", "symbols.dat")
+    private val DATA_FILES: List<String> = listOf(
+        "static_dict.bin", "rare_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
+    )
 
-    // What libchewing writes as the user types, and what a reset throws away.
-    private val USER_DATA_FILES: List<String> = listOf("chewing-deleted.dat", "userhash.dat")
+    // The dictionaries libchewing 0.13 and earlier read, which nothing reads any more.
+    private val OBSOLETE_DATA_FILES: List<String> = listOf("tsi.dat", "word.dat")
+
+    // Where libchewing 0.14 keeps what it learns from the user, under the data directory.
+    private const val USER_DATA_DIR = "v4"
+
+    // The user phrases this app kept before libchewing 0.14, and the file name 0.14 looks
+    // for to bring them over into USER_DATA_DIR. It also needs LEGACY_DELETED_PHRASES_FILE.
+    private const val LEGACY_USER_PHRASES_FILE = "userhash.dat"
+    private const val MIGRATABLE_USER_PHRASES_FILE = "chewing.dat"
+    private const val LEGACY_DELETED_PHRASES_FILE = "chewing-deleted.dat"
+
+    // What a reset throws away besides USER_DATA_DIR. The older files go too, or libchewing
+    // would bring them back over on the next start.
+    private val LEGACY_USER_DATA_FILES: List<String> = listOf(
+        LEGACY_USER_PHRASES_FILE, MIGRATABLE_USER_PHRASES_FILE, LEGACY_DELETED_PHRASES_FILE
+    )
 
     private const val DATA_VERSION_FILE = "data_appversion.txt"
 
@@ -60,13 +78,32 @@ object ChewingUtil {
         if (ChewingBridge.chewing.context != 0L) return
         val dataPath = context.applicationInfo.dataDir
         setupChewingData(context, dataPath)
-        ChewingBridge.chewing.connect(dataPath)
+        connect(dataPath)
+    }
+
+    /**
+     * Connects libchewing to the dictionaries and user data under [dataPath].
+     *
+     * libchewing 0.14 brings the old user phrases over on its first start, and fails to start
+     * if it cannot read them. It has made [USER_DATA_DIR] by then, so it does not try again:
+     * one more attempt starts it without them. They stay in [LEGACY_USER_PHRASES_FILE].
+     *
+     * @throws Chewing.ChewingInitException if libchewing cannot open a context.
+     */
+    fun connect(dataPath: String) {
+        try {
+            ChewingBridge.chewing.connect(dataPath)
+        } catch (exception: Chewing.ChewingInitException) {
+            if (!File(dataPath, MIGRATABLE_USER_PHRASES_FILE).exists()) throw exception
+            Log.e(logTag, "libchewing failed to start, maybe migrating the old user phrases; once more without.")
+            ChewingBridge.chewing.connect(dataPath)
+        }
     }
 
     /**
      * Flushes the chewing context to persist user phrases to disk.
      * This deletes the current context and reconnects, forcing libchewing
-     * to write userhash.dat. Call this after adding or removing user phrases.
+     * to write out the user dictionary. Call this after adding or removing user phrases.
      */
     fun flushContext(context: Context) {
         reconnect(context)
@@ -77,7 +114,8 @@ object ChewingUtil {
      */
     fun resetUserPhraseData(context: Context) {
         reconnect(context) { chewingDataDir ->
-            USER_DATA_FILES.forEach { File(chewingDataDir, it).delete() }
+            File(chewingDataDir, USER_DATA_DIR).deleteRecursively()
+            LEGACY_USER_DATA_FILES.forEach { File(chewingDataDir, it).delete() }
         }
     }
 
@@ -95,7 +133,7 @@ object ChewingUtil {
 
         ChewingBridge.chewing.delete()
         whileDisconnected(File(dataPath))
-        ChewingBridge.chewing.connect(dataPath)
+        connect(dataPath)
 
         ChewingBridge.chewing.setChiEngMode(chiEngMode)
         ChewingBridge.chewing.setShapeMode(shapeMode)
@@ -104,18 +142,22 @@ object ChewingUtil {
     }
 
     /**
-     * Makes sure the dictionaries under [dataPath] are present and belong to this version of
-     * the app, reinstalling them from the assets otherwise.
+     * Makes sure the dictionaries under [dataPath] are present and belong to this build of
+     * the app and libchewing, reinstalling them from the assets otherwise.
      */
     fun setupChewingData(context: Context, dataPath: String) {
         val chewingDataDir = File(dataPath)
+
+        OBSOLETE_DATA_FILES.forEach { File(chewingDataDir, it).delete() }
+        prepareLegacyUserPhrasesForMigration(chewingDataDir)
 
         if (!chewingDataFilesInstalled(dataPath)) {
             Log.d(logTag, "Install Chewing data files.")
             installChewingData(context, dataPath)
         }
 
-        val appVersion = BuildConfig.VERSION_NAME.toByteArray()
+        // The libchewing revision changes the dictionaries without a new version name.
+        val appVersion = "${BuildConfig.VERSION_NAME}+${BuildConfig.CHEWING_REVISION}".toByteArray()
         val chewingDataAppVersionTxt = File(chewingDataDir, DATA_VERSION_FILE)
 
         if (!chewingDataAppVersionTxt.exists()) {
@@ -126,6 +168,30 @@ object ChewingUtil {
             Log.d(logTag, "Here comes a new version.")
             installChewingData(context, dataPath)
             FileOutputStream(chewingDataAppVersionTxt).use { it.write(appVersion) }
+        }
+    }
+
+    /**
+     * Puts a copy of the user phrases kept before libchewing 0.14 where 0.14 looks for them,
+     * so it brings them over into [USER_DATA_DIR] on its first start. Only once: after that
+     * [USER_DATA_DIR] exists and libchewing leaves the old files alone. The original stays,
+     * for a build with an older libchewing to go on reading.
+     */
+    private fun prepareLegacyUserPhrasesForMigration(chewingDataDir: File) {
+        if (File(chewingDataDir, USER_DATA_DIR).exists()) return
+        val legacyPhrases = File(chewingDataDir, LEGACY_USER_PHRASES_FILE)
+        val migratablePhrases = File(chewingDataDir, MIGRATABLE_USER_PHRASES_FILE)
+        if (!legacyPhrases.exists() || migratablePhrases.exists()) return
+        // libchewing fails to start at all if it migrates without this file.
+        if (!File(chewingDataDir, LEGACY_DELETED_PHRASES_FILE).exists()) {
+            Log.w(logTag, "No $LEGACY_DELETED_PHRASES_FILE, so the old user phrases are not migrated.")
+            return
+        }
+        try {
+            legacyPhrases.copyTo(migratablePhrases)
+        } catch (exception: IOException) {
+            Log.e(logTag, "Failed to hand $LEGACY_USER_PHRASES_FILE over for migration.", exception)
+            migratablePhrases.delete()
         }
     }
 
