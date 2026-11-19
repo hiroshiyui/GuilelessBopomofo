@@ -37,7 +37,10 @@ import java.io.FileOutputStream
 @RunWith(AndroidJUnit4::class)
 class ChewingBridgeInstrumentedTest {
     private val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-    private val dataPath: String = appContext.dataDir.absolutePath
+    // A data directory of the tests' own: they add and reset user phrases, which must never
+    // reach what the app on this device has learned.
+    private val dataPath: String =
+        File(appContext.cacheDir, "chewing-test-bridge").apply { mkdirs() }.absolutePath
     private val chewingDataDir = File(dataPath)
     private val chewingDataFiles =
         listOf(
@@ -853,7 +856,9 @@ class ChewingBridgeInstrumentedTest {
     @Test
     fun testVersion() {
         val version: String = ChewingBridge.chewing.version()
-        assertTrue("unexpected libchewing version: $version", version.startsWith("0.13.1"))
+        // Any release, so the test outlives a libchewing upgrade: MAJOR.MINOR.PATCH, then an
+        // optional pre-release ("-rc.1") and build ("+abc") as Semantic Versioning has them.
+        assertTrue("unexpected libchewing version: $version", SEMANTIC_VERSION.matches(version))
     }
 
     @Test
@@ -974,5 +979,10 @@ class ChewingBridgeInstrumentedTest {
     fun deleteChewingEngine() {
         // Close Chewing
         ChewingBridge.chewing.delete()
+        chewingDataDir.deleteRecursively()
+    }
+
+    private companion object {
+        val SEMANTIC_VERSION = Regex("""\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?""")
     }
 }

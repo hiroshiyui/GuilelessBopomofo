@@ -41,7 +41,10 @@ class ChewingUtilInstrumentedTest {
     private val ime = ImeDispatcher {}
 
     private val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-    private val dataPath: String = appContext.dataDir.absolutePath
+    // A data directory of the tests' own: they add and reset user phrases, which must never
+    // reach what the app on this device has learned.
+    private val dataPath: String =
+        File(appContext.cacheDir, "chewing-test-util").apply { mkdirs() }.absolutePath
     private val chewingDataDir = File(dataPath)
     private val chewingDataFiles =
         listOf(
@@ -81,6 +84,7 @@ class ChewingUtilInstrumentedTest {
         ChewingBridge.chewing.candClose()
         ChewingBridge.chewing.cleanPreeditBuf()
         ChewingBridge.chewing.delete()
+        chewingDataDir.deleteRecursively()
     }
 
     // region handleBackspaceAction
@@ -281,7 +285,7 @@ class ChewingUtilInstrumentedTest {
     // leaves each one in place but holding no phrases: the same bytes as a fresh one.
     private fun assertResetEmpties(fileName: String, recordPhrases: () -> Unit) {
         val file = File(chewingDataDir, fileName)
-        ChewingUtil.resetUserPhraseData(appContext)
+        ChewingUtil.resetUserPhraseData(dataPath)
         assertTrue("$fileName should be created on connect", file.exists())
         val empty = file.readBytes()
 
@@ -289,7 +293,7 @@ class ChewingUtilInstrumentedTest {
         flushUserData()
         assertFalse("$fileName should change once phrases are recorded", empty.contentEquals(file.readBytes()))
 
-        ChewingUtil.resetUserPhraseData(appContext)
+        ChewingUtil.resetUserPhraseData(dataPath)
         assertArrayEquals("$fileName should be empty again after reset", empty, file.readBytes())
     }
 
@@ -308,7 +312,7 @@ class ChewingUtilInstrumentedTest {
         val phrasesBeforeReset = ChewingUtil.enumerateUserPhrases()
         assertTrue("Should have at least one user phrase", phrasesBeforeReset.isNotEmpty())
 
-        ChewingUtil.resetUserPhraseData(appContext)
+        ChewingUtil.resetUserPhraseData(dataPath)
 
         val phrasesAfterReset = ChewingUtil.enumerateUserPhrases()
         assertTrue("User phrases should be empty after reset", phrasesAfterReset.isEmpty())
@@ -316,7 +320,7 @@ class ChewingUtilInstrumentedTest {
 
     @Test
     fun resetUserPhraseData_shouldReconnectChewing() {
-        ChewingUtil.resetUserPhraseData(appContext)
+        ChewingUtil.resetUserPhraseData(dataPath)
 
         // Chewing context should be valid (non-zero) after reset
         assertTrue("Chewing context should be reconnected", ChewingBridge.chewing.context != 0L)
@@ -328,7 +332,7 @@ class ChewingUtilInstrumentedTest {
 
     @Test
     fun resetUserPhraseData_shouldNotDeleteCoreDataFiles() {
-        ChewingUtil.resetUserPhraseData(appContext)
+        ChewingUtil.resetUserPhraseData(dataPath)
 
         for (file in chewingDataFiles) {
             val dataFile = File(chewingDataDir, file)

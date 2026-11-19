@@ -30,6 +30,9 @@ class GuilelessBopomofoEnvTest {
             GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT,
             GuilelessBopomofoEnv.USER_OUTLINE_KEYS,
             GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD,
+            GuilelessBopomofoEnv.USER_LEARN_FROM_TYPING,
+            GuilelessBopomofoEnv.USER_LEARN_NEW_WORDS,
+            GuilelessBopomofoEnv.USER_SPACE_CYCLES_CANDIDATES,
         )
         assertEquals(
             "All preference key values must be unique",
@@ -61,6 +64,9 @@ class GuilelessBopomofoEnvTest {
             GuilelessBopomofoEnv.USER_KEY_BUTTON_HEIGHT,
             GuilelessBopomofoEnv.USER_OUTLINE_KEYS,
             GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD,
+            GuilelessBopomofoEnv.USER_LEARN_FROM_TYPING,
+            GuilelessBopomofoEnv.USER_LEARN_NEW_WORDS,
+            GuilelessBopomofoEnv.USER_SPACE_CYCLES_CANDIDATES,
         )
         keys.forEach { key ->
             assertTrue("Preference key should not be empty", key.isNotEmpty())

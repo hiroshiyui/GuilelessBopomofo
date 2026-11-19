@@ -49,6 +49,12 @@ object ChewingUtil {
     // Where libchewing 0.14 keeps what it learns from the user, under the data directory.
     private const val USER_DATA_DIR = "v4"
 
+    // What libchewing writes as it starts properly, and only then.
+    private const val USER_DICT_FILE = "$USER_DATA_DIR/user_dict.csv"
+
+    // The first start may fall back once, on old user phrases it cannot bring over.
+    private const val FIRST_START_ATTEMPTS = 2
+
     // The user phrases this app kept before libchewing 0.14, and the file name 0.14 looks
     // for to bring them over into USER_DATA_DIR. It also needs LEGACY_DELETED_PHRASES_FILE.
     private const val LEGACY_USER_PHRASES_FILE = "userhash.dat"
@@ -84,20 +90,29 @@ object ChewingUtil {
     /**
      * Connects libchewing to the dictionaries and user data under [dataPath].
      *
-     * libchewing 0.14 brings the old user phrases over on its first start, and fails to start
-     * if it cannot read them. It has made [USER_DATA_DIR] by then, so it does not try again:
-     * one more attempt starts it without them. They stay in [LEGACY_USER_PHRASES_FILE].
+     * libchewing 0.14 never fails to open a context: whatever stops it starting properly, a
+     * missing dictionary or old user phrases it cannot bring over, it falls back to one that
+     * has no dictionaries and converts nothing, and says nothing. A proper start writes its
+     * user dictionary, so a first start that leaves none fell back. Once more then: it has
+     * made [USER_DATA_DIR] by now, so it skips the old phrases, which stay in
+     * [LEGACY_USER_PHRASES_FILE]. A later start, with the user dictionary already there,
+     * cannot be checked this way.
      *
-     * @throws Chewing.ChewingInitException if libchewing cannot open a context.
+     * @throws Chewing.ChewingInitException if libchewing cannot start properly.
      */
     fun connect(dataPath: String) {
-        try {
+        val userDict = File(dataPath, USER_DICT_FILE)
+        if (userDict.exists()) {
             ChewingBridge.chewing.connect(dataPath)
-        } catch (exception: Chewing.ChewingInitException) {
-            if (!File(dataPath, MIGRATABLE_USER_PHRASES_FILE).exists()) throw exception
-            Log.e(logTag, "libchewing failed to start, maybe migrating the old user phrases; once more without.")
-            ChewingBridge.chewing.connect(dataPath)
+            return
         }
+        repeat(FIRST_START_ATTEMPTS) {
+            ChewingBridge.chewing.connect(dataPath)
+            if (userDict.exists()) return
+            Log.e(logTag, "libchewing fell back to a context without dictionaries.")
+        }
+        ChewingBridge.chewing.delete()
+        throw Chewing.ChewingInitException
     }
 
     /**
@@ -106,14 +121,19 @@ object ChewingUtil {
      * to write out the user dictionary. Call this after adding or removing user phrases.
      */
     fun flushContext(context: Context) {
-        reconnect(context)
+        reconnect(context.applicationInfo.dataDir)
     }
 
     /**
      * Throws away everything libchewing has learned from this user.
      */
     fun resetUserPhraseData(context: Context) {
-        reconnect(context) { chewingDataDir ->
+        resetUserPhraseData(context.applicationInfo.dataDir)
+    }
+
+    /** [resetUserPhraseData] on the libchewing data under [dataPath], which tests choose. */
+    internal fun resetUserPhraseData(dataPath: String) {
+        reconnect(dataPath) { chewingDataDir ->
             File(chewingDataDir, USER_DATA_DIR).deleteRecursively()
             LEGACY_USER_DATA_FILES.forEach { File(chewingDataDir, it).delete() }
         }
@@ -124,8 +144,7 @@ object ChewingUtil {
      * only way to make it write out what it has learned. [whileDisconnected] runs in
      * between, when no context is holding the data files open.
      */
-    private inline fun reconnect(context: Context, whileDisconnected: (File) -> Unit = {}) {
-        val dataPath = context.applicationInfo.dataDir
+    private inline fun reconnect(dataPath: String, whileDisconnected: (File) -> Unit = {}) {
         val wasConnected = ChewingBridge.chewing.context != 0L
         // The input method may be in the middle of typing: keep its modes across the swap.
         val chiEngMode = if (wasConnected) ChewingBridge.chewing.getChiEngMode() else ChiEngMode.CHINESE.mode
@@ -182,7 +201,8 @@ object ChewingUtil {
         val legacyPhrases = File(chewingDataDir, LEGACY_USER_PHRASES_FILE)
         val migratablePhrases = File(chewingDataDir, MIGRATABLE_USER_PHRASES_FILE)
         if (!legacyPhrases.exists() || migratablePhrases.exists()) return
-        // libchewing fails to start at all if it migrates without this file.
+        // Without this file libchewing cannot bring the phrases over, and falls back to a
+        // context that has no dictionaries for the first start.
         if (!File(chewingDataDir, LEGACY_DELETED_PHRASES_FILE).exists()) {
             Log.w(logTag, "No $LEGACY_DELETED_PHRASES_FILE, so the old user phrases are not migrated.")
             return

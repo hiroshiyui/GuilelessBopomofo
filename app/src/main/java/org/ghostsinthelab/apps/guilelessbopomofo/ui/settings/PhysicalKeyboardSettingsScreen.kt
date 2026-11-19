@@ -95,10 +95,11 @@ private val PHYSICAL_KEYBOARD_LAYOUTS: List<String> = listOf(
 )
 
 /** A Shift + [key] chord, the [symbol] it types, and the full-width punctuation libchewing puts out. */
-private data class ShiftPunctuation(val key: String, val symbol: String, val output: String)
+internal data class ShiftPunctuation(val key: String, val symbol: String, val output: String)
 
 // libchewing's SPECIAL_SYMBOLS (src/conversion/symbol.rs), reached with Shift on a US layout.
-private val SHIFT_PUNCTUATION: List<ShiftPunctuation> = listOf(
+// Internal for the test that types each row through libchewing.
+internal val SHIFT_PUNCTUATION: List<ShiftPunctuation> = listOf(
     ShiftPunctuation("`", "~", "～"),
     ShiftPunctuation("1", "!", "！"),
     ShiftPunctuation("2", "@", "＠"),
