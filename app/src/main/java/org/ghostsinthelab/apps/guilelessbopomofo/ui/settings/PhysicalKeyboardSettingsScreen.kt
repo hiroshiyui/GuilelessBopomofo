@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,8 +37,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import org.ghostsinthelab.apps.guilelessbopomofo.BopomofoPhysicalKeyboards
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDIDATE_SELECTION_KEYS_OPTION
@@ -56,6 +60,11 @@ private val TipsIconSpacing = 8.dp
 private val TipItemSpacing = 8.dp
 private val TipBulletSpacing = 8.dp
 private const val TIP_BULLET = "•"
+private val PunctuationTableSpacing = 16.dp
+private val PunctuationRowSpacing = 4.dp
+// The three columns of the punctuation table share the width equally.
+private const val TABLE_COLUMN_WEIGHT = 1f
+private const val SHIFT_KEY_NAME = "Shift"
 
 // Key names in the tips are set in Libertinus Keyboard, whose ligatures draw a whole name
 // ("Shift", "Space", ...) as one key cap.
@@ -83,6 +92,34 @@ private val PHYSICAL_KEYBOARD_LAYOUTS: List<String> = listOf(
     BopomofoPhysicalKeyboards.KB_COLEMAK_DH_ORTH.layout,
     BopomofoPhysicalKeyboards.KB_WORKMAN.layout,
     BopomofoPhysicalKeyboards.KB_COLEMAK.layout,
+)
+
+/** A Shift + [key] chord, the [symbol] it types, and the full-width punctuation libchewing puts out. */
+private data class ShiftPunctuation(val key: String, val symbol: String, val output: String)
+
+// libchewing's SPECIAL_SYMBOLS (src/conversion/symbol.rs), reached with Shift on a US layout.
+private val SHIFT_PUNCTUATION: List<ShiftPunctuation> = listOf(
+    ShiftPunctuation("`", "~", "～"),
+    ShiftPunctuation("1", "!", "！"),
+    ShiftPunctuation("2", "@", "＠"),
+    ShiftPunctuation("3", "#", "＃"),
+    ShiftPunctuation("4", "$", "＄"),
+    ShiftPunctuation("5", "%", "％"),
+    ShiftPunctuation("6", "^", "︿"),
+    ShiftPunctuation("7", "&", "＆"),
+    ShiftPunctuation("8", "*", "＊"),
+    ShiftPunctuation("9", "(", "（"),
+    ShiftPunctuation("0", ")", "）"),
+    ShiftPunctuation("-", "_", "—"),
+    ShiftPunctuation("=", "+", "＋"),
+    ShiftPunctuation("[", "{", "『"),
+    ShiftPunctuation("]", "}", "』"),
+    ShiftPunctuation("\\", "|", "｜"),
+    ShiftPunctuation(";", ":", "："),
+    ShiftPunctuation("'", "\"", "；"),
+    ShiftPunctuation(",", "<", "，"),
+    ShiftPunctuation(".", ">", "。"),
+    ShiftPunctuation("/", "?", "？"),
 )
 
 // The radio buttons are labelled with the keys themselves, in capitals as key caps are printed.
@@ -155,8 +192,43 @@ private fun KeybindingTipsCard(modifier: Modifier = Modifier) {
             ) {
                 tips.lines().forEach { TipBulletItem(it) }
             }
+            ShiftPunctuationTable(Modifier.padding(top = PunctuationTableSpacing))
         }
     }
+}
+
+/** The Shift + key chords that type full-width punctuation, one per row. */
+@Composable
+private fun ShiftPunctuationTable(modifier: Modifier = Modifier) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(PunctuationRowSpacing)) {
+        Text(stringResource(R.string.punctuation_shortcuts_intro))
+        ShiftPunctuationRow(
+            AnnotatedString(stringResource(R.string.punctuation_shortcuts_column_keys)),
+            stringResource(R.string.punctuation_shortcuts_column_symbol),
+            stringResource(R.string.punctuation_shortcuts_column_output),
+        )
+        HorizontalDivider()
+        SHIFT_PUNCTUATION.forEach { (key, symbol, output) ->
+            ShiftPunctuationRow(shiftChord(key), symbol, output)
+        }
+    }
+}
+
+/** One row of the table, read out by a screen reader as a whole. */
+@Composable
+private fun ShiftPunctuationRow(keys: AnnotatedString, symbol: String, output: String) {
+    Row(Modifier.fillMaxWidth().semantics(mergeDescendants = true) {}) {
+        Text(keys, Modifier.weight(TABLE_COLUMN_WEIGHT))
+        Text(symbol, Modifier.weight(TABLE_COLUMN_WEIGHT))
+        Text(output, Modifier.weight(TABLE_COLUMN_WEIGHT))
+    }
+}
+
+/** "Shift + [key]", each key drawn as a key cap like in the tips above. */
+private fun shiftChord(key: String): AnnotatedString = buildAnnotatedString {
+    withStyle(PhysicalKeyStyle) { append(SHIFT_KEY_NAME) }
+    append(" + ")
+    withStyle(PhysicalKeyStyle) { append(key) }
 }
 
 /** One tip of the list: wrapped lines hang level with the text, clear of the bullet. */
