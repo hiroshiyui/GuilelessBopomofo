@@ -108,6 +108,10 @@ val chewingLibraryPath: String = "${rootDir}/app/src/main/cpp/libs/libchewing"
 val chewingDataFiles = listOf(
     "static_dict.bin", "rare_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
 )
+// What libchewing 0.13 and earlier read. Git ignores them, so a checkout that built those still
+// has them in the assets, and they would go into every APK unread.
+val obsoleteChewingDataFiles = listOf("tsi.dat", "word.dat")
+val chewingAssetsPath: String = "${rootDir}/app/src/main/assets"
 
 val rustupAvailable = providers.exec {
     isIgnoreExitValue = true
@@ -128,8 +132,12 @@ tasks.register<Exec>("buildChewingData") {
     commandLine("make", "dict_chewing_v4", "misc")
 }
 
+tasks.register<Delete>("deleteObsoleteChewingDataFiles") {
+    delete(obsoleteChewingDataFiles.map { "$chewingAssetsPath/$it" })
+}
+
 tasks.register<Copy>("copyChewingDataFiles") {
-    dependsOn("buildChewingData")
+    dependsOn("buildChewingData", "deleteObsoleteChewingDataFiles")
     from("$chewingLibraryPath/build/data/dict/chewing_v4") {
         include("static_dict.bin")
         include("rare_dict.bin")
@@ -143,7 +151,7 @@ tasks.register<Copy>("copyChewingDataFiles") {
     from("$chewingLibraryPath/data/dict/chewing") {
         include("word.csv")
     }
-    into("$rootDir/app/src/main/assets")
+    into(chewingAssetsPath)
 }
 
 tasks.register<Exec>("installRustup") {
@@ -167,9 +175,7 @@ tasks.preBuild {
 }
 
 tasks.register<Delete>("cleanChewingDataFiles") {
-    for (chewingDataFile in chewingDataFiles) {
-        file("$rootDir/app/src/main/assets/$chewingDataFile").delete()
-    }
+    delete((chewingDataFiles + obsoleteChewingDataFiles).map { "$chewingAssetsPath/$it" })
 }
 
 tasks.register<Exec>("execMakeClean") {

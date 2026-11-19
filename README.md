@@ -86,10 +86,21 @@ Several common hotkeys:
 
 ## Build 組建
 
+1. Install the prerequisites:
+    * [Git LFS](https://git-lfs.com/): libchewing's language model is stored in Git LFS. Install it (e.g. `sudo apt install git-lfs` or `brew install git-lfs`), then turn it on once for your user account **before cloning**:
+        ```bash
+        git lfs install
+        ```
+    * CMake 3.27 or later, `make` and a C compiler on your machine; the Rust toolchain is installed automatically through `rustup` if missing
 1. Get source code:
     ```bash
     git clone --recursive https://github.com/hiroshiyui/GuilelessBopomofo.git
     ```
+    * If you cloned before turning Git LFS on, or the build stops with "File is a Git LFS pointer", fetch the language model files:
+        ```bash
+        git -C app/src/main/cpp/libs/libchewing/data lfs pull
+        ```
+    * Updating an existing checkout, bring the submodules along too: `git submodule update --init --recursive`
 1. Build it:
     * Import this project into Android Studio, then run **"Build -> Make Project"**, or...
     * execute `./gradlew :app:assembleDebug` or `./gradlew :app:assembleRelease` from shell command line
