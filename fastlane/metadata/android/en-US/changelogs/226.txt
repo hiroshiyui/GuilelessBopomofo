@@ -1,0 +1,5 @@
+Hi there! Guileless Bopomofo 5.2.2 helps you find punctuation on a physical keyboard.
+
+* The physical keyboard tips now list every Shift + key shortcut for full-width punctuation, like Shift + , for ， and Shift + / for ？, with the key each one types and what you get.
+
+Thanks for using it!
