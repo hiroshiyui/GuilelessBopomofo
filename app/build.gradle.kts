@@ -126,10 +126,26 @@ tasks.register<Exec>("prepareChewing") {
     )
 }
 
+// libchewing-data's CMake rules rebuild the dictionaries when their sources change, but not when
+// chewing-cli does, so after a libchewing update they could stay in the old format, which the new
+// libchewing reads as empty. Whenever the libchewing commit changes, they are built afresh.
+val chewingDataBuildPath = "$chewingLibraryPath/build/data"
+val chewingDataRevisionStamp = "$chewingDataBuildPath/.chewing-revision"
+
+tasks.register<Delete>("deleteStaleChewingData") {
+    val stamp = file(chewingDataRevisionStamp)
+    val revision = chewingRevision
+    onlyIf { !stamp.exists() || stamp.readText() != revision }
+    delete(fileTree(chewingDataBuildPath) { include("dict/*/*.bin", "dict/*/*.dat", "misc/*.dat") })
+}
+
 tasks.register<Exec>("buildChewingData") {
-    dependsOn("prepareChewing")
+    dependsOn("prepareChewing", "deleteStaleChewingData")
     workingDir("$chewingLibraryPath/build")
     commandLine("make", "dict_chewing_v4", "misc")
+    val stamp = file(chewingDataRevisionStamp)
+    val revision = chewingRevision
+    doLast { stamp.writeText(revision) }
 }
 
 tasks.register<Delete>("deleteObsoleteChewingDataFiles") {
