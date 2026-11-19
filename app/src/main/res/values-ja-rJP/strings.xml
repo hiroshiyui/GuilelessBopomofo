@@ -77,6 +77,19 @@
     <string name="rearward_phrase_choice">後方から単語を選択する</string>
     <string name="rearward_phrase_choice_switch">後方から単語を選択する？</string>
     <string name="rearward_phrase_choice_description">有効にすると、カーソルの前の単語を選択されます</string>
+    <string name="space_cycles_candidates_description">スペースキーを続けて押すと、候補一覧を開く前に、その場で次の候補に順に切り替えます：</string>
+    <string-array name="space_cycles_candidates_entries">
+        <item>オフ（すぐに一覧を開く）</item>
+        <item>候補 2 件</item>
+        <item>候補 3 件</item>
+        <item>候補 4 件</item>
+        <item>候補 5 件</item>
+    </string-array>
+    <string name="learning_from_typing">入力からの学習</string>
+    <string name="learning_from_typing_description">樸實注音キーボードは、候補をより適切に並べるため、入力した単語とその順序を端末内で学習します。パスワード欄や、シークレットタブなど学習しないよう求める入力欄では学習しません。学習した内容を消去するには、ユーザー辞書管理の「リセット」を使用してください。</string>
+    <string name="learning_from_typing_switch">入力した内容から学習する？</string>
+    <string name="learn_new_words_description">新しい単語も学習します：辞書にまだない語彙です。</string>
+    <string name="learn_new_words_switch">新しい単語を学習する？</string>
     <string name="english_prediction">英単語予測</string>
     <string name="english_prediction_description">有効にすると、英数モードで英語を入力する際、キーボードの上に単語の候補を表示します。候補は内蔵の単語リストによるもので、入力内容は一切保存されません。</string>
     <string name="english_prediction_switch">英単語予測を有効にする？</string>

@@ -17,6 +17,7 @@
  */
 package org.ghostsinthelab.apps.guilelessbopomofo
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.view.inputmethod.EditorInfo
@@ -24,7 +25,10 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CANDI
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_SPACE_AS_SELECTION
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_LEARN_FROM_TYPING
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_LEARN_NEW_WORDS
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SPACE_CYCLES_CANDIDATES
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.SelectionKeys
 import org.ghostsinthelab.apps.guilelessbopomofo.keys.physical.PhysicalKeyboard
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishWords
@@ -61,6 +65,7 @@ class ChewingSettings(
     /** Puts every setting on the current context, as after connecting or reconnecting. */
     fun applyAll() {
         applySpaceAsSelection()
+        applySpaceCycling()
         applyPhraseChoiceRearward()
         applyConversionEngine()
         ChewingBridge.chewing.setCandPerPage(CANDIDATES_PER_PAGE)
@@ -78,12 +83,20 @@ class ChewingSettings(
         applyLearning()
     }
 
-    // Also stops libchewing 0.14 recording the typing history in v4/history_dict.bin.
+    // The text field decides whether to learn at all, and in fields that allow it the user's
+    // preferences decide what. libchewing 0.14 learns everything, the typing history in
+    // v4/history_dict.bin included, through the history option.
     private fun applyLearning() {
+        val fromTyping = sharedPreferences.getBoolean(USER_LEARN_FROM_TYPING, true)
+        val newWords = sharedPreferences.getBoolean(USER_LEARN_NEW_WORDS, false)
         ChewingBridge.chewing.configSetInt(OPTION_DISABLE_AUTO_LEARN, if (learningAllowed) 0 else 1)
+        ChewingBridge.chewing.configSetInt(OPTION_LEARN_FROM_TYPING, if (fromTyping) 1 else 0)
+        ChewingBridge.chewing.configSetInt(OPTION_LEARN_NEW_WORDS, if (newWords) 1 else 0)
     }
 
-    // IME_FLAG_NO_PERSONALIZED_LEARNING is from API 26; older text fields never set it.
+    // IME_FLAG_NO_PERSONALIZED_LEARNING is from API 26, but only a constant: older text
+    // fields never set it, so reading it there is safe.
+    @SuppressLint("InlinedApi")
     private fun EditorInfo.forbidsLearning(): Boolean =
         imeOptions and EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING != 0 ||
             EnglishWords.isPasswordField(inputType)
@@ -101,6 +114,12 @@ class ChewingSettings(
     private fun applySpaceAsSelection() {
         val enabled = sharedPreferences.getBoolean(USER_ENABLE_SPACE_AS_SELECTION, true)
         ChewingBridge.chewing.setSpaceAsSelection(if (enabled) 1 else 0)
+    }
+
+    // libchewing only cycles while Space is the selection key; 0 opens the list at once.
+    private fun applySpaceCycling() {
+        val candidates = sharedPreferences.getInt(USER_SPACE_CYCLES_CANDIDATES, 0)
+        ChewingBridge.chewing.configSetInt(OPTION_CYCLE_FIRST_N_SELECTS, candidates)
     }
 
     private fun applyPhraseChoiceRearward() {
@@ -122,6 +141,8 @@ class ChewingSettings(
     fun onPreferenceChanged(key: String?): Boolean {
         when (key) {
             USER_ENABLE_SPACE_AS_SELECTION -> applySpaceAsSelection()
+            USER_SPACE_CYCLES_CANDIDATES -> applySpaceCycling()
+            USER_LEARN_FROM_TYPING, USER_LEARN_NEW_WORDS -> applyLearning()
             USER_PHRASE_CHOICE_REARWARD -> applyPhraseChoiceRearward()
             USER_CANDIDATE_SELECTION_KEYS_OPTION -> applySelectionKeys()
             USER_CONVERSION_ENGINE, USER_CONVERSION_ENGINE_WHEN_USING_PHYSICAL_KEYBOARD -> applyConversionEngine()
@@ -133,5 +154,8 @@ class ChewingSettings(
     companion object {
         private const val CANDIDATES_PER_PAGE = 10
         private const val OPTION_DISABLE_AUTO_LEARN = "chewing.disable_auto_learn_phrase"
+        private const val OPTION_LEARN_FROM_TYPING = "chewing.auto_learn_user_history"
+        private const val OPTION_LEARN_NEW_WORDS = "chewing.auto_learn_new_words"
+        private const val OPTION_CYCLE_FIRST_N_SELECTS = "chewing.cycle_first_n_selects"
     }
 }

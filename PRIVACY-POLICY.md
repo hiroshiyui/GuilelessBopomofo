@@ -12,7 +12,7 @@ For a better experience, while using my App, I may require you to provide me wit
 
 **What the Keyboard Learns on Your Device**
 
-To offer better candidates, the App learns from the Bopomofo text you type: the phrases you add or pick, and which words you tend to type one after another. This stays in the App's private storage on your device. It is never sent anywhere, and it is left out of device backups. The App does not learn from password fields, or from text fields that ask not to be learned from, such as incognito browser tabs. You can erase everything it has learned at any time with Reset in the User Phrase Manager.
+To offer better candidates, the App learns from the Bopomofo text you type: the phrases you add or pick, and which words you tend to type one after another. This stays in the App's private storage on your device. It is never sent anywhere, and it is left out of device backups. The App does not learn from password fields, or from text fields that ask not to be learned from, such as incognito browser tabs. You can turn this learning off in the App's general settings, and erase everything it has learned at any time with Reset in the User Phrase Manager.
 
 **Log Data**
 

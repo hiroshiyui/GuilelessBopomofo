@@ -42,8 +42,11 @@ object GuilelessBopomofoEnv {
     const val USER_SOFT_KEYBOARD_LAYOUT : String = "user_keyboard_layout"
     const val USER_PHYSICAL_KEYBOARD_LAYOUT : String = "user_physical_keyboard_layout"
     const val USER_KEY_BUTTON_HEIGHT : String = "user_key_button_height"
+    const val USER_LEARN_FROM_TYPING : String = "user_learn_from_typing"
+    const val USER_LEARN_NEW_WORDS : String = "user_learn_new_words"
     const val USER_OUTLINE_KEYS : String = "user_outline_keys"
     const val USER_PHRASE_CHOICE_REARWARD : String = "user_phrase_choice_rearward"
+    const val USER_SPACE_CYCLES_CANDIDATES : String = "user_space_cycles_candidates"
     const val USER_THEME_MODE : String = "user_theme_mode"
     const val USER_DYNAMIC_COLOR : String = "user_dynamic_color"
 }

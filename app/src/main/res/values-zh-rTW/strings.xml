@@ -78,6 +78,19 @@
     <string name="rearward_phrase_choice">從後方往前選詞</string>
     <string name="rearward_phrase_choice_switch">從後方往前選詞？</string>
     <string name="rearward_phrase_choice_description">如果啟用本功能，會從游標處向前選詞</string>
+    <string name="space_cycles_candidates_description">再按空白鍵時，先在原處依序換成接下來的幾個候選字詞，之後才開啟候選字詞列表：</string>
+    <string-array name="space_cycles_candidates_entries">
+        <item>關閉（立即開啟列表）</item>
+        <item>2 個候選字詞</item>
+        <item>3 個候選字詞</item>
+        <item>4 個候選字詞</item>
+        <item>5 個候選字詞</item>
+    </string-array>
+    <string name="learning_from_typing">從輸入中學習</string>
+    <string name="learning_from_typing_description">樸實注音鍵盤會在您的裝置上學習您輸入了哪些字詞、以及輸入的先後順序，以便更準確地排列候選字詞。在密碼欄位，以及要求不要學習的欄位（例如無痕分頁）中，一律不會學習。若要清除已學到的內容，請使用「使用者詞彙管理」中的「重設」。</string>
+    <string name="learning_from_typing_switch">從輸入的內容學習？</string>
+    <string name="learn_new_words_description">同時學習新詞：詞庫裡還沒有的詞彙。</string>
+    <string name="learn_new_words_switch">學習新詞？</string>
     <string name="english_prediction">英文單字預測</string>
     <string name="english_prediction_description">如果啟用本功能，在英數模式下輸入英文時，鍵盤上方會顯示單字建議。建議來自內建的單字表，不會儲存您輸入的任何內容。</string>
     <string name="english_prediction_switch">啟用英文單字預測？</string>

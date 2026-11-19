@@ -49,7 +49,10 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPL
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_SPACE_AS_SELECTION
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_LEARN_FROM_TYPING
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_LEARN_NEW_WORDS
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_PHRASE_CHOICE_REARWARD
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SPACE_CYCLES_CANDIDATES
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.R
@@ -58,6 +61,10 @@ import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberIntPreference
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberStringPreference
 
 private val ImeSettingsButtonSpacing = 8.dp
+
+// How many candidates Space goes through in place, in the order
+// R.array.space_cycles_candidates_entries names them; 0 opens the list at once.
+private val SPACE_CYCLES_CANDIDATES: List<Int> = listOf(0, 2, 3, 4, 5)
 
 // In the order R.array.on_screen_bopomofo_keyboard_layouts names them.
 private val SOFT_KEYBOARD_LAYOUTS: List<String> = listOf(
@@ -129,11 +136,33 @@ fun GeneralSettingsScreen(modifier: Modifier = Modifier) {
 
         SettingsLabel(stringResource(R.string.space_as_selection_key))
         SettingsDescription(stringResource(R.string.space_as_selection_key_description))
+        val spaceAsSelection by rememberBooleanPreference(USER_ENABLE_SPACE_AS_SELECTION, true)
         BooleanPreferenceSwitch(R.string.space_as_selection_key_switch_label, USER_ENABLE_SPACE_AS_SELECTION, true)
+        // Cycling is what Space does as the selection key, so it means nothing otherwise.
+        if (spaceAsSelection) {
+            SettingsDescription(stringResource(R.string.space_cycles_candidates_description))
+            var spaceCycles by rememberIntPreference(USER_SPACE_CYCLES_CANDIDATES, 0)
+            DropdownPreference(
+                entries = stringArrayResource(R.array.space_cycles_candidates_entries).toList(),
+                values = SPACE_CYCLES_CANDIDATES.map(Int::toString),
+                selected = spaceCycles.toString(),
+                onSelected = { spaceCycles = it.toInt() },
+            )
+        }
 
         SettingsLabel(stringResource(R.string.rearward_phrase_choice))
         SettingsDescription(stringResource(R.string.rearward_phrase_choice_description))
         BooleanPreferenceSwitch(R.string.rearward_phrase_choice_switch, USER_PHRASE_CHOICE_REARWARD, false)
+
+        SettingsLabel(stringResource(R.string.learning_from_typing))
+        SettingsDescription(stringResource(R.string.learning_from_typing_description))
+        val learnFromTyping by rememberBooleanPreference(USER_LEARN_FROM_TYPING, true)
+        BooleanPreferenceSwitch(R.string.learning_from_typing_switch, USER_LEARN_FROM_TYPING, true)
+        // libchewing picks up new words only while it learns from typing at all.
+        if (learnFromTyping) {
+            SettingsDescription(stringResource(R.string.learn_new_words_description))
+            BooleanPreferenceSwitch(R.string.learn_new_words_switch, USER_LEARN_NEW_WORDS, false)
+        }
 
         SettingsLabel(stringResource(R.string.english_prediction))
         SettingsDescription(stringResource(R.string.english_prediction_description))

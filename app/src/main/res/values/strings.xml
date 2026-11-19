@@ -77,6 +77,19 @@
     <string name="rearward_phrase_choice">Choose phrase rearward</string>
     <string name="rearward_phrase_choice_switch">Choose phrase rearward?</string>
     <string name="rearward_phrase_choice_description">If enabled, phrase will be chosen before the cursor</string>
+    <string name="space_cycles_candidates_description">Pressing Space again swaps in the next few candidates in place, before the candidate list opens:</string>
+    <string-array name="space_cycles_candidates_entries">
+        <item>Off (open the list at once)</item>
+        <item>2 candidates</item>
+        <item>3 candidates</item>
+        <item>4 candidates</item>
+        <item>5 candidates</item>
+    </string-array>
+    <string name="learning_from_typing">Learning from your typing</string>
+    <string name="learning_from_typing_description">Guileless Bopomofo learns on your device which words you type, and in what order, to rank candidates better. It never learns in password fields, or in fields that ask not to be learned from, such as incognito tabs. To erase what it has learned, use Reset in the User Phrase Manager.</string>
+    <string name="learning_from_typing_switch">Learn from what you type?</string>
+    <string name="learn_new_words_description">Also pick up new words: phrases the dictionary does not have yet.</string>
+    <string name="learn_new_words_switch">Learn new words?</string>
     <string name="english_prediction">English word prediction</string>
     <string name="english_prediction_description">If enabled, word suggestions are offered above the keyboard while typing English in alphanumeric mode. Suggestions come from a built-in word list, nothing you type is stored.</string>
     <string name="english_prediction_switch">Enable English word prediction?</string>
