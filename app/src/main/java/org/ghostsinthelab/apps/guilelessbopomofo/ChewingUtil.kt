@@ -169,6 +169,10 @@ object ChewingUtil {
             // added. Showing them clutters the manager with noise.
             it.phrase.length > 1
         }
+            // libchewing lists a phrase twice while a change to it, such as the frequency bump
+            // from using it, waits to be written over the copy on disk. The user phrase manager
+            // keys its list by phrase and Bopomofo, and Compose throws on a repeated key.
+            .distinct()
     }
 
     /** Whether libchewing has candidates on offer right now. */
