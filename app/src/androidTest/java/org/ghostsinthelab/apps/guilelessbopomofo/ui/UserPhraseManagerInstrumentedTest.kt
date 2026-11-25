@@ -37,9 +37,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * libchewing lists a user phrase twice while a change to it waits to be written over the copy
- * on disk, and the user phrase manager, which keys its list by phrase and Bopomofo, used to
- * crash on that with "Key ... was already used".
+ * libchewing 0.13 listed a user phrase twice while a change to it waited to be written over the
+ * copy on disk, and the user phrase manager, which keys its list by phrase and Bopomofo, used to
+ * crash on that with "Key ... was already used". 0.14 keeps the user dictionary in memory as one
+ * trie and lists a phrase once; these tests keep the manager from ever showing it twice anyway.
  */
 @RunWith(AndroidJUnit4::class)
 class UserPhraseManagerInstrumentedTest {
@@ -71,13 +72,6 @@ class UserPhraseManagerInstrumentedTest {
         ChewingBridge.chewing.handleEsc()
         Thread.sleep(DICTIONARY_WRITE_MILLIS)
         ChewingBridge.chewing.delete()
-    }
-
-    @Test
-    fun libchewing_listsThePhraseTwice() {
-        val listed = ChewingBridge.chewing.userphraseGetAll().orEmpty()
-            .count { it.toList() == listOf(phrase.phrase, phrase.bopomofo) }
-        assertEquals(2, listed)
     }
 
     @Test
