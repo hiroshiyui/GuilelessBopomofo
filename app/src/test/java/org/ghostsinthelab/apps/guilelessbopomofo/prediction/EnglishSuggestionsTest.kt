@@ -18,8 +18,10 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.prediction
 
 import android.text.InputType
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import java.lang.reflect.Proxy
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_LEARNING
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
@@ -55,6 +57,15 @@ class EnglishSuggestionsTest {
     private class FakePredictor : EnglishPredictor {
         override var isEnabled = false
         override var isNextWordEnabled = false
+        override var isLearningEnabled = false
+        val learned = mutableListOf<Pair<String, String>>()
+        override fun learn(previous: String, word: String) {
+            learned += previous to word
+        }
+        var cleared = 0
+        override fun clearHistory() {
+            cleared++
+        }
         var answer = emptyList<String>()
         var asked: Pair<String, String>? = null
         override fun suggest(previous: String, prefix: String): List<String> {
@@ -78,7 +89,7 @@ class EnglishSuggestionsTest {
     private val uiState = ImeUiState()
     private val suggestions = EnglishSuggestions(predictor, uiState, host)
 
-    private fun startPlainTextField() = suggestions.onStartInput(InputType.TYPE_CLASS_TEXT)
+    private fun startPlainTextField() = suggestions.onStartInput(InputType.TYPE_CLASS_TEXT, EditorInfo.IME_NULL)
 
     private fun enabledInPlainTextField() {
         startPlainTextField()
@@ -107,7 +118,7 @@ class EnglishSuggestionsTest {
 
     @Test
     fun notInAPasswordField() {
-        suggestions.onStartInput(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+        suggestions.onStartInput(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD, EditorInfo.IME_NULL)
         suggestions.isEnabled = true
         assertTrue(uiState.showBuffers)
     }
@@ -222,6 +233,55 @@ class EnglishSuggestionsTest {
         assertFalse(uiState.showBuffers)
         assertTrue(suggestions.onPreferenceChanged(USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION, preferencesSaying(USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION to true)))
         assertTrue(predictor.isNextWordEnabled)
+        assertTrue(suggestions.onPreferenceChanged(USER_ENABLE_ENGLISH_LEARNING, preferencesSaying(USER_ENABLE_ENGLISH_LEARNING to true)))
+        assertTrue(predictor.isLearningEnabled)
+    }
+
+    // --- learning ---
+
+    @Test
+    fun choosingAWord_learnsItAfterThePreviousOne() {
+        field.text = "Please go a"
+        enabledInPlainTextField()
+        suggestions.choose("ahead")
+        assertEquals(listOf("go" to "ahead"), predictor.learned)
+    }
+
+    @Test
+    fun choosingAWord_withNothingBefore_learnsItAlone() {
+        field.text = "Hel"
+        enabledInPlainTextField()
+        suggestions.choose("Hello")
+        assertEquals(listOf("" to "Hello"), predictor.learned)
+    }
+
+    @Test
+    fun clearHistory_clearsThePredictorsHistory_andRefreshesTheStrip() {
+        field.text = "go a"
+        enabledInPlainTextField()
+        predictor.answer = listOf("ahead")
+        suggestions.clearHistory()
+        assertEquals(1, predictor.cleared)
+        assertEquals("go" to "a", predictor.asked)
+    }
+
+    @Test
+    fun anIncognitoField_learnsNothing() {
+        field.text = "go a"
+        suggestions.onStartInput(InputType.TYPE_CLASS_TEXT, EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING)
+        suggestions.isEnabled = true
+        suggestions.choose("ahead")
+        assertEquals("go ahead ", field.text)
+        assertEquals(emptyList<Pair<String, String>>(), predictor.learned)
+    }
+
+    @Test
+    fun aFieldWithoutSuggestions_learnsNothing() {
+        field.text = "go a"
+        suggestions.onStartInput(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS, EditorInfo.IME_NULL)
+        suggestions.isEnabled = true
+        suggestions.choose("ahead")
+        assertEquals(emptyList<Pair<String, String>>(), predictor.learned)
     }
 
     @Test

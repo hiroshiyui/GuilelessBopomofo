@@ -14,6 +14,14 @@ For a better experience, while using my App, I may require you to provide me wit
 
 To offer better candidates, the App learns from the Bopomofo text you type: the phrases you add or pick, and which words you tend to type one after another. This stays in the App's private storage on your device. It is never sent anywhere, and it is left out of device backups. The App does not learn from password fields, or from text fields that ask not to be learned from, such as incognito browser tabs. You can turn this learning off in the App's general settings, and erase everything it has learned at any time with Reset in the User Phrase Manager.
 
+**English Word History**
+
+The English word prediction can, only if you turn on "Learn from the words I choose" in the settings (it is off by default), remember which suggestions you tap, so that the words you use most come first. What it keeps, and how:
+
+- Only words from the app's built-in English word list are kept, each with the word before it (when that word is in the list too) and how many times it was chosen. Nothing else you type is ever kept, and nothing at all from password fields, from fields that ask for no suggestions, or from apps that ask for incognito typing.
+- It is kept only on your device, in the app's private storage, encrypted (AES-256-GCM) with a key held in the Android Keystore. It is excluded from Android backups, and it is never sent anywhere: the app has no network access.
+- Turning the option off, or tapping "Clear learned words" in the settings, erases it, together with its key, so that no leftover copy can be read. Uninstalling the app, or clearing its storage, erases it too.
+
 **Log Data**
 
 I want to inform you that whenever you use my App, in a case of an error in the app I collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing my App, the time and date of your use of the App, and other statistics.

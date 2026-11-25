@@ -18,6 +18,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.prediction
 
 import android.view.inputmethod.InputConnection
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_LEARNING
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.enums.Layout
@@ -48,6 +49,9 @@ class EnglishSuggestions(
     // whether the text field being edited wants word suggestions at all, see onStartInput()
     private var fieldAllowsSuggestions: Boolean = false
 
+    // whether what is chosen in it may be learned, see onStartInput()
+    private var fieldAllowsLearning: Boolean = false
+
     // the space the last chosen suggestion was committed with
     private val autoSpace = AutoSpace()
 
@@ -66,6 +70,20 @@ class EnglishSuggestions(
             prediction.isNextWordEnabled = value
             refresh()
         }
+
+    /** Learning from chosen words; turning it off erases what was learned. */
+    var isLearningEnabled: Boolean
+        get() = prediction.isLearningEnabled
+        set(value) {
+            prediction.isLearningEnabled = value
+            refresh()
+        }
+
+    /** Erases every learned word; learning, if it is on, starts afresh. */
+    fun clearHistory() {
+        prediction.clearHistory()
+        refresh()
+    }
 
     /**
      * Lets go of the word lists for good. Unlike turning [isEnabled] off, nothing is looked
@@ -87,14 +105,20 @@ class EnglishSuggestions(
         when (key) {
             USER_ENABLE_ENGLISH_PREDICTION -> isEnabled = isOn(key)
             USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION -> isNextWordEnabled = isOn(key)
+            USER_ENABLE_ENGLISH_LEARNING -> isLearningEnabled = isOn(key)
             else -> return false
         }
         return true
     }
 
-    /** A text field was just started: its [inputType] says whether it wants suggestions. */
-    fun onStartInput(inputType: Int?) {
+    /**
+     * A text field was just started: its [inputType] says whether it wants suggestions, and
+     * its [imeOptions] whether what is chosen in it may be learned.
+     */
+    fun onStartInput(inputType: Int?, imeOptions: Int?) {
         fieldAllowsSuggestions = inputType?.let(EnglishWords::fieldAllowsSuggestions) ?: false
+        fieldAllowsLearning = inputType != null && imeOptions != null &&
+                EnglishWords.fieldAllowsLearning(inputType, imeOptions)
         autoSpace.forget()
     }
 
@@ -142,22 +166,22 @@ class EnglishSuggestions(
         )
     }
 
-    private fun wordBeforeCursor(inputConnection: InputConnection): String =
-        inputConnection.getTextBeforeCursor(PREDICTION_LOOKBEHIND, 0)
-            ?.let(EnglishWords::trailingWord)
-            .orEmpty()
-
-    /** Replaces the word being typed with [word] and a space, ready for the next one. */
+    /**
+     * Replaces the word being typed with [word] and a space, ready for the next one, and
+     * learns the choice where the text field allows it.
+     */
     fun choose(word: String) {
         val inputConnection = host.inputConnection ?: return
         // Look the word up again rather than trust what the strip was built from, the text
         // field may have changed under us in between.
-        val typedWord = wordBeforeCursor(inputConnection)
+        val textBeforeCursor = inputConnection.getTextBeforeCursor(PREDICTION_LOOKBEHIND, 0) ?: ""
+        val typedWord = EnglishWords.trailingWord(textBeforeCursor)
         inputConnection.beginBatchEdit()
         inputConnection.deleteSurroundingText(typedWord.length, 0)
         inputConnection.commitText("$word ", 1)
         inputConnection.endBatchEdit()
         autoSpace.committed(word)
+        if (fieldAllowsLearning) prediction.learn(EnglishWords.previousWord(textBeforeCursor), word)
     }
 
     /**

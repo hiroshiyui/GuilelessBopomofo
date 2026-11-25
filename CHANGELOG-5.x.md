@@ -1,5 +1,12 @@
 # Changelog — 5.x
 
+## 5.2.3
+- Fixed the user phrase manager crashing with Compose's "Key … was already used" `IllegalArgumentException`. libchewing's `TrieBuf::entries_iter` lists a user phrase twice, once from the trie on disk and once from the in-memory B-tree, while a frequency change to it (from using the phrase) waits to be saved; the manager keys its `LazyColumn` by phrase and Bopomofo. `ChewingUtil.enumerateUserPhrases()` now drops repeats, which also keeps them out of CSV backups.
+- Added `UserPhraseManagerInstrumentedTest`, which makes libchewing list a phrase twice and checks that `enumerateUserPhrases()` and `UserPhraseManagerScreen` show it once.
+
+## 5.2.2
+- Added a table of libchewing's Shift + key punctuation shortcuts to the physical keyboard tips card: for each of the 21 chords it lists the key, the symbol it sends (on a US layout) and the full-width punctuation libchewing puts out, taken from libchewing's `SPECIAL_SYMBOLS`. "Shift" and the keys are drawn as key caps, each row reads as one item to screen readers, and the heading and column titles are translated into Traditional Chinese and Japanese.
+
 ## 5.2.1
 - Fixed the pre-edit buffer's "move cursor left/right" accessibility actions, which only re-read libchewing's cursor and never moved it, leaving every character before the last out of a screen reader's reach. The buffer now also states the cursor position through a state description.
 - Exposed long presses (common punctuation, input method picker) to accessibility services, and made an accessibility click on the IME switch key work when the double-touch switch is enabled (`VirtualKey.onAccessibilityClick`).

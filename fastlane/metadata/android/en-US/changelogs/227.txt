@@ -1,0 +1,5 @@
+Hi there! Guileless Bopomofo 5.2.3 is a small bug-fix release.
+
+* The User Phrase Manager no longer crashes when you open it right after using a phrase you added. A phrase that had just been used could be listed twice, and that made the screen close. Your backups no longer get the repeat either.
+
+Thanks for using it!

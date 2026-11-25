@@ -24,8 +24,8 @@ android {
         applicationId = "org.ghostsinthelab.apps.guilelessbopomofo"
         minSdk = 23
         targetSdk = 37
-        versionCode = 225
-        versionName = "5.2.1"
+        versionCode = 227
+        versionName = "5.2.3"
 
         buildConfigField("String", "CHEWING_REVISION", "\"$chewingRevision\"")
 

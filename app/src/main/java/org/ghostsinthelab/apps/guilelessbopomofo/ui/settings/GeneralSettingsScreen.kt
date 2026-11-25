@@ -34,6 +34,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,11 +43,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.ghostsinthelab.apps.guilelessbopomofo.BopomofoSoftKeyboards
 import org.ghostsinthelab.apps.guilelessbopomofo.ConversionEngines
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_CONVERSION_ENGINE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_ETEN26_QWERTY_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_DISPLAY_HSU_QWERTY_LAYOUT
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_LEARNING
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_SPACE_AS_SELECTION
@@ -56,6 +62,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SPACE
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_SOFT_KEYBOARD_LAYOUT
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoService
 import org.ghostsinthelab.apps.guilelessbopomofo.R
+import org.ghostsinthelab.apps.guilelessbopomofo.prediction.WordHistoryVault
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberBooleanPreference
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberIntPreference
 import org.ghostsinthelab.apps.guilelessbopomofo.utils.rememberStringPreference
@@ -174,8 +181,44 @@ fun GeneralSettingsScreen(modifier: Modifier = Modifier) {
             BooleanPreferenceSwitch(
                 R.string.english_next_word_prediction_switch, USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION, false
             )
+            SettingsDescription(stringResource(R.string.english_learning_description))
+            val englishLearningEnabled by rememberBooleanPreference(USER_ENABLE_ENGLISH_LEARNING, false)
+            BooleanPreferenceSwitch(R.string.english_learning_switch, USER_ENABLE_ENGLISH_LEARNING, false)
+            // with learning off there is nothing to clear: turning it off erased it all
+            if (englishLearningEnabled) ClearLearnedWordsButton()
         }
 
+    }
+}
+
+/** Erases the learned English words, after asking, and says how it went. */
+@Composable
+private fun ClearLearnedWordsButton() {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var confirming by rememberSaveable { mutableStateOf(false) }
+
+    SettingsButton(
+        text = stringResource(R.string.english_learning_clear),
+        onClick = { confirming = true },
+        modifier = Modifier.padding(top = ImeSettingsButtonSpacing),
+    )
+    if (confirming) {
+        ConfirmDialog(
+            title = stringResource(R.string.english_learning_clear),
+            message = stringResource(R.string.english_learning_clear_confirm_message),
+            confirmLabel = stringResource(R.string.english_learning_clear_confirm),
+            onDismiss = { confirming = false },
+            onConfirm = {
+                confirming = false
+                scope.launch {
+                    // seen through even if the screen is left meanwhile
+                    val cleared = withContext(NonCancellable) { WordHistoryVault.clear(context.applicationContext) }
+                    val message = if (cleared) R.string.english_learning_cleared else R.string.english_learning_clear_failed
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
+            },
+        )
     }
 }
 
