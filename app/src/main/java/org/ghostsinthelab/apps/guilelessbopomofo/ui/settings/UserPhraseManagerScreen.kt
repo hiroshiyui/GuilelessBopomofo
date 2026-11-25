@@ -298,23 +298,6 @@ private fun UserPhraseItem(userPhrase: UserPhrase, onDelete: () -> Unit) {
 }
 
 @Composable
-private fun ConfirmDialog(
-    title: String,
-    message: String,
-    confirmLabel: String,
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(title) },
-        text = { Text(message) },
-        confirmButton = { TextButton(onClick = onConfirm) { Text(confirmLabel) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(android.R.string.cancel)) } },
-    )
-}
-
-@Composable
 private fun AddUserPhraseDialog(onDismiss: () -> Unit, onAdd: (phrase: String, bopomofo: String) -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()

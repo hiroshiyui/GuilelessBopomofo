@@ -19,6 +19,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.prediction
 
 import android.text.InputType
+import android.view.inputmethod.EditorInfo
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -130,6 +131,29 @@ class EnglishWordsTest {
     @Test
     fun matchCase_allCapitalsPrefixShouts() {
         assertEquals("HELLO", EnglishWords.matchCase("hello", "HE"))
+    }
+
+    // --- fieldAllowsLearning ---
+
+    @Test
+    fun plainTextFields_allowLearning() {
+        assertTrue(EnglishWords.fieldAllowsLearning(InputType.TYPE_CLASS_TEXT, EditorInfo.IME_NULL))
+    }
+
+    @Test
+    fun incognitoFields_neverAllowLearning() {
+        assertFalse(
+            EnglishWords.fieldAllowsLearning(
+                InputType.TYPE_CLASS_TEXT, EditorInfo.IME_ACTION_GO or EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING
+            )
+        )
+    }
+
+    @Test
+    fun fieldsWithoutSuggestions_neverAllowLearning() {
+        assertFalse(EnglishWords.fieldAllowsLearning(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD, EditorInfo.IME_NULL))
+        assertFalse(EnglishWords.fieldAllowsLearning(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS, EditorInfo.IME_NULL))
+        assertFalse(EnglishWords.fieldAllowsLearning(InputType.TYPE_CLASS_NUMBER, EditorInfo.IME_NULL))
     }
 
     // --- fieldAllowsSuggestions ---

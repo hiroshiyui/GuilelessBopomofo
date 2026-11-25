@@ -35,6 +35,17 @@ class ScowlWordPredictorTest {
     }
 
     @Test
+    fun spellingOf_givesTheListsSpelling_whateverTheCase() {
+        val predictor = predictorOf("ahead\t10", "I\t10", "us\t10", "US\t35", "Monday\t10")
+        assertEquals("ahead", predictor.spellingOf("Ahead"))
+        assertEquals("I", predictor.spellingOf("i"))
+        assertEquals("US", predictor.spellingOf("US"))
+        assertEquals("us", predictor.spellingOf("Us"))
+        assertEquals("Monday", predictor.spellingOf("monday"))
+        assertEquals(null, predictor.spellingOf("Hsinchu"))
+    }
+
+    @Test
     fun theUnsortedListIsSortedOnLoad() {
         val predictor = predictorOf("zebra\t10", "apple\t10", "apply\t20")
         assertEquals(listOf("apple", "apply"), predictor.suggest("app", 3))

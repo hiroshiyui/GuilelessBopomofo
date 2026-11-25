@@ -10,6 +10,14 @@ If you choose to use my App, then you agree to the collection and use of informa
 
 For a better experience, while using my App, I may require you to provide me with certain personally identifiable information. The information that I request will be retained on your device and is not collected by me in any way.
 
+**English Word History**
+
+The English word prediction can, only if you turn on "Learn from the words I choose" in the settings (it is off by default), remember which suggestions you tap, so that the words you use most come first. What it keeps, and how:
+
+- Only words from the app's built-in English word list are kept, each with the word before it (when that word is in the list too) and how many times it was chosen. Nothing else you type is ever kept, and nothing at all from password fields, from fields that ask for no suggestions, or from apps that ask for incognito typing.
+- It is kept only on your device, in the app's private storage, encrypted (AES-256-GCM) with a key held in the Android Keystore. It is excluded from Android backups, and it is never sent anywhere: the app has no network access.
+- Turning the option off, or tapping "Clear learned words" in the settings, erases it, together with its key, so that no leftover copy can be read. Uninstalling the app, or clearing its storage, erases it too.
+
 **Log Data**
 
 I want to inform you that whenever you use my App, in a case of an error in the app I collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing my App, the time and date of your use of the App, and other statistics.

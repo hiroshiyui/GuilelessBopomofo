@@ -48,6 +48,15 @@ class ScowlWordPredictor private constructor(private val entries: List<Entry>) :
             .toList()
     }
 
+    // A word spelled both ways, `us` and `US` say, is taken as typed, then in lower case.
+    override fun spellingOf(word: String): String? {
+        val key = word.lowercase(Locale.ROOT)
+        val spellings = entries.subList(firstIndexNotBelow(key), entries.size)
+            .takeWhile { it.key == key }
+            .map { it.word }
+        return spellings.firstOrNull { it == word } ?: spellings.firstOrNull { it == key } ?: spellings.firstOrNull()
+    }
+
     // binary search over the keys, which are kept sorted
     private fun firstIndexNotBelow(key: String): Int {
         var low = 0

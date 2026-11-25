@@ -21,7 +21,7 @@ package org.ghostsinthelab.apps.guilelessbopomofo.prediction
 /**
  * Offers English words that the given word being typed could become.
  */
-fun interface WordPredictor {
+interface WordPredictor {
     /**
      * @param prefix the part of the word typed so far, as the user typed it.
      * @param limit how many words to return at most.
@@ -29,4 +29,10 @@ fun interface WordPredictor {
      * never [prefix] itself.
      */
     fun suggest(prefix: String, limit: Int): List<String>
+
+    /**
+     * @return [word] as the word list spells it, whatever case it was typed in, or null if
+     * the list does not know it.
+     */
+    fun spellingOf(word: String): String?
 }

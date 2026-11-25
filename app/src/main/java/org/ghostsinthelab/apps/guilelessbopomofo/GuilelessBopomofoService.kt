@@ -48,6 +48,7 @@ import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import java.io.IOException
+import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_LEARNING
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_ENABLE_ENGLISH_PREDICTION
 import org.ghostsinthelab.apps.guilelessbopomofo.GuilelessBopomofoEnv.USER_FULLSCREEN_WHEN_IN_LANDSCAPE
@@ -67,6 +68,7 @@ import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishPrediction
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishSuggestions
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.EnglishWords
 import org.ghostsinthelab.apps.guilelessbopomofo.prediction.ScowlWordPredictor
+import org.ghostsinthelab.apps.guilelessbopomofo.prediction.WordHistoryVault
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeRoot
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.ime.ImeUiState
 import org.ghostsinthelab.apps.guilelessbopomofo.ui.theme.GuilelessTheme
@@ -138,11 +140,16 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
     override val lifecycle: Lifecycle get() = lifecycleRegistry
     override val savedStateRegistry: SavedStateRegistry get() = savedStateRegistryController.savedStateRegistry
 
+    // one instance, so that the very listener added is the one removed
+    private val clearWordHistory: () -> Unit = { englishSuggestions.clearHistory() }
+
     private val englishSuggestions = EnglishSuggestions(
         EnglishPrediction(
             lifecycleScope,
             openWordList = { assets.open(ScowlWordPredictor.ASSET_PATH) },
             openBigramList = { assets.open(BigramPredictor.ASSET_PATH) },
+            // private to the app, never backed up, encrypted with a Keystore key
+            openHistoryStore = { WordHistoryVault.store(this) },
         ),
         uiState,
         serviceEditor,
@@ -224,6 +231,8 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
 
         // Listen only once initialized, so that a reconnection never finds a half-built service.
         ChewingBridge.addReconnectListener(::onChewingReconnected)
+        // the settings can clear the learned English words while we hold them
+        WordHistoryVault.addClearListener(clearWordHistory)
 
         userHapticFeedbackStrength =
             sharedPreferences.getInt(USER_HAPTIC_FEEDBACK_STRENGTH, defaultHapticFeedbackStrength)
@@ -231,6 +240,8 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
         englishSuggestions.isEnabled = sharedPreferences.getBoolean(USER_ENABLE_ENGLISH_PREDICTION, false)
         englishSuggestions.isNextWordEnabled =
             sharedPreferences.getBoolean(USER_ENABLE_ENGLISH_NEXT_WORD_PREDICTION, false)
+        // off erases whatever is left of the history, even if it went off while we were not running
+        englishSuggestions.isLearningEnabled = sharedPreferences.getBoolean(USER_ENABLE_ENGLISH_LEARNING, false)
     }
 
 
@@ -297,7 +308,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             ChewingBridge.chewing.setChiEngMode(ChiEngMode.SYMBOL.mode)
         }
 
-        englishSuggestions.onStartInput(info?.inputType)
+        englishSuggestions.onStartInput(info?.inputType, info?.imeOptions)
         uiState.inPasswordField = info?.inputType?.let(EnglishWords::isPasswordField) ?: false
 
         // the on-screen Enter shows what it will do in this text field
@@ -332,6 +343,7 @@ class GuilelessBopomofoService : InputMethodService(), ImeHost, SharedPreference
             Log.e(logTag, "Failed to cleanup Chewing context", e)
         }
         ChewingBridge.removeReconnectListener(::onChewingReconnected)
+        WordHistoryVault.removeClearListener(clearWordHistory)
         englishSuggestions.shutDown()
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     }

@@ -19,6 +19,7 @@
 package org.ghostsinthelab.apps.guilelessbopomofo.prediction
 
 import android.text.InputType
+import android.view.inputmethod.EditorInfo
 import java.util.Locale
 
 /** Pure text helpers for English prediction: finding words around the cursor, matching case, and which fields want suggestions. */
@@ -79,6 +80,18 @@ object EnglishWords {
         if (inputType and InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS != 0) return false
         return !isPasswordField(inputType)
     }
+
+    /**
+     * Whether the choices made in a text field may be learned: only where suggestions are
+     * welcome, and never where the app asks for incognito typing, a private browser tab say.
+     */
+    fun fieldAllowsLearning(inputType: Int, imeOptions: Int): Boolean =
+        fieldAllowsSuggestions(inputType) && imeOptions and NO_PERSONALIZED_LEARNING == 0
+
+    // A compile-time constant from API 26 on, inlined, so it is safe to test against on older
+    // versions too, where apps simply never set it.
+    @Suppress("InlinedApi")
+    private const val NO_PERSONALIZED_LEARNING = EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING
 
     /** Whether a text field of the given input type holds a password. */
     fun isPasswordField(inputType: Int): Boolean =
