@@ -28,7 +28,7 @@ git clone --recursive https://github.com/hiroshiyui/GuilelessBopomofo.git
 
 **Prerequisites**: Rust toolchain (installed automatically via `rustup` if missing during build). CMake 3.24+ and NDK 28.1.13356709 (configured in Android SDK).
 
-**Pre-build steps run automatically**: `installSpecifiedRustToolchain` and `copyChewingDataFiles` are wired as `preBuild` dependencies. The latter triggers `prepareChewing` -> `buildChewingData` -> `copyChewingDataFiles`, which compiles libchewing dictionary data and copies the v4 dictionary (`static_dict.bin`, `rare_dict.bin`, `static_words.bin`, `static_lm.bin`) plus `swkb.dat`, `symbols.dat` into `app/src/main/assets/`. The v4 language model sources in the nested `data` submodule are Git LFS files, so `git lfs` must be installed and `git lfs pull` run there.
+**Pre-build steps run automatically**: `installSpecifiedRustToolchain` and `copyChewingDataFiles` are wired as `preBuild` dependencies. The latter triggers `prepareChewing` -> `buildChewingData` -> `copyChewingDataFiles`, which compiles libchewing dictionary data and copies the v4 dictionary (`static_dict.bin`, `static_words.bin`, `static_lm.bin`) plus `swkb.dat`, `symbols.dat` into `app/src/main/assets/`. The v4 language model sources in the nested `data` submodule are Git LFS files, so `git lfs` must be installed and `git lfs pull` run there.
 
 ## Architecture
 

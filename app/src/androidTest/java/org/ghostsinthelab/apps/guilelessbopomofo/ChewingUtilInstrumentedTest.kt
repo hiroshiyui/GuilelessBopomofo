@@ -48,7 +48,7 @@ class ChewingUtilInstrumentedTest {
     private val chewingDataDir = File(dataPath)
     private val chewingDataFiles =
         listOf(
-            "static_dict.bin", "rare_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
+            "static_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
         )
 
     @Before
@@ -347,9 +347,8 @@ class ChewingUtilInstrumentedTest {
     @Test
     fun listOfDataFiles_shouldReturnCorrectFileList() {
         val dataFiles = ChewingUtil.listOfDataFiles()
-        assertEquals(6, dataFiles.size)
+        assertEquals(5, dataFiles.size)
         assertTrue(dataFiles.contains("static_dict.bin"))
-        assertTrue(dataFiles.contains("rare_dict.bin"))
         assertTrue(dataFiles.contains("static_words.bin"))
         assertTrue(dataFiles.contains("static_lm.bin"))
         assertTrue(dataFiles.contains("swkb.dat"))

@@ -106,11 +106,12 @@ tasks.matching { it.name.matches(Regex("sign\\w+Bundle")) }.configureEach {
 
 val chewingLibraryPath: String = "${rootDir}/app/src/main/cpp/libs/libchewing"
 val chewingDataFiles = listOf(
-    "static_dict.bin", "rare_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
+    "static_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
 )
-// What libchewing 0.13 and earlier read. Git ignores them, so a checkout that built those still
-// has them in the assets, and they would go into every APK unread.
-val obsoleteChewingDataFiles = listOf("tsi.dat", "word.dat")
+// What libchewing 0.13 and earlier read, and the rare_dict.bin that 0.14 has since dropped. Git
+// ignores them, so a checkout that built those still has them in the assets, and they would go
+// into every APK unread.
+val obsoleteChewingDataFiles = listOf("tsi.dat", "word.dat", "rare_dict.bin")
 val chewingAssetsPath: String = "${rootDir}/app/src/main/assets"
 
 val rustupAvailable = providers.exec {
@@ -156,7 +157,6 @@ tasks.register<Copy>("copyChewingDataFiles") {
     dependsOn("buildChewingData", "deleteObsoleteChewingDataFiles")
     from("$chewingLibraryPath/build/data/dict/chewing_v4") {
         include("static_dict.bin")
-        include("rare_dict.bin")
         include("static_words.bin")
         include("static_lm.bin")
     }

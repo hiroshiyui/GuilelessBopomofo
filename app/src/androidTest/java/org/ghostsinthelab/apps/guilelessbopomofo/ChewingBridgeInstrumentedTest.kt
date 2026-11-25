@@ -44,7 +44,7 @@ class ChewingBridgeInstrumentedTest {
     private val chewingDataDir = File(dataPath)
     private val chewingDataFiles =
         listOf(
-            "static_dict.bin", "rare_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
+            "static_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
         )
 
     @Before

@@ -40,11 +40,12 @@ object ChewingUtil {
 
     // The dictionaries shipped as assets, which libchewing reads from the app's data directory.
     private val DATA_FILES: List<String> = listOf(
-        "static_dict.bin", "rare_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
+        "static_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
     )
 
-    // The dictionaries libchewing 0.13 and earlier read, which nothing reads any more.
-    private val OBSOLETE_DATA_FILES: List<String> = listOf("tsi.dat", "word.dat")
+    // The dictionaries libchewing 0.13 and earlier read, and the rare_dict.bin early 0.14
+    // builds read, which nothing reads any more.
+    private val OBSOLETE_DATA_FILES: List<String> = listOf("tsi.dat", "word.dat", "rare_dict.bin")
 
     // Where libchewing 0.14 keeps what it learns from the user, under the data directory.
     private const val USER_DATA_DIR = "v4"

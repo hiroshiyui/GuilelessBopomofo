@@ -25,7 +25,7 @@ import java.io.FileOutputStream
 /** Puts the dictionaries in place and connects libchewing, the way the tests here need it. */
 object ChewingTestSetup {
     private val dataFiles = listOf(
-        "static_dict.bin", "rare_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
+        "static_dict.bin", "static_words.bin", "static_lm.bin", "swkb.dat", "symbols.dat"
     )
 
     fun connect(context: Context): String {
